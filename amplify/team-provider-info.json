@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-theofficeplatform-dev-225223-authRole",
+      "UnauthRoleArn": "arn:aws:iam::017261671711:role/amplify-theofficeplatform-dev-225223-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::017261671711:role/amplify-theofficeplatform-dev-225223-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-theofficeplatform-dev-225223-deployment",
+      "UnauthRoleName": "amplify-theofficeplatform-dev-225223-unauthRole",
+      "StackName": "amplify-theofficeplatform-dev-225223",
+      "StackId": "arn:aws:cloudformation:us-east-1:017261671711:stack/amplify-theofficeplatform-dev-225223/815cebb0-5312-11ec-b47c-0a0575ffedcb",
+      "AmplifyAppId": "d1qxvtw9vp11j9"
+    },
+    "categories": {
+      "auth": {
+        "theofficeplatform8ab5a142": {}
+      }
+    }
+  }
+}
