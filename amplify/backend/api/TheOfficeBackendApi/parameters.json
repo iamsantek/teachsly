@@ -3,7 +3,10 @@
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
   "AuthCognitoUserPoolId": {
-    "Fn::GetAtt": ["auththeofficeplatform8ab5a142", "Outputs.UserPoolId"]
+    "Fn::GetAtt": [
+      "auththeofficeenglishlear4d1bc244",
+      "Outputs.UserPoolId"
+    ]
   },
-  "AuthModeLastUpdated": "2021-12-02T14:50:56.954Z"
+  "AuthModeLastUpdated": "2021-12-03T18:25:18.963Z"
 }

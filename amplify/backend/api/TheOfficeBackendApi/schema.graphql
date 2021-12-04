@@ -1,4 +1,4 @@
-type Course @model @auth(rules: [{ allow: public }]) {
+type Course @model @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
   name: String!
   teacher: String!
@@ -8,7 +8,7 @@ type Course @model @auth(rules: [{ allow: public }]) {
 }
 
 input AMPLIFY {
-  globalAuthRule: AuthRule = { allow: public }
+  globalAuthRule: AuthRule = {allow: public}
 }
 
 type Todo @model {
@@ -16,3 +16,4 @@ type Todo @model {
   name: String!
   done: Boolean!
 }
+ 

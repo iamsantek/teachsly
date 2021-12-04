@@ -8,6 +8,7 @@ import Dashboard from "./components/Dashboard";
 import { defaultDashboardContext } from "./constants/DashboardContext";
 import { UserDashboardContext } from "./contexts/UserDashboardContext";
 import UserService from "./services/UserService";
+import Admin from "./layouts/Admin";
 
 Amplify.configure(awsExports);
 

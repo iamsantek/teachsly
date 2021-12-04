@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3theofficeenglishplatformgeneralcontents",
+  "bucketName": "the-office-english-platform-general-contents",
+  "policyUUID": "76c5be6c",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "READ",
+    "CREATE_AND_UPDATE",
+    "DELETE"
+  ]
+}
