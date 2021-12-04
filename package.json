@@ -1,7 +1,6 @@
 {
-  "name": "The Office English Learning Platform",
+  "name": "the-office-platform",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "repository": {
     "type": "git",
