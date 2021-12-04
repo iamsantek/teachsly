@@ -1,4 +1,3 @@
-
 import Index from "./views/Index.js";
 import Profile from "./views/examples/Profile.js";
 import Maps from "./views/examples/Maps.js";

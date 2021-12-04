@@ -1,4 +1,3 @@
-
 //@ts-nocheck
 import React, { useEffect, useState } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
@@ -9,12 +8,11 @@ import { Container } from "reactstrap";
 import AdminNavbar from "../components/Navbars/AdminNavbar.js";
 import AdminFooter from "../components/Footers/AdminFooter.js";
 import Sidebar from "../components/Sidebar/Sidebar.js";
-import { defaultDashboardContext } from "../constants/DashboardContext"
+import { defaultDashboardContext } from "../constants/DashboardContext";
 import routes from "../routes.js";
 import UserService from "../services/UserService";
-import { UserDashboardContext } from "../contexts/UserDashboardContext"
-import SignIn from "../components/SignIn";
-import Auth from "./Auth"; 
+import { UserDashboardContext } from "../contexts/UserDashboardContext";
+import Auth from "./Auth";
 
 const Admin = (props: any) => {
   const mainContent = React.useRef(null);
@@ -36,7 +34,6 @@ const Admin = (props: any) => {
       setAuthState(nextAuthState);
     });
   }, []);
-
 
   // React.useEffect(() => {
   //   document.documentElement.scrollTop = 0;
@@ -75,34 +72,33 @@ const Admin = (props: any) => {
   return authState === AuthState.SignedIn && dashboardInformation.user ? (
     <>
       <UserDashboardContext.Provider value={dashboardInformation}>
-      <Sidebar
-        {...props}
-        routes={routes}
-        logo={{
-          innerLink: "/admin/index",
-          imgSrc: require("../assets/img/brand/argon-react.png").default,
-          imgAlt: "...",
-        }}
-      />
-      <div className="main-content" ref={mainContent}>
-        <AdminNavbar
+        <Sidebar
           {...props}
-          brandText={getBrandText(props.location.pathname)}
+          routes={routes}
+          logo={{
+            innerLink: "/admin/index",
+            imgSrc: require("../assets/img/brand/argon-react.png").default,
+            imgAlt: "...",
+          }}
         />
-        <Switch>
-          {getRoutes(routes)}
-          <Redirect from="*" to="/admin/index" />
-        </Switch>
-        <Container fluid>
-          <AdminFooter />
-        </Container>
-      </div>
+        <div className="main-content" ref={mainContent}>
+          <AdminNavbar
+            {...props}
+            brandText={getBrandText(props.location.pathname)}
+          />
+          <Switch>
+            {getRoutes(routes)}
+            <Redirect from="*" to="/admin/index" />
+          </Switch>
+          <Container fluid>
+            <AdminFooter />
+          </Container>
+        </div>
       </UserDashboardContext.Provider>
     </>
   ) : (
     <>
-    <Auth />
-    {/* <SignIn /> */}
+      <Auth />
     </>
   );
 };

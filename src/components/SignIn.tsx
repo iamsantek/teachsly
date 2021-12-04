@@ -9,7 +9,7 @@ const SignIn = () => (
       hideSignUp
       submitButtonText="Ingresar"
       //@ts-ignore
-      style={{ '--container-height': 'auto', '--background-color': 'red' }}
+      style={{ "--container-height": "auto", "--background-color": "red" }}
     />
   </AmplifyAuthenticator>
 );

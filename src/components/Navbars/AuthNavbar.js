@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
@@ -22,7 +21,8 @@ const AdminNavbar = () => {
             <img
               alt="..."
               src={
-                require("../../assets/img/brand/the-office-logo-max.png").default
+                require("../../assets/img/brand/the-office-logo-max.png")
+                  .default
               }
             />
           </NavbarBrand>

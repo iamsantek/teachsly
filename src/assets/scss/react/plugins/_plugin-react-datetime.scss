@@ -30,7 +30,7 @@
   margin-top: 1px;
   z-index: 99999 !important;
   background: #fff;
-  border-radius: .375rem;
+  border-radius: 0.375rem;
   box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.2);
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
@@ -109,10 +109,10 @@
   cursor: pointer;
 }
 .rdtDay {
-  font-size: .875rem;
+  font-size: 0.875rem;
   width: 36px;
   height: 36px;
-  transition: all .15s ease;
+  transition: all 0.15s ease;
   text-align: center;
   border: none;
   border-radius: 50%;
@@ -128,14 +128,14 @@
     background-color: $info !important;
     color: $white !important;
   }
-  &.start-date{
+  &.start-date {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
-  &.middle-date{
+  &.middle-date {
     border-radius: 0;
   }
-  &.end-date{
+  &.end-date {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
@@ -149,13 +149,13 @@
       padding-bottom: 5px;
       padding-top: 10px;
       font-weight: 300;
-      font-size: .875rem;
+      font-size: 0.875rem;
       width: 20px;
       height: 20px;
     }
     .rdtDay {
       color: $gray-700;
-      font-size: .875rem;
+      font-size: 0.875rem;
       &.rdtOld,
       &.rdtNew {
         color: $gray-500;
@@ -199,33 +199,34 @@
 .rdtPicker tr .dow {
   width: 14.2857%;
   border-bottom: none;
-  font-size: .875rem;
+  font-size: 0.875rem;
   width: 36px;
   height: 36px;
-  transition: all .15s ease;
+  transition: all 0.15s ease;
   text-align: center;
-  border: none;font-weight: 500;
-  border-radius: .375rem;
+  border: none;
+  font-weight: 500;
+  border-radius: 0.375rem;
 }
 .rdtPicker th.rdtSwitch {
   font-weight: 500;
-  border-radius: .375rem;
-  font-size: .875rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
   width: 145px;
   height: 36px;
-  transition: all .15s ease;
+  transition: all 0.15s ease;
   text-align: center;
   border: none;
 }
 .rdtPicker th.rdtNext,
 .rdtPicker th.rdtPrev {
-  font-size: .875rem;
+  font-size: 0.875rem;
   width: 36px;
   height: 36px;
-  transition: all .15s ease;
+  transition: all 0.15s ease;
   text-align: center;
   border: none;
-  border-radius: .375rem;
+  border-radius: 0.375rem;
   cursor: pointer;
 }
 
@@ -394,15 +395,15 @@ td.rdtYear:hover {
     }
   }
 }
-.input-group .input-group-prepend + .rdt .form-control{
+.input-group .input-group-prepend + .rdt .form-control {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
-.input-group .input-group-prepend + .rdt .form-control{
+.input-group .input-group-prepend + .rdt .form-control {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
-.input-group > .rdt:not(:last-child) .form-control{
+.input-group > .rdt:not(:last-child) .form-control {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }

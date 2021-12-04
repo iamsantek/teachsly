@@ -1,5 +1,3 @@
-
-
 // reactstrap components
 import {
   Button,
@@ -21,7 +19,7 @@ const Login = () => {
   return (
     <>
       <Col lg="6" md="8">
-            <SignIn />
+        <SignIn />
       </Col>
     </>
   );

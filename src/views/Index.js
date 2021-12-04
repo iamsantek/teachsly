@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
@@ -31,6 +30,8 @@ import {
 } from "../variables/charts.js";
 
 import Header from "../components/Headers/Header.js";
+import { DataStore } from "@aws-amplify/datastore";
+import { Course } from "../models/index.js";
 
 const Index = (props) => {
   const [activeNav, setActiveNav] = useState(1);
@@ -45,6 +46,13 @@ const Index = (props) => {
     setActiveNav(index);
     setChartExample1Data("data" + index);
   };
+
+  console.log("Log");
+  useEffect(async () => {
+    const courses = await DataStore.query(Course);
+    console.log(courses);
+  }, []);
+
   return (
     <>
       <Header />

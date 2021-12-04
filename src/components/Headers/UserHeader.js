@@ -1,5 +1,3 @@
-
-
 // reactstrap components
 import { Button, Container, Row, Col } from "reactstrap";
 

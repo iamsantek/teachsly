@@ -1,4 +1,3 @@
-
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -18,7 +17,6 @@ ReactDOM.render(
       <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
       <Redirect from="/" to="/admin/index" />
     </Switch>
-  </BrowserRouter>
-  ,
+  </BrowserRouter>,
   document.getElementById("root")
 );

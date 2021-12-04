@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
@@ -21,9 +20,8 @@ import { AmplifySignOut } from "@aws-amplify/ui-react";
 import { useContext } from "react";
 import { UserDashboardContext } from "../../contexts/UserDashboardContext";
 
-
 const AdminNavbar = (props) => {
-  const { user } = useContext(UserDashboardContext)
+  const { user } = useContext(UserDashboardContext);
 
   return (
     <>
@@ -90,8 +88,8 @@ const AdminNavbar = (props) => {
                 <DropdownItem divider />
                 <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
                   <AmplifySignOut
-                  style={{"--background-color": "red"}}
-                  buttonText="Salir"
+                    style={{ "--background-color": "red" }}
+                    buttonText="Salir"
                   />
                 </DropdownItem>
               </DropdownMenu>
