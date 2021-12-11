@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
@@ -28,20 +28,18 @@ import {
   chartExample1,
   chartExample2,
 } from "../variables/charts.js";
+import CustomAlert from "../components/Alerts/Alert";
+import AdminHeader from "../components/Headers/AdminHeader";
 
-import Header from "../components/Headers/Header.js";
-import { DataStore } from "@aws-amplify/datastore";
-import { Course } from "../models/index.js";
-
-const Index = (props) => {
+const AdminDashboard = (props: any) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
 
-  if (window.Chart) {
+  if ((window as any).Chart) {
     parseOptions(Chart, chartOptions());
   }
 
-  const toggleNavs = (e, index) => {
+  const toggleNavs = (e: any, index: number) => {
     e.preventDefault();
     setActiveNav(index);
     setChartExample1Data("data" + index);
@@ -49,8 +47,10 @@ const Index = (props) => {
 
   return (
     <>
-      <Header />
+      <AdminHeader />
+      <CustomAlert />
       {/* Page content */}
+
       <Container className="mt--7" fluid>
         <Row>
           <Col className="mb-5 mb-xl-0" xl="8">
@@ -59,7 +59,7 @@ const Index = (props) => {
                 <Row className="align-items-center">
                   <div className="col">
                     <h6 className="text-uppercase text-light ls-1 mb-1">
-                      Overview
+                      Admin Dashboard
                     </h6>
                     <h2 className="text-white mb-0">Sales value</h2>
                   </div>
@@ -98,7 +98,7 @@ const Index = (props) => {
                 {/* Chart */}
                 <div className="chart">
                   <Line
-                    data={chartExample1[chartExample1Data]}
+                    data={(chartExample1 as any)[chartExample1Data]}
                     options={chartExample1.options}
                     getDatasetAtEvent={(e) => console.log(e)}
                   />
@@ -321,4 +321,4 @@ const Index = (props) => {
   );
 };
 
-export default Index;
+export default AdminDashboard;

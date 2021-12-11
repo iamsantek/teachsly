@@ -2,6 +2,21 @@
 import { initSchema } from "@aws-amplify/datastore";
 import { schema } from "./schema";
 
-const { Course, Todo } = initSchema(schema);
+const MediaType = {
+  LINK: "LINK",
+  PDF: "PDF",
+  VIDEO: "VIDEO",
+};
 
-export { Course, Todo };
+const { Course, Student, Teacher, Media, CourseStudents, CoursesTeachers } =
+  initSchema(schema);
+
+export {
+  Course,
+  Student,
+  Teacher,
+  Media,
+  CourseStudents,
+  CoursesTeachers,
+  MediaType,
+};

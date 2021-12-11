@@ -1,0 +1,44 @@
+type Course @model @auth(rules: [{allow: public}, {allow: private}]) {
+  id: ID!
+  name: String!
+  teacher: String!
+  scheduleDate: String!
+  scheduleStartTime: AWSTime!
+  scheduleEndTime: AWSTime!
+  students: [Student] @manyToMany(relationName: "CourseStudents")
+  teachers: [Teacher] @manyToMany(relationName: "CoursesTeachers")
+}
+
+type Student @model {
+  id: ID!
+  name: String!
+  courses: [Course] @manyToMany(relationName: "CourseStudents")
+}
+
+type Teacher @model {
+  id: ID!
+  name: String!
+  userId: ID!
+  students: [Course] @manyToMany(relationName: "CoursesTeachers")
+}
+
+
+input AMPLIFY {
+  globalAuthRule: AuthRule = {allow: public}
+}
+
+enum MediaType {
+  LINK,
+  PDF,
+  VIDEO
+}
+
+type Media @model @auth(rules: [{ allow: groups, groupsField: "groups" }]) {
+  id: ID!
+  title: String!
+  description: String
+  link: String!
+  groups: [String]
+}
+
+ 

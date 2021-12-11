@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 // reactstrap components
 import {
   Badge,
@@ -20,8 +21,18 @@ import {
 } from "reactstrap";
 // core components
 import Header from "../../components/Headers/Header.js";
+import CourseService from "../../services/CourseService";
 
 const Tables = () => {
+  useEffect(() => {
+    console.log("TABLE");
+    const fetchCourses = async () => {
+      const courses = await CourseService.fetchCourses();
+      console.log(courses);
+    };
+    fetchCourses();
+  }, []);
+
   return (
     <>
       <Header />
@@ -37,10 +48,10 @@ const Tables = () => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Project</th>
-                    <th scope="col">Budget</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Users</th>
+                    <th scope="col">Curso</th>
+                    <th scope="col">Dias</th>
+                    <th scope="col">Horarios</th>
+                    <th scope="col">Profesor/a</th>
                     <th scope="col">Completion</th>
                     <th scope="col" />
                   </tr>

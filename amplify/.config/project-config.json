@@ -2,7 +2,7 @@
   "providers": [
     "awscloudformation"
   ],
-  "projectName": "TheOfficeEnglishLear",
+  "projectName": "TheOfficeEnglish",
   "version": "3.1",
   "frontend": "javascript",
   "javascript": {

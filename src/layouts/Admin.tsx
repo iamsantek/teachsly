@@ -13,6 +13,10 @@ import routes from "../routes.js";
 import UserService from "../services/UserService";
 import { UserDashboardContext } from "../contexts/UserDashboardContext";
 import Auth from "./Auth";
+import Amplify from "aws-amplify";
+import awsExports from "../aws-exports";
+
+Amplify.configure(awsExports);
 
 const Admin = (props: any) => {
   const mainContent = React.useRef(null);

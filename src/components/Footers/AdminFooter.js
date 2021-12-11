@@ -2,6 +2,7 @@
 
 // reactstrap components
 import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
+import { Links } from "../../enums/Links";
 
 const Footer = () => {
   return (
@@ -12,11 +13,11 @@ const Footer = () => {
             © {new Date().getFullYear()}{" "}
             <a
               className="font-weight-bold ml-1"
-              href="https://www.creative-tim.com?ref=adr-admin-footer"
+              href={Links.Website}
               rel="noopener noreferrer"
               target="_blank"
             >
-              Creative Tim
+              The Office English Learning Platform - v.1.0.0
             </a>
           </div>
         </Col>
@@ -25,41 +26,31 @@ const Footer = () => {
           <Nav className="nav-footer justify-content-center justify-content-xl-end">
             <NavItem>
               <NavLink
-                href="https://www.creative-tim.com?ref=adr-admin-footer"
+                href={Links.Facebook}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Creative Tim
+                Facebook
               </NavLink>
             </NavItem>
 
             <NavItem>
               <NavLink
-                href="https://www.creative-tim.com/presentation?ref=adr-admin-footer"
+                href={Links.Instagram}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                About Us
+                Instagram
               </NavLink>
             </NavItem>
 
             <NavItem>
               <NavLink
-                href="http://blog.creative-tim.com?ref=adr-admin-footer"
+                href={Links.DevelopedBy}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Blog
-              </NavLink>
-            </NavItem>
-
-            <NavItem>
-              <NavLink
-                href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md?ref=adr-admin-footer"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                MIT License
+                Desarrollado por Santek
               </NavLink>
             </NavItem>
           </Nav>
