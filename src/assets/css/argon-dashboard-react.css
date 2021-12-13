@@ -31,7 +31,7 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
-  --font-family-sans-serif: Open Sans, sans-serif;
+  --font-family-sans-serif: Lato, sans-serif;
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
 }
@@ -64,7 +64,7 @@ section {
 
 body {
   margin: 0;
-  font-family: Open Sans, sans-serif;
+  font-family: Lato, sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -6261,7 +6261,7 @@ a.close.disabled {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: Open Sans, sans-serif;
+  font-family: Lato, sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
