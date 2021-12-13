@@ -33,7 +33,13 @@ const CustomAlert = () => {
         dismissible="true"
         toggle={() => setVisibility(false)}
         color={type}
-        style={{ position: "fixed", top: "1rem", right: "1rem", zIndex: 10 }}
+        style={{
+          position: "fixed",
+          top: "1rem",
+          zIndex: 10,
+          left: "50%",
+          transform: "translateX(-50%) ",
+        }}
       >
         {message}
       </Alert>

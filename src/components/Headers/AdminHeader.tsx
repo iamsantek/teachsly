@@ -1,17 +1,33 @@
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
-import CreateStudentModal from "../../modals/CreateStudentModal";
+import CreateUserModal from "../../modals/CreateUserModal";
 import { useState } from "react";
+import CreateCourseModal from "../../modals/CreateCourseModal";
+import { UserTypes } from "../../enums/UserTypes";
 
 const AdminHeader = () => {
   const [createStudentModalVisibility, setCreateStudentModalVisibility] =
     useState<boolean>(false);
+  const [createTeacherModalVisibility, setCreateTeacherModalVisibility] =
+    useState<boolean>(false);
+  const [createCourseModalVisibility, setCreateCourseModalVisibility] =
+    useState<boolean>(false);
 
   return (
     <>
-      <CreateStudentModal
+      <CreateUserModal
         isOpen={createStudentModalVisibility}
+        userType={UserTypes.STUDENT}
         onClose={() => setCreateStudentModalVisibility(false)}
+      />
+      <CreateUserModal
+        isOpen={createTeacherModalVisibility}
+        userType={UserTypes.TEACHER}
+        onClose={() => setCreateTeacherModalVisibility(false)}
+      />
+      <CreateCourseModal
+        isOpen={createCourseModalVisibility}
+        onClose={() => setCreateCourseModalVisibility(false)}
       />
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
         <Container fluid>
@@ -71,10 +87,12 @@ const AdminHeader = () => {
                       </Col>
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-danger mr-2">
-                        <i className="fas fa-arrow-down" /> 3.48%
+                      <span
+                        className="text-success text-bold text-underline cursor-pointer mr-2"
+                        onClick={() => setCreateCourseModalVisibility(true)}
+                      >
+                        <i className="fa fa-arrow-up" /> Agregar curso
                       </span>{" "}
-                      <span className="text-nowrap">Since last week</span>
                     </p>
                   </CardBody>
                 </Card>
@@ -99,10 +117,13 @@ const AdminHeader = () => {
                       </Col>
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-warning mr-2">
-                        <i className="fas fa-arrow-down" /> 1.10%
-                      </span>{" "}
-                      <span className="text-nowrap">Since yesterday</span>
+                      <span
+                        className="text-success text-bold text-underline cursor-pointer mr-2"
+                        onClick={() => setCreateTeacherModalVisibility(true)}
+                      >
+                        <i className="fa fa-arrow-up" />
+                        Agregar teacher
+                      </span>
                     </p>
                   </CardBody>
                 </Card>
