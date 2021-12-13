@@ -1,8 +1,10 @@
-import { StudentCreation } from "../interfaces/Student";
+import { UserTypes } from "../enums/UserTypes";
+import { User } from "../platform-models/User";
 
-export const defaultCreateStudentModal: StudentCreation = {
+export const defaultCreateStudentModal: User = new User({
+  id: "",
   name: "",
-  password: "",
   email: "",
   courses: [],
-};
+  type: UserTypes.STUDENT,
+});

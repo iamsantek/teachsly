@@ -39,6 +39,14 @@ class DataStoreService {
       console.log(`[DATA STORE] Error when deleting ${model.toString()}: ${e}`);
     }
   }
+
+  public async fetchAll(model: any) {
+    try {
+      return await DataStore.query(model);
+    } catch (e) {
+      console.log(`[DATA STORE] Error when fetching ${model.toString()}: ${e}`);
+    }
+  }
 }
 
 export default new DataStoreService();
