@@ -1,18 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // reactstrap components
 import {
   Badge,
   Card,
   CardHeader,
-  CardFooter,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
   Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Progress,
   Table,
   Container,
@@ -22,23 +18,10 @@ import {
 // core components
 import Header from "../../components/Headers/Header.js";
 import { Course } from "../../models/index";
-import CourseService from "../../services/CourseService";
 import DateTimeUtils from "../../utils/DateTimeUtils";
 
 const Courses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      const courses = await CourseService.fetchCourses();
-      if (courses) {
-        console.log(courses);
-        setCourses(courses);
-      }
-    };
-
-    fetchCourses();
-  }, []);
 
   return (
     <>
@@ -86,7 +69,7 @@ const Courses = () => {
                           </Media>
                         </Media>
                       </th>
-                      <td>{course.scheduleDate}</td>
+                      <td></td>
                       <td>
                         <Badge color="" className="badgje-dot mr-4">
                           <i className="bg-warning" />
