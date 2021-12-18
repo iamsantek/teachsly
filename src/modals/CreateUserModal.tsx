@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
 import { CustomButton } from "../components/Buttons/CustomButton";
 import { defaultCreateStudentModal } from "../constants/modals";
@@ -8,7 +8,6 @@ import {
 } from "../interfaces/AlertNotification";
 import { translate } from "../utils/LanguageUtils";
 import { CustomInput } from "../components/Inputs/CustomInput";
-import CourseService from "../services/CourseService";
 import { Course as PlatformCourse } from "../platform-models/Course";
 import UserService from "../services/UserService";
 import { User as PlatformUser, User } from "../platform-models/User";
@@ -18,6 +17,7 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   userType: UserTypes;
+  courses: PlatformCourse[];
 }
 
 const CreateUserModal = (props: Props) => {
@@ -25,21 +25,8 @@ const CreateUserModal = (props: Props) => {
     ...defaultCreateStudentModal,
     type: props.userType,
   });
-  const [courses, setCourses] = useState<PlatformCourse[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      const courses = await CourseService.fetchCourses();
-      if (courses) {
-        console.log(courses);
-        setCourses(courses as PlatformCourse[]);
-      }
-    };
-
-    fetchCourses();
-  }, []);
 
   const handleeOnChange = (
     inputName: keyof PlatformUser,
@@ -112,7 +99,7 @@ const CreateUserModal = (props: Props) => {
           name="courses"
           multipleSelect
         >
-          {courses.map((course) => (
+          {props.courses.map((course) => (
             <option key={course.id} value={course.id}>
               {course.name}
             </option>
