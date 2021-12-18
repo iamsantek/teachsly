@@ -17,19 +17,23 @@ import {
 } from "reactstrap";
 // core components
 import Header from "../../components/Headers/Header.js";
-import { Teacher } from "../../models/index";
-import TeacherService from "../../services/TeacherService";
+import { Course, Student } from "../../models/index";
+import StudentService from "../../services/StudentService";
+import DateTimeUtils from "../../utils/DateTimeUtils";
 
-const Teachers = () => {
-  const [teachers, setTeachers] = useState<Teacher[]>([]);
+const Students = () => {
+  const [students, setStudents] = useState<Student[]>([]);
 
   useEffect(() => {
-    const fetchTeachers = async () => {
-      const teachers = await TeacherService.fetchTeachers();
-      setTeachers(teachers as Teacher[]);
+    const fetchStudents = async () => {
+      const students = await StudentService.fetchStudents();
+      if (students) {
+        console.log(students);
+        setStudents(students as Student[]);
+      }
     };
 
-    fetchTeachers();
+    fetchStudents();
   }, []);
 
   return (
@@ -56,8 +60,8 @@ const Teachers = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {teachers.map((teacher: Teacher) => (
-                    <tr key={teacher.id}>
+                  {students.map((student: Student) => (
+                    <tr key={student.id}>
                       <th scope="row">
                         <Media className="align-items-center">
                           <a
@@ -74,7 +78,7 @@ const Teachers = () => {
                             />
                           </a>
                           <Media>
-                            <span className="mb-0 text-sm">{teacher.name}</span>
+                            <span className="mb-0 text-sm">{student.name}</span>
                           </Media>
                         </Media>
                       </th>
@@ -230,4 +234,4 @@ const Teachers = () => {
   );
 };
 
-export default Teachers;
+export default Students;

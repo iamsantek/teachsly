@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // reactstrap components
 import {
   Badge,
@@ -18,10 +18,23 @@ import {
 // core components
 import Header from "../../components/Headers/Header.js";
 import { Course } from "../../models/index";
+import CourseService from "../../services/CourseService";
 import DateTimeUtils from "../../utils/DateTimeUtils";
 
 const Courses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const courses = await CourseService.fetchCourses();
+      if (courses) {
+        console.log(courses);
+        setCourses(courses as Course[]);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   return (
     <>
