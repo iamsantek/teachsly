@@ -44,8 +44,20 @@ class AuthService {
         adminUpdateUserAttributesCommand
       );
 
-      return adminCreateUserCommandResponse.User;
+      const attributes = adminCreateUserCommandResponse.User.Attributes;
+      const userId = attributes?.find(
+        (attribute) => attribute.Name === "sub"
+      )?.Value;
+      const fullName = attributes?.find(
+        (attribute) => attribute.Name === "name"
+      )?.Value;
+      const email = attributes?.find(
+        (attribute) => attribute.Name === "email"
+      )?.Value;
+
+      return { userId, fullName, email };
     } catch (error) {
+      console.log(error);
       Logger.log(
         LogLevel.ERROR,
         LogTypes.UserService,

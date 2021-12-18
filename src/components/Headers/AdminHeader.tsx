@@ -1,9 +1,11 @@
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 import CreateUserModal from "../../modals/CreateUserModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateCourseModal from "../../modals/CreateCourseModal";
 import { UserTypes } from "../../enums/UserTypes";
+import CourseService from "../../services/CourseService";
+import { Course as PlatformCourse } from "../../platform-models/Course";
 
 const AdminHeader = () => {
   const [createStudentModalVisibility, setCreateStudentModalVisibility] =
@@ -12,6 +14,19 @@ const AdminHeader = () => {
     useState<boolean>(false);
   const [createCourseModalVisibility, setCreateCourseModalVisibility] =
     useState<boolean>(false);
+  const [courses, setCourses] = useState<PlatformCourse[]>([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const courses = await CourseService.fetchCourses();
+      if (courses) {
+        console.log(courses);
+        setCourses(courses as PlatformCourse[]);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   return (
     <>
@@ -19,11 +34,13 @@ const AdminHeader = () => {
         isOpen={createStudentModalVisibility}
         userType={UserTypes.STUDENT}
         onClose={() => setCreateStudentModalVisibility(false)}
+        courses={courses}
       />
       <CreateUserModal
         isOpen={createTeacherModalVisibility}
         userType={UserTypes.TEACHER}
         onClose={() => setCreateTeacherModalVisibility(false)}
+        courses={courses}
       />
       <CreateCourseModal
         isOpen={createCourseModalVisibility}
