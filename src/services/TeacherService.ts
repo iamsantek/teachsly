@@ -1,18 +1,12 @@
-import { graphqlOperation } from "aws-amplify";
 import { LogLevel, LogTypes } from "../enums/LogTypes";
-import { createCoursesTeachers, createTeacher } from "../graphql/mutations";
-import { listTeachers } from "../graphql/queries";
-import { Teacher } from "../models";
+import { UserTypes } from "../enums/UserTypes";
 import Logger from "../utils/Logger";
-import GraphQLService from "./GraphQLService";
+import CognitoService from "./aws/CognitoService";
 
 class TeacherService {
   public fetchTeachers = async () => {
     try {
-      const models = await GraphQLService.graphQL<any>(
-        graphqlOperation(listTeachers)
-      );
-      return (models?.data?.listTeachers.items as Teacher[]) || [];
+      return await CognitoService.getCognitoUsersByGroupName(UserTypes.TEACHER)
     } catch (e) {
       Logger.log(
         LogLevel.ERROR,
@@ -21,41 +15,6 @@ class TeacherService {
         e
       );
     }
-  };
-
-  public createTeacher = async (name: string, userId: string) => {
-    const teacher = new Teacher({
-      name,
-      userId,
-    });
-
-    const result = await GraphQLService.graphQL<any>(
-      graphqlOperation(createTeacher, { input: teacher })
-    );
-
-    return result?.data?.createStudent as Teacher;
-  };
-
-  public createCourseTeacher = async (
-    teacher: Teacher,
-    courseIds: string[]
-  ) => {
-    let courseTeachers;
-
-    courseTeachers = courseIds.map((courseId: string) => {
-      const courseTeacher = {
-        courseID: courseId,
-        teacherID: teacher.id,
-      };
-
-      return GraphQLService.graphQL<any>(
-        graphqlOperation(createCoursesTeachers, { input: courseTeacher })
-      );
-    });
-
-    const courseStudentsResult = await Promise.all(courseTeachers);
-
-    return courseStudentsResult;
   };
 }
 

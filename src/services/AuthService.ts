@@ -1,121 +1,60 @@
-import awsmobile from "../aws-exports";
 import { LogLevel, LogTypes } from "../enums/LogTypes";
 import { User } from "../platform-models/User";
+import { User as DynamoDBUser } from "../models/index"
 import Logger from "../utils/Logger";
-import {
-  CognitoIdentityProviderClient,
-  AdminUpdateUserAttributesCommand,
-  AdminCreateUserCommand,
-} from "@aws-sdk/client-cognito-identity-provider";
-import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
-import { UserTypes } from "../enums/UserTypes";
+import CognitoService from "./aws/CognitoService";
+import GraphQLService from "./GraphQLService";
+import { graphqlOperation } from "aws-amplify";
+import { createUser } from "../graphql/mutations";
 
 class AuthService {
-  public createCognitoUser = async (user: User) => {
+  public createUser = async (user: User) => {
     const { name, email: username, type } = user;
 
     try {
-      //Create user in the Cognito User Pool
-      const adminCreateUserCommandConfig = this.getCreateUserConfiguration(
-        username,
-        name,
-        type
-      );
-      const cognitoIdentityProviderClient =
-        this.createCognitoIdentityProviderClient();
-      const adminCreateUserCommand = new AdminCreateUserCommand(
-        adminCreateUserCommandConfig
-      );
-      const adminCreateUserCommandResponse =
-        await cognitoIdentityProviderClient.send(adminCreateUserCommand);
+      const adminCreateUserCommandResponse = await CognitoService.createCognitoUser(username, name, type); // Create Cognito user in the User Pool
+      const confirmCognitoUserResponse = await CognitoService.confirmCognitoUser(username) // Auto-confirm email
 
-      if (!adminCreateUserCommandResponse.User) {
-        return;
+      if (!confirmCognitoUserResponse) {
+        return
       }
 
-      //Auto-confirm email for created user
-      const adminUpdateUserAttributesCommandConfig =
-        this.getAdminUpdateUserAttributesCommandConfiguration(username);
-      const adminUpdateUserAttributesCommand =
-        new AdminUpdateUserAttributesCommand(
-          adminUpdateUserAttributesCommandConfig
-        );
-      const response = await cognitoIdentityProviderClient.send(
-        adminUpdateUserAttributesCommand
-      );
+      const { userId, fullName, email } = CognitoService.parseCognitoUser(adminCreateUserCommandResponse?.Attributes);
+      const createDynamoDBUserResponse = await this.createDynamoDBUser(user, userId);
+      const assignUserToCognitoGroupResponse = await CognitoService.assignUserToCognitoGroup(userId || "", user.groups);
 
-      const attributes = adminCreateUserCommandResponse.User.Attributes;
-      const userId = attributes?.find(
-        (attribute) => attribute.Name === "sub"
-      )?.Value;
-      const fullName = attributes?.find(
-        (attribute) => attribute.Name === "name"
-      )?.Value;
-      const email = attributes?.find(
-        (attribute) => attribute.Name === "email"
-      )?.Value;
+      if (!assignUserToCognitoGroupResponse || !createDynamoDBUserResponse) {
+        return
+      }
 
       return { userId, fullName, email };
     } catch (error) {
       console.log(error);
       Logger.log(
         LogLevel.ERROR,
-        LogTypes.UserService,
+        LogTypes.AuthService,
         "Error when creating Cognito user",
         error
       );
     }
   };
 
-  private getCreateUserConfiguration = (
-    username: string,
-    name: string,
-    type: UserTypes
-  ) => {
-    return {
-      UserPoolId: awsmobile.aws_user_pools_id,
-      Username: username,
-      DesiredDeliveryMediums: ["EMAIL"],
-      ForceAliasCreation: false,
-      UserAttributes: [
-        {
-          Name: "name",
-          Value: name,
-        },
-        {
-          Name: "custom:type",
-          Value: type,
-        },
-      ],
-    };
-  };
+  private createDynamoDBUser = async (user: User, cognitoId: string | undefined) => {
+    if (!cognitoId) {
+      return
+    }
 
-  private createCognitoIdentityProviderClient = () => {
-    return new CognitoIdentityProviderClient({
-      region: awsmobile.aws_project_region,
-      credentials: fromCognitoIdentityPool({
-        clientConfig: { region: awsmobile.aws_project_region },
-        identityPoolId: awsmobile.aws_cognito_identity_pool_id,
-        logins: {},
-      }),
-    });
-  };
+    const { name, email, groups } = user
+    const dynamoDbBUser = new DynamoDBUser({
+      name,
+      email,
+      cognitoId,
+      groups
+    })
 
-  private getAdminUpdateUserAttributesCommandConfiguration = (
-    username: string
-  ) => {
-    return {
-      UserPoolId: awsmobile.aws_user_pools_id,
-      Username: username,
-      DesiredDeliveryMediums: ["EMAIL"],
-      ForceAliasCreation: false,
-      UserAttributes: [
-        {
-          Name: "email_verified",
-          Value: "true",
-        },
-      ],
-    };
+    return await GraphQLService.graphQL(
+      graphqlOperation(createUser, { input: dynamoDbBUser })
+    );
   };
 }
 
