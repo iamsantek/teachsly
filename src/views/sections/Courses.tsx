@@ -27,10 +27,7 @@ const Courses = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       const courses = await CourseService.fetchCourses();
-      if (courses) {
-        console.log(courses);
-        setCourses(courses as Course[]);
-      }
+      setCourses(courses as Course[]);
     };
 
     fetchCourses();

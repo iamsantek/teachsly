@@ -4,8 +4,7 @@ import CreateUserModal from "../../modals/CreateUserModal";
 import { useEffect, useState } from "react";
 import CreateCourseModal from "../../modals/CreateCourseModal";
 import { UserTypes } from "../../enums/UserTypes";
-import CourseService from "../../services/CourseService";
-import { Course as PlatformCourse } from "../../platform-models/Course";
+import CognitoService from "../../services/aws/CognitoService";
 
 const AdminHeader = () => {
   const [createStudentModalVisibility, setCreateStudentModalVisibility] =
@@ -14,14 +13,14 @@ const AdminHeader = () => {
     useState<boolean>(false);
   const [createCourseModalVisibility, setCreateCourseModalVisibility] =
     useState<boolean>(false);
-  const [courses, setCourses] = useState<PlatformCourse[]>([]);
+  const [cognitoGroups, setCognitoGroups] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const courses = await CourseService.fetchCourses();
-      if (courses) {
-        console.log(courses);
-        setCourses(courses as PlatformCourse[]);
+      const cognitoGroups = await CognitoService.getCognitoGroups();
+      if (cognitoGroups) {
+        console.log(cognitoGroups);
+        setCognitoGroups(cognitoGroups as string[]);
       }
     };
 
@@ -34,13 +33,13 @@ const AdminHeader = () => {
         isOpen={createStudentModalVisibility}
         userType={UserTypes.STUDENT}
         onClose={() => setCreateStudentModalVisibility(false)}
-        courses={courses}
+        cognitoGroups={cognitoGroups}
       />
       <CreateUserModal
         isOpen={createTeacherModalVisibility}
         userType={UserTypes.TEACHER}
         onClose={() => setCreateTeacherModalVisibility(false)}
-        courses={courses}
+        cognitoGroups={cognitoGroups}
       />
       <CreateCourseModal
         isOpen={createCourseModalVisibility}

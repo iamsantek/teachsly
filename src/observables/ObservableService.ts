@@ -8,7 +8,7 @@ class ObservableService {
   private listenersByEvent: any[] = [];
 
   initState() {
-    this.listenersByEvent = new Array();
+    this.listenersByEvent = [];
     this.addEvent(ObservableTopics.NotificationAlert);
   }
 

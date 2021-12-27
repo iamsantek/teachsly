@@ -28,9 +28,16 @@ const Admin = (props: any) => {
   );
 
   useEffect(() => {
-    return onAuthUIStateChange((nextAuthState, authData) => {
-      const user = UserService.generateUser(authData);
-      console.log("User log in: ", user);
+    return onAuthUIStateChange(async (nextAuthState, authData) => {
+      if (nextAuthState === AuthState.SignedOut || nextAuthState === AuthState.ResetPassword || !authData) {
+        setDashboardInformation({
+          user: null,
+        });
+        return
+      }
+
+      const cognitoId = authData.attributes.sub;
+      const user = await UserService.fetchUserByCognitoId(cognitoId);
       setDashboardInformation({
         user: user,
       });

@@ -5,6 +5,6 @@ export const defaultCreateStudentModal: User = new User({
   id: "",
   name: "",
   email: "",
-  courses: [],
+  groups: [],
   type: UserTypes.STUDENT,
 });

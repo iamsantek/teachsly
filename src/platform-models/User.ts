@@ -4,14 +4,14 @@ export class User {
   id: string;
   email: string;
   name: string;
-  courses: string[];
+  groups: string[];
   type: UserTypes;
 
   constructor(user: User) {
     this.id = user.id;
     this.email = user.email;
     this.name = user.name;
-    this.courses = user.courses;
+    this.groups = user.groups;
     this.type = user.type;
   }
 }

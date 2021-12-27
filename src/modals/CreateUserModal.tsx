@@ -8,7 +8,6 @@ import {
 } from "../interfaces/AlertNotification";
 import { translate } from "../utils/LanguageUtils";
 import { CustomInput } from "../components/Inputs/CustomInput";
-import { Course as PlatformCourse } from "../platform-models/Course";
 import UserService from "../services/UserService";
 import { User as PlatformUser, User } from "../platform-models/User";
 import { UserTypes } from "../enums/UserTypes";
@@ -17,7 +16,7 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   userType: UserTypes;
-  courses: PlatformCourse[];
+  cognitoGroups: string[];
 }
 
 const CreateUserModal = (props: Props) => {
@@ -60,7 +59,7 @@ const CreateUserModal = (props: Props) => {
       e.target.selectedOptions,
       (option: any) => option.value
     );
-    setNewUser({ ...user, courses });
+    setNewUser({ ...user, groups: courses });
   };
 
   const updateHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -93,15 +92,15 @@ const CreateUserModal = (props: Props) => {
         />
         <CustomInput
           labelName={translate("COURSES")}
-          value={user.courses}
+          value={user.groups}
           onChange={handleCoursesChange}
           type="select"
           name="courses"
           multipleSelect
         >
-          {props.courses.map((course) => (
-            <option key={course.id} value={course.id}>
-              {course.name}
+          {props.cognitoGroups.map((course,index) => (
+            <option key={index} value={course}>
+              {course}
             </option>
           ))}
         </CustomInput>
