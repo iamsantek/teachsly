@@ -35,34 +35,35 @@ class UserService {
     }
   }
 
-
   private filterByGroupType = (type: UserTypes) => {
-    return {groups: { contains: type }}
-  }
+    return { groups: { contains: type } };
+  };
 
   private filterByCognitoId = (cognitoId: string) => {
-    return {cognitoId: { eq: cognitoId }}
-  }
+    return { cognitoId: { eq: cognitoId } };
+  };
 
   private filterConfiguration = (filter: Object) => {
     return {
-      filter: filter
-    }
-  }
+      filter: filter,
+    };
+  };
 
   public fetchUserByCognitoId = async (cognitoId: string) => {
     const filterByCognitoId = this.filterByCognitoId(cognitoId);
-    const users =  await this.fetchUsers(filterByCognitoId);
+    const users = await this.fetchUsers(filterByCognitoId);
 
     return users && users[0];
-  }
+  };
 
   private fetchUsers = async (filter: Object) => {
     try {
-      const filterConfig = this.filterConfiguration(filter)
-      const models =  await GraphQLService.graphQL<any>(graphqlOperation(listUsers, filterConfig));
+      const filterConfig = this.filterConfiguration(filter);
+      const models = await GraphQLService.graphQL<any>(
+        graphqlOperation(listUsers, filterConfig)
+      );
 
-      return models?.data?.listUsers.items as DynamoDBUser[]
+      return models?.data?.listUsers.items as DynamoDBUser[];
     } catch (e) {
       Logger.log(
         LogLevel.ERROR,
@@ -71,12 +72,20 @@ class UserService {
         e
       );
     }
-  }
+  };
 
   public fetchUsersByType = async (type: UserTypes | "ALL") => {
     let filter = type !== "ALL" ? this.filterByGroupType(type) : {};
 
     return await this.fetchUsers(filter);
+  };
+
+  public getUserType = (user: User) => {
+    const { groups } = user;
+
+    return [UserTypes.ADMIN, UserTypes.STUDENT, UserTypes.TEACHER].find(
+      (group) => groups.includes(group)
+    );
   };
 }
 

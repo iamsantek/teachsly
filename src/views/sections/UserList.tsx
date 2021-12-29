@@ -83,13 +83,13 @@ const UserList = (props: Props) => {
                         </Media>
                       </th>
                       <td>
-                      <span className="mb-0 text-sm">{user.email}</span>
+                        <span className="mb-0 text-sm">{user.email}</span>
                       </td>
                       <td>
-                      <span className="mb-0 text-sm">{user.phone}</span>
+                        <span className="mb-0 text-sm">{user.phone}</span>
                       </td>
                       <td>
-                      <span className="mb-0 text-sm">{user.groups}</span>
+                        <span className="mb-0 text-sm">{user.groups}</span>
                       </td>
                       <td className="text-right">
                         <UncontrolledDropdown>

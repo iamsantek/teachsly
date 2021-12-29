@@ -1,6 +1,14 @@
 import { GraphQLOptions, GraphQLResult } from "@aws-amplify/api-graphql";
 import { API } from "aws-amplify";
 
+interface SingleResult<T> {
+  [key: string]: T | Array<T>;
+}
+export interface GraphQLResultType<T> {
+  data?: SingleResult<T>;
+  errors?: object;
+}
+
 class GraphQLService {
   public graphQL = <T extends object>(
     options: GraphQLOptions,

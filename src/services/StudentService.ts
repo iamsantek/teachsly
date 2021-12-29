@@ -1,6 +1,3 @@
-
-class StudentService {
-
-}
+class StudentService {}
 
 export default new StudentService();

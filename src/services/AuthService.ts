@@ -1,6 +1,6 @@
 import { LogLevel, LogTypes } from "../enums/LogTypes";
 import { User } from "../platform-models/User";
-import { User as DynamoDBUser } from "../models/index"
+import { User as DynamoDBUser } from "../models/index";
 import Logger from "../utils/Logger";
 import CognitoService from "./aws/CognitoService";
 import GraphQLService from "./GraphQLService";
@@ -12,19 +12,30 @@ class AuthService {
     const { name, email: username, type } = user;
 
     try {
-      const adminCreateUserCommandResponse = await CognitoService.createCognitoUser(username, name, type); // Create Cognito user in the User Pool
-      const confirmCognitoUserResponse = await CognitoService.confirmCognitoUser(username) // Auto-confirm email
+      const adminCreateUserCommandResponse =
+        await CognitoService.createCognitoUser(username, name, type); // Create Cognito user in the User Pool
+      const confirmCognitoUserResponse =
+        await CognitoService.confirmCognitoUser(username); // Auto-confirm email
 
       if (!confirmCognitoUserResponse) {
-        return
+        return;
       }
 
-      const { userId, fullName, email } = CognitoService.parseCognitoUser(adminCreateUserCommandResponse?.Attributes);
-      const createDynamoDBUserResponse = await this.createDynamoDBUser(user, userId);
-      const assignUserToCognitoGroupResponse = await CognitoService.assignUserToCognitoGroup(userId || "", user.groups);
+      const { userId, fullName, email } = CognitoService.parseCognitoUser(
+        adminCreateUserCommandResponse?.Attributes
+      );
+      const createDynamoDBUserResponse = await this.createDynamoDBUser(
+        user,
+        userId
+      );
+      const assignUserToCognitoGroupResponse =
+        await CognitoService.assignUserToCognitoGroup(
+          userId || "",
+          user.groups
+        );
 
       if (!assignUserToCognitoGroupResponse || !createDynamoDBUserResponse) {
-        return
+        return;
       }
 
       return { userId, fullName, email };
@@ -39,18 +50,21 @@ class AuthService {
     }
   };
 
-  private createDynamoDBUser = async (user: User, cognitoId: string | undefined) => {
+  private createDynamoDBUser = async (
+    user: User,
+    cognitoId: string | undefined
+  ) => {
     if (!cognitoId) {
-      return
+      return;
     }
 
-    const { name, email, groups } = user
+    const { name, email, groups } = user;
     const dynamoDbBUser = new DynamoDBUser({
       name,
       email,
       cognitoId,
-      groups
-    })
+      groups,
+    });
 
     return await GraphQLService.graphQL(
       graphqlOperation(createUser, { input: dynamoDbBUser })
