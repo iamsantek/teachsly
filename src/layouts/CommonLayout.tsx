@@ -9,16 +9,19 @@ import AdminNavbar from "../components/Navbars/AdminNavbar.js";
 import AdminFooter from "../components/Footers/AdminFooter.js";
 import Sidebar from "../components/Sidebar/Sidebar.js";
 import { defaultDashboardContext } from "../constants/DashboardContext";
-import routes from "../routes.js";
 import UserService from "../services/UserService";
 import { UserDashboardContext } from "../contexts/UserDashboardContext";
 import Auth from "./Auth";
 import Amplify from "aws-amplify";
 import awsExports from "../aws-exports";
+import {
+  routes as applicationRoutes,
+  Route as ApplicationRoute,
+} from "../routes";
 
 Amplify.configure(awsExports);
 
-const Admin = (props: any) => {
+const CommonLayout = (props: any) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
 
@@ -26,21 +29,35 @@ const Admin = (props: any) => {
   const [dashboardInformation, setDashboardInformation] = useState(
     defaultDashboardContext
   );
+  const [routes, setRoutes] = useState<Route[]>([]);
 
   useEffect(() => {
     return onAuthUIStateChange(async (nextAuthState, authData) => {
-      if (nextAuthState === AuthState.SignedOut || nextAuthState === AuthState.ResetPassword || !authData) {
+      console.log(nextAuthState);
+      console.log(authData);
+      if (
+        nextAuthState === AuthState.SignedOut ||
+        nextAuthState === AuthState.ResetPassword ||
+        !authData
+      ) {
         setDashboardInformation({
           user: null,
         });
-        return
+        return;
       }
 
       const cognitoId = authData.attributes.sub;
       const user = await UserService.fetchUserByCognitoId(cognitoId);
+      console.log("Log in", user);
       setDashboardInformation({
         user: user,
       });
+
+      const userType = UserService.getUserType(user);
+
+      if (userType) {
+        setRoutes(applicationRoutes[userType]);
+      }
 
       setAuthState(nextAuthState);
     });
@@ -52,19 +69,16 @@ const Admin = (props: any) => {
   //   mainContent.current.scrollTop = 0;
   // }, [location]);
 
-  const getRoutes = (routes: any) => {
-    return routes.map((prop: any, key: number) => {
-      if (prop.layout === "/admin") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      } else {
-        return null;
-      }
+  const getRoutes = (routes: ApplicationRoute[]) => {
+    return routes.map((route: ApplicationRoute, key: number) => {
+      console.log(route.layout + route.path);
+      return (
+        <Route
+          path={route.layout + route.path}
+          component={route.component}
+          key={key}
+        />
+      );
     });
   };
 
@@ -83,6 +97,7 @@ const Admin = (props: any) => {
   return authState === AuthState.SignedIn && dashboardInformation.user ? (
     <>
       <UserDashboardContext.Provider value={dashboardInformation}>
+        {console.log(routes)}
         <Sidebar
           {...props}
           routes={routes}
@@ -99,7 +114,7 @@ const Admin = (props: any) => {
           />
           <Switch>
             {getRoutes(routes)}
-            <Redirect from="*" to="/admin/index" />
+            {/* <Redirect from="*" to="/admin/index" /> */}
           </Switch>
           <Container fluid>
             <AdminFooter />
@@ -114,4 +129,4 @@ const Admin = (props: any) => {
   );
 };
 
-export default Admin;
+export default CommonLayout;
