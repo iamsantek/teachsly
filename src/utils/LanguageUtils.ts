@@ -1,14 +1,18 @@
-import { translations } from "../dictionaries/dictionary";
+import {
+  TranslationsDictionary,
+  LanguageEN,
+  LanguageES,
+} from "../dictionaries/dictionary";
 import { Languages } from "../enums/Languages";
 
 const getTranslationLanguage = () => {
   const browserLanguage = navigator.language;
 
-  return browserLanguage.includes(Languages.ES) ? Languages.ES : Languages.EN;
+  return browserLanguage.includes(Languages.ES) ? LanguageES : LanguageEN;
 };
 
-export const translate = (key: string) => {
+export const translate = (key: TranslationsDictionary) => {
   const translationLanguage = getTranslationLanguage();
 
-  return translations[translationLanguage][key];
+  return translationLanguage[key];
 };
