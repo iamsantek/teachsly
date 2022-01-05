@@ -7,4 +7,5 @@ export const defaultCreateStudentModal: User = new User({
   email: "",
   groups: [],
   type: UserTypes.STUDENT,
+  phone: 0,
 });
