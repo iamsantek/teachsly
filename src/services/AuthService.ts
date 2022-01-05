@@ -17,6 +17,10 @@ class AuthService {
       const confirmCognitoUserResponse =
         await CognitoService.confirmCognitoUser(username); // Auto-confirm email
 
+      if (!adminCreateUserCommandResponse) {
+        return;
+      }
+
       if (!confirmCognitoUserResponse) {
         return;
       }
@@ -40,7 +44,6 @@ class AuthService {
 
       return { userId, fullName, email };
     } catch (error) {
-      console.log(error);
       Logger.log(
         LogLevel.ERROR,
         LogTypes.AuthService,

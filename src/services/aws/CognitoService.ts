@@ -7,12 +7,15 @@ import {
   AdminUpdateUserAttributesCommand,
   AdminCreateUserCommand,
   AttributeType,
+  CreateGroupCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import awsmobile from "../../aws-exports";
 import { LogLevel, LogTypes } from "../../enums/LogTypes";
 import { UserTypes } from "../../enums/UserTypes";
 import Logger from "../../utils/Logger";
+
+const logTag = LogTypes.AuthService;
 
 class CognitoService {
   private cognitoIdentityProviderClient: CognitoIdentityProviderClient;
@@ -62,7 +65,7 @@ class CognitoService {
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
-        LogTypes.AuthService,
+        logTag,
         "Error when assigning groups to user",
         error
       );
@@ -85,14 +88,14 @@ class CognitoService {
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
-        LogTypes.AuthService,
+        logTag,
         `Error when fetching Cognito users by group ${groupName}`,
         error
       );
     }
   };
 
-  public getAdminUpdateUserAttributesCommandConfiguration = (
+  private getAdminUpdateUserAttributesCommandConfiguration = (
     username: string
   ) => {
     return {
@@ -119,13 +122,11 @@ class CognitoService {
       const listGroupsCommandResponse =
         await cognitoIdentityProviderClient.send(listGroupsCommand);
 
-      return listGroupsCommandResponse.Groups?.map(
-        (group) => group.GroupName
-      ).filter(Boolean);
+      return listGroupsCommandResponse.Groups?.filter(Boolean);
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
-        LogTypes.AuthService,
+        logTag,
         "Error when fetching Cognito groups",
         error
       );
@@ -147,7 +148,7 @@ class CognitoService {
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
-        LogTypes.AuthService,
+        logTag,
         "Error when confirming Cognito user",
         error
       );
@@ -222,8 +223,43 @@ class CognitoService {
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
-        LogTypes.AuthService,
+        logTag,
         "Error when fetching Cognito users",
+        error
+      );
+    }
+  };
+
+  private getCreateGroupCommandConfig = (
+    groupName: string,
+    description: string
+  ) => {
+    return {
+      GroupName: groupName.replace(/\s/g, ""),
+      Description: description,
+      UserPoolId: awsmobile.aws_user_pools_id,
+    };
+  };
+
+  public createCognitoGroup = async (
+    groupName: string,
+    description: string
+  ) => {
+    try {
+      const createGroupCommandInput = this.getCreateGroupCommandConfig(
+        groupName,
+        description
+      );
+      const createGroupCommand = new CreateGroupCommand(
+        createGroupCommandInput
+      );
+
+      return await this.cognitoIdentityProviderClient.send(createGroupCommand);
+    } catch (error) {
+      Logger.log(
+        LogLevel.ERROR,
+        logTag,
+        "Error when creating Cognito group",
         error
       );
     }
