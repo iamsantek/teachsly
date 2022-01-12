@@ -1,63 +1,42 @@
-import React from "react";
-import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
 // reactstrap components
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row } from "reactstrap";
 
 // core components
 import AuthNavbar from "../components/Navbars/AuthNavbar.js";
 import AuthFooter from "../components/Footers/AuthFooter.js";
 
-import routes from "../routes.js";
 import SignIn from "../components/SignIn";
+import { UserDashboardContext } from "../contexts/UserDashboardContext";
 
-const Auth = (props) => {
+const Auth = (props: any) => {
+  const { user } = useContext(UserDashboardContext);
+
   const mainContent = React.useRef(null);
-  const location = useLocation();
+  // const location = useLocation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.body.classList.add("bg-default");
     return () => {
       document.body.classList.remove("bg-default");
     };
   }, []);
-  React.useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    mainContent.current.scrollTop = 0;
-  }, [location]);
 
-  const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
-      if (prop.layout === "/auth") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      } else {
-        return null;
-      }
-    });
-  };
+  // useEffect(() => {
+  //   document.documentElement.scrollTop = 0;
+  //   //@ts-ignore
+  //   document.scrollingElement.scrollTop = 0;
+  //   //@ts-ignore
+  //   mainContent.current.scrollTop = 0;
+  // }, [location]);
 
   return (
     <>
       <div className="main-content" ref={mainContent}>
         <AuthNavbar />
-        <div className="header bg-gradient-info py-7 py-lg-8">
+        <div className="header bg-gradient-info py-3 py-lg-8">
           <Container>
-            <div className="header-body text-center mb-7">
-              <Row className="justify-content-center">
-                <Col lg="5" md="6">
-                  <h1 className="text-white">Welcome!</h1>
-                  <p className="text-lead text-light">
-                    Use these awesome forms to login or create new account in
-                    your project for free.
-                  </p>
-                </Col>
-              </Row>
+            <div className="header-body text-center">
               <Row className="justify-content-center">
                 <SignIn />
               </Row>

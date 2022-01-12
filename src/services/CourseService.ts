@@ -4,7 +4,7 @@ import { listCourses } from "../graphql/queries";
 import { createCourse } from "../graphql/mutations";
 import { Course } from "../models";
 import { Course as PlatformCourse } from "../platform-models/Course";
-import DateTimeUtils from "../utils/DateTimeUtils";
+import DateTimeUtils, { TimeFormats } from "../utils/DateTimeUtils";
 import Logger from "../utils/Logger";
 import GraphQLService from "./GraphQLService";
 
@@ -29,10 +29,12 @@ class CourseService {
 
   public createCourse = async (courseCreation: PlatformCourse) => {
     const scheduleStartTime = DateTimeUtils.formateHour(
-      courseCreation.scheduleStartTime
+      courseCreation.scheduleStartTime,
+      TimeFormats.AWSTime
     );
     const scheduleEndTime = DateTimeUtils.formateHour(
-      courseCreation.scheduleEndTime
+      courseCreation.scheduleEndTime,
+      TimeFormats.AWSTime
     );
     const scheduleDates = Array.from(courseCreation.scheduleDates.values());
 

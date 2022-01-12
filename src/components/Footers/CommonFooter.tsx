@@ -1,10 +1,10 @@
 /*eslint-disable*/
 
 // reactstrap components
-import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
+import { Row, Col, Nav, NavItem, NavLink } from "reactstrap";
 import { Links } from "../../enums/Links";
 
-const Footer = () => {
+const CommonFooter = () => {
   return (
     <footer className="footer">
       <Row className="align-items-center justify-content-xl-between">
@@ -60,4 +60,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default CommonFooter;

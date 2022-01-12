@@ -19,7 +19,7 @@ import {
 import Header from "../../components/Headers/Header.js";
 import { Course } from "../../models/index";
 import CourseService from "../../services/CourseService";
-import DateTimeUtils from "../../utils/DateTimeUtils";
+import DateTimeUtils, { TimeFormats } from "../../utils/DateTimeUtils";
 
 const Courses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -83,8 +83,15 @@ const Courses = () => {
                       <td>
                         <Badge color="" className="badgje-dot mr-4">
                           <i className="bg-warning" />
-                          {DateTimeUtils.formateHour(course.scheduleStartTime)}-
-                          {DateTimeUtils.formateHour(course.scheduleEndTime)}
+                          {DateTimeUtils.formateHour(
+                            course.scheduleStartTime,
+                            TimeFormats.TwentyFourHours
+                          )}
+                          -
+                          {DateTimeUtils.formateHour(
+                            course.scheduleEndTime,
+                            TimeFormats.TwentyFourHours
+                          )}
                         </Badge>
                       </td>
                       <td>

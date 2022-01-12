@@ -6,6 +6,7 @@ export class User {
   name: string;
   groups: string[];
   type: UserTypes;
+  phone: number;
 
   constructor(user: User) {
     this.id = user.id;
@@ -13,5 +14,6 @@ export class User {
     this.name = user.name;
     this.groups = user.groups;
     this.type = user.type;
+    this.phone = user.phone;
   }
 }

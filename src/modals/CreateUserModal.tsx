@@ -98,7 +98,7 @@ const CreateUserModal = (props: Props) => {
           name="courses"
           multipleSelect
         >
-          {props.cognitoGroups.map((course,index) => (
+          {props.cognitoGroups.map((course, index) => (
             <option key={index} value={course}>
               {course}
             </option>
