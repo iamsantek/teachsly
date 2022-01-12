@@ -28,42 +28,42 @@ const adminRoutes: Route[] = [
     path: "/index",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
-    component: Index,
+    component: () => <Index />,
     layout: adminPath,
   },
   {
     path: "/admin",
     name: "Admin",
     icon: "ni ni-tv-2 text-primary",
-    component: AdminDashboard,
+    component: () => <AdminDashboard />,
     layout: adminPath,
   },
   {
     path: "/icons",
     name: "Icons",
     icon: "ni ni-planet text-blue",
-    component: Icons,
+    component: () => <Icons />,
     layout: adminPath,
   },
   {
     path: "/maps",
     name: "Maps",
     icon: "ni ni-pin-3 text-orange",
-    component: Maps,
+    component: () => <Maps />,
     layout: adminPath,
   },
   {
     path: "/user-profile",
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
-    component: Profile,
+    component: () => <Profile />,
     layout: adminPath,
   },
   {
     path: "/courses",
     name: "Cursos",
     icon: "ni ni-bullet-list-67 text-red",
-    component: Courses,
+    component: () => <Courses />,
     layout: adminPath,
   },
   {
@@ -77,7 +77,7 @@ const adminRoutes: Route[] = [
     path: "/contents",
     name: "Contents",
     icon: "ni ni-bullet-list-67 text-red",
-    component: MediaContents,
+    component: () => <MediaContents />,
     layout: adminPath,
   },
   {
@@ -95,22 +95,45 @@ const studentRoutes: Route[] = [
     path: "/contents",
     name: "Contents",
     icon: "ni ni-bullet-list-67 text-red",
-    component: MediaContents,
+    component: () => <MediaContents />,
     layout: studentPath,
   },
   {
     path: "/icons",
     name: "Icons",
     icon: "ni ni-planet text-blue",
-    component: Icons,
+    component: () => <Icons />,
     layout: studentPath,
   },
 ];
 
-const teacherRoutes: Route[] = [];
+const teachersPath = mainPaths[UserTypes.TEACHER];
+const teacherRoutes: Route[] = [
+  {
+    path: "/index",
+    name: "Dashboard",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: () => <MediaContents />,
+    layout: teachersPath,
+  },
+  {
+    path: "/contents",
+    name: "Contents",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: () => <MediaContents />,
+    layout: teachersPath,
+  },
+  {
+    path: "/icons",
+    name: "Icons",
+    icon: "ni ni-planet text-blue",
+    component: () => <Icons />,
+    layout: teachersPath,
+  },
+];
 
 export const routes = {
   [UserTypes.ADMIN]: adminRoutes,
   [UserTypes.STUDENT]: studentRoutes,
-  [UserTypes.TEACHER]: adminRoutes,
+  [UserTypes.TEACHER]: teacherRoutes,
 };

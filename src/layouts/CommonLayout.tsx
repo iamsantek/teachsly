@@ -6,7 +6,7 @@ import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 import { Container } from "reactstrap";
 // core components
 import AdminNavbar from "../components/Navbars/AdminNavbar.js";
-import AdminFooter from "../components/Footers/AdminFooter.js";
+import CommonFooter from "../components/Footers/CommonFooter";
 import Sidebar from "../components/Sidebar/Sidebar.js";
 import { defaultDashboardContext } from "../constants/DashboardContext";
 import UserService from "../services/UserService";
@@ -71,11 +71,11 @@ const CommonLayout = (props: any) => {
 
   const getRoutes = (routes: ApplicationRoute[]) => {
     return routes.map((route: ApplicationRoute, key: number) => {
-      console.log(route.layout + route.path);
       return (
         <Route
+          exact
           path={route.layout + route.path}
-          component={route.component}
+          children={<route.component />}
           key={key}
         />
       );
@@ -97,7 +97,6 @@ const CommonLayout = (props: any) => {
   return authState === AuthState.SignedIn && dashboardInformation.user ? (
     <>
       <UserDashboardContext.Provider value={dashboardInformation}>
-        {console.log(routes)}
         <Sidebar
           {...props}
           routes={routes}
@@ -114,10 +113,15 @@ const CommonLayout = (props: any) => {
           />
           <Switch>
             {getRoutes(routes)}
-            {/* <Redirect from="*" to="/admin/index" /> */}
+            <Redirect
+              from="*"
+              to={`/${UserService.getUserType(
+                dashboardInformation.user
+              )?.toLocaleLowerCase()}/index`}
+            />
           </Switch>
           <Container fluid>
-            <AdminFooter />
+            <CommonFooter />
           </Container>
         </div>
       </UserDashboardContext.Provider>
