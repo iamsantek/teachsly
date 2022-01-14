@@ -129,7 +129,7 @@ async function run() {
   } else {
     // just push
 
-    cloudPush = spawn(amplify, ['push', '--yes','--allow-destructive-graphql-schema-updates'], { cwd: process.cwd(), env: process.env, stdio: 'inherit' });
+    cloudPush = spawn(amplify, ['push', '--force'], { cwd: process.cwd(), env: process.env, stdio: 'inherit' });
   }
 
   cloudPush.on('exit', code => {
