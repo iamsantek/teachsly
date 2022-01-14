@@ -129,13 +129,14 @@ async function run() {
   } else {
     // just push
 
-    cloudPush = spawn(amplify, ['push', '--yes --allow-destructive-graphql-schema-updates'], { cwd: process.cwd(), env: process.env, stdio: 'inherit' });
+    cloudPush = spawn(amplify, ['push', '--yes','--allow-destructive-graphql-schema-updates'], { cwd: process.cwd(), env: process.env, stdio: 'inherit' });
   }
 
   cloudPush.on('exit', code => {
     if (code === 0) {
       process.exit(0);
     } else {
+      console.log('SCRIPT FAILED');
       process.exit(1);
     }
   });
