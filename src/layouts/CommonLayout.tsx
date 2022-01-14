@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React, { useEffect, useState } from "react";
-import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 // reactstrap components
 import { Container } from "reactstrap";
@@ -15,15 +15,13 @@ import Auth from "./Auth";
 import Amplify from "aws-amplify";
 import awsExports from "../aws-exports";
 import {
-  routes as applicationRoutes,
-  Route as ApplicationRoute,
+  applicationRoutes as applicationRoutes,
 } from "../routes";
 
 Amplify.configure(awsExports);
 
 const CommonLayout = (props: any) => {
   const mainContent = React.useRef(null);
-  const location = useLocation();
 
   const [authState, setAuthState] = useState<AuthState | null>(null);
   const [dashboardInformation, setDashboardInformation] = useState(
@@ -69,23 +67,10 @@ const CommonLayout = (props: any) => {
   //   mainContent.current.scrollTop = 0;
   // }, [location]);
 
-  const getRoutes = (routes: ApplicationRoute[]) => {
-    return routes.map((route: ApplicationRoute, key: number) => {
-      return (
-        <Route
-          exact
-          path={route.layout + route.path}
-          children={<route.component />}
-          key={key}
-        />
-      );
-    });
-  };
-
-  const getBrandText = (path: any) => {
+  const getBrandText = () => {
     for (let i = 0; i < routes.length; i++) {
       if (
-        props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
+        props.location?.pathname.indexOf(routes[i].layout + routes[i].path) !==
         -1
       ) {
         return routes[i].name;
@@ -93,6 +78,8 @@ const CommonLayout = (props: any) => {
     }
     return "Brand";
   };
+
+  const routeComponent = useRoutes(routes);
 
   return authState === AuthState.SignedIn && dashboardInformation.user ? (
     <>
@@ -109,17 +96,9 @@ const CommonLayout = (props: any) => {
         <div className="main-content" ref={mainContent}>
           <AdminNavbar
             {...props}
-            brandText={getBrandText(props.location.pathname)}
+            brandText={getBrandText(props.location?.pathname)}
           />
-          <Switch>
-            {getRoutes(routes)}
-            <Redirect
-              from="*"
-              to={`/${UserService.getUserType(
-                dashboardInformation.user
-              )?.toLocaleLowerCase()}/index`}
-            />
-          </Switch>
+          {routeComponent}
           <Container fluid>
             <CommonFooter />
           </Container>
