@@ -35,7 +35,7 @@ const UserList = (props: Props) => {
     };
 
     fetchUsers();
-  }, []);
+  }, [props.listType]);
 
   return (
     <>
