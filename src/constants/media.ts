@@ -1,4 +1,4 @@
-import { MediaType } from "../API";
+import { MediaType } from "../models/index";
 import { Media } from "../interfaces/Media";
 
 export const defaultMedia: Media = {
