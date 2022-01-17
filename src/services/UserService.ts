@@ -1,9 +1,9 @@
-import { API, graphqlOperation } from "aws-amplify";
+import { graphqlOperation } from "aws-amplify";
 import { LogLevel, LogTypes } from "../enums/LogTypes";
 import { UserTypes } from "../enums/UserTypes";
 import { listUsers } from "../graphql/queries";
 import { User } from "../platform-models/User";
-import { User as DynamoDBUser } from "../models/index";
+import { DynamoDBUser } from "../models/index";
 
 import Logger from "../utils/Logger";
 import AuthService from "./AuthService";

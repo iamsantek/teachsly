@@ -1,6 +1,6 @@
 import { LogLevel, LogTypes } from "../enums/LogTypes";
 import { User } from "../platform-models/User";
-import { User as DynamoDBUser } from "../models/index";
+import { DynamoDBUser } from "../models/index";
 import Logger from "../utils/Logger";
 import CognitoService from "./aws/CognitoService";
 import GraphQLService from "./GraphQLService";

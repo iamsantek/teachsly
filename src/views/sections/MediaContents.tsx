@@ -21,7 +21,7 @@ import Header from "../../components/Headers/Header.js";
 import { mediaIcons } from "../../constants/media";
 import { MessageLevel } from "../../interfaces/AlertNotification";
 import MediaUploaderModal from "../../modals/MediaUploaderModal";
-import { Media as MediaModel } from "../../models";
+import { Media as MediaModel } from "../../models/index";
 import { Course } from "../../models/index";
 import MediaService from "../../services/MediaService";
 import DateTimeUtils from "../../utils/DateTimeUtils";

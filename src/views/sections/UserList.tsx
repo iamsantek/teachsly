@@ -15,7 +15,7 @@ import {
 // core components
 import Header from "../../components/Headers/Header.js";
 import { UserTypes } from "../../enums/UserTypes";
-import { User } from "../../models/index.js";
+import { DynamoDBUser } from "../../models/index.js";
 import UserService from "../../services/UserService";
 
 interface Props {
@@ -23,7 +23,7 @@ interface Props {
 }
 
 const UserList = (props: Props) => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<DynamoDBUser[]>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
