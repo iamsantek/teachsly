@@ -1,7 +1,7 @@
 import { graphqlOperation } from "aws-amplify";
 import { LogLevel, LogTypes } from "../enums/LogTypes";
 import { UserTypes } from "../enums/UserTypes";
-import { listUsers } from "../graphql/queries";
+import { listDynamoDBUsers } from "../graphql/queries";
 import { User } from "../platform-models/User";
 import { DynamoDBUser } from "../models/index";
 
@@ -60,7 +60,7 @@ class UserService {
     try {
       const filterConfig = this.filterConfiguration(filter);
       const models = await GraphQLService.graphQL<any>(
-        graphqlOperation(listUsers, filterConfig)
+        graphqlOperation(listDynamoDBUsers, filterConfig)
       );
 
       return models?.data?.listUsers.items as DynamoDBUser[];

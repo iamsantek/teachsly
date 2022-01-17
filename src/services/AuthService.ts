@@ -5,7 +5,7 @@ import Logger from "../utils/Logger";
 import CognitoService from "./aws/CognitoService";
 import GraphQLService from "./GraphQLService";
 import { graphqlOperation } from "aws-amplify";
-import { createUser } from "../graphql/mutations";
+import { createDynamoDBUser } from "../graphql/mutations";
 
 class AuthService {
   public createUser = async (user: User) => {
@@ -70,7 +70,7 @@ class AuthService {
     });
 
     return await GraphQLService.graphQL(
-      graphqlOperation(createUser, { input: dynamoDbBUser })
+      graphqlOperation(createDynamoDBUser, { input: dynamoDbBUser })
     );
   };
 }
