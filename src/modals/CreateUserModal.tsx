@@ -11,12 +11,14 @@ import { CustomInput } from "../components/Inputs/CustomInput";
 import UserService from "../services/UserService";
 import { User as PlatformUser, User } from "../platform-models/User";
 import { UserTypes } from "../enums/UserTypes";
+import { renderCognitoGroupsList } from "../utils/CognitoGroupsUtils";
+import { GroupType } from "@aws-sdk/client-cognito-identity-provider";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   userType: UserTypes;
-  cognitoGroups: string[];
+  cognitoGroups: GroupType[];
 }
 
 const CreateUserModal = (props: Props) => {
@@ -98,11 +100,7 @@ const CreateUserModal = (props: Props) => {
           name="courses"
           multipleSelect
         >
-          {props.cognitoGroups.map((course, index) => (
-            <option key={index} value={course}>
-              {course}
-            </option>
-          ))}
+          {renderCognitoGroupsList(props.cognitoGroups)}
         </CustomInput>
       </ModalBody>
       <ModalFooter>

@@ -63,7 +63,7 @@ class UserService {
         graphqlOperation(listDynamoDBUsers, filterConfig)
       );
 
-      return models?.data?.listUsers.items as DynamoDBUser[];
+      return models?.data?.listDynamoDBUsers.items as DynamoDBUser[];
     } catch (e) {
       Logger.log(
         LogLevel.ERROR,
