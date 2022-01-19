@@ -7,6 +7,8 @@ import { Course as PlatformCourse } from "../platform-models/Course";
 import DateTimeUtils, { TimeFormats } from "../utils/DateTimeUtils";
 import Logger from "../utils/Logger";
 import GraphQLService from "./GraphQLService";
+import CognitoService from "./aws/CognitoService";
+import { formatCognitoGroupDescription } from "../utils/CognitoGroupsUtils";
 
 class CourseService {
   public fetchCourses = async () => {
@@ -46,8 +48,27 @@ class CourseService {
       isVirtual: courseCreation.isVirtual,
     });
 
-    return await GraphQLService.graphQL(
-      graphqlOperation(createCourse, { input: course })
+    const cognitoGroupDescription = formatCognitoGroupDescription(
+      scheduleDates,
+      courseCreation.scheduleStartTime,
+      courseCreation.scheduleEndTime
+    );
+
+    const createCognitoGroupResponse = await CognitoService.createCognitoGroup(
+      courseCreation.name,
+      cognitoGroupDescription
+    );
+
+    if (createCognitoGroupResponse?.Group) {
+      return await GraphQLService.graphQL(
+        graphqlOperation(createCourse, { input: course })
+      );
+    }
+
+    Logger.log(
+      LogLevel.ERROR,
+      LogTypes.CourseService,
+      "Error when creating Course"
     );
   };
 

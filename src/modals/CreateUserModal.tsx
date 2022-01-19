@@ -41,9 +41,13 @@ const CreateUserModal = (props: Props) => {
   };
 
   const createUser = async () => {
-    console.log(user);
-    // setIsLoading(true);
-    const createdUser = await UserService.createUser(new User(user));
+    //Add specific group via the Modal prop.
+    const updatedUser: PlatformUser = {
+      ...user,
+      groups: [...user.groups, props.userType],
+    };
+
+    const createdUser = await UserService.createUser(new User(updatedUser));
 
     if (createdUser) {
       props.onClose();

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import CreateCourseModal from "../../modals/CreateCourseModal";
 import { UserTypes } from "../../enums/UserTypes";
 import CognitoService from "../../services/aws/CognitoService";
+import { GroupType } from "@aws-sdk/client-cognito-identity-provider";
 
 const AdminHeader = () => {
   const [createStudentModalVisibility, setCreateStudentModalVisibility] =
@@ -13,14 +14,14 @@ const AdminHeader = () => {
     useState<boolean>(false);
   const [createCourseModalVisibility, setCreateCourseModalVisibility] =
     useState<boolean>(false);
-  const [cognitoGroups, setCognitoGroups] = useState<string[]>([]);
+  const [cognitoGroups, setCognitoGroups] = useState<GroupType[]>([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
       const cognitoGroups = await CognitoService.getCognitoGroups();
       if (cognitoGroups) {
         console.log(cognitoGroups);
-        setCognitoGroups(cognitoGroups as string[]);
+        setCognitoGroups(cognitoGroups as GroupType[]);
       }
     };
 
