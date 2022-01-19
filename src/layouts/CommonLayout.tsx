@@ -14,9 +14,7 @@ import { UserDashboardContext } from "../contexts/UserDashboardContext";
 import Auth from "./Auth";
 import Amplify from "aws-amplify";
 import awsExports from "../aws-exports";
-import {
-  applicationRoutes as applicationRoutes,
-} from "../routes";
+import { applicationRoutes } from "../routes";
 
 Amplify.configure(awsExports);
 

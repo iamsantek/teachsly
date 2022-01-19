@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
 import { CustomButton } from "../components/Buttons/CustomButton";
-import { defaultCreateStudentModal } from "../constants/modals";
 import {
   AlertNotification,
   MessageLevel,
 } from "../interfaces/AlertNotification";
 import { translate } from "../utils/LanguageUtils";
 import { CustomInput } from "../components/Inputs/CustomInput";
-import UserService from "../services/UserService";
-import { User as PlatformUser, User } from "../platform-models/User";
 import { Media } from "../interfaces/Media";
 import { defaultMedia } from "../constants/media";
 import StorageService from "../services/aws/StorageService";
 import CognitoService from "../services/aws/CognitoService";
-import { Storage } from "@aws-amplify/storage";
 import { MediaType } from "../models";
-// import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import { GroupType } from "@aws-sdk/client-cognito-identity-provider";
 import { renderCognitoGroupsList } from "../utils/CognitoGroupsUtils";
 
@@ -49,7 +44,6 @@ const MediaUploaderModal = (props: Props) => {
     const updatedMedia: Media = { ...media };
 
     (updatedMedia as any)[inputName] = inputValue;
-    console.log(updatedMedia);
 
     setMedia(updatedMedia);
   };

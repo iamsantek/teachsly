@@ -8,11 +8,9 @@ import {
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  Progress,
   Table,
   Container,
   Row,
-  UncontrolledTooltip,
   Media,
 } from "reactstrap";
 import { CustomButton } from "../../components/Buttons/CustomButton";
@@ -22,9 +20,7 @@ import { mediaIcons } from "../../constants/media";
 import { MessageLevel } from "../../interfaces/AlertNotification";
 import MediaUploaderModal from "../../modals/MediaUploaderModal";
 import { Media as MediaModel } from "../../models/index";
-import { Course } from "../../models/index";
 import MediaService from "../../services/MediaService";
-import DateTimeUtils from "../../utils/DateTimeUtils";
 import { splitCamelCase } from "../../utils/StringUtils";
 
 const MediaContents = () => {

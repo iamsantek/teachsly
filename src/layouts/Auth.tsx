@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 // reactstrap components
 import { Container, Row } from "reactstrap";
 
@@ -7,13 +7,9 @@ import AuthNavbar from "../components/Navbars/AuthNavbar.js";
 import AuthFooter from "../components/Footers/AuthFooter.js";
 
 import SignIn from "../components/SignIn";
-import { UserDashboardContext } from "../contexts/UserDashboardContext";
 
 const Auth = (props: any) => {
-  const { user } = useContext(UserDashboardContext);
-
   const mainContent = React.useRef(null);
-  // const location = useLocation();
 
   useEffect(() => {
     document.body.classList.add("bg-default");
@@ -58,15 +54,6 @@ const Auth = (props: any) => {
             </svg>
           </div>
         </div>
-        {/* Page content */}
-        {/* <Container className="mt--8 pb-5">
-          <Row className="justify-content-center">
-            <Switch>
-              {getRoutes(routes)}
-              <Redirect from="*" to="/auth/login" />
-            </Switch>
-          </Row>
-        </Container> */}
       </div>
       <AuthFooter />
     </>
