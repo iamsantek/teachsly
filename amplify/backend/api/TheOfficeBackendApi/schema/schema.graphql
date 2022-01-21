@@ -35,7 +35,6 @@ type Media @model @auth(rules: [
 }
 
 type DynamoDBUser @model @auth(rules: [
-  {allow: owner},
   {allow: groups, groups: ["Admin"], operations: [create, read, update, delete] },
   {allow: groups, groups: ["Students","Teachers"], operations: [read] },
   ]) {
