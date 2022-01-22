@@ -16,7 +16,6 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 // core components
-import Header from "../../components/Headers/Header.js";
 import { Course } from "../../models/index";
 import CourseService from "../../services/CourseService";
 import DateTimeUtils, { TimeFormats } from "../../utils/DateTimeUtils";
@@ -35,7 +34,6 @@ const Courses = () => {
 
   return (
     <>
-      <Header />
       {/* Page content */}
       <Container className="mt--7" fluid>
         {/* Table */}

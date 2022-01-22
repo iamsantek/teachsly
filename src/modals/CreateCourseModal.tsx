@@ -84,14 +84,12 @@ const CreateCourseModal = (props: Props) => {
 
   const generateDayCheckboxes = () =>
     //TODO: Replace with Enum
-    ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"].map(
+    translate("DAYS_OF_THE_WEEK").split(",").map(
       (day) => (
-        <>
           <FormGroup check inline key={day}>
             <Input type="checkbox" name={day} onChange={checkboxHandler} />
             <Label check>{day}</Label>
           </FormGroup>
-        </>
       )
     );
 

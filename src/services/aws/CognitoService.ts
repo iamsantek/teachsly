@@ -30,7 +30,7 @@ class CognitoService {
       region: awsmobile.aws_project_region,
       credentials: fromCognitoIdentityPool({
         clientConfig: { region: awsmobile.aws_project_region },
-        identityPoolId: awsmobile.aws_user_pools_id,
+        identityPoolId: awsmobile.aws_cognito_identity_pool_id,
         logins: {},
       }),
     });
@@ -169,11 +169,7 @@ class CognitoService {
         {
           Name: "name",
           Value: name,
-        },
-        {
-          Name: "custom:type",
-          Value: type,
-        },
+        }
       ],
     };
   };

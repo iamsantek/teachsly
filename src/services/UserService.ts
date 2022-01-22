@@ -81,6 +81,10 @@ class UserService {
   };
 
   public getUserType = (user: User) => {
+    if (!user) {
+      return
+    }
+
     const { groups } = user;
 
     return [UserTypes.ADMIN, UserTypes.STUDENT, UserTypes.TEACHER].find(

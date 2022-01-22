@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React, { useEffect, useState } from "react";
-import { useRoutes } from "react-router-dom";
+import { useRoutes, useLocation } from "react-router-dom";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 // reactstrap components
 import { Container } from "reactstrap";
@@ -15,8 +15,11 @@ import Auth from "./Auth";
 import Amplify from "aws-amplify";
 import awsExports from "../aws-exports";
 import { applicationRoutes } from "../routes";
-
+import CustomAlert from "../components/Alerts/Alert";
+import applicationHeaders from "../constants/header"
+ 
 Amplify.configure(awsExports);
+
 
 const CommonLayout = (props: any) => {
   const mainContent = React.useRef(null);
@@ -29,9 +32,8 @@ const CommonLayout = (props: any) => {
 
   useEffect(() => {
     return onAuthUIStateChange(async (nextAuthState, authData) => {
-      console.log(nextAuthState);
-      console.log(authData);
       if (
+        nextAuthState === AuthState.VerifyContact ||
         nextAuthState === AuthState.SignedOut ||
         nextAuthState === AuthState.ResetPassword ||
         !authData
@@ -44,12 +46,15 @@ const CommonLayout = (props: any) => {
 
       const cognitoId = authData.attributes.sub;
       const user = await UserService.fetchUserByCognitoId(cognitoId);
-      console.log("Log in", user);
-      setDashboardInformation({
-        user: user,
-      });
-
       const userType = UserService.getUserType(user);
+
+      setDashboardInformation({
+        user: {
+          ...user,
+          type: userType
+        },
+
+      });
 
       if (userType) {
         setRoutes(applicationRoutes[userType]);
@@ -87,7 +92,7 @@ const CommonLayout = (props: any) => {
           routes={routes}
           logo={{
             innerLink: "/admin/index",
-            imgSrc: require("../assets/img/brand/argon-react.png").default,
+            imgSrc: require("../assets/img/brand/the-office-logo-max.png").default,
             imgAlt: "...",
           }}
         />
@@ -96,6 +101,8 @@ const CommonLayout = (props: any) => {
             {...props}
             brandText={getBrandText(props.location?.pathname)}
           />
+          {applicationHeaders[dashboardInformation.user.type]}
+          <CustomAlert />
           {routeComponent}
           <Container fluid>
             <CommonFooter />

@@ -15,7 +15,6 @@ import {
 } from "reactstrap";
 import { CustomButton } from "../../components/Buttons/CustomButton";
 // core components
-import Header from "../../components/Headers/Header.js";
 import { mediaIcons } from "../../constants/media";
 import { MessageLevel } from "../../interfaces/AlertNotification";
 import MediaUploaderModal from "../../modals/MediaUploaderModal";
@@ -43,7 +42,6 @@ const MediaContents = () => {
 
   return (
     <>
-      <Header />
       {/* Page content */}
       <MediaUploaderModal
         isOpen={mediaUploaderModalVisibility}
@@ -75,7 +73,7 @@ const MediaContents = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {medias.map((media: MediaModel) => (
+                  {medias.map((media: MediaModel) => 
                     <tr key={media.id}>
                       <th scope="row">
                         <Media className="align-items-center">
@@ -155,7 +153,7 @@ const MediaContents = () => {
                         </UncontrolledDropdown>
                       </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </Table>
             </Card>

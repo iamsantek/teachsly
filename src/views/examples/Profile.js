@@ -12,12 +12,10 @@ import {
   Col,
 } from "reactstrap";
 // core components
-import UserHeader from "../../components/Headers/UserHeader.js";
 
 const Profile = () => {
   return (
     <>
-      <UserHeader />
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
