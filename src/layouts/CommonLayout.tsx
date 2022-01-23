@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React, { useEffect, useState } from "react";
-import { useRoutes, useLocation } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 // reactstrap components
 import { Container } from "reactstrap";
@@ -17,7 +17,7 @@ import awsExports from "../aws-exports";
 import { applicationRoutes } from "../routes";
 import CustomAlert from "../components/Alerts/Alert";
 import applicationHeaders from "../constants/header"
- 
+
 Amplify.configure(awsExports);
 
 

@@ -14,10 +14,12 @@ import CognitoService from "../services/aws/CognitoService";
 import { MediaType } from "../models";
 import { GroupType } from "@aws-sdk/client-cognito-identity-provider";
 import { renderCognitoGroupsList } from "../utils/CognitoGroupsUtils";
+import { Media as MediaModel } from "../models/index";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  onComplete: (media: MediaModel) => void;
 }
 
 const MediaUploaderModal = (props: Props) => {
@@ -52,6 +54,10 @@ const MediaUploaderModal = (props: Props) => {
     setIsLoading(true);
 
     const response = await StorageService.persistMedia(media, file);
+
+    if (response) {
+      props.onComplete(response);
+    }
 
     props.onClose();
     setIsLoading(false);

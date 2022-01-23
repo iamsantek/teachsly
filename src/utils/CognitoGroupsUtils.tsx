@@ -8,7 +8,7 @@ export const renderCognitoGroupsList = (groups: GroupType[]) =>
   groups
     .filter(
       (group) =>
-        ![UserTypes.ADMIN, UserTypes.STUDENT, UserTypes.TEACHER].includes(
+        ![UserTypes.STUDENT].includes(
           group.GroupName as UserTypes
         )
     )

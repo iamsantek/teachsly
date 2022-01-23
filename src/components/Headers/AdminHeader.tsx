@@ -20,7 +20,6 @@ const AdminHeader = () => {
     const fetchCourses = async () => {
       const cognitoGroups = await CognitoService.getCognitoGroups();
       if (cognitoGroups) {
-        console.log(cognitoGroups);
         setCognitoGroups(cognitoGroups as GroupType[]);
       }
     };

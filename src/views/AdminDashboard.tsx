@@ -47,12 +47,10 @@ const AdminDashboard = (props: any) => {
 
   return (
     <>
-      <AdminHeader />
-      <CustomAlert />
       {/* Page content */}
 
       <Container className="mt--7" fluid>
-        <Row>
+        {/* <Row>
           <Col className="mb-5 mb-xl-0" xl="8">
             <Card className="bg-gradient-default shadow">
               <CardHeader className="bg-transparent">
@@ -95,7 +93,6 @@ const AdminDashboard = (props: any) => {
                 </Row>
               </CardHeader>
               <CardBody>
-                {/* Chart */}
                 <div className="chart">
                   <Line
                     data={(chartExample1 as any)[chartExample1Data]}
@@ -119,7 +116,6 @@ const AdminDashboard = (props: any) => {
                 </Row>
               </CardHeader>
               <CardBody>
-                {/* Chart */}
                 <div className="chart">
                   <Bar
                     data={chartExample2.data}
@@ -129,7 +125,7 @@ const AdminDashboard = (props: any) => {
               </CardBody>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
         <Row className="mt-5">
           <Col className="mb-5 mb-xl-0" xl="8">
             <Card className="shadow">

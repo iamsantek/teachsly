@@ -21,7 +21,6 @@ class ObservableService {
   addListener(eventName: any, fn: (params?: any) => void) {
     if (this.existEvent(eventName)) {
       this.listenersByEvent[eventName].push(fn);
-      console.log(this.listenersByEvent);
     }
   }
 

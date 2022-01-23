@@ -13,6 +13,7 @@ import {
   Row,
   Media,
 } from "reactstrap";
+import { CourseBadgeList } from "../../components/Badges/CourseBadge";
 import { CustomButton } from "../../components/Buttons/CustomButton";
 // core components
 import { mediaIcons } from "../../constants/media";
@@ -20,7 +21,6 @@ import { MessageLevel } from "../../interfaces/AlertNotification";
 import MediaUploaderModal from "../../modals/MediaUploaderModal";
 import { Media as MediaModel } from "../../models/index";
 import MediaService from "../../services/MediaService";
-import { splitCamelCase } from "../../utils/StringUtils";
 
 const MediaContents = () => {
   const [medias, setMedia] = useState<MediaModel[]>([]);
@@ -32,7 +32,6 @@ const MediaContents = () => {
       const medias = await MediaService.fetchMedia();
 
       if (medias) {
-        console.log("Media", medias);
         setMedia(medias as MediaModel[]);
       }
     };
@@ -46,6 +45,7 @@ const MediaContents = () => {
       <MediaUploaderModal
         isOpen={mediaUploaderModalVisibility}
         onClose={() => setMediaUploaderModalVisibility(false)}
+        onComplete={(uploadedMedia: MediaModel) => setMedia([uploadedMedia, ...medias, ])}
       />
       <Container className="mt--7" fluid>
         {/* Table */}
@@ -112,11 +112,7 @@ const MediaContents = () => {
                         </div>
                       </td>
                       <td>
-                        {media.groups?.map((group) => (
-                          <Badge color="primary" pill>
-                            {splitCamelCase(group)}
-                          </Badge>
-                        ))}
+                        <CourseBadgeList courses={media.groups as string[]} />
                       </td>
                       <td className="text-right">
                         <UncontrolledDropdown>

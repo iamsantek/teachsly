@@ -3,6 +3,7 @@ import { graphqlOperation } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
 import { CDN_DEV, CDN_PROD } from "../../constants/Storage";
 import { LogLevel, LogTypes } from "../../enums/LogTypes";
+import { UserTypes } from "../../enums/UserTypes";
 import { createMedia } from "../../graphql/mutations";
 import { Media as PlatformMedia } from "../../interfaces/Media";
 import { Media } from "../../models";
@@ -41,6 +42,12 @@ class StorageService {
     const fileUploaded = await this.uploadToS3(file);
     const { title, description, type, groups } = media;
 
+    if (!fileUploaded) {
+      return;
+    }
+
+    const groupsWithAdminAccess = [...groups, UserTypes.ADMIN]
+
     try {
       const link = fileUploaded ? this.getCDNLink(fileUploaded.key) : "";
       const media = new Media({
@@ -48,7 +55,7 @@ class StorageService {
         description,
         link,
         type,
-        groups,
+        groups: groupsWithAdminAccess,
       });
 
       const response = await GraphQLService.graphQL(
@@ -57,7 +64,7 @@ class StorageService {
 
       if (response) {
         const results = response as GraphQLResultType<Media>;
-        return results?.data?.createMedia || null;
+        return results?.data?.createMedia as Media || null;
       }
     } catch (error) {
       Logger.log(

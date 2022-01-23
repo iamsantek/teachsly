@@ -61,12 +61,13 @@ class AuthService {
       return;
     }
 
-    const { name, email, groups } = user;
+    const { name, email, groups, phone } = user;
     const dynamoDbBUser = new DynamoDBUser({
       name,
       email,
       cognitoId,
       groups,
+      phone
     });
 
     return await GraphQLService.graphQL(
