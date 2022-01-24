@@ -2,57 +2,15 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateTodo = /* GraphQL */ `
-  subscription OnCreateTodo {
-    onCreateTodo {
-      id
-      name
-      done
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onUpdateTodo = /* GraphQL */ `
-  subscription OnUpdateTodo {
-    onUpdateTodo {
-      id
-      name
-      done
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onDeleteTodo = /* GraphQL */ `
-  subscription OnDeleteTodo {
-    onDeleteTodo {
-      id
-      name
-      done
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
 export const onCreateCourse = /* GraphQL */ `
   subscription OnCreateCourse {
     onCreateCourse {
       id
       name
-      teacher
-      scheduleDate
+      scheduleDates
       scheduleStartTime
       scheduleEndTime
+      isVirtual
       createdAt
       updatedAt
       _version
@@ -66,10 +24,10 @@ export const onUpdateCourse = /* GraphQL */ `
     onUpdateCourse {
       id
       name
-      teacher
-      scheduleDate
+      scheduleDates
       scheduleStartTime
       scheduleEndTime
+      isVirtual
       createdAt
       updatedAt
       _version
@@ -83,10 +41,10 @@ export const onDeleteCourse = /* GraphQL */ `
     onDeleteCourse {
       id
       name
-      teacher
-      scheduleDate
+      scheduleDates
       scheduleStartTime
       scheduleEndTime
+      isVirtual
       createdAt
       updatedAt
       _version
@@ -96,10 +54,11 @@ export const onDeleteCourse = /* GraphQL */ `
   }
 `;
 export const onCreateMedia = /* GraphQL */ `
-  subscription OnCreateMedia {
-    onCreateMedia {
+  subscription OnCreateMedia($owner: String) {
+    onCreateMedia(owner: $owner) {
       id
       title
+      type
       description
       link
       groups
@@ -108,16 +67,54 @@ export const onCreateMedia = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onUpdateMedia = /* GraphQL */ `
-  subscription OnUpdateMedia {
-    onUpdateMedia {
+  subscription OnUpdateMedia($owner: String) {
+    onUpdateMedia(owner: $owner) {
       id
       title
+      type
       description
       link
+      groups
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onDeleteMedia = /* GraphQL */ `
+  subscription OnDeleteMedia($owner: String) {
+    onDeleteMedia(owner: $owner) {
+      id
+      title
+      type
+      description
+      link
+      groups
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onCreateDynamoDBUser = /* GraphQL */ `
+  subscription OnCreateDynamoDBUser {
+    onCreateDynamoDBUser {
+      id
+      name
+      email
+      phone
+      cognitoId
       groups
       createdAt
       updatedAt
@@ -127,13 +124,31 @@ export const onUpdateMedia = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteMedia = /* GraphQL */ `
-  subscription OnDeleteMedia {
-    onDeleteMedia {
+export const onUpdateDynamoDBUser = /* GraphQL */ `
+  subscription OnUpdateDynamoDBUser {
+    onUpdateDynamoDBUser {
       id
-      title
-      description
-      link
+      name
+      email
+      phone
+      cognitoId
+      groups
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteDynamoDBUser = /* GraphQL */ `
+  subscription OnDeleteDynamoDBUser {
+    onDeleteDynamoDBUser {
+      id
+      name
+      email
+      phone
+      cognitoId
       groups
       createdAt
       updatedAt

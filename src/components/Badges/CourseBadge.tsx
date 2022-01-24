@@ -1,5 +1,6 @@
-import { splitCamelCase } from "../../utils/StringUtils";
-import { Badge } from "reactstrap"
+import React from 'react'
+import { splitCamelCase } from '../../utils/StringUtils'
+import { Badge } from 'reactstrap'
 
 interface Props {
     courses: string[];

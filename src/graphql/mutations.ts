@@ -2,57 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createTodo = /* GraphQL */ `
-  mutation CreateTodo(
-    $input: CreateTodoInput!
-    $condition: ModelTodoConditionInput
-  ) {
-    createTodo(input: $input, condition: $condition) {
-      id
-      name
-      done
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const updateTodo = /* GraphQL */ `
-  mutation UpdateTodo(
-    $input: UpdateTodoInput!
-    $condition: ModelTodoConditionInput
-  ) {
-    updateTodo(input: $input, condition: $condition) {
-      id
-      name
-      done
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const deleteTodo = /* GraphQL */ `
-  mutation DeleteTodo(
-    $input: DeleteTodoInput!
-    $condition: ModelTodoConditionInput
-  ) {
-    deleteTodo(input: $input, condition: $condition) {
-      id
-      name
-      done
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
 export const createCourse = /* GraphQL */ `
   mutation CreateCourse(
     $input: CreateCourseInput!
@@ -61,10 +10,10 @@ export const createCourse = /* GraphQL */ `
     createCourse(input: $input, condition: $condition) {
       id
       name
-      teacher
-      scheduleDate
+      scheduleDates
       scheduleStartTime
       scheduleEndTime
+      isVirtual
       createdAt
       updatedAt
       _version
@@ -81,10 +30,10 @@ export const updateCourse = /* GraphQL */ `
     updateCourse(input: $input, condition: $condition) {
       id
       name
-      teacher
-      scheduleDate
+      scheduleDates
       scheduleStartTime
       scheduleEndTime
+      isVirtual
       createdAt
       updatedAt
       _version
@@ -101,10 +50,10 @@ export const deleteCourse = /* GraphQL */ `
     deleteCourse(input: $input, condition: $condition) {
       id
       name
-      teacher
-      scheduleDate
+      scheduleDates
       scheduleStartTime
       scheduleEndTime
+      isVirtual
       createdAt
       updatedAt
       _version
@@ -121,6 +70,7 @@ export const createMedia = /* GraphQL */ `
     createMedia(input: $input, condition: $condition) {
       id
       title
+      type
       description
       link
       groups
@@ -129,6 +79,7 @@ export const createMedia = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -140,6 +91,7 @@ export const updateMedia = /* GraphQL */ `
     updateMedia(input: $input, condition: $condition) {
       id
       title
+      type
       description
       link
       groups
@@ -148,6 +100,7 @@ export const updateMedia = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -159,8 +112,70 @@ export const deleteMedia = /* GraphQL */ `
     deleteMedia(input: $input, condition: $condition) {
       id
       title
+      type
       description
       link
+      groups
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const createDynamoDBUser = /* GraphQL */ `
+  mutation CreateDynamoDBUser(
+    $input: CreateDynamoDBUserInput!
+    $condition: ModelDynamoDBUserConditionInput
+  ) {
+    createDynamoDBUser(input: $input, condition: $condition) {
+      id
+      name
+      email
+      phone
+      cognitoId
+      groups
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateDynamoDBUser = /* GraphQL */ `
+  mutation UpdateDynamoDBUser(
+    $input: UpdateDynamoDBUserInput!
+    $condition: ModelDynamoDBUserConditionInput
+  ) {
+    updateDynamoDBUser(input: $input, condition: $condition) {
+      id
+      name
+      email
+      phone
+      cognitoId
+      groups
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteDynamoDBUser = /* GraphQL */ `
+  mutation DeleteDynamoDBUser(
+    $input: DeleteDynamoDBUserInput!
+    $condition: ModelDynamoDBUserConditionInput
+  ) {
+    deleteDynamoDBUser(input: $input, condition: $condition) {
+      id
+      name
+      email
+      phone
+      cognitoId
       groups
       createdAt
       updatedAt

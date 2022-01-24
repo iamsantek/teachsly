@@ -27,7 +27,6 @@ import {
   Col,
 } from "reactstrap";
 
-
 const Sidebar = (props) => {
   const [collapseOpen, setCollapseOpen] = useState();
   // verifies if routeName is the one active (in browser input)
@@ -48,7 +47,7 @@ const Sidebar = (props) => {
             to={prop.path}
             tag={NavLinkRRD}
             onClick={closeCollapse}
-            activeClassName="active"
+            // activeClassName="active"
           >
             <i className={prop.icon} />
             {prop.name}

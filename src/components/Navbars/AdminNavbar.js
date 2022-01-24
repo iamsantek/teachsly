@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
 // reactstrap components
 import {
   DropdownMenu,
@@ -14,14 +15,13 @@ import {
   Navbar,
   Nav,
   Container,
-  Media,
-} from "reactstrap";
-import { AmplifySignOut } from "@aws-amplify/ui-react";
-import { useContext } from "react";
-import { UserDashboardContext } from "../../contexts/UserDashboardContext";
+  Media
+} from 'reactstrap'
+import { AmplifySignOut } from '@aws-amplify/ui-react'
+import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 
 const AdminNavbar = (props) => {
-  const { user } = useContext(UserDashboardContext);
+  const { user } = useContext(UserDashboardContext)
 
   return (
     <>
@@ -53,7 +53,7 @@ const AdminNavbar = (props) => {
                     <img
                       alt="..."
                       src={
-                        require("../../assets/img/theme/team-4-800x800.jpg")
+                        require('../../assets/img/theme/team-4-800x800.jpg')
                           .default
                       }
                     />
@@ -88,7 +88,7 @@ const AdminNavbar = (props) => {
                 <DropdownItem divider />
                 <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
                   <AmplifySignOut
-                    style={{ "--background-color": "red" }}
+                    style={{ '--background-color': 'red' }}
                     buttonText="Salir"
                   />
                 </DropdownItem>
@@ -98,7 +98,7 @@ const AdminNavbar = (props) => {
         </Container>
       </Navbar>
     </>
-  );
-};
+  )
+}
 
-export default AdminNavbar;
+export default AdminNavbar

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 // reactstrap components
 import {
   Card,
@@ -10,32 +10,32 @@ import {
   Media,
   Table,
   Container,
-  Row,
-} from "reactstrap";
-import { CourseBadgeList } from "../../components/Badges/CourseBadge";
+  Row
+} from 'reactstrap'
+import { CourseBadgeList } from '../../components/Badges/CourseBadge'
 // core components
-import { UserTypes } from "../../enums/UserTypes";
-import { DynamoDBUser } from "../../models/index.js";
-import UserService from "../../services/UserService";
+import { UserTypes } from '../../enums/UserTypes'
+import { DynamoDBUser } from '../../models/index.js'
+import UserService from '../../services/UserService'
 
 interface Props {
-  listType: UserTypes | "ALL";
+  listType: UserTypes | 'ALL';
 }
 
 const UserList = (props: Props) => {
-  const [users, setUsers] = useState<DynamoDBUser[]>([]);
+  const [users, setUsers] = useState<DynamoDBUser[]>([])
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const users = await UserService.fetchUsersByType(props.listType);
+      const users = await UserService.fetchUsersByType(props.listType)
 
       if (users) {
-        setUsers(users);
+        setUsers(users)
       }
-    };
+    }
 
-    fetchUsers();
-  }, [props.listType]);
+    fetchUsers()
+  }, [props.listType])
 
   return (
     <>
@@ -71,7 +71,7 @@ const UserList = (props: Props) => {
                             <img
                               alt="..."
                               src={
-                                require("../../assets/img/theme/bootstrap.jpg")
+                                require('../../assets/img/theme/bootstrap.jpg')
                                   .default
                               }
                             />
@@ -133,7 +133,7 @@ const UserList = (props: Props) => {
         </Row>
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default UserList;
+export default UserList

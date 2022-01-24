@@ -25,6 +25,7 @@ export enum LanguageES {
   CREATE_MEDIA_BUTTON = "Subir contenido",
   MEDIA_CREATED_MESSAGE = "🚀 Genial! El contenido se cargo exitosamente a la plataforma.",
   MEDIA_CREATED_FAILED_MESSAGE = "No se pudo cargar el contenido correctamente. Por favor, intentar nuevamente.",
+  DAYS_OF_THE_WEEK="Lunes,Martes,Miercoles,Jueves,Viernes,Sabado"
 }
 
 export enum LanguageEN {
@@ -50,4 +51,5 @@ export enum LanguageEN {
   CREATE_MEDIA_BUTTON = "Upload content",
   MEDIA_CREATED_MESSAGE = "🚀 Great! The Media has been successfully created.",
   MEDIA_CREATED_FAILED_MESSAGE = "An error has occurred when creation the media. Please try again",
+  DAYS_OF_THE_WEEK="Monday,Tuesday,Wednesday,Thursday,Friday,Saturday"
 }

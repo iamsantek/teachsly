@@ -2,79 +2,15 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getTodo = /* GraphQL */ `
-  query GetTodo($id: ID!) {
-    getTodo(id: $id) {
-      id
-      name
-      done
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const listTodos = /* GraphQL */ `
-  query ListTodos(
-    $filter: ModelTodoFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        done
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncTodos = /* GraphQL */ `
-  query SyncTodos(
-    $filter: ModelTodoFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncTodos(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        done
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getCourse = /* GraphQL */ `
   query GetCourse($id: ID!) {
     getCourse(id: $id) {
       id
       name
-      teacher
-      scheduleDate
+      scheduleDates
       scheduleStartTime
       scheduleEndTime
+      isVirtual
       createdAt
       updatedAt
       _version
@@ -93,10 +29,10 @@ export const listCourses = /* GraphQL */ `
       items {
         id
         name
-        teacher
-        scheduleDate
+        scheduleDates
         scheduleStartTime
         scheduleEndTime
+        isVirtual
         createdAt
         updatedAt
         _version
@@ -124,10 +60,10 @@ export const syncCourses = /* GraphQL */ `
       items {
         id
         name
-        teacher
-        scheduleDate
+        scheduleDates
         scheduleStartTime
         scheduleEndTime
+        isVirtual
         createdAt
         updatedAt
         _version
@@ -144,6 +80,7 @@ export const getMedia = /* GraphQL */ `
     getMedia(id: $id) {
       id
       title
+      type
       description
       link
       groups
@@ -152,6 +89,7 @@ export const getMedia = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -165,6 +103,7 @@ export const listMedia = /* GraphQL */ `
       items {
         id
         title
+        type
         description
         link
         groups
@@ -173,6 +112,7 @@ export const listMedia = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -195,8 +135,83 @@ export const syncMedia = /* GraphQL */ `
       items {
         id
         title
+        type
         description
         link
+        groups
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getDynamoDBUser = /* GraphQL */ `
+  query GetDynamoDBUser($id: ID!) {
+    getDynamoDBUser(id: $id) {
+      id
+      name
+      email
+      phone
+      cognitoId
+      groups
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listDynamoDBUsers = /* GraphQL */ `
+  query ListDynamoDBUsers(
+    $filter: ModelDynamoDBUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDynamoDBUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        email
+        phone
+        cognitoId
+        groups
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncDynamoDBUsers = /* GraphQL */ `
+  query SyncDynamoDBUsers(
+    $filter: ModelDynamoDBUserFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncDynamoDBUsers(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        email
+        phone
+        cognitoId
         groups
         createdAt
         updatedAt

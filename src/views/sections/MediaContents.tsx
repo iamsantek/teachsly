@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 // reactstrap components
 import {
   Badge,
@@ -11,33 +11,33 @@ import {
   Table,
   Container,
   Row,
-  Media,
-} from "reactstrap";
-import { CourseBadgeList } from "../../components/Badges/CourseBadge";
-import { CustomButton } from "../../components/Buttons/CustomButton";
+  Media
+} from 'reactstrap'
+import { CourseBadgeList } from '../../components/Badges/CourseBadge'
+import { CustomButton } from '../../components/Buttons/CustomButton'
 // core components
-import { mediaIcons } from "../../constants/media";
-import { MessageLevel } from "../../interfaces/AlertNotification";
-import MediaUploaderModal from "../../modals/MediaUploaderModal";
-import { Media as MediaModel } from "../../models/index";
-import MediaService from "../../services/MediaService";
+import { mediaIcons } from '../../constants/media'
+import { MessageLevel } from '../../interfaces/AlertNotification'
+import MediaUploaderModal from '../../modals/MediaUploaderModal'
+import { Media as MediaModel } from '../../models/index'
+import MediaService from '../../services/MediaService'
 
 const MediaContents = () => {
-  const [medias, setMedia] = useState<MediaModel[]>([]);
+  const [medias, setMedia] = useState<MediaModel[]>([])
   const [mediaUploaderModalVisibility, setMediaUploaderModalVisibility] =
-    useState<boolean>(false);
+    useState<boolean>(false)
 
   useEffect(() => {
     const fetchMedia = async () => {
-      const medias = await MediaService.fetchMedia();
+      const medias = await MediaService.fetchMedia()
 
       if (medias) {
-        setMedia(medias as MediaModel[]);
+        setMedia(medias as MediaModel[])
       }
-    };
+    }
 
-    fetchMedia();
-  }, []);
+    fetchMedia()
+  }, [])
 
   return (
     <>
@@ -45,7 +45,7 @@ const MediaContents = () => {
       <MediaUploaderModal
         isOpen={mediaUploaderModalVisibility}
         onClose={() => setMediaUploaderModalVisibility(false)}
-        onComplete={(uploadedMedia: MediaModel) => setMedia([uploadedMedia, ...medias, ])}
+        onComplete={(uploadedMedia: MediaModel) => setMedia([uploadedMedia, ...medias])}
       />
       <Container className="mt--7" fluid>
         {/* Table */}
@@ -73,7 +73,7 @@ const MediaContents = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {medias.map((media: MediaModel) => 
+                  {medias.map((media: MediaModel) =>
                     <tr key={media.id}>
                       <th scope="row">
                         <Media className="align-items-center">
@@ -104,7 +104,7 @@ const MediaContents = () => {
                             <CustomButton
                               isLoading={false}
                               type={MessageLevel.INFO}
-                              onClick={() => window.open(media.link, "_blank")}
+                              onClick={() => window.open(media.link, '_blank')}
                             >
                               Ver contenido
                             </CustomButton>
@@ -157,7 +157,7 @@ const MediaContents = () => {
         </Row>
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default MediaContents;
+export default MediaContents

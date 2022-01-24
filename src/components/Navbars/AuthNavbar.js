@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import React, { Link } from 'react-router-dom'
 // reactstrap components
 import {
   UncontrolledCollapse,
@@ -9,8 +9,8 @@ import {
   Nav,
   Container,
   Row,
-  Col,
-} from "reactstrap";
+  Col
+} from 'reactstrap'
 
 const AdminNavbar = () => {
   return (
@@ -21,7 +21,7 @@ const AdminNavbar = () => {
             <img
               alt="..."
               src={
-                require("../../assets/img/brand/the-office-logo-max.png")
+                require('../../assets/img/brand/the-office-logo-max.png')
                   .default
               }
             />
@@ -37,7 +37,7 @@ const AdminNavbar = () => {
                     <img
                       alt="..."
                       src={
-                        require("../../assets/img/brand/argon-react.png")
+                        require('../../assets/img/brand/argon-react.png')
                           .default
                       }
                     />
@@ -89,7 +89,7 @@ const AdminNavbar = () => {
         </Container>
       </Navbar>
     </>
-  );
-};
+  )
+}
 
-export default AdminNavbar;
+export default AdminNavbar
