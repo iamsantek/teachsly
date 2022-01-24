@@ -146,6 +146,7 @@ export type Media = {
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
+  owner?: string | null,
 };
 
 export type UpdateMediaInput = {
@@ -384,6 +385,7 @@ export type CreateMediaMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -406,6 +408,7 @@ export type UpdateMediaMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -428,6 +431,7 @@ export type DeleteMediaMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -593,6 +597,7 @@ export type GetMediaQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -618,6 +623,7 @@ export type ListMediaQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -647,6 +653,7 @@ export type SyncMediaQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -782,6 +789,10 @@ export type OnDeleteCourseSubscription = {
   } | null,
 };
 
+export type OnCreateMediaSubscriptionVariables = {
+  owner?: string | null,
+};
+
 export type OnCreateMediaSubscription = {
   onCreateMedia?:  {
     __typename: "Media",
@@ -796,7 +807,12 @@ export type OnCreateMediaSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
+};
+
+export type OnUpdateMediaSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnUpdateMediaSubscription = {
@@ -813,7 +829,12 @@ export type OnUpdateMediaSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
+};
+
+export type OnDeleteMediaSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnDeleteMediaSubscription = {
@@ -830,6 +851,7 @@ export type OnDeleteMediaSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 

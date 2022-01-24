@@ -3,25 +3,16 @@
   "serviceConfiguration": {
     "apiName": "TheOfficeBackendApi",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-b2d70341-7ec7-41fd-bb86-217441919d85/amplify/backend/api/TheOfficeBackendApi/schema.graphql",
+    "gqlSchemaPath": "/Users/santiagogonzalezrojas/TheOfficeEnglishLearning/the-office-platform/amplify/backend/api/TheOfficeBackendApi/schema.graphql",
     "defaultAuthType": {
       "mode": "AMAZON_COGNITO_USER_POOLS",
-      "cognitoUserPoolId": "auththeofficeenglishlear4d1bc244"
+      "cognitoUserPoolId": "authTheOfficeAuthApi"
     },
     "conflictResolution": {
       "defaultResolutionStrategy": {
         "type": "AUTOMERGE"
       }
     },
-    "additionalAuthTypes": [
-      {
-        "mode": "API_KEY",
-        "keyDescription": "api key description",
-        "expirationTime": 30
-      },
-      {
-        "mode": "AWS_IAM"
-      }
-    ]
+    "additionalAuthTypes": []
   }
 }

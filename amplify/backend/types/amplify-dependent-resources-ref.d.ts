@@ -1,25 +1,38 @@
 export type AmplifyDependentResourcesAttributes = {
     "api": {
         "TheOfficeBackendApi": {
-            "GraphQLAPIKeyOutput": "string",
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         }
     },
     "auth": {
-        "theofficeenglishlear4d1bc244": {
+        "userPoolGroups": {
+            "AdminGroupRole": "string",
+            "TeachersGroupRole": "string",
+            "StudentsGroupRole": "string"
+        },
+        "TheOfficeAuthApi": {
             "IdentityPoolId": "string",
             "IdentityPoolName": "string",
             "UserPoolId": "string",
             "UserPoolArn": "string",
             "UserPoolName": "string",
             "AppClientIDWeb": "string",
-            "AppClientID": "string"
+            "AppClientID": "string",
+            "CreatedSNSRole": "string"
         }
     },
     "storage": {
-        "s3theofficeenglishplatformgeneralcontents": {
+        "TheOfficeStorage": {
             "BucketName": "string",
+            "Region": "string"
+        }
+    },
+    "function": {
+        "TheOfficeAuthApiCustomMessage": {
+            "Name": "string",
+            "Arn": "string",
+            "LambdaExecutionRole": "string",
             "Region": "string"
         }
     }

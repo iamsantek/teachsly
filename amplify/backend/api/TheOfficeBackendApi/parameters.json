@@ -2,11 +2,11 @@
   "AppSyncApiName": "TheOfficeBackendApi",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2022-01-22T18:59:36.432Z",
   "AuthCognitoUserPoolId": {
     "Fn::GetAtt": [
-      "auththeofficeenglishlear4d1bc244",
+      "authTheOfficeAuthApi",
       "Outputs.UserPoolId"
     ]
-  },
-  "AuthModeLastUpdated": "2021-12-03T18:25:18.963Z"
+  }
 }

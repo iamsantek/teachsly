@@ -9,11 +9,29 @@
       "UnauthRoleName": "amplify-theofficeplatform-dev-225223-unauthRole",
       "StackName": "amplify-theofficeplatform-dev-225223",
       "StackId": "arn:aws:cloudformation:us-east-1:017261671711:stack/amplify-theofficeplatform-dev-225223/815cebb0-5312-11ec-b47c-0a0575ffedcb",
-      "AmplifyAppId": "d1qxvtw9vp11j9"
+      "AmplifyAppId": "d1qxvtw9vp11j9",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-theofficeplatform-dev-225223-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
+      "function": {
+        "TheOfficeEnglishConfirmUserEmail": {
+          "deploymentBucketName": "amplify-theofficeplatform-dev-225223-deployment",
+          "s3Key": "amplify-builds/TheOfficeEnglishConfirmUserEmail-382b6a6d746278574676-build.zip"
+        },
+        "TheOfficeAuthCustomMessage": {
+          "deploymentBucketName": "amplify-theofficeplatform-dev-225223-deployment",
+          "s3Key": "amplify-builds/TheOfficeAuthCustomMessage-30652b32396751717764-build.zip"
+        },
+        "TheOfficeAuthApiCustomMessage": {
+          "deploymentBucketName": "amplify-theofficeplatform-dev-225223-deployment",
+          "s3Key": "amplify-builds/TheOfficeAuthApiCustomMessage-62433532335530474b45-build.zip"
+        }
+      },
       "auth": {
-        "theofficeenglishlear4d1bc244": {}
+        "TheOfficeAuth": {},
+        "TheOfficeAuthApi": {},
+        "true": {},
+        "userPoolGroups": {}
       }
     }
   }
