@@ -37,6 +37,7 @@
     "@aws-amplify/ui-react": "^1.2.5",
     "@aws-sdk/client-cognito-identity-provider": "^3.46.0",
     "@aws-sdk/credential-providers": "^3.49.0",
+    "@aws-sdk/property-provider": "^3.49.0",
     "@fortawesome/fontawesome-free": "5.15.3",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
