@@ -72,42 +72,7 @@
       }
     }
   },
-  "storage": {
-    "TheOfficeStorage": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "auth",
-          "resourceName": "TheOfficeAuthApi",
-          "attributes": [
-            "UserPoolId"
-          ]
-        },
-        {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
-          "attributes": [
-            "AdminGroupRole"
-          ]
-        },
-        {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
-          "attributes": [
-            "TeachersGroupRole"
-          ]
-        },
-        {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
-          "attributes": [
-            "StudentsGroupRole"
-          ]
-        }
-      ]
-    }
-  },
+  "storage": {},
   "function": {
     "TheOfficeAuthApiCustomMessage": {
       "build": true,
