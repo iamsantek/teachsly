@@ -1,13 +1,11 @@
 import { Storage } from "@aws-amplify/storage";
 import { graphqlOperation } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
-import { CDN_DEV, CDN_PROD } from "../../constants/Storage";
 import { LogLevel, LogTypes } from "../../enums/LogTypes";
 import { UserTypes } from "../../enums/UserTypes";
 import { createMedia } from "../../graphql/mutations";
 import { Media as PlatformMedia } from "../../interfaces/Media";
 import { Media } from "../../models";
-import { Environment, getEnvironment } from "../../utils/EnvironmentUtils";
 import Logger from "../../utils/Logger";
 import GraphQLService, { GraphQLResultType } from "../GraphQLService";
 
@@ -49,7 +47,7 @@ class StorageService {
     const groupsWithAdminAccess = [...groups, UserTypes.ADMIN]
 
     try {
-      const link = fileUploaded ? this.getCDNLink(fileUploaded.key) : "";
+      const link = fileUploaded.key;
       const media = new Media({
         title,
         description,
@@ -74,13 +72,6 @@ class StorageService {
         error
       );
     }
-  };
-
-  private getCDNLink = (key: string) => {
-    const cdnUrl =
-      getEnvironment() === Environment.DEVELOPMENT ? CDN_DEV : CDN_PROD;
-
-    return `${cdnUrl}${key}`;
   };
 }
 
