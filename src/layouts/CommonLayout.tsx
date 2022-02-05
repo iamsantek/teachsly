@@ -17,6 +17,7 @@ import awsExports from "../aws-exports";
 import { applicationRoutes } from "../routes";
 import CustomAlert from "../components/Alerts/Alert";
 import applicationHeaders from "../constants/header"
+import logo from "../assets/img/brand/the-office-logo-max.png";
 
 Amplify.configure(awsExports);
 
@@ -92,7 +93,7 @@ const CommonLayout = (props: any) => {
           routes={routes}
           logo={{
             innerLink: "/admin/index",
-            imgSrc: require("../assets/img/brand/the-office-logo-max.png").default,
+            imgSrc: logo,
             imgAlt: "...",
           }}
         />
