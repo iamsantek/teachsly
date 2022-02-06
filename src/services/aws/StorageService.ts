@@ -1,6 +1,7 @@
 import { Storage } from "@aws-amplify/storage";
 import { graphqlOperation } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
+import awsmobile from "../../aws-exports";
 import { LogLevel, LogTypes } from "../../enums/LogTypes";
 import { UserTypes } from "../../enums/UserTypes";
 import { createMedia } from "../../graphql/mutations";
@@ -21,6 +22,11 @@ class StorageService {
 
       const fileExtension = this.getExtensionType(file);
       const fileName = `${uuidv4()}.${fileExtension}`;
+      
+      Storage.configure({
+        region: awsmobile.aws_user_files_s3_bucket_region
+      })
+
       return await Storage.put(fileName, file, {
         // acl: "public-read", // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#upload-property
         metadata: { key: "Test" }, // (map<String>) A map of metadata to store with the object in S3.
