@@ -24,7 +24,7 @@ class StorageService {
       const fileName = `${uuidv4()}.${fileExtension}`;
       
       Storage.configure({
-        region: awsmobile.aws_user_files_s3_bucket_region
+        region: "us-east-1"
       })
 
       return await Storage.put(fileName, file, {
