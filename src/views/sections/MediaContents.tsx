@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 // reactstrap components
 import {
   Badge,
@@ -20,12 +20,15 @@ import { mediaIcons } from '../../constants/media'
 import { MessageLevel } from '../../interfaces/AlertNotification'
 import MediaUploaderModal from '../../modals/MediaUploaderModal'
 import { Media as MediaModel } from '../../models/index'
+import StorageService from '../../services/aws/StorageService'
 import MediaService from '../../services/MediaService'
 
 const MediaContents = () => {
   const [medias, setMedia] = useState<MediaModel[]>([])
+  const [isGeneratingLink, setIsGeneratingLink] = useState<boolean>(false);
   const [mediaUploaderModalVisibility, setMediaUploaderModalVisibility] =
     useState<boolean>(false)
+
 
   useEffect(() => {
     const fetchMedia = async () => {
@@ -38,6 +41,17 @@ const MediaContents = () => {
 
     fetchMedia()
   }, [])
+
+  const generateSignedUrl = async (key: string) => {
+    setIsGeneratingLink(true)
+    const signedURL = await StorageService.getSignedUrl(key);
+  
+    if (signedURL) {
+      window.open(signedURL, '_blank')
+    }
+    
+    setIsGeneratingLink(false)
+  }
 
   return (
     <>
@@ -102,9 +116,9 @@ const MediaContents = () => {
                         <div className="d-flex align-items-center">
                           {!!media.link && (
                             <CustomButton
-                              isLoading={false}
+                              isLoading={isGeneratingLink}
                               type={MessageLevel.INFO}
-                              onClick={() => window.open(media.link, '_blank')}
+                              onClick={() => generateSignedUrl(media.link)}
                             >
                               Ver contenido
                             </CustomButton>

@@ -1,7 +1,6 @@
 import { Storage } from "@aws-amplify/storage";
 import { graphqlOperation } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
-import awsmobile from "../../aws-exports";
 import { LogLevel, LogTypes } from "../../enums/LogTypes";
 import { UserTypes } from "../../enums/UserTypes";
 import { createMedia } from "../../graphql/mutations";
@@ -14,6 +13,21 @@ class StorageService {
   private getExtensionType = (file: File) =>
     file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2);
 
+  public getSignedUrl = async (key: string) => {
+    try {
+      const signedURL = await Storage.get(key);
+
+      return signedURL;
+    } catch (error) {
+      Logger.log(
+        LogLevel.ERROR,
+        LogTypes.StorageService,
+        `Error when fetching media ${key} from S3`,
+        error
+      );
+    }
+  }
+
   public uploadToS3 = async (file: File | undefined) => {
     try {
       if (!file) {
@@ -22,15 +36,9 @@ class StorageService {
 
       const fileExtension = this.getExtensionType(file);
       const fileName = `${uuidv4()}.${fileExtension}`;
-      
-      // Storage.configure({
-      //   region: "us-east-1",
-      //   bucket: "theofficeenglish63ca63e9fc534941b077cff980406a8225223-dev"
-      // })
 
       return await Storage.put(fileName, file, {
         // acl: "public-read", // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#upload-property
-        metadata: { key: "Test" }, // (map<String>) A map of metadata to store with the object in S3.
         contentType: file.type,
       });
     } catch (error) {
