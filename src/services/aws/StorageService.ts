@@ -23,10 +23,10 @@ class StorageService {
       const fileExtension = this.getExtensionType(file);
       const fileName = `${uuidv4()}.${fileExtension}`;
       
-      Storage.configure({
-        region: "us-east-1",
-        bucket: "theofficeenglish63ca63e9fc534941b077cff980406a8225223-dev"
-      })
+      // Storage.configure({
+      //   region: "us-east-1",
+      //   bucket: "theofficeenglish63ca63e9fc534941b077cff980406a8225223-dev"
+      // })
 
       return await Storage.put(fileName, file, {
         // acl: "public-read", // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#upload-property
