@@ -23,7 +23,7 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "storage": {
-        "TheOfficeStorage": {
+        "TheOfficeBucket": {
             "BucketName": "string",
             "Region": "string"
         }
