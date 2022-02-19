@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 // reactstrap components
 import {
   DropdownMenu,
@@ -15,13 +15,14 @@ import {
   Navbar,
   Nav,
   Container,
-  Media
-} from 'reactstrap'
-import { AmplifySignOut } from '@aws-amplify/ui-react'
-import { UserDashboardContext } from '../../contexts/UserDashboardContext'
+  Media,
+} from "reactstrap";
+import { AmplifySignOut } from "@aws-amplify/ui-react";
+import { UserDashboardContext } from "../../contexts/UserDashboardContext";
+import { Avatar } from "@chakra-ui/react";
 
 const AdminNavbar = (props) => {
-  const { user } = useContext(UserDashboardContext)
+  const { user } = useContext(UserDashboardContext);
 
   return (
     <>
@@ -50,13 +51,7 @@ const AdminNavbar = (props) => {
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
-                    <img
-                      alt="..."
-                      src={
-                        require('../../assets/img/theme/team-4-800x800.jpg')
-                          .default
-                      }
-                    />
+                    <Avatar name={user?.name} />
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
@@ -88,7 +83,7 @@ const AdminNavbar = (props) => {
                 <DropdownItem divider />
                 <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
                   <AmplifySignOut
-                    style={{ '--background-color': 'red' }}
+                    style={{ "--background-color": "red" }}
                     buttonText="Salir"
                   />
                 </DropdownItem>
@@ -98,7 +93,7 @@ const AdminNavbar = (props) => {
         </Container>
       </Navbar>
     </>
-  )
-}
+  );
+};
 
-export default AdminNavbar
+export default AdminNavbar;

@@ -1,31 +1,31 @@
 // reactstrap components
-import React, { useEffect, useState } from 'react'
-import { Card, CardBody, CardTitle, Container, Row, Col } from 'reactstrap'
-import CreateUserModal from '../../modals/CreateUserModal'
-import CreateCourseModal from '../../modals/CreateCourseModal'
-import { UserTypes } from '../../enums/UserTypes'
-import CognitoService from '../../services/aws/CognitoService'
-import { GroupType } from '@aws-sdk/client-cognito-identity-provider'
+import React, { useEffect, useState } from "react";
+import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import CreateUserModal from "../../modals/CreateUserModal";
+import CreateCourseModal from "../../modals/CreateCourseModal";
+import { UserTypes } from "../../enums/UserTypes";
+import CognitoService from "../../services/aws/CognitoService";
+import { GroupType } from "@aws-sdk/client-cognito-identity-provider";
 
 const AdminHeader = () => {
   const [createStudentModalVisibility, setCreateStudentModalVisibility] =
-    useState<boolean>(false)
+    useState<boolean>(false);
   const [createTeacherModalVisibility, setCreateTeacherModalVisibility] =
-    useState<boolean>(false)
+    useState<boolean>(false);
   const [createCourseModalVisibility, setCreateCourseModalVisibility] =
-    useState<boolean>(false)
-  const [cognitoGroups, setCognitoGroups] = useState<GroupType[]>([])
+    useState<boolean>(false);
+  const [cognitoGroups, setCognitoGroups] = useState<GroupType[]>([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const cognitoGroups = await CognitoService.getCognitoGroups()
+      const cognitoGroups = await CognitoService.getCognitoGroups();
       if (cognitoGroups) {
-        setCognitoGroups(cognitoGroups as GroupType[])
+        setCognitoGroups(cognitoGroups as GroupType[]);
       }
-    }
+    };
 
-    fetchCourses()
-  }, [])
+    fetchCourses();
+  }, []);
 
   return (
     <>
@@ -77,7 +77,7 @@ const AdminHeader = () => {
                         onClick={() => setCreateStudentModalVisibility(true)}
                       >
                         <i className="fa fa-arrow-up" /> Agregar alumno
-                      </span>{' '}
+                      </span>{" "}
                       <span className="text-nowrap"></span>
                     </p>
                   </CardBody>
@@ -108,7 +108,7 @@ const AdminHeader = () => {
                         onClick={() => setCreateCourseModalVisibility(true)}
                       >
                         <i className="fa fa-arrow-up" /> Agregar curso
-                      </span>{' '}
+                      </span>{" "}
                     </p>
                   </CardBody>
                 </Card>
@@ -166,7 +166,7 @@ const AdminHeader = () => {
                     <p className="mt-3 mb-0 text-muted text-sm">
                       <span className="text-success mr-2">
                         <i className="fas fa-arrow-up" /> 12%
-                      </span>{' '}
+                      </span>{" "}
                       <span className="text-nowrap">Since last month</span>
                     </p>
                   </CardBody>
@@ -177,7 +177,7 @@ const AdminHeader = () => {
         </Container>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AdminHeader
+export default AdminHeader;

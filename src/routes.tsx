@@ -58,13 +58,9 @@ const adminRoutes: ApplicationRoute[] = [
   { path: "*", element: <AdminDashboard /> },
 ];
 
-const studentRoutes: ApplicationRoute[] = [
-  teachers
-]
+const studentRoutes: ApplicationRoute[] = [teachers];
 
-export const hideHeaderRoutes:  ApplicationRoute[] = [
-  profile
-]
+export const hideHeaderRoutes: ApplicationRoute[] = [profile];
 
 export const applicationRoutes: ApplicationRoutes = {
   [UserTypes.ADMIN]: adminRoutes,
