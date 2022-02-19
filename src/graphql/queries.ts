@@ -10,12 +10,9 @@ export const getCourse = /* GraphQL */ `
       scheduleDates
       scheduleStartTime
       scheduleEndTime
-      isVirtual
+      virtualClassLink
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -32,46 +29,11 @@ export const listCourses = /* GraphQL */ `
         scheduleDates
         scheduleStartTime
         scheduleEndTime
-        isVirtual
+        virtualClassLink
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncCourses = /* GraphQL */ `
-  query SyncCourses(
-    $filter: ModelCourseFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncCourses(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        scheduleDates
-        scheduleStartTime
-        scheduleEndTime
-        isVirtual
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -83,12 +45,10 @@ export const getMedia = /* GraphQL */ `
       type
       description
       link
+      content
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -106,48 +66,13 @@ export const listMedia = /* GraphQL */ `
         type
         description
         link
+        content
         groups
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncMedia = /* GraphQL */ `
-  query SyncMedia(
-    $filter: ModelMediaFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncMedia(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        title
-        type
-        description
-        link
-        groups
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -162,9 +87,6 @@ export const getDynamoDBUser = /* GraphQL */ `
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -184,43 +106,8 @@ export const listDynamoDBUsers = /* GraphQL */ `
         groups
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncDynamoDBUsers = /* GraphQL */ `
-  query SyncDynamoDBUsers(
-    $filter: ModelDynamoDBUserFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncDynamoDBUsers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        email
-        phone
-        cognitoId
-        groups
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;

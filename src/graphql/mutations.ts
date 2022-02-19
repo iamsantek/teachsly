@@ -13,12 +13,9 @@ export const createCourse = /* GraphQL */ `
       scheduleDates
       scheduleStartTime
       scheduleEndTime
-      isVirtual
+      virtualClassLink
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -33,12 +30,9 @@ export const updateCourse = /* GraphQL */ `
       scheduleDates
       scheduleStartTime
       scheduleEndTime
-      isVirtual
+      virtualClassLink
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -53,12 +47,9 @@ export const deleteCourse = /* GraphQL */ `
       scheduleDates
       scheduleStartTime
       scheduleEndTime
-      isVirtual
+      virtualClassLink
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -73,12 +64,10 @@ export const createMedia = /* GraphQL */ `
       type
       description
       link
+      content
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -94,12 +83,10 @@ export const updateMedia = /* GraphQL */ `
       type
       description
       link
+      content
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -115,12 +102,10 @@ export const deleteMedia = /* GraphQL */ `
       type
       description
       link
+      content
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -139,9 +124,6 @@ export const createDynamoDBUser = /* GraphQL */ `
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -159,9 +141,6 @@ export const updateDynamoDBUser = /* GraphQL */ `
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -179,9 +158,6 @@ export const deleteDynamoDBUser = /* GraphQL */ `
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;

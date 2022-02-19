@@ -10,12 +10,9 @@ export const onCreateCourse = /* GraphQL */ `
       scheduleDates
       scheduleStartTime
       scheduleEndTime
-      isVirtual
+      virtualClassLink
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -27,12 +24,9 @@ export const onUpdateCourse = /* GraphQL */ `
       scheduleDates
       scheduleStartTime
       scheduleEndTime
-      isVirtual
+      virtualClassLink
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -44,12 +38,9 @@ export const onDeleteCourse = /* GraphQL */ `
       scheduleDates
       scheduleStartTime
       scheduleEndTime
-      isVirtual
+      virtualClassLink
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -61,12 +52,10 @@ export const onCreateMedia = /* GraphQL */ `
       type
       description
       link
+      content
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -79,12 +68,10 @@ export const onUpdateMedia = /* GraphQL */ `
       type
       description
       link
+      content
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -97,12 +84,10 @@ export const onDeleteMedia = /* GraphQL */ `
       type
       description
       link
+      content
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -118,9 +103,6 @@ export const onCreateDynamoDBUser = /* GraphQL */ `
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -135,9 +117,6 @@ export const onUpdateDynamoDBUser = /* GraphQL */ `
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -152,9 +131,6 @@ export const onDeleteDynamoDBUser = /* GraphQL */ `
       groups
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
