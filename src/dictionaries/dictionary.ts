@@ -25,7 +25,13 @@ export enum LanguageES {
   CREATE_MEDIA_BUTTON = "Subir contenido",
   MEDIA_CREATED_MESSAGE = "🚀 Genial! El contenido se cargo exitosamente a la plataforma.",
   MEDIA_CREATED_FAILED_MESSAGE = "No se pudo cargar el contenido correctamente. Por favor, intentar nuevamente.",
-  DAYS_OF_THE_WEEK="Lunes,Martes,Miercoles,Jueves,Viernes,Sabado"
+  DAYS_OF_THE_WEEK = "Lunes,Martes,Miercoles,Jueves,Viernes,Sabado",
+  GROUP_MULTI_SELECT_TITLE = "Cursos/Grupos que tendrán acceso a este contenido",
+  ATTACH_FILE = "Adjuntar archivo",
+  REVIEW_PERMISSIONS = "Revisa los permisos del contenido antes de continuar",
+  ALLOW_ACCESS_MEDIA = "tendrán acceso a este contenido.",
+  MEDIA_DELETED = "El contenido ha sido eliminado correctamente.",
+  SEE_CONTENT = "Ver contenido",
 }
 
 export enum LanguageEN {
@@ -51,5 +57,11 @@ export enum LanguageEN {
   CREATE_MEDIA_BUTTON = "Upload content",
   MEDIA_CREATED_MESSAGE = "🚀 Great! The Media has been successfully created.",
   MEDIA_CREATED_FAILED_MESSAGE = "An error has occurred when creation the media. Please try again",
-  DAYS_OF_THE_WEEK="Monday,Tuesday,Wednesday,Thursday,Friday,Saturday"
+  DAYS_OF_THE_WEEK = "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday",
+  GROUP_MULTI_SELECT_TITLE = "Courses/groups who will have access to this content",
+  ATTACH_FILE = "Attach file",
+  REVIEW_PERMISSIONS = "Review the media permissions before continue",
+  ALLOW_ACCESS_MEDIA = "will have access to this content.",
+  MEDIA_DELETED = "The content has been successfully deleted.",
+  SEE_CONTENT = "View content",
 }
