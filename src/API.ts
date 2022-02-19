@@ -3,40 +3,39 @@
 //  This file was automatically generated and should not be edited.
 
 export type CreateCourseInput = {
-  id?: string | null,
-  name: string,
-  scheduleDates: Array< string | null >,
-  scheduleStartTime: string,
-  scheduleEndTime: string,
-  isVirtual: boolean,
-  _version?: number | null,
+  id?: string | null;
+  name: string;
+  scheduleDates: Array<string | null>;
+  scheduleStartTime: string;
+  scheduleEndTime: string;
+  virtualClassLink?: string | null;
 };
 
 export type ModelCourseConditionInput = {
-  name?: ModelStringInput | null,
-  scheduleDates?: ModelStringInput | null,
-  scheduleStartTime?: ModelStringInput | null,
-  scheduleEndTime?: ModelStringInput | null,
-  isVirtual?: ModelBooleanInput | null,
-  and?: Array< ModelCourseConditionInput | null > | null,
-  or?: Array< ModelCourseConditionInput | null > | null,
-  not?: ModelCourseConditionInput | null,
+  name?: ModelStringInput | null;
+  scheduleDates?: ModelStringInput | null;
+  scheduleStartTime?: ModelStringInput | null;
+  scheduleEndTime?: ModelStringInput | null;
+  virtualClassLink?: ModelStringInput | null;
+  and?: Array<ModelCourseConditionInput | null> | null;
+  or?: Array<ModelCourseConditionInput | null> | null;
+  not?: ModelCourseConditionInput | null;
 };
 
 export type ModelStringInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
+  ne?: string | null;
+  eq?: string | null;
+  le?: string | null;
+  lt?: string | null;
+  ge?: string | null;
+  gt?: string | null;
+  contains?: string | null;
+  notContains?: string | null;
+  between?: Array<string | null> | null;
+  beginsWith?: string | null;
+  attributeExists?: boolean | null;
+  attributeType?: ModelAttributeTypes | null;
+  size?: ModelSizeInput | null;
 };
 
 export enum ModelAttributeTypes {
@@ -52,62 +51,49 @@ export enum ModelAttributeTypes {
   _null = "_null",
 }
 
-
 export type ModelSizeInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-};
-
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
+  ne?: number | null;
+  eq?: number | null;
+  le?: number | null;
+  lt?: number | null;
+  ge?: number | null;
+  gt?: number | null;
+  between?: Array<number | null> | null;
 };
 
 export type Course = {
-  __typename: "Course",
-  id: string,
-  name: string,
-  scheduleDates: Array< string | null >,
-  scheduleStartTime: string,
-  scheduleEndTime: string,
-  isVirtual: boolean,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
+  __typename: "Course";
+  id: string;
+  name: string;
+  scheduleDates: Array<string | null>;
+  scheduleStartTime: string;
+  scheduleEndTime: string;
+  virtualClassLink?: string | null;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type UpdateCourseInput = {
-  id: string,
-  name?: string | null,
-  scheduleDates?: Array< string | null > | null,
-  scheduleStartTime?: string | null,
-  scheduleEndTime?: string | null,
-  isVirtual?: boolean | null,
-  _version?: number | null,
+  id: string;
+  name?: string | null;
+  scheduleDates?: Array<string | null> | null;
+  scheduleStartTime?: string | null;
+  scheduleEndTime?: string | null;
+  virtualClassLink?: string | null;
 };
 
 export type DeleteCourseInput = {
-  id: string,
-  _version?: number | null,
+  id: string;
 };
 
 export type CreateMediaInput = {
-  id?: string | null,
-  title: string,
-  type: MediaType,
-  description?: string | null,
-  link: string,
-  groups?: Array< string | null > | null,
-  _version?: number | null,
+  id?: string | null;
+  title: string;
+  type: MediaType;
+  description?: string | null;
+  link: string;
+  content?: string | null;
+  groups?: Array<string | null> | null;
 };
 
 export enum MediaType {
@@ -116,792 +102,626 @@ export enum MediaType {
   VIDEO = "VIDEO",
 }
 
-
 export type ModelMediaConditionInput = {
-  title?: ModelStringInput | null,
-  type?: ModelMediaTypeInput | null,
-  description?: ModelStringInput | null,
-  link?: ModelStringInput | null,
-  groups?: ModelStringInput | null,
-  and?: Array< ModelMediaConditionInput | null > | null,
-  or?: Array< ModelMediaConditionInput | null > | null,
-  not?: ModelMediaConditionInput | null,
+  title?: ModelStringInput | null;
+  type?: ModelMediaTypeInput | null;
+  description?: ModelStringInput | null;
+  link?: ModelStringInput | null;
+  content?: ModelStringInput | null;
+  groups?: ModelStringInput | null;
+  and?: Array<ModelMediaConditionInput | null> | null;
+  or?: Array<ModelMediaConditionInput | null> | null;
+  not?: ModelMediaConditionInput | null;
 };
 
 export type ModelMediaTypeInput = {
-  eq?: MediaType | null,
-  ne?: MediaType | null,
+  eq?: MediaType | null;
+  ne?: MediaType | null;
 };
 
 export type Media = {
-  __typename: "Media",
-  id: string,
-  title: string,
-  type: MediaType,
-  description?: string | null,
-  link: string,
-  groups?: Array< string | null > | null,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
-  owner?: string | null,
+  __typename: "Media";
+  id: string;
+  title: string;
+  type: MediaType;
+  description?: string | null;
+  link: string;
+  content?: string | null;
+  groups?: Array<string | null> | null;
+  createdAt: string;
+  updatedAt: string;
+  owner?: string | null;
 };
 
 export type UpdateMediaInput = {
-  id: string,
-  title?: string | null,
-  type?: MediaType | null,
-  description?: string | null,
-  link?: string | null,
-  groups?: Array< string | null > | null,
-  _version?: number | null,
+  id: string;
+  title?: string | null;
+  type?: MediaType | null;
+  description?: string | null;
+  link?: string | null;
+  content?: string | null;
+  groups?: Array<string | null> | null;
 };
 
 export type DeleteMediaInput = {
-  id: string,
-  _version?: number | null,
+  id: string;
 };
 
 export type CreateDynamoDBUserInput = {
-  id?: string | null,
-  name: string,
-  email: string,
-  phone?: number | null,
-  cognitoId: string,
-  groups: Array< string | null >,
-  _version?: number | null,
+  id?: string | null;
+  name: string;
+  email: string;
+  phone?: number | null;
+  cognitoId: string;
+  groups: Array<string | null>;
 };
 
 export type ModelDynamoDBUserConditionInput = {
-  name?: ModelStringInput | null,
-  email?: ModelStringInput | null,
-  phone?: ModelIntInput | null,
-  cognitoId?: ModelIDInput | null,
-  groups?: ModelStringInput | null,
-  and?: Array< ModelDynamoDBUserConditionInput | null > | null,
-  or?: Array< ModelDynamoDBUserConditionInput | null > | null,
-  not?: ModelDynamoDBUserConditionInput | null,
+  name?: ModelStringInput | null;
+  email?: ModelStringInput | null;
+  phone?: ModelIntInput | null;
+  cognitoId?: ModelIDInput | null;
+  groups?: ModelStringInput | null;
+  and?: Array<ModelDynamoDBUserConditionInput | null> | null;
+  or?: Array<ModelDynamoDBUserConditionInput | null> | null;
+  not?: ModelDynamoDBUserConditionInput | null;
 };
 
 export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
+  ne?: number | null;
+  eq?: number | null;
+  le?: number | null;
+  lt?: number | null;
+  ge?: number | null;
+  gt?: number | null;
+  between?: Array<number | null> | null;
+  attributeExists?: boolean | null;
+  attributeType?: ModelAttributeTypes | null;
 };
 
 export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
+  ne?: string | null;
+  eq?: string | null;
+  le?: string | null;
+  lt?: string | null;
+  ge?: string | null;
+  gt?: string | null;
+  contains?: string | null;
+  notContains?: string | null;
+  between?: Array<string | null> | null;
+  beginsWith?: string | null;
+  attributeExists?: boolean | null;
+  attributeType?: ModelAttributeTypes | null;
+  size?: ModelSizeInput | null;
 };
 
 export type DynamoDBUser = {
-  __typename: "DynamoDBUser",
-  id: string,
-  name: string,
-  email: string,
-  phone?: number | null,
-  cognitoId: string,
-  groups: Array< string | null >,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
+  __typename: "DynamoDBUser";
+  id: string;
+  name: string;
+  email: string;
+  phone?: number | null;
+  cognitoId: string;
+  groups: Array<string | null>;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type UpdateDynamoDBUserInput = {
-  id: string,
-  name?: string | null,
-  email?: string | null,
-  phone?: number | null,
-  cognitoId?: string | null,
-  groups?: Array< string | null > | null,
-  _version?: number | null,
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  phone?: number | null;
+  cognitoId?: string | null;
+  groups?: Array<string | null> | null;
 };
 
 export type DeleteDynamoDBUserInput = {
-  id: string,
-  _version?: number | null,
+  id: string;
 };
 
 export type ModelCourseFilterInput = {
-  id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  scheduleDates?: ModelStringInput | null,
-  scheduleStartTime?: ModelStringInput | null,
-  scheduleEndTime?: ModelStringInput | null,
-  isVirtual?: ModelBooleanInput | null,
-  and?: Array< ModelCourseFilterInput | null > | null,
-  or?: Array< ModelCourseFilterInput | null > | null,
-  not?: ModelCourseFilterInput | null,
+  id?: ModelIDInput | null;
+  name?: ModelStringInput | null;
+  scheduleDates?: ModelStringInput | null;
+  scheduleStartTime?: ModelStringInput | null;
+  scheduleEndTime?: ModelStringInput | null;
+  virtualClassLink?: ModelStringInput | null;
+  and?: Array<ModelCourseFilterInput | null> | null;
+  or?: Array<ModelCourseFilterInput | null> | null;
+  not?: ModelCourseFilterInput | null;
 };
 
 export type ModelCourseConnection = {
-  __typename: "ModelCourseConnection",
-  items:  Array<Course | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+  __typename: "ModelCourseConnection";
+  items: Array<Course | null>;
+  nextToken?: string | null;
 };
 
 export type ModelMediaFilterInput = {
-  id?: ModelIDInput | null,
-  title?: ModelStringInput | null,
-  type?: ModelMediaTypeInput | null,
-  description?: ModelStringInput | null,
-  link?: ModelStringInput | null,
-  groups?: ModelStringInput | null,
-  and?: Array< ModelMediaFilterInput | null > | null,
-  or?: Array< ModelMediaFilterInput | null > | null,
-  not?: ModelMediaFilterInput | null,
+  id?: ModelIDInput | null;
+  title?: ModelStringInput | null;
+  type?: ModelMediaTypeInput | null;
+  description?: ModelStringInput | null;
+  link?: ModelStringInput | null;
+  content?: ModelStringInput | null;
+  groups?: ModelStringInput | null;
+  and?: Array<ModelMediaFilterInput | null> | null;
+  or?: Array<ModelMediaFilterInput | null> | null;
+  not?: ModelMediaFilterInput | null;
 };
 
 export type ModelMediaConnection = {
-  __typename: "ModelMediaConnection",
-  items:  Array<Media | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+  __typename: "ModelMediaConnection";
+  items: Array<Media | null>;
+  nextToken?: string | null;
 };
 
 export type ModelDynamoDBUserFilterInput = {
-  id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  email?: ModelStringInput | null,
-  phone?: ModelIntInput | null,
-  cognitoId?: ModelIDInput | null,
-  groups?: ModelStringInput | null,
-  and?: Array< ModelDynamoDBUserFilterInput | null > | null,
-  or?: Array< ModelDynamoDBUserFilterInput | null > | null,
-  not?: ModelDynamoDBUserFilterInput | null,
+  id?: ModelIDInput | null;
+  name?: ModelStringInput | null;
+  email?: ModelStringInput | null;
+  phone?: ModelIntInput | null;
+  cognitoId?: ModelIDInput | null;
+  groups?: ModelStringInput | null;
+  and?: Array<ModelDynamoDBUserFilterInput | null> | null;
+  or?: Array<ModelDynamoDBUserFilterInput | null> | null;
+  not?: ModelDynamoDBUserFilterInput | null;
 };
 
 export type ModelDynamoDBUserConnection = {
-  __typename: "ModelDynamoDBUserConnection",
-  items:  Array<DynamoDBUser | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+  __typename: "ModelDynamoDBUserConnection";
+  items: Array<DynamoDBUser | null>;
+  nextToken?: string | null;
 };
 
 export type CreateCourseMutationVariables = {
-  input: CreateCourseInput,
-  condition?: ModelCourseConditionInput | null,
+  input: CreateCourseInput;
+  condition?: ModelCourseConditionInput | null;
 };
 
 export type CreateCourseMutation = {
-  createCourse?:  {
-    __typename: "Course",
-    id: string,
-    name: string,
-    scheduleDates: Array< string | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
-    isVirtual: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  createCourse?: {
+    __typename: "Course";
+    id: string;
+    name: string;
+    scheduleDates: Array<string | null>;
+    scheduleStartTime: string;
+    scheduleEndTime: string;
+    virtualClassLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type UpdateCourseMutationVariables = {
-  input: UpdateCourseInput,
-  condition?: ModelCourseConditionInput | null,
+  input: UpdateCourseInput;
+  condition?: ModelCourseConditionInput | null;
 };
 
 export type UpdateCourseMutation = {
-  updateCourse?:  {
-    __typename: "Course",
-    id: string,
-    name: string,
-    scheduleDates: Array< string | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
-    isVirtual: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  updateCourse?: {
+    __typename: "Course";
+    id: string;
+    name: string;
+    scheduleDates: Array<string | null>;
+    scheduleStartTime: string;
+    scheduleEndTime: string;
+    virtualClassLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type DeleteCourseMutationVariables = {
-  input: DeleteCourseInput,
-  condition?: ModelCourseConditionInput | null,
+  input: DeleteCourseInput;
+  condition?: ModelCourseConditionInput | null;
 };
 
 export type DeleteCourseMutation = {
-  deleteCourse?:  {
-    __typename: "Course",
-    id: string,
-    name: string,
-    scheduleDates: Array< string | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
-    isVirtual: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  deleteCourse?: {
+    __typename: "Course";
+    id: string;
+    name: string;
+    scheduleDates: Array<string | null>;
+    scheduleStartTime: string;
+    scheduleEndTime: string;
+    virtualClassLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type CreateMediaMutationVariables = {
-  input: CreateMediaInput,
-  condition?: ModelMediaConditionInput | null,
+  input: CreateMediaInput;
+  condition?: ModelMediaConditionInput | null;
 };
 
 export type CreateMediaMutation = {
-  createMedia?:  {
-    __typename: "Media",
-    id: string,
-    title: string,
-    type: MediaType,
-    description?: string | null,
-    link: string,
-    groups?: Array< string | null > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  createMedia?: {
+    __typename: "Media";
+    id: string;
+    title: string;
+    type: MediaType;
+    description?: string | null;
+    link: string;
+    content?: string | null;
+    groups?: Array<string | null> | null;
+    createdAt: string;
+    updatedAt: string;
+    owner?: string | null;
+  } | null;
 };
 
 export type UpdateMediaMutationVariables = {
-  input: UpdateMediaInput,
-  condition?: ModelMediaConditionInput | null,
+  input: UpdateMediaInput;
+  condition?: ModelMediaConditionInput | null;
 };
 
 export type UpdateMediaMutation = {
-  updateMedia?:  {
-    __typename: "Media",
-    id: string,
-    title: string,
-    type: MediaType,
-    description?: string | null,
-    link: string,
-    groups?: Array< string | null > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  updateMedia?: {
+    __typename: "Media";
+    id: string;
+    title: string;
+    type: MediaType;
+    description?: string | null;
+    link: string;
+    content?: string | null;
+    groups?: Array<string | null> | null;
+    createdAt: string;
+    updatedAt: string;
+    owner?: string | null;
+  } | null;
 };
 
 export type DeleteMediaMutationVariables = {
-  input: DeleteMediaInput,
-  condition?: ModelMediaConditionInput | null,
+  input: DeleteMediaInput;
+  condition?: ModelMediaConditionInput | null;
 };
 
 export type DeleteMediaMutation = {
-  deleteMedia?:  {
-    __typename: "Media",
-    id: string,
-    title: string,
-    type: MediaType,
-    description?: string | null,
-    link: string,
-    groups?: Array< string | null > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  deleteMedia?: {
+    __typename: "Media";
+    id: string;
+    title: string;
+    type: MediaType;
+    description?: string | null;
+    link: string;
+    content?: string | null;
+    groups?: Array<string | null> | null;
+    createdAt: string;
+    updatedAt: string;
+    owner?: string | null;
+  } | null;
 };
 
 export type CreateDynamoDBUserMutationVariables = {
-  input: CreateDynamoDBUserInput,
-  condition?: ModelDynamoDBUserConditionInput | null,
+  input: CreateDynamoDBUserInput;
+  condition?: ModelDynamoDBUserConditionInput | null;
 };
 
 export type CreateDynamoDBUserMutation = {
-  createDynamoDBUser?:  {
-    __typename: "DynamoDBUser",
-    id: string,
-    name: string,
-    email: string,
-    phone?: number | null,
-    cognitoId: string,
-    groups: Array< string | null >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  createDynamoDBUser?: {
+    __typename: "DynamoDBUser";
+    id: string;
+    name: string;
+    email: string;
+    phone?: number | null;
+    cognitoId: string;
+    groups: Array<string | null>;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type UpdateDynamoDBUserMutationVariables = {
-  input: UpdateDynamoDBUserInput,
-  condition?: ModelDynamoDBUserConditionInput | null,
+  input: UpdateDynamoDBUserInput;
+  condition?: ModelDynamoDBUserConditionInput | null;
 };
 
 export type UpdateDynamoDBUserMutation = {
-  updateDynamoDBUser?:  {
-    __typename: "DynamoDBUser",
-    id: string,
-    name: string,
-    email: string,
-    phone?: number | null,
-    cognitoId: string,
-    groups: Array< string | null >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  updateDynamoDBUser?: {
+    __typename: "DynamoDBUser";
+    id: string;
+    name: string;
+    email: string;
+    phone?: number | null;
+    cognitoId: string;
+    groups: Array<string | null>;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type DeleteDynamoDBUserMutationVariables = {
-  input: DeleteDynamoDBUserInput,
-  condition?: ModelDynamoDBUserConditionInput | null,
+  input: DeleteDynamoDBUserInput;
+  condition?: ModelDynamoDBUserConditionInput | null;
 };
 
 export type DeleteDynamoDBUserMutation = {
-  deleteDynamoDBUser?:  {
-    __typename: "DynamoDBUser",
-    id: string,
-    name: string,
-    email: string,
-    phone?: number | null,
-    cognitoId: string,
-    groups: Array< string | null >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  deleteDynamoDBUser?: {
+    __typename: "DynamoDBUser";
+    id: string;
+    name: string;
+    email: string;
+    phone?: number | null;
+    cognitoId: string;
+    groups: Array<string | null>;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type GetCourseQueryVariables = {
-  id: string,
+  id: string;
 };
 
 export type GetCourseQuery = {
-  getCourse?:  {
-    __typename: "Course",
-    id: string,
-    name: string,
-    scheduleDates: Array< string | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
-    isVirtual: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  getCourse?: {
+    __typename: "Course";
+    id: string;
+    name: string;
+    scheduleDates: Array<string | null>;
+    scheduleStartTime: string;
+    scheduleEndTime: string;
+    virtualClassLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type ListCoursesQueryVariables = {
-  filter?: ModelCourseFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  filter?: ModelCourseFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type ListCoursesQuery = {
-  listCourses?:  {
-    __typename: "ModelCourseConnection",
-    items:  Array< {
-      __typename: "Course",
-      id: string,
-      name: string,
-      scheduleDates: Array< string | null >,
-      scheduleStartTime: string,
-      scheduleEndTime: string,
-      isVirtual: boolean,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncCoursesQueryVariables = {
-  filter?: ModelCourseFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncCoursesQuery = {
-  syncCourses?:  {
-    __typename: "ModelCourseConnection",
-    items:  Array< {
-      __typename: "Course",
-      id: string,
-      name: string,
-      scheduleDates: Array< string | null >,
-      scheduleStartTime: string,
-      scheduleEndTime: string,
-      isVirtual: boolean,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  listCourses?: {
+    __typename: "ModelCourseConnection";
+    items: Array<{
+      __typename: "Course";
+      id: string;
+      name: string;
+      scheduleDates: Array<string | null>;
+      scheduleStartTime: string;
+      scheduleEndTime: string;
+      virtualClassLink?: string | null;
+      createdAt: string;
+      updatedAt: string;
+    } | null>;
+    nextToken?: string | null;
+  } | null;
 };
 
 export type GetMediaQueryVariables = {
-  id: string,
+  id: string;
 };
 
 export type GetMediaQuery = {
-  getMedia?:  {
-    __typename: "Media",
-    id: string,
-    title: string,
-    type: MediaType,
-    description?: string | null,
-    link: string,
-    groups?: Array< string | null > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  getMedia?: {
+    __typename: "Media";
+    id: string;
+    title: string;
+    type: MediaType;
+    description?: string | null;
+    link: string;
+    content?: string | null;
+    groups?: Array<string | null> | null;
+    createdAt: string;
+    updatedAt: string;
+    owner?: string | null;
+  } | null;
 };
 
 export type ListMediaQueryVariables = {
-  filter?: ModelMediaFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  filter?: ModelMediaFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type ListMediaQuery = {
-  listMedia?:  {
-    __typename: "ModelMediaConnection",
-    items:  Array< {
-      __typename: "Media",
-      id: string,
-      title: string,
-      type: MediaType,
-      description?: string | null,
-      link: string,
-      groups?: Array< string | null > | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      owner?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncMediaQueryVariables = {
-  filter?: ModelMediaFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncMediaQuery = {
-  syncMedia?:  {
-    __typename: "ModelMediaConnection",
-    items:  Array< {
-      __typename: "Media",
-      id: string,
-      title: string,
-      type: MediaType,
-      description?: string | null,
-      link: string,
-      groups?: Array< string | null > | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      owner?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  listMedia?: {
+    __typename: "ModelMediaConnection";
+    items: Array<{
+      __typename: "Media";
+      id: string;
+      title: string;
+      type: MediaType;
+      description?: string | null;
+      link: string;
+      content?: string | null;
+      groups?: Array<string | null> | null;
+      createdAt: string;
+      updatedAt: string;
+      owner?: string | null;
+    } | null>;
+    nextToken?: string | null;
+  } | null;
 };
 
 export type GetDynamoDBUserQueryVariables = {
-  id: string,
+  id: string;
 };
 
 export type GetDynamoDBUserQuery = {
-  getDynamoDBUser?:  {
-    __typename: "DynamoDBUser",
-    id: string,
-    name: string,
-    email: string,
-    phone?: number | null,
-    cognitoId: string,
-    groups: Array< string | null >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  getDynamoDBUser?: {
+    __typename: "DynamoDBUser";
+    id: string;
+    name: string;
+    email: string;
+    phone?: number | null;
+    cognitoId: string;
+    groups: Array<string | null>;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type ListDynamoDBUsersQueryVariables = {
-  filter?: ModelDynamoDBUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  filter?: ModelDynamoDBUserFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type ListDynamoDBUsersQuery = {
-  listDynamoDBUsers?:  {
-    __typename: "ModelDynamoDBUserConnection",
-    items:  Array< {
-      __typename: "DynamoDBUser",
-      id: string,
-      name: string,
-      email: string,
-      phone?: number | null,
-      cognitoId: string,
-      groups: Array< string | null >,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncDynamoDBUsersQueryVariables = {
-  filter?: ModelDynamoDBUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncDynamoDBUsersQuery = {
-  syncDynamoDBUsers?:  {
-    __typename: "ModelDynamoDBUserConnection",
-    items:  Array< {
-      __typename: "DynamoDBUser",
-      id: string,
-      name: string,
-      email: string,
-      phone?: number | null,
-      cognitoId: string,
-      groups: Array< string | null >,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  listDynamoDBUsers?: {
+    __typename: "ModelDynamoDBUserConnection";
+    items: Array<{
+      __typename: "DynamoDBUser";
+      id: string;
+      name: string;
+      email: string;
+      phone?: number | null;
+      cognitoId: string;
+      groups: Array<string | null>;
+      createdAt: string;
+      updatedAt: string;
+    } | null>;
+    nextToken?: string | null;
+  } | null;
 };
 
 export type OnCreateCourseSubscription = {
-  onCreateCourse?:  {
-    __typename: "Course",
-    id: string,
-    name: string,
-    scheduleDates: Array< string | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
-    isVirtual: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onCreateCourse?: {
+    __typename: "Course";
+    id: string;
+    name: string;
+    scheduleDates: Array<string | null>;
+    scheduleStartTime: string;
+    scheduleEndTime: string;
+    virtualClassLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type OnUpdateCourseSubscription = {
-  onUpdateCourse?:  {
-    __typename: "Course",
-    id: string,
-    name: string,
-    scheduleDates: Array< string | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
-    isVirtual: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onUpdateCourse?: {
+    __typename: "Course";
+    id: string;
+    name: string;
+    scheduleDates: Array<string | null>;
+    scheduleStartTime: string;
+    scheduleEndTime: string;
+    virtualClassLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type OnDeleteCourseSubscription = {
-  onDeleteCourse?:  {
-    __typename: "Course",
-    id: string,
-    name: string,
-    scheduleDates: Array< string | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
-    isVirtual: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onDeleteCourse?: {
+    __typename: "Course";
+    id: string;
+    name: string;
+    scheduleDates: Array<string | null>;
+    scheduleStartTime: string;
+    scheduleEndTime: string;
+    virtualClassLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type OnCreateMediaSubscriptionVariables = {
-  owner?: string | null,
+  owner?: string | null;
 };
 
 export type OnCreateMediaSubscription = {
-  onCreateMedia?:  {
-    __typename: "Media",
-    id: string,
-    title: string,
-    type: MediaType,
-    description?: string | null,
-    link: string,
-    groups?: Array< string | null > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  onCreateMedia?: {
+    __typename: "Media";
+    id: string;
+    title: string;
+    type: MediaType;
+    description?: string | null;
+    link: string;
+    content?: string | null;
+    groups?: Array<string | null> | null;
+    createdAt: string;
+    updatedAt: string;
+    owner?: string | null;
+  } | null;
 };
 
 export type OnUpdateMediaSubscriptionVariables = {
-  owner?: string | null,
+  owner?: string | null;
 };
 
 export type OnUpdateMediaSubscription = {
-  onUpdateMedia?:  {
-    __typename: "Media",
-    id: string,
-    title: string,
-    type: MediaType,
-    description?: string | null,
-    link: string,
-    groups?: Array< string | null > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  onUpdateMedia?: {
+    __typename: "Media";
+    id: string;
+    title: string;
+    type: MediaType;
+    description?: string | null;
+    link: string;
+    content?: string | null;
+    groups?: Array<string | null> | null;
+    createdAt: string;
+    updatedAt: string;
+    owner?: string | null;
+  } | null;
 };
 
 export type OnDeleteMediaSubscriptionVariables = {
-  owner?: string | null,
+  owner?: string | null;
 };
 
 export type OnDeleteMediaSubscription = {
-  onDeleteMedia?:  {
-    __typename: "Media",
-    id: string,
-    title: string,
-    type: MediaType,
-    description?: string | null,
-    link: string,
-    groups?: Array< string | null > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  onDeleteMedia?: {
+    __typename: "Media";
+    id: string;
+    title: string;
+    type: MediaType;
+    description?: string | null;
+    link: string;
+    content?: string | null;
+    groups?: Array<string | null> | null;
+    createdAt: string;
+    updatedAt: string;
+    owner?: string | null;
+  } | null;
 };
 
 export type OnCreateDynamoDBUserSubscription = {
-  onCreateDynamoDBUser?:  {
-    __typename: "DynamoDBUser",
-    id: string,
-    name: string,
-    email: string,
-    phone?: number | null,
-    cognitoId: string,
-    groups: Array< string | null >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onCreateDynamoDBUser?: {
+    __typename: "DynamoDBUser";
+    id: string;
+    name: string;
+    email: string;
+    phone?: number | null;
+    cognitoId: string;
+    groups: Array<string | null>;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type OnUpdateDynamoDBUserSubscription = {
-  onUpdateDynamoDBUser?:  {
-    __typename: "DynamoDBUser",
-    id: string,
-    name: string,
-    email: string,
-    phone?: number | null,
-    cognitoId: string,
-    groups: Array< string | null >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onUpdateDynamoDBUser?: {
+    __typename: "DynamoDBUser";
+    id: string;
+    name: string;
+    email: string;
+    phone?: number | null;
+    cognitoId: string;
+    groups: Array<string | null>;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };
 
 export type OnDeleteDynamoDBUserSubscription = {
-  onDeleteDynamoDBUser?:  {
-    __typename: "DynamoDBUser",
-    id: string,
-    name: string,
-    email: string,
-    phone?: number | null,
-    cognitoId: string,
-    groups: Array< string | null >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onDeleteDynamoDBUser?: {
+    __typename: "DynamoDBUser";
+    id: string;
+    name: string;
+    email: string;
+    phone?: number | null;
+    cognitoId: string;
+    groups: Array<string | null>;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 };

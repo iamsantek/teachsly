@@ -9,7 +9,7 @@ type Course @model
   scheduleDates: [String]!
   scheduleStartTime: AWSTime!
   scheduleEndTime: AWSTime!
-  isVirtual: Boolean!
+  virtualClassLink: String
 }
 
 input AMPLIFY {
@@ -25,7 +25,7 @@ enum MediaType {
 type Media @model
 @auth(rules: [
   {allow: owner},
-  {allow: groups, groups: ["Admin"], operations: [create] },
+  {allow: groups, groups: ["Admin"], operations: [create, read, update, delete] },
   {allow: groups, groupsField: "groups", operations: [read] }
   ])
   {
@@ -34,6 +34,7 @@ type Media @model
   type: MediaType!
   description: String
   link: String!
+  content: String
   groups: [String]
 }
 
