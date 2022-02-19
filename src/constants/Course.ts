@@ -5,5 +5,5 @@ export const defaultCourse: Course = new Course({
   scheduleDates: [],
   scheduleEndTime: "",
   scheduleStartTime: "",
-  isVirtual: false,
+  virtualClassLink: "",
 });

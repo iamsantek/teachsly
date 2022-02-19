@@ -1,12 +1,13 @@
 import { MediaType } from "../models/index";
-import { Media } from "../interfaces/Media";
+import { Media, MediaWithMultiSelect } from "../interfaces/Media";
 
-export const defaultMedia: Media = {
+export const defaultMedia: Media | MediaWithMultiSelect = {
   title: "",
   description: "",
   link: "",
   type: MediaType.LINK,
   groups: [],
+  content: "",
 };
 
 export const mediaIcons = {
