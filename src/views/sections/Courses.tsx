@@ -1,3 +1,4 @@
+import { Avatar } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 // reactstrap components
 import {
@@ -59,19 +60,7 @@ const Courses = () => {
                     <tr key={course.id}>
                       <th scope="row">
                         <Media className="align-items-center">
-                          <a
-                            className="avatar rounded-circle mr-3"
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            <img
-                              alt="..."
-                              src={
-                                require("../../assets/img/theme/bootstrap.jpg")
-                                  .default
-                              }
-                            />
-                          </a>
+                          <Avatar name={course.name} marginRight={3} />
                           <Media>
                             <span className="mb-0 text-sm">{course.name}</span>
                           </Media>

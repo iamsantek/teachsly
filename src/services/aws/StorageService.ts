@@ -26,7 +26,13 @@ class StorageService {
         error
       );
     }
-  }
+  };
+
+  private generateFileName = (file: File) => {
+    const fileExtension = this.getExtensionType(file);
+
+    return `${uuidv4()}.${fileExtension}`;
+  };
 
   public uploadToS3 = async (file: File | undefined) => {
     try {
@@ -34,8 +40,7 @@ class StorageService {
         return;
       }
 
-      const fileExtension = this.getExtensionType(file);
-      const fileName = `${uuidv4()}.${fileExtension}`;
+      const fileName = this.generateFileName(file);
 
       return await Storage.put(fileName, file, {
         // acl: "public-read", // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#upload-property
@@ -54,31 +59,27 @@ class StorageService {
 
   public persistMedia = async (media: PlatformMedia, file?: File) => {
     const fileUploaded = await this.uploadToS3(file);
-    const { title, description, type, groups } = media;
-
-    if (!fileUploaded) {
-      return;
-    }
-
-    const groupsWithAdminAccess = [...groups, UserTypes.ADMIN]
+    const { title, description, type, groups, content } = media;
 
     try {
-      const link = fileUploaded.key;
+      const filterGroups = (groups as string[]).filter((group) => group);
+
       const media = new Media({
         title,
         description,
-        link,
+        link: fileUploaded?.key || "",
         type,
-        groups: groupsWithAdminAccess,
+        content,
+        groups: [UserTypes.ADMIN, ...(filterGroups as string[])],
       });
 
-      const response = await GraphQLService.graphQL(
+      const createdMedia = await GraphQLService.graphQL(
         graphqlOperation(createMedia, { input: media })
       );
 
-      if (response) {
-        const results = response as GraphQLResultType<Media>;
-        return results?.data?.createMedia as Media || null;
+      if (createdMedia) {
+        const results = createdMedia as GraphQLResultType<Media>;
+        return (results?.data?.createMedia as PlatformMedia) || null;
       }
     } catch (error) {
       Logger.log(

@@ -1,24 +1,26 @@
-import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
+import {
+  ModelInit,
+  MutableModel,
+  PersistentModelConstructor,
+} from "@aws-amplify/datastore";
 
 export enum MediaType {
   LINK = "LINK",
   PDF = "PDF",
-  VIDEO = "VIDEO"
+  VIDEO = "VIDEO",
 }
-
-
 
 type CourseMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
+  readOnlyFields: "createdAt" | "updatedAt";
+};
 
 type MediaMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
+  readOnlyFields: "createdAt" | "updatedAt";
+};
 
 type DynamoDBUserMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
+  readOnlyFields: "createdAt" | "updatedAt";
+};
 
 export declare class Course {
   readonly id: string;
@@ -26,11 +28,16 @@ export declare class Course {
   readonly scheduleDates: (string | null)[];
   readonly scheduleStartTime: string;
   readonly scheduleEndTime: string;
-  readonly isVirtual: boolean;
+  readonly virtualClassLink?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Course, CourseMetaData>);
-  static copyOf(source: Course, mutator: (draft: MutableModel<Course, CourseMetaData>) => MutableModel<Course, CourseMetaData> | void): Course;
+  static copyOf(
+    source: Course,
+    mutator: (
+      draft: MutableModel<Course, CourseMetaData>
+    ) => MutableModel<Course, CourseMetaData> | void
+  ): Course;
 }
 
 export declare class Media {
@@ -39,11 +46,17 @@ export declare class Media {
   readonly type: MediaType | keyof typeof MediaType;
   readonly description?: string;
   readonly link: string;
+  readonly content?: string;
   readonly groups?: (string | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Media, MediaMetaData>);
-  static copyOf(source: Media, mutator: (draft: MutableModel<Media, MediaMetaData>) => MutableModel<Media, MediaMetaData> | void): Media;
+  static copyOf(
+    source: Media,
+    mutator: (
+      draft: MutableModel<Media, MediaMetaData>
+    ) => MutableModel<Media, MediaMetaData> | void
+  ): Media;
 }
 
 export declare class DynamoDBUser {
@@ -56,5 +69,10 @@ export declare class DynamoDBUser {
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<DynamoDBUser, DynamoDBUserMetaData>);
-  static copyOf(source: DynamoDBUser, mutator: (draft: MutableModel<DynamoDBUser, DynamoDBUserMetaData>) => MutableModel<DynamoDBUser, DynamoDBUserMetaData> | void): DynamoDBUser;
+  static copyOf(
+    source: DynamoDBUser,
+    mutator: (
+      draft: MutableModel<DynamoDBUser, DynamoDBUserMetaData>
+    ) => MutableModel<DynamoDBUser, DynamoDBUserMetaData> | void
+  ): DynamoDBUser;
 }
