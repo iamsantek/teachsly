@@ -82,7 +82,7 @@ class UserService {
 
   public getUserType = (user: User) => {
     if (!user) {
-      return
+      return;
     }
 
     const { groups } = user;

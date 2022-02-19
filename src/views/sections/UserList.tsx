@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import { Avatar } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 // reactstrap components
 import {
   Card,
@@ -10,32 +11,32 @@ import {
   Media,
   Table,
   Container,
-  Row
-} from 'reactstrap'
-import { CourseBadgeList } from '../../components/Badges/CourseBadge'
+  Row,
+} from "reactstrap";
+import { CourseBadgeList } from "../../components/Badges/CourseBadge";
 // core components
-import { UserTypes } from '../../enums/UserTypes'
-import { DynamoDBUser } from '../../models/index.js'
-import UserService from '../../services/UserService'
+import { UserTypes } from "../../enums/UserTypes";
+import { DynamoDBUser } from "../../models/index.js";
+import UserService from "../../services/UserService";
 
 interface Props {
-  listType: UserTypes | 'ALL';
+  listType: UserTypes | "ALL";
 }
 
 const UserList = (props: Props) => {
-  const [users, setUsers] = useState<DynamoDBUser[]>([])
+  const [users, setUsers] = useState<DynamoDBUser[]>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const users = await UserService.fetchUsersByType(props.listType)
+      const users = await UserService.fetchUsersByType(props.listType);
 
       if (users) {
-        setUsers(users)
+        setUsers(users);
       }
-    }
+    };
 
-    fetchUsers()
-  }, [props.listType])
+    fetchUsers();
+  }, [props.listType]);
 
   return (
     <>
@@ -63,19 +64,8 @@ const UserList = (props: Props) => {
                     <tr key={user.id}>
                       <th scope="row">
                         <Media className="align-items-center">
-                          <a
-                            className="avatar rounded-circle mr-3"
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            <img
-                              alt="..."
-                              src={
-                                require('../../assets/img/theme/bootstrap.jpg')
-                                  .default
-                              }
-                            />
-                          </a>
+                          <Avatar name={user.name} marginRight={4} />
+
                           <Media>
                             <span className="mb-0 text-sm">{user.name}</span>
                           </Media>
@@ -133,7 +123,7 @@ const UserList = (props: Props) => {
         </Row>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default UserList
+export default UserList;

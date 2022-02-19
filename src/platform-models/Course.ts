@@ -4,13 +4,13 @@ export class Course {
   scheduleDates: string[];
   scheduleStartTime: string;
   scheduleEndTime: string;
-  isVirtual: boolean;
+  virtualClassLink: string;
 
   constructor(course: Course) {
     this.name = course.name;
     this.scheduleDates = course.scheduleDates;
     this.scheduleStartTime = course.scheduleStartTime;
     this.scheduleEndTime = course.scheduleEndTime;
-    this.isVirtual = course.isVirtual;
+    this.virtualClassLink = course.virtualClassLink;
   }
 }

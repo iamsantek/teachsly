@@ -24,6 +24,14 @@ interface Props {
   onClose: () => void;
 }
 
+const daysOfTheWeek = translate("DAYS_OF_THE_WEEK").split(",");
+
+const sortDaysOfTheWeek = (unsortedDaysOfTheWeek: string[]) => {
+  return unsortedDaysOfTheWeek.sort(
+    (day1, day2) => daysOfTheWeek.indexOf(day1) - daysOfTheWeek.indexOf(day2)
+  );
+};
+
 const CreateCourseModal = (props: Props) => {
   const [course, setCourse] = useState<PlatformCourse>(defaultCourse);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -40,17 +48,17 @@ const CreateCourseModal = (props: Props) => {
   };
 
   const onCheckboxChange = (inputName: string, inputValue: boolean) => {
-    let updatedDates = course.scheduleDates;
+    let updatedDates = [...course.scheduleDates];
 
     if (!inputValue) {
-      updatedDates = updatedDates.filter((i) => i === inputName);
+      updatedDates = updatedDates.filter((i) => i !== inputName);
     } else {
       updatedDates.push(inputName);
     }
 
     setCourse({
       ...course,
-      scheduleDates: updatedDates,
+      scheduleDates: sortDaysOfTheWeek(updatedDates),
     });
   };
 
@@ -83,15 +91,12 @@ const CreateCourseModal = (props: Props) => {
     );
 
   const generateDayCheckboxes = () =>
-    //TODO: Replace with Enum
-    translate("DAYS_OF_THE_WEEK").split(",").map(
-      (day) => (
-          <FormGroup check inline key={day}>
-            <Input type="checkbox" name={day} onChange={checkboxHandler} />
-            <Label check>{day}</Label>
-          </FormGroup>
-      )
-    );
+    daysOfTheWeek.map((day: string) => (
+      <FormGroup check inline key={day}>
+        <Input type="checkbox" name={day} onChange={checkboxHandler} />
+        <Label check>{day}</Label>
+      </FormGroup>
+    ));
 
   return (
     <Modal

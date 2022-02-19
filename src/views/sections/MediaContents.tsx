@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useState } from "react";
 // reactstrap components
 import {
   Badge,
@@ -11,55 +11,94 @@ import {
   Table,
   Container,
   Row,
-  Media
-} from 'reactstrap'
-import { CourseBadgeList } from '../../components/Badges/CourseBadge'
-import { CustomButton } from '../../components/Buttons/CustomButton'
+  Media,
+} from "reactstrap";
+import { CourseBadgeList } from "../../components/Badges/CourseBadge";
+import { CustomButton } from "../../components/Buttons/CustomButton";
 // core components
-import { mediaIcons } from '../../constants/media'
-import { MessageLevel } from '../../interfaces/AlertNotification'
-import MediaUploaderModal from '../../modals/MediaUploaderModal'
-import { Media as MediaModel } from '../../models/index'
-import StorageService from '../../services/aws/StorageService'
-import MediaService from '../../services/MediaService'
+import { mediaIcons } from "../../constants/media";
+import {
+  AlertNotification,
+  MessageLevel,
+} from "../../interfaces/AlertNotification";
+import MediaUploaderModal from "../../modals/MediaUploaderModal";
+import StorageService from "../../services/aws/StorageService";
+import MediaService from "../../services/MediaService";
+import { Media as PlatformMedia } from "../../interfaces/Media";
+import { onDeleteCourse } from "../../graphql/subscriptions";
+import { translate } from "../../utils/LanguageUtils";
+import { Button } from "@chakra-ui/react";
+import { UserDashboardContext } from "../../contexts/UserDashboardContext";
+import UserGroupsService from "../../services/UserGroupsService";
 
 const MediaContents = () => {
-  const [medias, setMedia] = useState<MediaModel[]>([])
+  const [medias, setMedias] = useState<PlatformMedia[]>([]);
+  const [mediaToUpdate, setMediaToUpdate] = useState<PlatformMedia>();
   const [isGeneratingLink, setIsGeneratingLink] = useState<boolean>(false);
   const [mediaUploaderModalVisibility, setMediaUploaderModalVisibility] =
-    useState<boolean>(false)
-
+    useState<boolean>(false);
 
   useEffect(() => {
     const fetchMedia = async () => {
-      const medias = await MediaService.fetchMedia()
+      const medias = await MediaService.fetchMedias();
+      setMedias(medias || []);
+    };
 
-      if (medias) {
-        setMedia(medias as MediaModel[])
-      }
-    }
-
-    fetchMedia()
-  }, [])
+    fetchMedia();
+  }, []);
 
   const generateSignedUrl = async (key: string) => {
-    setIsGeneratingLink(true)
+    setIsGeneratingLink(true);
     const signedURL = await StorageService.getSignedUrl(key);
-  
+
     if (signedURL) {
-      window.open(signedURL, '_blank')
+      window.open(signedURL, "_blank");
     }
-    
-    setIsGeneratingLink(false)
-  }
+
+    setIsGeneratingLink(false);
+  };
+
+  const onEditMedia = (media: PlatformMedia) => {
+    setMediaToUpdate(media);
+    setMediaUploaderModalVisibility(true);
+  };
+
+  const onDeleteMedia = async (mediaToDelete: PlatformMedia) => {
+    const isSuccessfullyDeleted = await MediaService.deleteMedia(
+      mediaToDelete.id as string
+    );
+
+    if (!!isSuccessfullyDeleted) {
+      setMedias((medias) =>
+        medias.filter((media) => media.id !== mediaToDelete.id)
+      );
+      new AlertNotification(MessageLevel.SUCCESS, translate("MEDIA_DELETED"));
+    }
+  };
+
+  const onUpdateMedia = (updatedMedia: PlatformMedia) => {
+    const updatedMedias = [...medias];
+    const index = medias.indexOf(
+      medias.find((media) => media.id === updatedMedia.id) as PlatformMedia
+    );
+    updatedMedias[index] = updatedMedia;
+    setMedias(updatedMedias);
+  };
 
   return (
     <>
       {/* Page content */}
       <MediaUploaderModal
+        mediaToUpdate={mediaToUpdate}
         isOpen={mediaUploaderModalVisibility}
-        onClose={() => setMediaUploaderModalVisibility(false)}
-        onComplete={(uploadedMedia: MediaModel) => setMedia([uploadedMedia, ...medias])}
+        onClose={() => {
+          setMediaUploaderModalVisibility(false);
+          setMediaToUpdate(undefined);
+        }}
+        onCreate={(uploadedMedia: PlatformMedia) =>
+          setMedias([uploadedMedia, ...medias])
+        }
+        onUpdate={onUpdateMedia}
       />
       <Container className="mt--7" fluid>
         {/* Table */}
@@ -87,7 +126,7 @@ const MediaContents = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {medias.map((media: MediaModel) =>
+                  {medias.map((media: PlatformMedia) => (
                     <tr key={media.id}>
                       <th scope="row">
                         <Media className="align-items-center">
@@ -115,13 +154,13 @@ const MediaContents = () => {
                       <td>
                         <div className="d-flex align-items-center">
                           {!!media.link && (
-                            <CustomButton
+                            <Button
                               isLoading={isGeneratingLink}
-                              type={MessageLevel.INFO}
                               onClick={() => generateSignedUrl(media.link)}
+                              loadingText={translate("PROCESSING")}
                             >
-                              Ver contenido
-                            </CustomButton>
+                              {translate("SEE_CONTENT")}
+                            </Button>
                           )}
                         </div>
                       </td>
@@ -142,16 +181,16 @@ const MediaContents = () => {
                           </DropdownToggle>
                           <DropdownMenu className="dropdown-menu-arrow" right>
                             <DropdownItem
-                              href="#pablo"
-                              onClick={(e) => e.preventDefault()}
+                              href="#edit"
+                              onClick={() => onEditMedia(media)}
                             >
-                              Action
+                              Edit
                             </DropdownItem>
                             <DropdownItem
                               href="#pablo"
-                              onClick={(e) => e.preventDefault()}
+                              onClick={() => onDeleteMedia(media)}
                             >
-                              Another action
+                              Delete
                             </DropdownItem>
                             <DropdownItem
                               href="#pablo"
@@ -163,7 +202,7 @@ const MediaContents = () => {
                         </UncontrolledDropdown>
                       </td>
                     </tr>
-                  )}
+                  ))}
                 </tbody>
               </Table>
             </Card>
@@ -171,7 +210,7 @@ const MediaContents = () => {
         </Row>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default MediaContents
+export default MediaContents;

@@ -1,68 +1,107 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
-import { CustomButton } from "../components/Buttons/CustomButton";
+import { Modal, ModalBody, ModalFooter } from "reactstrap";
 import {
   AlertNotification,
   MessageLevel,
 } from "../interfaces/AlertNotification";
 import { translate } from "../utils/LanguageUtils";
-import { CustomInput } from "../components/Inputs/CustomInput";
-import { Media } from "../interfaces/Media";
+import { Media, MediaWithMultiSelect } from "../interfaces/Media";
 import { defaultMedia } from "../constants/media";
 import StorageService from "../services/aws/StorageService";
-import CognitoService from "../services/aws/CognitoService";
-import { MediaType } from "../models";
 import { GroupType } from "@aws-sdk/client-cognito-identity-provider";
-import { renderCognitoGroupsList } from "../utils/CognitoGroupsUtils";
-import { Media as MediaModel } from "../models/index";
+import {
+  mapSelectedCognitoGroups,
+  renderAllCognitoGroups,
+} from "../utils/CognitoGroupsUtils";
+import MediaService from "../services/MediaService";
+import {
+  FormProvider,
+  useForm,
+} from "react-hook-form";
+import {
+  Stack,
+  Button,
+  Heading,
+} from "@chakra-ui/react";
+import { Input as CustomInput } from "../components/Inputs/Input";
+import { TextArea } from "../components/Inputs/TextArea";
+import { Select } from "../components/Inputs/Select";
+import {
+  mapMediaTypeToMultiSelectOption,
+  renderMediaTypeList,
+} from "../utils/MediaUtils";
+import { MediaType } from "../models";
+import { FileUploader } from "../components/Inputs/FileUploader";
+import { PermissionsList } from "../components/Lists/PermissionsList";
+import UserGroupsService from "../services/UserGroupsService";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onComplete: (media: MediaModel) => void;
+  onCreate: (media: Media) => void;
+  onUpdate: (media: Media) => void;
+  mediaToUpdate?: Media;
 }
 
 const MediaUploaderModal = (props: Props) => {
   const [file, setFile] = useState<File>();
-  const [media, setMedia] = useState<Media>({
-    ...defaultMedia,
-  });
-
+  const [media, setMedia] = useState<MediaWithMultiSelect>(
+    defaultMedia as MediaWithMultiSelect
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [cognitoGroups, setCognitoGroups] = useState<GroupType[]>([]);
+  const [userGroups, setUserGroups] = useState<GroupType[]>([]);
 
   useEffect(() => {
     const fetchCognitoGroups = async () => {
-      const cognitoGroups = await CognitoService.getCognitoGroups();
-      if (cognitoGroups) {
-        setCognitoGroups(cognitoGroups);
-      }
+      const groups = await UserGroupsService.getUserGroups();
+      setUserGroups(groups || []);
     };
 
     fetchCognitoGroups();
   }, []);
 
-  const onInputChange = (inputName: keyof Media, inputValue: string) => {
-    const updatedMedia: Media = { ...media };
+  useEffect(() => {
+    if (props.mediaToUpdate) {
+      const mappedValues = mapSelectedCognitoGroups(
+        userGroups,
+        props.mediaToUpdate.groups
+      );
+      const type = mapMediaTypeToMultiSelectOption(props.mediaToUpdate.type);
 
-    (updatedMedia as any)[inputName] = inputValue;
+      const media: MediaWithMultiSelect = {
+        ...props.mediaToUpdate,
+        groups: mappedValues,
+        type,
+      };
 
-    setMedia(updatedMedia);
-  };
+      setMedia(media);
+      reset(media);
+    }
+  }, [props.mediaToUpdate]);
 
-  const uploadMedia = async () => {
+  useEffect(() => {
+    if (!props.isOpen) {
+      setMedia(defaultMedia as MediaWithMultiSelect);
+    }
+  }, [props.isOpen]);
+
+  const createMedia = async (media: MediaWithMultiSelect) => {
     setIsLoading(true);
 
-    const response = await StorageService.persistMedia(media, file);
+    const formattedMedia = formatMedia(media);
+    const uploadedMedia = await StorageService.persistMedia(
+      formattedMedia,
+      file
+    );
 
-    if (response) {
-      props.onComplete(response);
+    if (uploadedMedia) {
+      props.onCreate(uploadedMedia);
     }
 
     props.onClose();
     setIsLoading(false);
 
-    if (!response) {
+    if (!uploadedMedia) {
       new AlertNotification(
         MessageLevel.ERROR,
         translate("MEDIA_CREATED_FAILED_MESSAGE")
@@ -75,24 +114,63 @@ const MediaUploaderModal = (props: Props) => {
     );
   };
 
+  const formatMedia = (media: MediaWithMultiSelect): Media => {
+    const groupsArray = media.groups.map((group) => group.value);
+    const type = media.type.value as MediaType;
+
+    return {
+      ...media,
+      groups: groupsArray as string[],
+      type,
+    };
+  };
+
+  const updateMedia = async (media: MediaWithMultiSelect) => {
+    const mediaWithGroups = formatMedia(media);
+    const updatedMedia = await MediaService.updateMedia(mediaWithGroups);
+
+    if (updatedMedia) {
+      console.log("Updated media", updatedMedia);
+      props.onUpdate(updatedMedia);
+      props.onClose();
+    }
+  };
+
   const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) {
       return;
     }
 
-    const file = event.target.files[0];
-    setFile(file);
+    setFile(event.target.files[0]);
   };
 
-  const updateHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
-    onInputChange(event.target.name as keyof Media, event.target.value);
+  const formControls = useForm({
+    defaultValues: media,
+  });
 
-  const handleGroupsChange = (e: any) => {
-    const groups = Array.from(
-      e.target.selectedOptions,
-      (option: any) => option.value
-    );
-    setMedia({ ...media, groups: groups });
+  const {
+    control,
+    watch,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = formControls;
+
+  const groupsSubscriber = watch("groups");
+
+  console.log(groupsSubscriber);
+
+  //control, register, handleSubmit, reset, formState: { errors
+
+  const onSubmit = (media: MediaWithMultiSelect) => {
+    const hasErrors = Object.keys(errors).length !== 0;
+
+    if (hasErrors) {
+      console.log(errors);
+      return;
+    }
+
+    props.mediaToUpdate ? updateMedia(media) : createMedia(media);
   };
 
   return (
@@ -104,58 +182,80 @@ const MediaUploaderModal = (props: Props) => {
       toggle={props.onClose}
       isOpen={props.isOpen}
     >
-      <ModalBody>
-        <h2>{translate("MEDIA_UPLOAD_MODAL_TITLE")}</h2>
+      <FormProvider {...formControls}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <ModalBody>
+            <Heading as="h3" marginY={4} size="lg">
+              {translate("MEDIA_UPLOAD_MODAL_TITLE")}
+            </Heading>
 
-        <CustomInput
-          labelName={translate("TITLE")}
-          value={media.title}
-          onChange={updateHandler}
-          type="text"
-          name="title"
-        />
-        <CustomInput
-          labelName={translate("DESCRIPTION")}
-          value={media.description}
-          onChange={updateHandler}
-          type="text"
-          name="description"
-        />
-        <CustomInput
-          labelName={translate("TYPE")}
-          value={media.type}
-          onChange={updateHandler}
-          type="select"
-          name="type"
-        >
-          {Object.keys(MediaType).map((type, index) => (
-            <option key={index} value={type}>
-              {type}
-            </option>
-          ))}
-        </CustomInput>
-        <CustomInput
-          labelName={translate("MEDIA_GROUPS")}
-          value={media.groups}
-          onChange={handleGroupsChange}
-          type="select"
-          name="courses"
-          multipleSelect
-        >
-          {renderCognitoGroupsList(cognitoGroups)}
-        </CustomInput>
-        <input type="file" onChange={onChange} />
-      </ModalBody>
-      <ModalFooter>
-        <Button onClick={props.onClose}>{translate("CANCEL")}</Button>{" "}
-        <CustomButton
-          isLoading={isLoading}
-          onClick={uploadMedia}
-          type={MessageLevel.INFO}
-        >
-          {translate("CREATE_MEDIA_BUTTON")}
-        </CustomButton>
-      </ModalFooter>
+            <Stack spacing={4}>
+              <CustomInput
+                name="title"
+                label="TITLE"
+                isRequired={true}
+                placeholder={translate("TITLE")}
+              />
+
+              <CustomInput
+                name="description"
+                label="DESCRIPTION"
+                isRequired={true}
+                placeholder={translate("DESCRIPTION")}
+              />
+
+              <Select
+                name="groups"
+                label="GROUP_MULTI_SELECT_TITLE"
+                isRequired={true}
+                placeholder={translate("DESCRIPTION")}
+                options={renderAllCognitoGroups(userGroups)}
+                isMultiSelect
+                closeMenuOnSelect={false}
+              />
+
+              <Select
+                name="type"
+                label="TYPE"
+                isRequired={true}
+                placeholder={translate("TYPE")}
+                options={renderMediaTypeList()}
+                isMultiSelect={false}
+                closeMenuOnSelect={true}
+              />
+
+              <TextArea
+                name="content"
+                label="DESCRIPTION"
+                isRequired={true}
+                placeholder={translate("DESCRIPTION")}
+              />
+
+              <FileUploader
+                name="file"
+                onChange={onChange}
+                label="ATTACH_FILE"
+              />
+
+              <PermissionsList
+                title={translate("REVIEW_PERMISSIONS")}
+                permissionsGroups={groupsSubscriber}
+              />
+            </Stack>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={props.onClose}>{translate("CANCEL")}</Button>{" "}
+            <Button
+              colorScheme="blue"
+              isLoading={isLoading}
+              loadingText={translate("PROCESSING")}
+              type="submit"
+            >
+              {translate("CREATE_MEDIA_BUTTON")}
+            </Button>
+          </ModalFooter>
+        </form>
+      </FormProvider>
     </Modal>
   );
 };

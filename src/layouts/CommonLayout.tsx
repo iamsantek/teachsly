@@ -16,11 +16,11 @@ import Amplify from "aws-amplify";
 import awsExports from "../aws-exports";
 import { applicationRoutes } from "../routes";
 import CustomAlert from "../components/Alerts/Alert";
-import applicationHeaders from "../constants/header"
+import applicationHeaders from "../constants/header";
 import logo from "../assets/img/brand/the-office-logo-max.png";
+import { ChakraProvider } from "@chakra-ui/react";
 
 Amplify.configure(awsExports);
-
 
 const CommonLayout = (props: any) => {
   const mainContent = React.useRef(null);
@@ -52,9 +52,8 @@ const CommonLayout = (props: any) => {
       setDashboardInformation({
         user: {
           ...user,
-          type: userType
+          type: userType,
         },
-
       });
 
       if (userType) {
@@ -86,7 +85,7 @@ const CommonLayout = (props: any) => {
   const routeComponent = useRoutes(routes);
 
   return authState === AuthState.SignedIn && dashboardInformation.user ? (
-    <>
+    <ChakraProvider>
       <UserDashboardContext.Provider value={dashboardInformation}>
         <Sidebar
           {...props}
@@ -110,11 +109,11 @@ const CommonLayout = (props: any) => {
           </Container>
         </div>
       </UserDashboardContext.Provider>
-    </>
+    </ChakraProvider>
   ) : (
-    <>
+    <ChakraProvider>
       <Auth />
-    </>
+    </ChakraProvider>
   );
 };
 
