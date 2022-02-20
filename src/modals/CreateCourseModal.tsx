@@ -15,7 +15,7 @@ import {
 } from "../interfaces/AlertNotification";
 import { translate } from "../utils/LanguageUtils";
 import { CustomInput } from "../components/Inputs/CustomInput";
-import { defaultCourse } from "../constants/Course";
+import { defaultCourse } from "../constants/Courses";
 import CourseService from "../services/CourseService";
 import { Course as PlatformCourse } from "../platform-models/Course";
 

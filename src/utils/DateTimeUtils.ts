@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { awsDateFormat } from "../constants/DateTime";
+import { awsDateFormat } from "../constants/DateTimeFormats";
 
 export enum TimeFormats {
   AWSTime = "HH:mm:ss.SSS",

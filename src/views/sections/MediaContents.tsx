@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // reactstrap components
 import {
   Badge,
@@ -13,7 +13,7 @@ import {
   Row,
   Media,
 } from "reactstrap";
-import { CourseBadgeList } from "../../components/Badges/CourseBadge";
+import { BadgeList } from "../../components/Badges/BadgeList";
 import { CustomButton } from "../../components/Buttons/CustomButton";
 // core components
 import { mediaIcons } from "../../constants/media";
@@ -21,15 +21,12 @@ import {
   AlertNotification,
   MessageLevel,
 } from "../../interfaces/AlertNotification";
-import MediaUploaderModal from "../../modals/MediaUploaderModal";
+import MediaCRUDModal from "../../modals/MediaCRUDModal";
 import StorageService from "../../services/aws/StorageService";
 import MediaService from "../../services/MediaService";
 import { Media as PlatformMedia } from "../../interfaces/Media";
-import { onDeleteCourse } from "../../graphql/subscriptions";
 import { translate } from "../../utils/LanguageUtils";
 import { Button } from "@chakra-ui/react";
-import { UserDashboardContext } from "../../contexts/UserDashboardContext";
-import UserGroupsService from "../../services/UserGroupsService";
 
 const MediaContents = () => {
   const [medias, setMedias] = useState<PlatformMedia[]>([]);
@@ -88,7 +85,7 @@ const MediaContents = () => {
   return (
     <>
       {/* Page content */}
-      <MediaUploaderModal
+      <MediaCRUDModal
         mediaToUpdate={mediaToUpdate}
         isOpen={mediaUploaderModalVisibility}
         onClose={() => {
@@ -165,7 +162,7 @@ const MediaContents = () => {
                         </div>
                       </td>
                       <td>
-                        <CourseBadgeList courses={media.groups as string[]} />
+                        <BadgeList badges={media.groups as string[]} />
                       </td>
                       <td className="text-right">
                         <UncontrolledDropdown>

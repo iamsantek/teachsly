@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter, Form } from "reactstrap";
 import { CustomButton } from "../components/Buttons/CustomButton";
-import { defaultCreateStudentModal } from "../constants/modals";
+import { defaultCreateStudentModal } from "../constants/Modal";
 import {
   AlertNotification,
   MessageLevel,

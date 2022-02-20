@@ -32,6 +32,10 @@ export enum LanguageES {
   ALLOW_ACCESS_MEDIA = "tendrán acceso a este contenido.",
   MEDIA_DELETED = "El contenido ha sido eliminado correctamente.",
   SEE_CONTENT = "Ver contenido",
+  DOWNLOAD = "Descargar",
+  EDIT = "Editar",
+  DELETE = "Eliminar",
+  LOAD_MORE = "Cargar mas"
 }
 
 export enum LanguageEN {
@@ -64,4 +68,8 @@ export enum LanguageEN {
   ALLOW_ACCESS_MEDIA = "will have access to this content.",
   MEDIA_DELETED = "The content has been successfully deleted.",
   SEE_CONTENT = "View content",
+  DOWNLOAD = "Download",
+  EDIT = "Edit",
+  DELETE = "Delete",
+  LOAD_MORE = "Load more"
 }

@@ -3,8 +3,10 @@ import Courses from "./views/sections/Courses";
 import AdminDashboard from "./views/AdminDashboard";
 import UserList from "./views/sections/UserList";
 import { UserTypes } from "./enums/UserTypes";
-import MediaContents from "./views/sections/MediaContents";
 import { ApplicationRoute, ApplicationRoutes } from "./interfaces/Routes";
+import { FiHome } from "react-icons/fi";
+import { StudentsMediaContentsScreen } from "./views/sections/students/StudentsMediaContentsScreen";
+import MediaContents from "./views/sections/MediaContents";
 
 const adminDashboard: ApplicationRoute = {
   name: "Home",
@@ -48,6 +50,13 @@ const profile: ApplicationRoute = {
   element: <Profile />,
 };
 
+const studentContents: ApplicationRoute = {
+  path: "/contents",
+  name: "Contents",
+  icon: FiHome,
+  element: <StudentsMediaContentsScreen />,
+};
+
 const adminRoutes: ApplicationRoute[] = [
   adminDashboard,
   mediaContents,
@@ -58,12 +67,12 @@ const adminRoutes: ApplicationRoute[] = [
   { path: "*", element: <AdminDashboard /> },
 ];
 
-const studentRoutes: ApplicationRoute[] = [teachers];
+const studentRoutes: ApplicationRoute[] = [studentContents];
 
 export const hideHeaderRoutes: ApplicationRoute[] = [profile];
 
 export const applicationRoutes: ApplicationRoutes = {
   [UserTypes.ADMIN]: adminRoutes,
-  [UserTypes.STUDENT]: adminRoutes,
+  [UserTypes.STUDENT]: studentRoutes,
   [UserTypes.TEACHER]: adminRoutes,
 };

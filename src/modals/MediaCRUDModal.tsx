@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Modal, ModalBody, ModalFooter } from "reactstrap";
 import {
   AlertNotification,
   MessageLevel,
@@ -14,14 +13,14 @@ import {
   renderAllCognitoGroups,
 } from "../utils/CognitoGroupsUtils";
 import MediaService from "../services/MediaService";
+import { FormProvider, useForm } from "react-hook-form";
 import {
-  FormProvider,
-  useForm,
-} from "react-hook-form";
-import {
+  Modal,
   Stack,
   Button,
   Heading,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react";
 import { Input as CustomInput } from "../components/Inputs/Input";
 import { TextArea } from "../components/Inputs/TextArea";
@@ -43,7 +42,7 @@ interface Props {
   mediaToUpdate?: Media;
 }
 
-const MediaUploaderModal = (props: Props) => {
+const MediaCRUDModal = (props: Props) => {
   const [file, setFile] = useState<File>();
   const [media, setMedia] = useState<MediaWithMultiSelect>(
     defaultMedia as MediaWithMultiSelect
@@ -174,14 +173,7 @@ const MediaUploaderModal = (props: Props) => {
   };
 
   return (
-    <Modal
-      centered
-      fullscreen=""
-      scrollable
-      size="lg"
-      toggle={props.onClose}
-      isOpen={props.isOpen}
-    >
+    <Modal isOpen={props.isOpen} onClose={props.onClose}>
       <FormProvider {...formControls}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
@@ -259,4 +251,4 @@ const MediaUploaderModal = (props: Props) => {
     </Modal>
   );
 };
-export default MediaUploaderModal;
+export default MediaCRUDModal;

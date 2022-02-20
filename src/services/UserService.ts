@@ -87,9 +87,7 @@ class UserService {
 
     const { groups } = user;
 
-    return [UserTypes.ADMIN, UserTypes.STUDENT, UserTypes.TEACHER].find(
-      (group) => groups.includes(group)
-    );
+    return Object.values(UserTypes).find((group) => groups.includes(group));
   };
 }
 

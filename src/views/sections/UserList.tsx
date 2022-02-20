@@ -13,7 +13,7 @@ import {
   Container,
   Row,
 } from "reactstrap";
-import { CourseBadgeList } from "../../components/Badges/CourseBadge";
+import { BadgeList } from "../../components/Badges/BadgeList";
 // core components
 import { UserTypes } from "../../enums/UserTypes";
 import { DynamoDBUser } from "../../models/index.js";
@@ -78,7 +78,7 @@ const UserList = (props: Props) => {
                         <span className="mb-0 text-sm">{user.phone}</span>
                       </td>
                       <td>
-                        <CourseBadgeList courses={user.groups as string[]} />
+                        <BadgeList badges={user.groups as string[]} />
                       </td>
                       <td className="text-right">
                         <UncontrolledDropdown>

@@ -5,8 +5,8 @@ import { listMedia } from "../graphql/queries";
 import { Media } from "../interfaces/Media";
 import Logger from "../utils/Logger";
 import GraphQLService from "./GraphQLService";
-import { Media as ModelMedia } from "../models/index";
 import { removeNotAllowedPropertiesFromModel } from "../utils/GraphQLUtils";
+import StorageService from "./aws/StorageService";
 
 class MediaService {
   public fetchMedias = async () => {
@@ -62,6 +62,14 @@ class MediaService {
         "Error when deleting a Media",
         error
       );
+    }
+  };
+
+  public generateSignedUrl = async (key: string) => {
+    const signedURL = await StorageService.getSignedUrl(key);
+
+    if (signedURL) {
+      window.open(signedURL, "_blank");
     }
   };
 }
