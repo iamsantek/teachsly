@@ -5,3 +5,5 @@ export const splitCamelCase = (camelCase: string | undefined | null) => {
 
   return camelCase.replace(/([a-z])([A-Z])/g, "$1 $2");
 };
+
+export const generateRandomId = () => Math.random().toString(36).slice(2);

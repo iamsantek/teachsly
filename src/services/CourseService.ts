@@ -1,33 +1,28 @@
 import { graphqlOperation } from "aws-amplify";
 import { LogLevel, LogTypes } from "../enums/LogTypes";
 import { listCourses } from "../graphql/queries";
-import { createCourse } from "../graphql/mutations";
+import { createCourse, updateCourse } from "../graphql/mutations";
 import { Course } from "../models";
 import { Course as PlatformCourse } from "../platform-models/Course";
 import DateTimeUtils, { TimeFormats } from "../utils/DateTimeUtils";
 import Logger from "../utils/Logger";
-import GraphQLService from "./GraphQLService";
+import GraphQLService, { GraphQLResultWithNextToken } from "./GraphQLService";
 import CognitoService from "./aws/CognitoService";
 import { formatCognitoGroupDescription } from "../utils/CognitoGroupsUtils";
+import { removeNotAllowedPropertiesFromModel } from "../utils/GraphQLUtils";
+import { GRAPHQL_MAX_PAGE_RESULTS } from "../constants/GraphQL";
 
 class CourseService {
-  public fetchCourses = async () => {
-    try {
-      const models = await GraphQLService.graphQL<any>(
-        graphqlOperation(listCourses)
-      );
-      return (models?.data?.listCourses.items as Course[]) || [];
-    } catch (e) {
-      Logger.log(
-        LogLevel.ERROR,
-        LogTypes.CourseService,
-        "Error when fetching courses",
-        e
-      );
-    }
+  public fetchCourses = async (
+    nextToken?: string,
+    limit = GRAPHQL_MAX_PAGE_RESULTS
+  ): Promise<GraphQLResultWithNextToken<Course> | undefined> => {
+    return GraphQLService.fetchQuery(listCourses, nextToken, limit);
   };
 
-  deleteCourse = async () => {};
+  deleteCourse = async () => {
+    //TODO: Implement delete course logic
+  };
 
   public createCourse = async (courseCreation: PlatformCourse) => {
     const scheduleStartTime = DateTimeUtils.formateHour(
@@ -70,6 +65,25 @@ class CourseService {
       LogTypes.CourseService,
       "Error when creating Course"
     );
+  };
+
+  public updateCourse = async (course: Course) => {
+    try {
+      const models = await GraphQLService.graphQL<any>(
+        graphqlOperation(updateCourse, {
+          input: removeNotAllowedPropertiesFromModel(course),
+        })
+      );
+
+      return (models?.data?.updateCourse as Course) || [];
+    } catch (error) {
+      Logger.log(
+        LogLevel.ERROR,
+        LogTypes.CourseService,
+        "Error when updating Media",
+        error
+      );
+    }
   };
 
   public fetchCoursesByIds = async (courseIds: string[]) => {

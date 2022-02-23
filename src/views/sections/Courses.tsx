@@ -24,14 +24,14 @@ import DateTimeUtils, { TimeFormats } from "../../utils/DateTimeUtils";
 const Courses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      const courses = await CourseService.fetchCourses();
-      setCourses(courses as Course[]);
-    };
+  // useEffect(() => {
+  //   const fetchCourses = async () => {
+  //     const courses = await CourseService.fetchCourses();
+  //     setCourses(courses as Course[]);
+  //   };
 
-    fetchCourses();
-  }, []);
+  //   fetchCourses();
+  // }, []);
 
   return (
     <>

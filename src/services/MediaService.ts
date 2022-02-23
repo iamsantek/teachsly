@@ -4,25 +4,17 @@ import { deleteMedia, updateMedia } from "../graphql/mutations";
 import { listMedia } from "../graphql/queries";
 import { Media } from "../interfaces/Media";
 import Logger from "../utils/Logger";
-import GraphQLService from "./GraphQLService";
+import GraphQLService, { GraphQLResultWithNextToken } from "./GraphQLService";
 import { removeNotAllowedPropertiesFromModel } from "../utils/GraphQLUtils";
 import StorageService from "./aws/StorageService";
+import { GRAPHQL_MAX_PAGE_RESULTS } from "../constants/GraphQL";
 
 class MediaService {
-  public fetchMedias = async () => {
-    try {
-      const models = await GraphQLService.graphQL<any>(
-        graphqlOperation(listMedia)
-      );
-      return (models?.data?.listMedia.items as Media[]) || [];
-    } catch (e) {
-      Logger.log(
-        LogLevel.ERROR,
-        LogTypes.CourseService,
-        "Error when fetching Media",
-        e
-      );
-    }
+  public fetchMedias = async (
+    nextToken?: string,
+    limit = GRAPHQL_MAX_PAGE_RESULTS
+  ): Promise<GraphQLResultWithNextToken<Media> | undefined> => {
+    return GraphQLService.fetchQuery(listMedia, nextToken, limit);
   };
 
   public updateMedia = async (media: Media) => {

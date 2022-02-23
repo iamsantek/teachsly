@@ -62,7 +62,7 @@ export const formatCognitoGroupDescription = (
   startTime: string,
   endTime: string
 ) => {
-  const shortDays = days.map((day) => day.substring(0, 3)).join(" ");
+  const shortDays = DateTimeUtils.shortDays(days);
   const formattedStartTime = DateTimeUtils.formateHour(
     startTime,
     TimeFormats.TwentyFourHours

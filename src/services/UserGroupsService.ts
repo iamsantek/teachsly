@@ -7,12 +7,12 @@ class UserGroupsService {
     return await CognitoService.getCognitoGroups();
   };
 
-  public isStudent = (user: User | null) => {
+  public isUser = (user: User | null, group: UserTypes) => {
     if (!user) {
       return false;
     }
 
-    return user.groups.includes(UserTypes.STUDENT);
+    return user.groups.includes(group);
   };
 }
 

@@ -4,7 +4,7 @@ import { DynamoDBUser } from "../models/index";
 import Logger from "../utils/Logger";
 import CognitoService from "./aws/CognitoService";
 import GraphQLService from "./GraphQLService";
-import { graphqlOperation } from "aws-amplify";
+import { Auth, graphqlOperation } from "aws-amplify";
 import { createDynamoDBUser } from "../graphql/mutations";
 
 class AuthService {
@@ -73,6 +73,19 @@ class AuthService {
     return await GraphQLService.graphQL(
       graphqlOperation(createDynamoDBUser, { input: dynamoDbBUser })
     );
+  };
+
+  public signIn = async (email: string, password: string) => {
+    try {
+      return Auth.signIn(email, password);
+    } catch (error) {
+      Logger.log(
+        LogLevel.ERROR,
+        LogTypes.AuthService,
+        "Error when signing in",
+        error
+      );
+    }
   };
 }
 
