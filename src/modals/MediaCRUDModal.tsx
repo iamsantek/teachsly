@@ -26,7 +26,7 @@ import { Input as CustomInput } from "../components/Inputs/Input";
 import { TextArea } from "../components/Inputs/TextArea";
 import { Select } from "../components/Inputs/Select";
 import {
-  mapMediaTypeToMultiSelectOption,
+  mapSingleValueToMultiSelectOption,
   renderMultiSelectOptions,
 } from "../utils/SelectUtils";
 import { MediaType } from "../models";
@@ -69,7 +69,7 @@ const MediaCRUDModal = ({
         userGroups,
         mediaToUpdate.groups
       );
-      const type = mapMediaTypeToMultiSelectOption(mediaToUpdate.type);
+      const type = mapSingleValueToMultiSelectOption(mediaToUpdate.type);
 
       const media: MediaWithMultiSelect = {
         ...mediaToUpdate,
