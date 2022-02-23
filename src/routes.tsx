@@ -1,6 +1,4 @@
 import Profile from "./views/examples/Profile";
-import Courses from "./views/sections/Courses";
-import AdminDashboard from "./views/AdminDashboard";
 import UserList from "./views/sections/UserList";
 import { UserTypes } from "./enums/UserTypes";
 import { ApplicationRoute, ApplicationRoutes } from "./interfaces/Routes";
