@@ -5,7 +5,7 @@ import {
 } from "../interfaces/AlertNotification";
 import { translate } from "../utils/LanguageUtils";
 import { Media, MediaWithMultiSelect } from "../interfaces/Media";
-import { defaultMedia } from "../constants/media";
+import { defaultMedia } from "../constants/Media";
 import StorageService from "../services/aws/StorageService";
 import { GroupType } from "@aws-sdk/client-cognito-identity-provider";
 import {
@@ -17,22 +17,23 @@ import { FormProvider, useForm } from "react-hook-form";
 import {
   Modal,
   Stack,
-  Button,
-  Heading,
   ModalBody,
-  ModalFooter,
+  ModalContent,
+  ModalOverlay,
+  ModalHeader,
 } from "@chakra-ui/react";
 import { Input as CustomInput } from "../components/Inputs/Input";
 import { TextArea } from "../components/Inputs/TextArea";
 import { Select } from "../components/Inputs/Select";
 import {
   mapMediaTypeToMultiSelectOption,
-  renderMediaTypeList,
-} from "../utils/MediaUtils";
+  renderMultiSelectOptions,
+} from "../utils/SelectUtils";
 import { MediaType } from "../models";
 import { FileUploader } from "../components/Inputs/FileUploader";
 import { PermissionsList } from "../components/Lists/PermissionsList";
 import UserGroupsService from "../services/UserGroupsService";
+import { ModalFooter } from "../components/Modals/ModalFooter";
 
 interface Props {
   isOpen: boolean;
@@ -42,11 +43,14 @@ interface Props {
   mediaToUpdate?: Media;
 }
 
-const MediaCRUDModal = (props: Props) => {
+const MediaCRUDModal = ({
+  isOpen,
+  onClose,
+  onCreate,
+  onUpdate,
+  mediaToUpdate,
+}: Props) => {
   const [file, setFile] = useState<File>();
-  const [media, setMedia] = useState<MediaWithMultiSelect>(
-    defaultMedia as MediaWithMultiSelect
-  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userGroups, setUserGroups] = useState<GroupType[]>([]);
 
@@ -60,29 +64,28 @@ const MediaCRUDModal = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    if (props.mediaToUpdate) {
+    if (mediaToUpdate) {
       const mappedValues = mapSelectedCognitoGroups(
         userGroups,
-        props.mediaToUpdate.groups
+        mediaToUpdate.groups
       );
-      const type = mapMediaTypeToMultiSelectOption(props.mediaToUpdate.type);
+      const type = mapMediaTypeToMultiSelectOption(mediaToUpdate.type);
 
       const media: MediaWithMultiSelect = {
-        ...props.mediaToUpdate,
+        ...mediaToUpdate,
         groups: mappedValues,
         type,
       };
 
-      setMedia(media);
       reset(media);
     }
-  }, [props.mediaToUpdate]);
+  }, [mediaToUpdate]);
 
   useEffect(() => {
-    if (!props.isOpen) {
-      setMedia(defaultMedia as MediaWithMultiSelect);
+    if (!isOpen) {
+      reset(defaultMedia as MediaWithMultiSelect);
     }
-  }, [props.isOpen]);
+  }, [isOpen]);
 
   const createMedia = async (media: MediaWithMultiSelect) => {
     setIsLoading(true);
@@ -94,10 +97,10 @@ const MediaCRUDModal = (props: Props) => {
     );
 
     if (uploadedMedia) {
-      props.onCreate(uploadedMedia);
+      onCreate(uploadedMedia);
     }
 
-    props.onClose();
+    onClose();
     setIsLoading(false);
 
     if (!uploadedMedia) {
@@ -129,9 +132,8 @@ const MediaCRUDModal = (props: Props) => {
     const updatedMedia = await MediaService.updateMedia(mediaWithGroups);
 
     if (updatedMedia) {
-      console.log("Updated media", updatedMedia);
-      props.onUpdate(updatedMedia);
-      props.onClose();
+      onUpdate(updatedMedia);
+      onClose();
     }
   };
 
@@ -144,111 +146,110 @@ const MediaCRUDModal = (props: Props) => {
   };
 
   const formControls = useForm({
-    defaultValues: media,
+    defaultValues: defaultMedia as MediaWithMultiSelect,
   });
 
   const {
-    control,
     watch,
     handleSubmit,
     reset,
     formState: { errors },
   } = formControls;
 
-  const groupsSubscriber = watch("groups");
-
-  console.log(groupsSubscriber);
-
-  //control, register, handleSubmit, reset, formState: { errors
-
   const onSubmit = (media: MediaWithMultiSelect) => {
     const hasErrors = Object.keys(errors).length !== 0;
 
     if (hasErrors) {
+      //TODO: Implement form errors
       console.log(errors);
       return;
     }
 
-    props.mediaToUpdate ? updateMedia(media) : createMedia(media);
+    mediaId ? updateMedia(media) : createMedia(media);
   };
 
+  const groupsSubscriber = watch("groups");
+  const mediaId = watch("id");
+
   return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose}>
-      <FormProvider {...formControls}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <ModalBody>
-            <Heading as="h3" marginY={4} size="lg">
-              {translate("MEDIA_UPLOAD_MODAL_TITLE")}
-            </Heading>
+    <Modal isOpen={isOpen} onClose={onClose} size="4xl">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader textStyle={"paragraph"}>
+          {!!mediaId
+            ? `${translate("EDITING")} '${mediaToUpdate?.title}'`
+            : translate("MEDIA_UPLOAD_MODAL_TITLE")}
+        </ModalHeader>
+        <ModalBody marginBottom={3}>
+          <FormProvider {...formControls}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <ModalBody>
+                <Stack spacing={4}>
+                  <CustomInput
+                    name="title"
+                    label="TITLE"
+                    isRequired={true}
+                    placeholder={translate("TITLE")}
+                  />
+                  <CustomInput
+                    name="description"
+                    label="DESCRIPTION"
+                    isRequired={true}
+                    placeholder={translate("DESCRIPTION")}
+                  />
 
-            <Stack spacing={4}>
-              <CustomInput
-                name="title"
-                label="TITLE"
-                isRequired={true}
-                placeholder={translate("TITLE")}
-              />
+                  <Select
+                    name="groups"
+                    label="GROUP_MULTI_SELECT_TITLE"
+                    isRequired={true}
+                    placeholder={translate("DESCRIPTION")}
+                    options={renderAllCognitoGroups(userGroups)}
+                    isMultiSelect
+                    closeMenuOnSelect={false}
+                  />
 
-              <CustomInput
-                name="description"
-                label="DESCRIPTION"
-                isRequired={true}
-                placeholder={translate("DESCRIPTION")}
-              />
+                  <Select
+                    name="type"
+                    label="TYPE"
+                    isRequired={true}
+                    placeholder={translate("TYPE")}
+                    options={renderMultiSelectOptions(Object.values(MediaType))}
+                    isMultiSelect={false}
+                    closeMenuOnSelect={true}
+                  />
 
-              <Select
-                name="groups"
-                label="GROUP_MULTI_SELECT_TITLE"
-                isRequired={true}
-                placeholder={translate("DESCRIPTION")}
-                options={renderAllCognitoGroups(userGroups)}
-                isMultiSelect
-                closeMenuOnSelect={false}
-              />
+                  <TextArea
+                    name="content"
+                    label="DESCRIPTION"
+                    isRequired={true}
+                    placeholder={translate("DESCRIPTION")}
+                  />
 
-              <Select
-                name="type"
-                label="TYPE"
-                isRequired={true}
-                placeholder={translate("TYPE")}
-                options={renderMediaTypeList()}
-                isMultiSelect={false}
-                closeMenuOnSelect={true}
-              />
+                  <FileUploader
+                    name="file"
+                    onChange={onChange}
+                    label="ATTACH_FILE"
+                  />
 
-              <TextArea
-                name="content"
-                label="DESCRIPTION"
-                isRequired={true}
-                placeholder={translate("DESCRIPTION")}
+                  <PermissionsList
+                    title={translate("REVIEW_PERMISSIONS")}
+                    permissionsGroups={groupsSubscriber}
+                  />
+                </Stack>
+              </ModalBody>
+              <ModalFooter
+                isLoading={isLoading}
+                sendButtonText={
+                  mediaId ? "UPDATE_MEDIA_BUTTON" : "CREATE_MEDIA_BUTTON"
+                }
+                onClose={onClose}
               />
-
-              <FileUploader
-                name="file"
-                onChange={onChange}
-                label="ATTACH_FILE"
-              />
-
-              <PermissionsList
-                title={translate("REVIEW_PERMISSIONS")}
-                permissionsGroups={groupsSubscriber}
-              />
-            </Stack>
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={props.onClose}>{translate("CANCEL")}</Button>{" "}
-            <Button
-              colorScheme="blue"
-              isLoading={isLoading}
-              loadingText={translate("PROCESSING")}
-              type="submit"
-            >
-              {translate("CREATE_MEDIA_BUTTON")}
-            </Button>
-          </ModalFooter>
-        </form>
-      </FormProvider>
+            </form>
+          </FormProvider>
+        </ModalBody>
+      </ModalContent>
     </Modal>
   );
 };
+
 export default MediaCRUDModal;
