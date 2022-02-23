@@ -22,12 +22,9 @@ import {
   MenuItem,
   MenuList,
   Image,
+  Spacer,
 } from "@chakra-ui/react";
-import {
-  FiMenu,
-  FiBell,
-  FiChevronDown,
-} from "react-icons/fi";
+import { FiMenu, FiBell, FiChevronDown } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
 import logo from "../assets/img/brand/the-office-logo-max.png";
@@ -36,6 +33,9 @@ import UserService from "../services/UserService";
 import { User } from "../platform-models/User";
 import { applicationRoutes } from "../routes";
 import { UserTypes } from "../enums/UserTypes";
+import { NavLink } from "react-router-dom";
+import { Footer } from "../components/Footers/Footer";
+import DarkModeSwitch from "../components/Switches/DarkModeSwitch";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -87,15 +87,24 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       paddingTop={5}
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Image marginY={10} padding={8} src={logo} />
+      <Flex
+        h="20"
+        alignItems="center"
+        mx="8"
+        justifyContent="space-between"
+        marginBottom={[10, 5]}
+      >
+        <Image w={[36, 40]} padding={[0, 4]} src={logo} />
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {routes.map((link: any) => (
-        <NavItem key={link.name} icon={link.icon} path={link.path}>
+      {routes.map((link: any, index: number) => (
+        <NavItem key={index} icon={link.icon} path={link.path}>
           {link.name}
         </NavItem>
       ))}
+      <Spacer />
+      <DarkModeSwitch />
+      <Footer />
     </Box>
   );
 };
@@ -109,7 +118,8 @@ interface NavItemProps extends FlexProps {
 const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
   return (
     <Link
-      href={path}
+      as={NavLink}
+      to={path as string}
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
     >
@@ -174,11 +184,13 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           size="lg"
           variant="ghost"
           aria-label="open menu"
+          as={"div"}
           icon={<FiBell />}
         />
         <Flex alignItems={"center"}>
           <Menu>
             <MenuButton
+              as={"div"}
               py={2}
               transition="all 0.3s"
               _focus={{ boxShadow: "none" }}
@@ -194,7 +206,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   <Text fontSize="sm" isTruncated>
                     {user?.name as string}
                   </Text>
-                  <Text fontSize="xs" color="gray.600">
+                  <Text fontSize="xs">
                     {UserService.getUserType(user as User)}
                   </Text>
                 </VStack>
@@ -207,11 +219,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
+              <MenuItem as={"div"}>Profile</MenuItem>
+              <MenuItem as={"div"}>Settings</MenuItem>
+              <MenuItem as="div">Billing</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem as={"div"}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
