@@ -1,19 +1,19 @@
 //@ts-nocheck
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useRoutes } from "react-router-dom";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 import { defaultDashboardContext } from "./constants/DashboardContext";
 import UserService from "./services/UserService";
 import { UserDashboardContext } from "./contexts/UserDashboardContext";
-import Auth from "./layouts/Auth";
 import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
 import { applicationRoutes } from "./routes";
 import CustomAlert from "./components/Alerts/Alert";
-import { ChakraProvider, Heading } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import DashboardLayout from "./layouts/DashboardLayout";
 import { extendTheme } from "@chakra-ui/react";
 import { defaultTheme } from "./constants/Theme";
+import { LogInScreen } from "./layouts/LogInScreen";
 
 Amplify.configure(awsExports);
 
@@ -60,7 +60,6 @@ const App = () => {
     });
   }, []);
 
-
   const routeComponent = useRoutes(routes);
   const location = useLocation();
   const routeName = routes.find((route) => route.path === location.pathname);
@@ -69,9 +68,6 @@ const App = () => {
     <ChakraProvider theme={theme}>
       <UserDashboardContext.Provider value={dashboardInformation}>
         <DashboardLayout>
-          <Heading marginY={4} as="h4">
-            {routeName?.name}
-          </Heading>
           <CustomAlert />
           {routeComponent}
         </DashboardLayout>
@@ -79,7 +75,7 @@ const App = () => {
     </ChakraProvider>
   ) : (
     <ChakraProvider>
-      <Auth />
+      <LogInScreen />
     </ChakraProvider>
   );
 };

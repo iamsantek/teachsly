@@ -5,69 +5,85 @@ import UserList from "./views/sections/UserList";
 import { UserTypes } from "./enums/UserTypes";
 import { ApplicationRoute, ApplicationRoutes } from "./interfaces/Routes";
 import { FiHome } from "react-icons/fi";
-import { StudentsMediaContentsScreen } from "./views/sections/students/StudentsMediaContentsScreen";
-import MediaContents from "./views/sections/MediaContents";
+import { MediaContentsScreen } from "./views/sections/media/MediaContentsScreen";
+import { StudentsHomeScreen } from "./views/sections/students/StudentsHomeScreen";
+import { GiTeacher, GiWhiteBook } from "react-icons/gi";
+import { AiFillHome } from "react-icons/ai";
+import { ImBooks } from "react-icons/im";
+import { FaUserAlt } from "react-icons/fa";
+import { BsFillPeopleFill } from "react-icons/bs";
+import { AdminHomeScreen } from "./views/sections/homeScreen/AdminHomeScreen";
+import { MdOutlinePayments } from "react-icons/md";
+import { CoursesList } from "./views/sections/courses/CoursesList";
 
-const adminDashboard: ApplicationRoute = {
+const adminHomeScreen: ApplicationRoute = {
   name: "Home",
-  icon: "ni ni-tv-2 text-primary",
+  icon: AiFillHome,
   path: "/",
-  element: <AdminDashboard />,
+  element: <AdminHomeScreen />,
 };
 
-const mediaContents: ApplicationRoute = {
-  name: "Contenidos",
-  icon: "ni ni-bullet-list-67 text-primary",
-  path: "/contents",
-  element: <MediaContents />,
+const payments: ApplicationRoute = {
+  name: "Payments",
+  icon: MdOutlinePayments,
+  path: "/",
+  element: <AdminHomeScreen />,
 };
 
-const courses: ApplicationRoute = {
+const adminCoursesScreen: ApplicationRoute = {
   name: "Cursos",
-  icon: "ni ni-bullet-list-67 text-primary",
+  icon: ImBooks,
   path: "/courses",
-  element: <Courses />,
+  element: <CoursesList />,
 };
 
 const students: ApplicationRoute = {
   path: "/students",
   name: "Estudiantes",
-  icon: "fa fa-graduation-cap text-primary",
+  icon: BsFillPeopleFill,
   element: <UserList listType={UserTypes.STUDENT} />,
 };
 
 const teachers: ApplicationRoute = {
   path: "/teachers",
   name: "Profesores",
-  icon: "fa fa-users text-primary",
+  icon: GiTeacher,
   element: <UserList listType={UserTypes.TEACHER} />,
 };
 
 const profile: ApplicationRoute = {
   path: "/profile",
   name: "Perfil",
-  icon: "ni ni-single-02 text-primary",
+  icon: FaUserAlt,
   element: <Profile />,
 };
 
-const studentContents: ApplicationRoute = {
+const studentHomeScreen: ApplicationRoute = {
+  path: "/",
+  name: "Home",
+  icon: FiHome,
+  element: <StudentsHomeScreen />,
+};
+
+const mediaContents: ApplicationRoute = {
   path: "/contents",
   name: "Contents",
-  icon: FiHome,
-  element: <StudentsMediaContentsScreen />,
+  icon: GiWhiteBook,
+  element: <MediaContentsScreen />,
 };
 
 const adminRoutes: ApplicationRoute[] = [
-  adminDashboard,
+  adminHomeScreen,
   mediaContents,
-  courses,
+  adminCoursesScreen,
   students,
   teachers,
+  payments,
   profile,
-  { path: "*", element: <AdminDashboard /> },
+  { path: "*", element: <AdminHomeScreen /> },
 ];
 
-const studentRoutes: ApplicationRoute[] = [studentContents];
+const studentRoutes: ApplicationRoute[] = [studentHomeScreen, mediaContents];
 
 export const hideHeaderRoutes: ApplicationRoute[] = [profile];
 
