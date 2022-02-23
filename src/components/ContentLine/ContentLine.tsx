@@ -1,4 +1,11 @@
-import { Box, Circle, Flex, Wrap, WrapItem, Tooltip } from "@chakra-ui/react";
+import {
+  Box,
+  Circle,
+  Flex,
+  Wrap,
+  WrapItem,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { IconType } from "react-icons/lib";
 import {
   AiOutlineCloudDownload,
@@ -11,7 +18,7 @@ import { translate } from "../../utils/LanguageUtils";
 import { TooltipHelper } from "../Tooltips/Tooltip";
 
 interface Props {
-  LeftIcon: IconType;
+  leftIcon: JSX.Element;
   onView?: <T>(item: T) => void;
   onDownload?: <T>(item: T) => void;
   onEdit?: <T>(item: T) => void;
@@ -19,13 +26,15 @@ interface Props {
 }
 
 export const ContentLine: FC<Props> = ({
-  LeftIcon,
+  leftIcon: LeftIcon,
   onView,
   onDownload,
   onDelete,
   onEdit,
   children,
 }) => {
+  const iconColor = useColorModeValue("white", "black");
+  const iconBackgroundColor = useColorModeValue("gray.700", "white");
   return (
     <Box
       bg="white.100"
@@ -42,14 +51,14 @@ export const ContentLine: FC<Props> = ({
       <Flex justify={"space-between"}>
         <Circle
           size="40px"
-          bg="brand.primary"
-          color="white"
-          marginRight={3}
+          bg="brand.500"
+          color={iconColor}
+          marginRight={[3, 5]}
           display={{ base: "none", md: "flex" }}
         >
-          <LeftIcon />
+          {LeftIcon}
         </Circle>
-        <Flex flex="1" justifyContent="start">
+        <Flex flex="1" justifyContent="space-between">
           {children}
         </Flex>
         <Wrap>
@@ -58,8 +67,8 @@ export const ContentLine: FC<Props> = ({
               <TooltipHelper label={translate("SEE_CONTENT")}>
                 <Circle
                   size="40px"
-                  bg="gray.700"
-                  color="white"
+                  bg={iconBackgroundColor}
+                  color={iconColor}
                   _hover={{ cursor: "pointer" }}
                   onClick={onView}
                 >
@@ -73,8 +82,8 @@ export const ContentLine: FC<Props> = ({
               <TooltipHelper label={translate("DOWNLOAD")}>
                 <Circle
                   size="40px"
-                  bg="gray.700"
-                  color="white"
+                  bg={iconBackgroundColor}
+                  color={iconColor}
                   _hover={{ cursor: "pointer" }}
                   onClick={onDownload}
                 >
@@ -88,8 +97,8 @@ export const ContentLine: FC<Props> = ({
               <TooltipHelper label={translate("EDIT")}>
                 <Circle
                   size="40px"
-                  bg="gray.700"
-                  color="white"
+                  bg={iconBackgroundColor}
+                  color={iconColor}
                   _hover={{ cursor: "pointer" }}
                   onClick={onEdit}
                 >
@@ -103,8 +112,8 @@ export const ContentLine: FC<Props> = ({
               <TooltipHelper label={translate("DELETE")}>
                 <Circle
                   size="40px"
-                  bg="gray.700"
-                  color="white"
+                  bg={iconBackgroundColor}
+                  color={iconColor}
                   _hover={{ cursor: "pointer" }}
                   onClick={onDelete}
                 >
