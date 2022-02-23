@@ -9,8 +9,9 @@ interface Props {
   name: string;
   label: TranslationsDictionary;
   isRequired: boolean;
-  placeholder: string;
+  placeholder?: string;
   bottomNote?: string;
+  type?: React.HTMLInputTypeAttribute;
 }
 
 export const Input = ({
@@ -19,6 +20,7 @@ export const Input = ({
   isRequired,
   placeholder,
   bottomNote,
+  type,
 }: Props) => {
   const { register } = useFormContext();
 
@@ -30,6 +32,7 @@ export const Input = ({
       <ChakraInput
         placeholder={placeholder}
         size="md"
+        type={type}
         {...register(name, { required: isRequired, maxLength: 80 })}
       />
 
