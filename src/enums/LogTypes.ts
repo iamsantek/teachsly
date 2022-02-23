@@ -4,6 +4,7 @@ export enum LogTypes {
   UserService = "User Service",
   AuthService = "Auth Service",
   StorageService = "Storage Service",
+  GraphQLService = "GraphQL Service",
 }
 
 export enum LogLevel {
