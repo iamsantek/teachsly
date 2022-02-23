@@ -17,7 +17,6 @@ const DarkModeSwitch: React.FC = () => {
       w="100%"
       display="inline-flex"
       alignItems="center"
-      position="fixed"
       bottom={0}
       left={0}
       p={4}
