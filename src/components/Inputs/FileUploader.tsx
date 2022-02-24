@@ -1,8 +1,7 @@
-import React from "react";
-import { Stack, Text } from "@chakra-ui/react";
-import { TranslationsDictionary } from "../../dictionaries/dictionary";
-import { translate } from "../../utils/LanguageUtils";
-import { useFormContext } from "react-hook-form";
+import React from 'react'
+import { Stack, Text } from '@chakra-ui/react'
+import { TranslationsDictionary } from '../../dictionaries/dictionary'
+import { translate } from '../../utils/LanguageUtils'
 
 interface Props {
   name: string;
@@ -24,5 +23,5 @@ export const FileUploader = ({ onChange, label, bottomNote }: Props) => {
         </Text>
       )}
     </Stack>
-  );
-};
+  )
+}

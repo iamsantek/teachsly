@@ -1,16 +1,16 @@
-import React from "react";
-import { Stack, Text } from "@chakra-ui/react";
-import { TranslationsDictionary } from "../../dictionaries/dictionary";
-import { translate } from "../../utils/LanguageUtils";
-import { Controller, useFormContext } from "react-hook-form";
-import { MultiSelectOption } from "../../interfaces/MultiSelectOption";
-import { Select as ChakraSelect } from "chakra-react-select";
+import React from 'react'
+import { Stack, Text } from '@chakra-ui/react'
+import { TranslationsDictionary } from '../../dictionaries/dictionary'
+import { translate } from '../../utils/LanguageUtils'
+import { Controller, useFormContext } from 'react-hook-form'
+import { MultiSelectOption } from '../../interfaces/MultiSelectOption'
+import { Select as ChakraSelect } from 'chakra-react-select'
 
 interface Props {
   name: string;
   label: TranslationsDictionary;
   isRequired: boolean;
-  placeholder: string;
+  placeholder?: string;
   bottomNote?: string;
   options: MultiSelectOption[];
   isMultiSelect: boolean;
@@ -25,9 +25,9 @@ export const Select = ({
   placeholder,
   bottomNote,
   options,
-  isMultiSelect,
+  isMultiSelect
 }: Props) => {
-  const { control } = useFormContext();
+  const { control } = useFormContext()
 
   return (
     <Stack spacing={1}>
@@ -56,5 +56,5 @@ export const Select = ({
         </Text>
       )}
     </Stack>
-  );
-};
+  )
+}

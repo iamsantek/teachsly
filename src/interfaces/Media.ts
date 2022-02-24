@@ -1,5 +1,5 @@
-import { MediaType } from "../models";
-import { MultiSelectOption } from "./MultiSelectOption";
+import { MediaType } from '../models'
+import { MultiSelectOption } from './MultiSelectOption'
 
 export interface Media {
   id?: string;
@@ -11,7 +11,7 @@ export interface Media {
   content?: string;
 }
 
-export interface MediaWithMultiSelect extends Omit<Media, "groups" | "type"> {
+export interface MediaWithMultiSelect extends Omit<Media, 'groups' | 'type'> {
   groups: MultiSelectOption[];
   type: MultiSelectOption;
 }

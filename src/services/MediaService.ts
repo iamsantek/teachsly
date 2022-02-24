@@ -7,7 +7,6 @@ import Logger from '../utils/Logger'
 import GraphQLService, { GraphQLResultWithNextToken } from './GraphQLService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import StorageService from './aws/StorageService'
-import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
 
 class MediaService {
   public fetchMedias = async (

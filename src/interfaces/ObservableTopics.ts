@@ -1,3 +1,3 @@
 export enum ObservableTopics {
-  NotificationAlert = "notification-alert",
+  NotificationAlert = 'notification-alert',
 }

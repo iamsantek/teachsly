@@ -4,8 +4,8 @@ export const findAndUpdateContent = <T extends { id: string }>(
 ) => {
   const index = contents.findIndex(
     (content) => content.id === singleContent.id
-  );
-  contents[index] = singleContent;
+  )
+  contents[index] = singleContent
 
-  return contents;
-};
+  return contents
+}

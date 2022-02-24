@@ -1,7 +1,8 @@
-import { List, ListItem, ListIcon, Stack, Text } from "@chakra-ui/react";
-import { AiFillCheckCircle } from "react-icons/ai";
-import { FaTimesCircle } from "react-icons/fa";
-import { MultiSelectOption } from "../../interfaces/MultiSelectOption";
+import React from 'react'
+import { List, ListItem, ListIcon, Stack, Text } from '@chakra-ui/react'
+import { AiFillCheckCircle } from 'react-icons/ai'
+import { FaTimesCircle } from 'react-icons/fa'
+import { MultiSelectOption } from '../../interfaces/MultiSelectOption'
 
 interface Props {
   permissionsGroups: MultiSelectOption[];
@@ -17,20 +18,20 @@ const AllowAccessItem = ({ group }: ListItemProps) => (
     <ListIcon as={AiFillCheckCircle} color="green.500" />
     {`${group} tendran acceso al contenido`}
   </ListItem>
-);
+)
 
 const DeniedAccessItem = ({ group }: ListItemProps) => (
   <ListItem>
     <ListIcon as={FaTimesCircle} color="red.500" />
     {`${group} no tendran acceso al contenido`}
   </ListItem>
-);
+)
 
 export const PermissionsList = ({ permissionsGroups, title }: Props) => {
-  const permissionsGroupsLabels = permissionsGroups.map((value) => value.label);
+  const permissionsGroupsLabels = permissionsGroups.map((value) => value.label)
 
   if (permissionsGroupsLabels.length === 0) {
-    return null;
+    return null
   }
 
   return (
@@ -44,5 +45,5 @@ export const PermissionsList = ({ permissionsGroups, title }: Props) => {
         ))}
       </List>
     </Stack>
-  );
-};
+  )
+}

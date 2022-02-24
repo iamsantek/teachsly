@@ -6,7 +6,7 @@ interface NotAllowedProperties {
   owner: string;
 }
 
-//TODO: Type this util
+// TODO: Type this util
 export const removeNotAllowedPropertiesFromModel = (model: any) => {
   const {
     createdAt,
@@ -15,7 +15,7 @@ export const removeNotAllowedPropertiesFromModel = (model: any) => {
     _lastChangedAt,
     owner,
     ...updatedMedia
-  } = model;
+  } = model
 
-  return updatedMedia;
-};
+  return updatedMedia
+}

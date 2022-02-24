@@ -1,4 +1,4 @@
-import { UserTypes } from "../enums/UserTypes";
+import { UserTypes } from '../enums/UserTypes'
 
 export class User {
   id: string;
@@ -8,12 +8,12 @@ export class User {
   type: UserTypes;
   phone: number;
 
-  constructor(user: User) {
-    this.id = user.id;
-    this.email = user.email;
-    this.name = user.name;
-    this.groups = user.groups;
-    this.type = user.type;
-    this.phone = user.phone;
+  constructor (user: User) {
+    this.id = user.id
+    this.email = user.email
+    this.name = user.name
+    this.groups = user.groups
+    this.type = user.type
+    this.phone = user.phone
   }
 }

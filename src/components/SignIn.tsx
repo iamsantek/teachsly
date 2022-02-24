@@ -1,5 +1,5 @@
-import React from "react";
-import { AmplifyAuthenticator, AmplifySignIn } from "@aws-amplify/ui-react";
+import React from 'react'
+import { AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react'
 
 const SignIn = () => (
   <AmplifyAuthenticator>
@@ -8,10 +8,10 @@ const SignIn = () => (
       slot="sign-in"
       hideSignUp
       submitButtonText="Ingresar"
-      //@ts-ignore
-      style={{ "--container-height": "auto", "--background-color": "red" }}
+      // @ts-ignore
+      style={{ '--container-height': 'auto', '--background-color': 'red' }}
     />
   </AmplifyAuthenticator>
-);
+)
 
-export default SignIn;
+export default SignIn

@@ -1,4 +1,4 @@
-import { MultiSelectOption } from "../interfaces/MultiSelectOption";
+import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 
 export const renderMultiSelectOptions = (
   values: string[]
@@ -6,12 +6,12 @@ export const renderMultiSelectOptions = (
   return values.map((value) => {
     return {
       label: value,
-      value: value,
-    };
-  });
-};
+      value: value
+    }
+  })
+}
 
 export const mapSingleValueToMultiSelectOption = (mediaType: string) => ({
   label: mediaType,
-  value: mediaType,
-});
+  value: mediaType
+})

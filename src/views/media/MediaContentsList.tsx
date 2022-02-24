@@ -1,99 +1,100 @@
-import { useState, useEffect, useContext } from "react";
-import { Media, Media as PlatformMedia } from "../../../interfaces/Media";
-import { Box, Button, Center, Stack } from "@chakra-ui/react";
-import { ContentLine } from "../../../components/ContentLine/ContentLine";
-import MediaService from "../../../services/MediaService";
+import React, { useState, useEffect, useContext } from 'react'
+import { Media, Media as PlatformMedia } from '../../interfaces/Media'
+import { Box, Button, Center, Stack } from '@chakra-ui/react'
+import { ContentLine } from '../../components/ContentLine/ContentLine'
+import MediaService from '../../services/MediaService'
 import {
-  mediaContentLineIcons as MediaIcon,
-} from "../../../constants/Media";
-import { CommonContentLineTitle } from "./CommonContentLineTitle";
-import { ViewMediaContentModal } from "../../../modals/ViewMediaContentModal";
-import { translate } from "../../../utils/LanguageUtils";
-import { MediaType } from "../../../models";
-import MediaCRUDModal from "../../../modals/MediaCRUDModal";
-import {
-  AlertNotification,
-  MessageLevel,
-} from "../../../interfaces/AlertNotification";
-import { UserDashboardContext } from "../../../contexts/UserDashboardContext";
-import UserGroupsService from "../../../services/UserGroupsService";
-import { UserTypes } from "../../../enums/UserTypes";
-import { SectionHeader } from "../../../components/Headers/SectionHeader";
-import { AiOutlinePlus } from "react-icons/ai";
-import { BadgeList } from "../../../components/Badges/BadgeList";
-import { ContentLinePlaceholder } from "../../../components/Placeholders/ContentLinePlaceholder";
-import { Placeholder } from "../../../components/Placeholders/Placeholder";
+  mediaContentLineIcons as MediaIcon
+} from '../../constants/Media'
+import { CommonContentLineTitle } from './CommonContentLineTitle'
+import { ViewMediaContentModal } from '../../modals/ViewMediaContentModal'
+import { translate } from '../../utils/LanguageUtils'
+import { MediaType } from '../../models'
+import MediaCRUDModal from '../../modals/MediaCRUDModal'
+import { UserDashboardContext } from '../../contexts/UserDashboardContext'
+import UserGroupsService from '../../services/UserGroupsService'
+import { UserTypes } from '../../enums/UserTypes'
+import { SectionHeader } from '../../components/Headers/SectionHeader'
+import { AiOutlinePlus } from 'react-icons/ai'
+import { BadgeList } from '../../components/Badges/BadgeList'
+import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
+import { Placeholder } from '../../components/Placeholders/Placeholder'
+import { Toast } from '../../components/Toast/Toast'
 
 export const MediaContentsList = () => {
-  const [medias, setMedias] = useState<PlatformMedia[]>([]);
+  const [medias, setMedias] = useState<PlatformMedia[]>([])
   const [viewMediaContentModalVisibility, setViewMediaContentModalVisibility] =
-    useState<boolean>(false);
+    useState<boolean>(false)
   const [selectedMedia, setSelectedMedia] = useState<Media | undefined>(
     undefined
-  );
+  )
   const [crudModalVisibility, setCrudModalVisibility] =
-    useState<boolean>(false);
-  const [nextPageResultToken, setNextPageResultToken] = useState<string>();
-  const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(true);
+    useState<boolean>(false)
+  const [nextPageResultToken, setNextPageResultToken] = useState<string>()
+  const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(true)
 
   const fetchMedia = async () => {
-    const medias = await MediaService.fetchMedias(nextPageResultToken);
+    const medias = await MediaService.fetchMedias(nextPageResultToken)
 
-    setNextPageResultToken(medias?.nextToken);
-    setIsLoadingNewPage(false);
+    setNextPageResultToken(medias?.nextToken)
+    setIsLoadingNewPage(false)
 
     setMedias((previousMedias) =>
       previousMedias.concat((medias?.items as Media[]) || [])
-    );
-  };
+    )
+  }
 
   useEffect(() => {
-    fetchMedia();
-  }, []);
+    fetchMedia()
+  }, [])
 
   const loadMore = () => {
-    setIsLoadingNewPage(true);
-    fetchMedia();
-  };
+    setIsLoadingNewPage(true)
+    fetchMedia()
+  }
 
   const onDownload = async (key: string) => {
-    await MediaService.generateSignedUrl(key);
-  };
+    await MediaService.generateSignedUrl(key)
+  }
 
   const onView = (media: Media) => {
-    setSelectedMedia(media);
-    setViewMediaContentModalVisibility(true);
-  };
+    setSelectedMedia(media)
+    setViewMediaContentModalVisibility(true)
+  }
 
   const onEdit = (media: PlatformMedia) => {
-    setSelectedMedia(media);
-    setCrudModalVisibility(true);
-  };
+    setSelectedMedia(media)
+    setCrudModalVisibility(true)
+  }
 
   const onDelete = async (mediaToDelete: PlatformMedia) => {
     const isSuccessfullyDeleted = await MediaService.deleteMedia(
       mediaToDelete.id as string
-    );
+    )
 
-    if (!!isSuccessfullyDeleted) {
+    if (isSuccessfullyDeleted) {
       setMedias((medias) =>
         medias.filter((media) => media.id !== mediaToDelete.id)
-      );
-      new AlertNotification(MessageLevel.SUCCESS, translate("MEDIA_DELETED"));
+      )
+
+      Toast({
+        status: 'SUCCESS',
+        description: 'MEDIA_DELETED'
+      })
     }
-  };
+  }
 
   const onUpdate = (updatedMedia: PlatformMedia) => {
-    const updatedMedias = [...medias];
+    const updatedMedias = [...medias]
     const index = medias.indexOf(
       medias.find((media) => media.id === updatedMedia.id) as PlatformMedia
-    );
-    updatedMedias[index] = updatedMedia;
-    setMedias(updatedMedias);
-  };
+    )
+    updatedMedias[index] = updatedMedia
+    setMedias(updatedMedias)
+  }
 
-  const { user } = useContext(UserDashboardContext);
-  const isAdmin = UserGroupsService.isUser(user, UserTypes.ADMIN);
+  const { user } = useContext(UserDashboardContext)
+  const isAdmin = UserGroupsService.isUser(user, UserTypes.ADMIN)
 
   return (
     <>
@@ -111,7 +112,7 @@ export const MediaContentsList = () => {
         mediaToUpdate={selectedMedia}
       />
 
-      <Stack spacing={4} flexDirection={"column"}>
+      <Stack spacing={4} flexDirection={'column'}>
         <SectionHeader>
           <Center>
             <Button
@@ -119,13 +120,13 @@ export const MediaContentsList = () => {
               onClick={() => setCrudModalVisibility(true)}
               colorScheme="brand"
             >
-              {translate("MEDIA_UPLOAD_MODAL_TITLE")}
+              {translate('MEDIA_UPLOAD_MODAL_TITLE')}
             </Button>
           </Center>
         </SectionHeader>
         <Box>
           {medias.map((media) => {
-            const Icon = MediaIcon[media.type];
+            const Icon = MediaIcon[media.type]
             return (
               <ContentLine
                 key={media.id}
@@ -143,7 +144,7 @@ export const MediaContentsList = () => {
                   <BadgeList badges={media.groups || []} />
                 </CommonContentLineTitle>
               </ContentLine>
-            );
+            )
           })}
           <Placeholder
             show={isLoadingNewPage}
@@ -155,17 +156,17 @@ export const MediaContentsList = () => {
       <Center>
         {nextPageResultToken && (
           <Button
-            rounded={"lg"}
+            rounded={'lg'}
             colorScheme="brand"
             onClick={loadMore}
             marginTop={4}
             isLoading={isLoadingNewPage}
-            loadingText={translate("PROCESSING")}
+            loadingText={translate('PROCESSING')}
           >
-            {translate("LOAD_MORE")}
+            {translate('LOAD_MORE')}
           </Button>
         )}
       </Center>
     </>
-  );
-};
+  )
+}

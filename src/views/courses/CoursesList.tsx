@@ -10,16 +10,16 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { ContentLine } from "../../../components/ContentLine/ContentLine";
-import { SectionHeader } from "../../../components/Headers/SectionHeader";
-import { ContentLinePlaceholder } from "../../../components/Placeholders/ContentLinePlaceholder";
-import { Placeholder } from "../../../components/Placeholders/Placeholder";
-import CourseCRUDModal from "../../../modals/CourseCRUDModal";
-import { Course } from "../../../platform-models/Course";
-import CourseService from "../../../services/CourseService";
-import DateTimeUtils, { TimeFormats } from "../../../utils/DateTimeUtils";
-import { findAndUpdateContent } from "../../../utils/GeneralUtils";
-import { translate } from "../../../utils/LanguageUtils";
+import { ContentLine } from "../../components/ContentLine/ContentLine";
+import { SectionHeader } from "../../components/Headers/SectionHeader";
+import { ContentLinePlaceholder } from "../../components/Placeholders/ContentLinePlaceholder";
+import { Placeholder } from "../../components/Placeholders/Placeholder";
+import CourseCRUDModal from "../../modals/CourseCRUDModal";
+import { Course } from "../../platform-models/Course";
+import CourseService from "../../services/CourseService";
+import DateTimeUtils, { TimeFormats } from "../../utils/DateTimeUtils";
+import { findAndUpdateContent } from "../../utils/GeneralUtils";
+import { translate } from "../../utils/LanguageUtils";
 import { CommonContentLineTitle } from "../media/CommonContentLineTitle";
 
 export const CoursesList = () => {

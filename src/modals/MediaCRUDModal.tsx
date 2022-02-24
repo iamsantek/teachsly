@@ -1,39 +1,39 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
   AlertNotification,
-  MessageLevel,
-} from "../interfaces/AlertNotification";
-import { translate } from "../utils/LanguageUtils";
-import { Media, MediaWithMultiSelect } from "../interfaces/Media";
-import { defaultMedia } from "../constants/Media";
-import StorageService from "../services/aws/StorageService";
-import { GroupType } from "@aws-sdk/client-cognito-identity-provider";
+  MessageLevel
+} from '../interfaces/AlertNotification'
+import { translate } from '../utils/LanguageUtils'
+import { Media, MediaWithMultiSelect } from '../interfaces/Media'
+import { defaultMedia } from '../constants/Media'
+import StorageService from '../services/aws/StorageService'
+import { GroupType } from '@aws-sdk/client-cognito-identity-provider'
 import {
   mapSelectedCognitoGroups,
-  renderAllCognitoGroups,
-} from "../utils/CognitoGroupsUtils";
-import MediaService from "../services/MediaService";
-import { FormProvider, useForm } from "react-hook-form";
+  renderAllCognitoGroups
+} from '../utils/CognitoGroupsUtils'
+import MediaService from '../services/MediaService'
+import { FormProvider, useForm } from 'react-hook-form'
 import {
   Modal,
   Stack,
   ModalBody,
   ModalContent,
   ModalOverlay,
-  ModalHeader,
-} from "@chakra-ui/react";
-import { Input as CustomInput } from "../components/Inputs/Input";
-import { TextArea } from "../components/Inputs/TextArea";
-import { Select } from "../components/Inputs/Select";
+  ModalHeader
+} from '@chakra-ui/react'
+import { Input as CustomInput } from '../components/Inputs/Input'
+import { TextArea } from '../components/Inputs/TextArea'
+import { Select } from '../components/Inputs/Select'
 import {
   mapSingleValueToMultiSelectOption,
-  renderMultiSelectOptions,
-} from "../utils/SelectUtils";
-import { MediaType } from "../models";
-import { FileUploader } from "../components/Inputs/FileUploader";
-import { PermissionsList } from "../components/Lists/PermissionsList";
-import UserGroupsService from "../services/UserGroupsService";
-import { ModalFooter } from "../components/Modals/ModalFooter";
+  renderMultiSelectOptions
+} from '../utils/SelectUtils'
+import { MediaType } from '../models'
+import { FileUploader } from '../components/Inputs/FileUploader'
+import { PermissionsList } from '../components/Lists/PermissionsList'
+import UserGroupsService from '../services/UserGroupsService'
+import { ModalFooter } from '../components/Modals/ModalFooter'
 
 interface Props {
   isOpen: boolean;
@@ -48,137 +48,137 @@ const MediaCRUDModal = ({
   onClose,
   onCreate,
   onUpdate,
-  mediaToUpdate,
+  mediaToUpdate
 }: Props) => {
-  const [file, setFile] = useState<File>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [userGroups, setUserGroups] = useState<GroupType[]>([]);
+  const [file, setFile] = useState<File>()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [userGroups, setUserGroups] = useState<GroupType[]>([])
 
   useEffect(() => {
     const fetchCognitoGroups = async () => {
-      const groups = await UserGroupsService.getUserGroups();
-      setUserGroups(groups || []);
-    };
+      const groups = await UserGroupsService.getUserGroups()
+      setUserGroups(groups || [])
+    }
 
-    fetchCognitoGroups();
-  }, []);
+    fetchCognitoGroups()
+  }, [])
 
   useEffect(() => {
     if (mediaToUpdate) {
       const mappedValues = mapSelectedCognitoGroups(
         userGroups,
         mediaToUpdate.groups
-      );
-      const type = mapSingleValueToMultiSelectOption(mediaToUpdate.type);
+      )
+      const type = mapSingleValueToMultiSelectOption(mediaToUpdate.type)
 
       const media: MediaWithMultiSelect = {
         ...mediaToUpdate,
         groups: mappedValues,
-        type,
-      };
+        type
+      }
 
-      reset(media);
+      reset(media)
     }
-  }, [mediaToUpdate]);
+  }, [mediaToUpdate])
 
   useEffect(() => {
     if (!isOpen) {
-      reset(defaultMedia as MediaWithMultiSelect);
+      reset(defaultMedia as MediaWithMultiSelect)
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   const createMedia = async (media: MediaWithMultiSelect) => {
-    setIsLoading(true);
+    setIsLoading(true)
 
-    const formattedMedia = formatMedia(media);
+    const formattedMedia = formatMedia(media)
     const uploadedMedia = await StorageService.persistMedia(
       formattedMedia,
       file
-    );
+    )
 
     if (uploadedMedia) {
-      onCreate(uploadedMedia);
+      onCreate(uploadedMedia)
     }
 
-    onClose();
-    setIsLoading(false);
+    onClose()
+    setIsLoading(false)
 
     if (!uploadedMedia) {
       new AlertNotification(
         MessageLevel.ERROR,
-        translate("MEDIA_CREATED_FAILED_MESSAGE")
-      );
+        translate('MEDIA_CREATED_FAILED_MESSAGE')
+      )
     }
 
     new AlertNotification(
       MessageLevel.SUCCESS,
-      translate("MEDIA_CREATED_MESSAGE")
-    );
-  };
+      translate('MEDIA_CREATED_MESSAGE')
+    )
+  }
 
   const formatMedia = (media: MediaWithMultiSelect): Media => {
-    const groupsArray = media.groups.map((group) => group.value);
-    const type = media.type.value as MediaType;
+    const groupsArray = media.groups.map((group) => group.value)
+    const type = media.type.value as MediaType
 
     return {
       ...media,
       groups: groupsArray as string[],
-      type,
-    };
-  };
+      type
+    }
+  }
 
   const updateMedia = async (media: MediaWithMultiSelect) => {
-    const mediaWithGroups = formatMedia(media);
-    const updatedMedia = await MediaService.updateMedia(mediaWithGroups);
+    const mediaWithGroups = formatMedia(media)
+    const updatedMedia = await MediaService.updateMedia(mediaWithGroups)
 
     if (updatedMedia) {
-      onUpdate(updatedMedia);
-      onClose();
+      onUpdate(updatedMedia)
+      onClose()
     }
-  };
+  }
 
   const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) {
-      return;
+      return
     }
 
-    setFile(event.target.files[0]);
-  };
+    setFile(event.target.files[0])
+  }
 
   const formControls = useForm({
-    defaultValues: defaultMedia as MediaWithMultiSelect,
-  });
+    defaultValues: defaultMedia as MediaWithMultiSelect
+  })
 
   const {
     watch,
     handleSubmit,
     reset,
-    formState: { errors },
-  } = formControls;
+    formState: { errors }
+  } = formControls
 
   const onSubmit = (media: MediaWithMultiSelect) => {
-    const hasErrors = Object.keys(errors).length !== 0;
+    const hasErrors = Object.keys(errors).length !== 0
 
     if (hasErrors) {
-      //TODO: Implement form errors
-      console.log(errors);
-      return;
+      // TODO: Implement form errors
+      console.log(errors)
+      return
     }
 
-    mediaId ? updateMedia(media) : createMedia(media);
-  };
+    mediaId ? updateMedia(media) : createMedia(media)
+  }
 
-  const groupsSubscriber = watch("groups");
-  const mediaId = watch("id");
+  const groupsSubscriber = watch('groups')
+  const mediaId = watch('id')
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader textStyle={"paragraph"}>
-          {!!mediaId
-            ? `${translate("EDITING")} '${mediaToUpdate?.title}'`
-            : translate("MEDIA_UPLOAD_MODAL_TITLE")}
+        <ModalHeader textStyle={'paragraph'}>
+          {mediaId
+            ? `${translate('EDITING')} '${mediaToUpdate?.title}'`
+            : translate('MEDIA_UPLOAD_MODAL_TITLE')}
         </ModalHeader>
         <ModalBody marginBottom={3}>
           <FormProvider {...formControls}>
@@ -189,20 +189,20 @@ const MediaCRUDModal = ({
                     name="title"
                     label="TITLE"
                     isRequired={true}
-                    placeholder={translate("TITLE")}
+                    placeholder={translate('TITLE')}
                   />
                   <CustomInput
                     name="description"
                     label="DESCRIPTION"
                     isRequired={true}
-                    placeholder={translate("DESCRIPTION")}
+                    placeholder={translate('DESCRIPTION')}
                   />
 
                   <Select
                     name="groups"
                     label="GROUP_MULTI_SELECT_TITLE"
                     isRequired={true}
-                    placeholder={translate("DESCRIPTION")}
+                    placeholder={translate('DESCRIPTION')}
                     options={renderAllCognitoGroups(userGroups)}
                     isMultiSelect
                     closeMenuOnSelect={false}
@@ -212,7 +212,7 @@ const MediaCRUDModal = ({
                     name="type"
                     label="TYPE"
                     isRequired={true}
-                    placeholder={translate("TYPE")}
+                    placeholder={translate('TYPE')}
                     options={renderMultiSelectOptions(Object.values(MediaType))}
                     isMultiSelect={false}
                     closeMenuOnSelect={true}
@@ -222,7 +222,7 @@ const MediaCRUDModal = ({
                     name="content"
                     label="DESCRIPTION"
                     isRequired={true}
-                    placeholder={translate("DESCRIPTION")}
+                    placeholder={translate('DESCRIPTION')}
                   />
 
                   <FileUploader
@@ -232,7 +232,7 @@ const MediaCRUDModal = ({
                   />
 
                   <PermissionsList
-                    title={translate("REVIEW_PERMISSIONS")}
+                    title={translate('REVIEW_PERMISSIONS')}
                     permissionsGroups={groupsSubscriber}
                   />
                 </Stack>
@@ -240,7 +240,7 @@ const MediaCRUDModal = ({
               <ModalFooter
                 isLoading={isLoading}
                 sendButtonText={
-                  mediaId ? "UPDATE_MEDIA_BUTTON" : "CREATE_MEDIA_BUTTON"
+                  mediaId ? 'UPDATE_MEDIA_BUTTON' : 'CREATE_MEDIA_BUTTON'
                 }
                 onClose={onClose}
               />
@@ -249,7 +249,7 @@ const MediaCRUDModal = ({
         </ModalBody>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}
 
-export default MediaCRUDModal;
+export default MediaCRUDModal

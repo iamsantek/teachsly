@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react'
 import {
   useColorMode,
   Switch,
   FormControl,
   FormLabel,
-  useColorModeValue,
-} from "@chakra-ui/react";
+  useColorModeValue
+} from '@chakra-ui/react'
 
 const DarkModeSwitch: React.FC = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
-  const isDark = colorMode === "dark";
-  const bg = useColorModeValue("white", "gray.800");
+  const { colorMode, toggleColorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
+  const bg = useColorModeValue('white', 'gray.800')
   return (
     <FormControl
       bg={bg}
@@ -33,7 +33,7 @@ const DarkModeSwitch: React.FC = () => {
         onChange={toggleColorMode}
       />
     </FormControl>
-  );
-};
+  )
+}
 
-export default DarkModeSwitch;
+export default DarkModeSwitch

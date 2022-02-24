@@ -1,4 +1,5 @@
-import { HStack, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import React from 'react'
+import { HStack, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 
 export const ContentLinePlaceholder = () => (
   <HStack
@@ -12,4 +13,4 @@ export const ContentLinePlaceholder = () => (
     <SkeletonCircle />
     <SkeletonText width={1} flex={1} />
   </HStack>
-);
+)

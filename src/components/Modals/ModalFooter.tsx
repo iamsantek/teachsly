@@ -1,10 +1,11 @@
+import React from 'react'
 import {
   ModalFooter as ChakraModalFooter,
   HStack,
-  Button,
-} from "@chakra-ui/react";
-import { TranslationsDictionary } from "../../dictionaries/dictionary";
-import { translate } from "../../utils/LanguageUtils";
+  Button
+} from '@chakra-ui/react'
+import { TranslationsDictionary } from '../../dictionaries/dictionary'
+import { translate } from '../../utils/LanguageUtils'
 
 interface Props {
   isLoading: boolean;
@@ -15,15 +16,15 @@ interface Props {
 export const ModalFooter = ({ isLoading, onClose, sendButtonText }: Props) => (
   <ChakraModalFooter>
     <HStack>
-      <Button onClick={onClose}>{translate("CANCEL")}</Button>
+      <Button onClick={onClose}>{translate('CANCEL')}</Button>
       <Button
         colorScheme="brand"
         isLoading={isLoading}
-        loadingText={translate("PROCESSING")}
+        loadingText={translate('PROCESSING')}
         type="submit"
       >
         {translate(sendButtonText)}
       </Button>
     </HStack>
   </ChakraModalFooter>
-);
+)

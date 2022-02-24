@@ -1,6 +1,6 @@
-import React from "react";
-import { generateRandomId, splitCamelCase } from "../../utils/StringUtils";
-import { HStack, Badge } from "@chakra-ui/react";
+import React from 'react'
+import { generateRandomId, splitCamelCase } from '../../utils/StringUtils'
+import { HStack, Badge } from '@chakra-ui/react'
 
 interface Props {
   badges: string[];
@@ -9,18 +9,18 @@ interface Props {
 export const BadgeList: React.FC<Props> = ({ badges }) => (
   <HStack spacing={3}>
     {badges?.map((badge) => {
-      const id = generateRandomId();
+      const id = generateRandomId()
       return (
         <Badge
           key={id}
           variant="outline"
-          rounded={"sm"}
+          rounded={'sm'}
           color="brand.500"
-          borderColor={"red"}
+          borderColor={'red'}
         >
           {splitCamelCase(badge)}
         </Badge>
-      );
+      )
     })}
   </HStack>
-);
+)

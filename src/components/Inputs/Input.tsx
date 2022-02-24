@@ -1,9 +1,8 @@
-import React from "react";
-import { Stack, Text } from "@chakra-ui/react";
-import { TranslationsDictionary } from "../../dictionaries/dictionary";
-import { translate } from "../../utils/LanguageUtils";
-import { Input as ChakraInput } from "@chakra-ui/react";
-import { useFormContext } from "react-hook-form";
+import React from 'react'
+import { Stack, Text, Input as ChakraInput } from '@chakra-ui/react'
+import { TranslationsDictionary } from '../../dictionaries/dictionary'
+import { translate } from '../../utils/LanguageUtils'
+import { useFormContext } from 'react-hook-form'
 
 interface Props {
   name: string;
@@ -20,9 +19,9 @@ export const Input = ({
   isRequired,
   placeholder,
   bottomNote,
-  type,
+  type
 }: Props) => {
-  const { register } = useFormContext();
+  const { register } = useFormContext()
 
   return (
     <Stack spacing={1}>
@@ -42,5 +41,5 @@ export const Input = ({
         </Text>
       )}
     </Stack>
-  );
-};
+  )
+}

@@ -1,94 +1,94 @@
-import { graphqlOperation } from "aws-amplify";
-import { LogLevel, LogTypes } from "../enums/LogTypes";
-import { UserTypes } from "../enums/UserTypes";
-import { listDynamoDBUsers } from "../graphql/queries";
-import { User } from "../platform-models/User";
-import { DynamoDBUser } from "../models/index";
+import { graphqlOperation } from 'aws-amplify'
+import { LogLevel, LogTypes } from '../enums/LogTypes'
+import { UserTypes } from '../enums/UserTypes'
+import { listDynamoDBUsers } from '../graphql/queries'
+import { User } from '../platform-models/User'
+import { DynamoDBUser } from '../models/index'
 
-import Logger from "../utils/Logger";
-import AuthService from "./AuthService";
-import GraphQLService from "./GraphQLService";
+import Logger from '../utils/Logger'
+import AuthService from './AuthService'
+import GraphQLService from './GraphQLService'
 
 class UserService {
-  public async createUser(user: User) {
+  public async createUser (user: User) {
     try {
-      const cognitoUser = await AuthService.createUser(user);
+      const cognitoUser = await AuthService.createUser(user)
 
       if (!cognitoUser) {
-        return;
+        return
       }
 
       Logger.log(
         LogLevel.INFO,
         LogTypes.UserService,
-        "User successfully created"
-      );
+        'User successfully created'
+      )
 
-      return cognitoUser;
+      return cognitoUser
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.UserService,
-        "Error signing up",
+        'Error signing up',
         error
-      );
+      )
     }
   }
 
   private filterByGroupType = (type: UserTypes) => {
-    return { groups: { contains: type } };
+    return { groups: { contains: type } }
   };
 
   private filterByCognitoId = (cognitoId: string) => {
-    return { cognitoId: { eq: cognitoId } };
+    return { cognitoId: { eq: cognitoId } }
   };
 
   private filterConfiguration = (filter: Object) => {
     return {
-      filter: filter,
-    };
+      filter: filter
+    }
   };
 
   public fetchUserByCognitoId = async (cognitoId: string) => {
-    const filterByCognitoId = this.filterByCognitoId(cognitoId);
-    const users = await this.fetchUsers(filterByCognitoId);
+    const filterByCognitoId = this.filterByCognitoId(cognitoId)
+    const users = await this.fetchUsers(filterByCognitoId)
 
-    return users && users[0];
+    return users && users[0]
   };
 
   private fetchUsers = async (filter: Object) => {
     try {
-      const filterConfig = this.filterConfiguration(filter);
+      const filterConfig = this.filterConfiguration(filter)
       const models = await GraphQLService.graphQL<any>(
         graphqlOperation(listDynamoDBUsers, filterConfig)
-      );
+      )
 
-      return models?.data?.listDynamoDBUsers.items as DynamoDBUser[];
+      return models?.data?.listDynamoDBUsers.items as DynamoDBUser[]
     } catch (e) {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.CourseService,
-        "Error when fetching users",
+        'Error when fetching users',
         e
-      );
+      )
     }
   };
 
-  public fetchUsersByType = async (type: UserTypes | "ALL") => {
-    let filter = type !== "ALL" ? this.filterByGroupType(type) : {};
+  public fetchUsersByType = async (type: UserTypes | 'ALL') => {
+    const filter = type !== 'ALL' ? this.filterByGroupType(type) : {}
 
-    return await this.fetchUsers(filter);
+    return await this.fetchUsers(filter)
   };
 
   public getUserType = (user: User) => {
     if (!user) {
-      return;
+      return
     }
 
-    const { groups } = user;
+    const { groups } = user
 
-    return Object.values(UserTypes).find((group) => groups.includes(group));
+    return Object.values(UserTypes).find((group) => groups.includes(group))
   };
 }
 
-export default new UserService();
+export default new UserService()

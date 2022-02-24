@@ -1,11 +1,11 @@
-import { UserTypes } from "../enums/UserTypes";
-import { User } from "../platform-models/User";
+import { UserTypes } from '../enums/UserTypes'
+import { User } from '../platform-models/User'
 
 export const defaultCreateStudentModal: User = new User({
-  id: "",
-  name: "",
-  email: "",
+  id: '',
+  name: '',
+  email: '',
   groups: [],
   type: UserTypes.STUDENT,
-  phone: 0,
-});
+  phone: 0
+})
