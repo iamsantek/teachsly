@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Media, Media as PlatformMedia } from "../../../interfaces/Media";
-import { Button, Center, Stack } from "@chakra-ui/react";
+import { Box, Button, Center, Stack } from "@chakra-ui/react";
 import { ContentLine } from "../../../components/ContentLine/ContentLine";
 import MediaService from "../../../services/MediaService";
 import {
@@ -39,7 +39,6 @@ export const MediaContentsList = () => {
   const fetchMedia = async () => {
     const medias = await MediaService.fetchMedias(nextPageResultToken);
 
-    console.log(`NEXT TOKEN`, medias?.nextToken);
     setNextPageResultToken(medias?.nextToken);
     setIsLoadingNewPage(false);
 
@@ -124,33 +123,35 @@ export const MediaContentsList = () => {
             </Button>
           </Center>
         </SectionHeader>
-        {medias.map((media) => {
-          const Icon = MediaIcon[media.type];
-          return (
-            <ContentLine
-              key={media.id}
-              leftIcon={<Icon />}
-              onView={() => onView(media)}
-              onDownload={
-                media.link && media.type === MediaType.PDF
-                  ? () => onDownload(media.link)
-                  : undefined
-              }
-              onEdit={isAdmin ? () => onEdit(media) : undefined}
-              onDelete={isAdmin ? () => onDelete(media) : undefined}
-            >
-              <CommonContentLineTitle title={media.title} badges={media.groups}>
-                <BadgeList badges={media.groups || []} />
-              </CommonContentLineTitle>
-            </ContentLine>
-          );
-        })}
+        <Box>
+          {medias.map((media) => {
+            const Icon = MediaIcon[media.type];
+            return (
+              <ContentLine
+                key={media.id}
+                leftIcon={<Icon />}
+                onView={() => onView(media)}
+                onDownload={
+                  media.link && media.type === MediaType.PDF
+                    ? () => onDownload(media.link)
+                    : undefined
+                }
+                onEdit={isAdmin ? () => onEdit(media) : undefined}
+                onDelete={isAdmin ? () => onDelete(media) : undefined}
+              >
+                <CommonContentLineTitle title={media.title} badges={media.groups}>
+                  <BadgeList badges={media.groups || []} />
+                </CommonContentLineTitle>
+              </ContentLine>
+            );
+          })}
+          <Placeholder
+            show={isLoadingNewPage}
+            number={2}
+            placeholderElement={<ContentLinePlaceholder />}
+          />
+        </Box>
       </Stack>
-      <Placeholder
-        show={isLoadingNewPage}
-        number={2}
-        placeholderElement={<ContentLinePlaceholder />}
-      />
       <Center>
         {nextPageResultToken && (
           <Button

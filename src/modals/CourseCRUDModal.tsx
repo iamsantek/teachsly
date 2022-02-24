@@ -161,9 +161,9 @@ const CourseCRUDModal = ({
 
                 <Select
                   name="scheduleDates"
-                  label="TYPE"
+                  label="COURSE_DATES"
                   isRequired={true}
-                  placeholder={translate("TYPE")}
+                  placeholder={translate("COURSE_DATES")}
                   options={renderMultiSelectOptions(daysOfTheWeek)}
                   isMultiSelect={true}
                   closeMenuOnSelect={true}

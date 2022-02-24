@@ -17,7 +17,11 @@ class CourseService {
     nextToken?: string,
     limit = GRAPHQL_MAX_PAGE_RESULTS
   ): Promise<GraphQLResultWithNextToken<Course> | undefined> => {
-    return GraphQLService.fetchQuery(listCourses, nextToken, limit);
+    return GraphQLService.fetchQuery({
+      query: listCourses,
+      nextToken,
+      limit
+    });
   };
 
   deleteCourse = async () => {
@@ -84,6 +88,10 @@ class CourseService {
         error
       );
     }
+
+    return GraphQLService.fetchQuery({
+      query: updateCourse,
+    })
   };
 
   public fetchCoursesByIds = async (courseIds: string[]) => {
