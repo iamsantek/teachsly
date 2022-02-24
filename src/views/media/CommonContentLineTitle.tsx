@@ -1,5 +1,5 @@
 
-import { FC } from 'react';
+import { FC } from 'react'
 import { Center, HStack, Text, useColorModeValue } from '@chakra-ui/react'
 
 interface Props {
