@@ -5,7 +5,7 @@ import { ContentLine } from '../../components/ContentLine/ContentLine'
 import MediaService from '../../services/MediaService'
 import {
   mediaContentLineIcons as MediaIcon
-} from '../../constants/Media'
+} from '../../constants/Medias'
 import { CommonContentLineTitle } from './CommonContentLineTitle'
 import { ViewMediaContentModal } from '../../modals/ViewMediaContentModal'
 import { translate } from '../../utils/LanguageUtils'

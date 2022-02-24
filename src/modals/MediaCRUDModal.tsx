@@ -34,7 +34,7 @@ import { FileUploader } from '../components/Inputs/FileUploader'
 import { PermissionsList } from '../components/Lists/PermissionsList'
 import UserGroupsService from '../services/UserGroupsService'
 import { ModalFooter } from '../components/Modals/ModalFooter'
-import { defaultMedia } from '../constants/Media'
+import { defaultMedia } from '../constants/Medias'
 
 interface Props {
   isOpen: boolean;
