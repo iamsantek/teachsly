@@ -15,7 +15,7 @@ export const renderAllCognitoGroups = (
       //       group.GroupName as UserTypes
       //     )
       // )
-      .map((group, index) => {
+      .map((group) => {
         return {
           label: `${splitCamelCase(group.GroupName)} ${group.Description}`,
           value: group.GroupName,
@@ -43,8 +43,7 @@ export const mapSelectedCognitoGroups = (
 }
 
 export const renderCognitoGroupsList = (
-  groups: GroupType[],
-  selectedOptions: string[]
+  groups: GroupType[]
 ) =>
   // It only renders the groups that are courses
   groups

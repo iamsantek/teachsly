@@ -9,7 +9,6 @@ interface Props {
 
 export const CommonContentLineTitle: FC<Props> = ({
   title,
-  badges,
   children
 }) => (
   <HStack spacing={3} flex={1} justifyContent="start">

@@ -36,33 +36,46 @@ import { NavLink } from 'react-router-dom'
 import { Footer } from '../components/Footers/Footer'
 import DarkModeSwitch from '../components/Switches/DarkModeSwitch'
 
-export default function DashboardLayout ({ children }: { children: ReactNode }) {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+interface NavItemProps extends FlexProps {
+  icon: IconType;
+  children: ReactText;
+  path?: string;
+}
+
+const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
-      <SidebarContent
-        onClose={() => onClose}
-        display={{ base: 'none', md: 'block' }}
-      />
-      <Drawer
-        autoFocus={false}
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-        size="full"
+    <Link
+      as={NavLink}
+      to={path as string}
+      style={{ textDecoration: 'none' }}
+      _focus={{ boxShadow: 'none' }}
+    >
+      <Flex
+        align="center"
+        p="4"
+        mx="4"
+        borderRadius="lg"
+        role="group"
+        cursor="pointer"
+        _hover={{
+          bg: 'cyan.400',
+          color: 'white'
+        }}
+        {...rest}
       >
-        <DrawerContent>
-          <SidebarContent onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-      {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+        {icon && (
+          <Icon
+            mr="4"
+            fontSize="16"
+            _groupHover={{
+              color: 'white'
+            }}
+            as={icon}
+          />
+        )}
         {children}
-      </Box>
-    </Box>
+      </Flex>
+    </Link>
   )
 }
 
@@ -105,49 +118,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       <DarkModeSwitch />
       <Footer />
     </Box>
-  )
-}
-
-interface NavItemProps extends FlexProps {
-  icon: IconType;
-  children: ReactText;
-  path?: string;
-}
-
-const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
-  return (
-    <Link
-      as={NavLink}
-      to={path as string}
-      style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}
-    >
-      <Flex
-        align="center"
-        p="4"
-        mx="4"
-        borderRadius="lg"
-        role="group"
-        cursor="pointer"
-        _hover={{
-          bg: 'cyan.400',
-          color: 'white'
-        }}
-        {...rest}
-      >
-        {icon && (
-          <Icon
-            mr="4"
-            fontSize="16"
-            _groupHover={{
-              color: 'white'
-            }}
-            as={icon}
-          />
-        )}
-        {children}
-      </Flex>
-    </Link>
   )
 }
 
@@ -228,5 +198,35 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         </Flex>
       </HStack>
     </Flex>
+  )
+}
+
+export default function DashboardLayout ({ children }: { children: ReactNode }) {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  return (
+    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+      <SidebarContent
+        onClose={() => onClose}
+        display={{ base: 'none', md: 'block' }}
+      />
+      <Drawer
+        autoFocus={false}
+        isOpen={isOpen}
+        placement="left"
+        onClose={onClose}
+        returnFocusOnClose={false}
+        onOverlayClick={onClose}
+        size="full"
+      >
+        <DrawerContent>
+          <SidebarContent onClose={onClose} />
+        </DrawerContent>
+      </Drawer>
+      {/* mobilenav */}
+      <MobileNav onOpen={onOpen} />
+      <Box ml={{ base: 0, md: 60 }} p="4">
+        {children}
+      </Box>
+    </Box>
   )
 }

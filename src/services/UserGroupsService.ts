@@ -5,7 +5,7 @@ import CognitoService from './aws/CognitoService'
 class UserGroupsService {
   public getUserGroups = async () => {
     return await CognitoService.getCognitoGroups()
-  };
+  }
 
   public isUser = (user: User | null, group: UserTypes) => {
     if (!user) {
@@ -13,7 +13,7 @@ class UserGroupsService {
     }
 
     return user.groups.includes(group)
-  };
+  }
 }
 
 export default new UserGroupsService()

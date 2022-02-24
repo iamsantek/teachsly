@@ -16,7 +16,7 @@ class MediaService {
       query: listMedia,
       nextToken
     })
-  };
+  }
 
   public updateMedia = async (media: Media) => {
     try {
@@ -35,7 +35,7 @@ class MediaService {
         error
       )
     }
-  };
+  }
 
   public deleteMedia = async (mediaId: string) => {
     try {
@@ -56,7 +56,7 @@ class MediaService {
         error
       )
     }
-  };
+  }
 
   public generateSignedUrl = async (key: string) => {
     const signedURL = await StorageService.getSignedUrl(key)
@@ -64,7 +64,7 @@ class MediaService {
     if (signedURL) {
       window.open(signedURL, '_blank')
     }
-  };
+  }
 }
 
 export default new MediaService()

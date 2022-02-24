@@ -13,6 +13,8 @@ const UserList = (props: Props) => {
   const [nextPageResultToken, setNextPageResultToken] = useState<string>()
   const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(true)
 
+  console.log(users)
+
   const fetchUsers = async () => {
     const users = await UserService.fetchUsersByType(props.listType)
 
@@ -22,6 +24,8 @@ const UserList = (props: Props) => {
     setUsers((previousUsers) =>
       previousUsers.concat((users?.items as DynamoDBUser[]) || [])
     )
+
+    console.log(nextPageResultToken, isLoadingNewPage)
   }
 
   useEffect(() => {

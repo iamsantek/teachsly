@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import {
   Box,
   Circle,
@@ -17,7 +17,7 @@ import { translate } from '../../utils/LanguageUtils'
 import { TooltipHelper } from '../Tooltips/Tooltip'
 
 interface Props {
-  leftIcon: JSX.Element;
+  leftIcon: React.ReactNode;
   onView?: <T>(item: T) => void;
   onDownload?: <T>(item: T) => void;
   onEdit?: <T>(item: T) => void;

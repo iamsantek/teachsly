@@ -12,13 +12,12 @@ import {
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers'
 import awsmobile from '../../aws-exports'
 import { LogLevel, LogTypes } from '../../enums/LogTypes'
-import { UserTypes } from '../../enums/UserTypes'
 import Logger from '../../utils/Logger'
 
 const logTag = LogTypes.AuthService
 
 class CognitoService {
-  private cognitoIdentityProviderClient: CognitoIdentityProviderClient;
+  private cognitoIdentityProviderClient: CognitoIdentityProviderClient
 
   constructor () {
     this.cognitoIdentityProviderClient =
@@ -33,11 +32,11 @@ class CognitoService {
         identityPoolId: awsmobile.aws_cognito_identity_pool_id,
         logins: {}
       })
-    });
+    })
 
   private getListGroupsCommandConfig = () => ({
     UserPoolId: awsmobile.aws_user_pools_id
-  });
+  })
 
   public assignUserToCognitoGroup = async (
     userId: string,
@@ -67,7 +66,7 @@ class CognitoService {
         error
       )
     }
-  };
+  }
 
   public getCognitoUsersByGroupName = async (groupName: string) => {
     try {
@@ -90,7 +89,7 @@ class CognitoService {
         error
       )
     }
-  };
+  }
 
   private getAdminUpdateUserAttributesCommandConfiguration = (
     username: string
@@ -105,7 +104,7 @@ class CognitoService {
         Value: 'true'
       }
     ]
-  });
+  })
 
   public getCognitoGroups = async () => {
     try {
@@ -126,7 +125,7 @@ class CognitoService {
         error
       )
     }
-  };
+  }
 
   public confirmCognitoUser = async (username: string) => {
     try {
@@ -148,7 +147,7 @@ class CognitoService {
         error
       )
     }
-  };
+  }
 
   private getCreateUserConfiguration = (username: string, name: string) => ({
     UserPoolId: awsmobile.aws_user_pools_id,
@@ -161,12 +160,11 @@ class CognitoService {
         Value: name
       }
     ]
-  });
+  })
 
   public createCognitoUser = async (
     username: string,
-    name: string,
-    type: UserTypes
+    name: string
   ) => {
     // Create user in the Cognito User Pool
     const adminCreateUserCommandConfig = this.getCreateUserConfiguration(
@@ -182,7 +180,7 @@ class CognitoService {
       await cognitoIdentityProviderClient.send(adminCreateUserCommand)
 
     return adminCreateUserCommandResponse.User
-  };
+  }
 
   public parseCognitoUser = (attributes: AttributeType[] | undefined) => {
     const userId = attributes?.find(
@@ -196,7 +194,7 @@ class CognitoService {
     )?.Value
 
     return { userId, fullName, email }
-  };
+  }
 
   public fetchAllUsers = async () => {
     try {
@@ -212,7 +210,7 @@ class CognitoService {
         error
       )
     }
-  };
+  }
 
   private getCreateGroupCommandConfig = (
     groupName: string,
@@ -221,7 +219,7 @@ class CognitoService {
     GroupName: groupName.replace(/\s/g, ''),
     Description: description,
     UserPoolId: awsmobile.aws_user_pools_id
-  });
+  })
 
   public createCognitoGroup = async (
     groupName: string,
@@ -245,7 +243,7 @@ class CognitoService {
         error
       )
     }
-  };
+  }
 }
 
 export default new CognitoService()

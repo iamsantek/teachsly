@@ -22,11 +22,11 @@ class CourseService {
       nextToken,
       limit
     })
-  };
+  }
 
   deleteCourse = async () => {
     // TODO: Implement delete course logic
-  };
+  }
 
   public createCourse = async (courseCreation: PlatformCourse) => {
     const scheduleStartTime = DateTimeUtils.formateHour(
@@ -69,7 +69,7 @@ class CourseService {
       LogTypes.CourseService,
       'Error when creating Course'
     )
-  };
+  }
 
   public updateCourse = async (course: Course) => {
     try {
@@ -92,7 +92,7 @@ class CourseService {
     return GraphQLService.fetchQuery({
       query: updateCourse
     })
-  };
+  }
 
   public fetchCoursesByIds = async (courseIds: string[]) => {
     try {
@@ -108,7 +108,7 @@ class CourseService {
         error
       )
     }
-  };
+  }
 }
 
 export default new CourseService()

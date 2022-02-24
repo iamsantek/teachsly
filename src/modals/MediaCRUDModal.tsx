@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react'
 import * as React from 'react'
-import {
-  AlertNotification,
-  MessageLevel
-} from '../interfaces/AlertNotification'
 import { translate } from '../utils/LanguageUtils'
 import { Media, MediaWithMultiSelect } from '../interfaces/Media'
 import StorageService from '../services/aws/StorageService'
@@ -35,6 +31,7 @@ import { PermissionsList } from '../components/Lists/PermissionsList'
 import UserGroupsService from '../services/UserGroupsService'
 import { ModalFooter } from '../components/Modals/ModalFooter'
 import { defaultMedia } from '../constants/Medias'
+import { Toast } from '../components/Toast/Toast'
 
 interface Props {
   isOpen: boolean;
@@ -54,6 +51,20 @@ const MediaCRUDModal = ({
   const [file, setFile] = useState<File>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [userGroups, setUserGroups] = useState<GroupType[]>([])
+
+  const formControls = useForm({
+    defaultValues: defaultMedia as MediaWithMultiSelect
+  })
+
+  const {
+    watch,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = formControls
+
+  const groupsSubscriber = watch('groups')
+  const mediaId = watch('id')
 
   useEffect(() => {
     const fetchCognitoGroups = async () => {
@@ -88,6 +99,17 @@ const MediaCRUDModal = ({
     }
   }, [isOpen])
 
+  const formatMedia = (media: MediaWithMultiSelect): Media => {
+    const groupsArray = media.groups.map((group) => group.value)
+    const type = media.type.value as MediaType
+
+    return {
+      ...media,
+      groups: groupsArray as string[],
+      type
+    }
+  }
+
   const createMedia = async (media: MediaWithMultiSelect) => {
     setIsLoading(true)
 
@@ -105,27 +127,16 @@ const MediaCRUDModal = ({
     setIsLoading(false)
 
     if (!uploadedMedia) {
-      new AlertNotification(
-        MessageLevel.ERROR,
-        translate('MEDIA_CREATED_FAILED_MESSAGE')
-      )
+      Toast({
+        description: 'MEDIA_CREATED_FAILED_MESSAGE',
+        status: 'ERROR'
+      })
     }
 
-    new AlertNotification(
-      MessageLevel.SUCCESS,
-      translate('MEDIA_CREATED_MESSAGE')
-    )
-  }
-
-  const formatMedia = (media: MediaWithMultiSelect): Media => {
-    const groupsArray = media.groups.map((group) => group.value)
-    const type = media.type.value as MediaType
-
-    return {
-      ...media,
-      groups: groupsArray as string[],
-      type
-    }
+    Toast({
+      description: 'MEDIA_CREATED_MESSAGE',
+      status: 'SUCCESS'
+    })
   }
 
   const updateMedia = async (media: MediaWithMultiSelect) => {
@@ -146,17 +157,6 @@ const MediaCRUDModal = ({
     setFile(event.target.files[0])
   }
 
-  const formControls = useForm({
-    defaultValues: defaultMedia as MediaWithMultiSelect
-  })
-
-  const {
-    watch,
-    handleSubmit,
-    reset,
-    formState: { errors }
-  } = formControls
-
   const onSubmit = (media: MediaWithMultiSelect) => {
     const hasErrors = Object.keys(errors).length !== 0
 
@@ -168,9 +168,6 @@ const MediaCRUDModal = ({
 
     mediaId ? updateMedia(media) : createMedia(media)
   }
-
-  const groupsSubscriber = watch('groups')
-  const mediaId = watch('id')
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">

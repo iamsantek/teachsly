@@ -9,11 +9,11 @@ import { createDynamoDBUser } from '../graphql/mutations'
 
 class AuthService {
   public createUser = async (user: User) => {
-    const { name, email: username, type } = user
+    const { name, email: username } = user
 
     try {
       const adminCreateUserCommandResponse =
-        await CognitoService.createCognitoUser(username, name, type) // Create Cognito user in the User Pool
+        await CognitoService.createCognitoUser(username, name) // Create Cognito user in the User Pool
       const confirmCognitoUserResponse =
         await CognitoService.confirmCognitoUser(username) // Auto-confirm email
 
@@ -51,7 +51,7 @@ class AuthService {
         error
       )
     }
-  };
+  }
 
   private createDynamoDBUser = async (
     user: User,
@@ -73,7 +73,7 @@ class AuthService {
     return await GraphQLService.graphQL(
       graphqlOperation(createDynamoDBUser, { input: dynamoDbBUser })
     )
-  };
+  }
 
   public signIn = async (email: string, password: string) => {
     try {
@@ -86,7 +86,7 @@ class AuthService {
         error
       )
     }
-  };
+  }
 }
 
 export default new AuthService()

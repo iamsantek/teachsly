@@ -11,7 +11,7 @@ import GraphQLService, { GraphQLResultType } from '../GraphQLService'
 
 class StorageService {
   private getExtensionType = (file: File) =>
-    file.name.slice(((file.name.lastIndexOf('.') - 1) >>> 0) + 2);
+    file.name.slice(((file.name.lastIndexOf('.') - 1) >>> 0) + 2)
 
   public getSignedUrl = async (key: string) => {
     try {
@@ -26,13 +26,13 @@ class StorageService {
         error
       )
     }
-  };
+  }
 
   private generateFileName = (file: File) => {
     const fileExtension = this.getExtensionType(file)
 
     return `${uuidv4()}.${fileExtension}`
-  };
+  }
 
   public uploadToS3 = async (file: File | undefined) => {
     try {
@@ -55,7 +55,7 @@ class StorageService {
         error
       )
     }
-  };
+  }
 
   public persistMedia = async (media: PlatformMedia, file?: File) => {
     const fileUploaded = await this.uploadToS3(file)
@@ -89,7 +89,7 @@ class StorageService {
         error
       )
     }
-  };
+  }
 }
 
 export default new StorageService()

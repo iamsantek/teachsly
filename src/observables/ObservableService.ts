@@ -5,7 +5,7 @@ class ObservableService {
     this.initState()
   }
 
-  private listenersByEvent: any[] = [];
+  private listenersByEvent: any[] = []
 
   initState () {
     this.listenersByEvent = []

@@ -111,7 +111,7 @@ const CreateUserModal = (props: Props) => {
             name="courses"
             multipleSelect
           >
-            {renderCognitoGroupsList(props.cognitoGroups, [])}
+            {renderCognitoGroupsList(props.cognitoGroups)}
           </CustomInput>
         </Form>
       </ModalBody>
