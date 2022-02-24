@@ -10,8 +10,8 @@ export enum MessageLevel {
 }
 
 export class AlertNotification {
-  type: MessageLevel;
-  message: string;
+  type: MessageLevel
+  message: string
 
   constructor (type: MessageLevel, message: string) {
     this.type = type

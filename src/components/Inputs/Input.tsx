@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 import { Stack, Text, Input as ChakraInput } from '@chakra-ui/react'
 import { TranslationsDictionary } from '../../dictionaries/dictionary'
 import { translate } from '../../utils/LanguageUtils'

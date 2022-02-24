@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC, useContext } from 'react'
 import { Heading, Stack } from '@chakra-ui/react'
 import { useLocation } from 'react-router-dom'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'

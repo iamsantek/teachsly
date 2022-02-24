@@ -1,21 +1,22 @@
-import { generateRandomId } from "../../utils/StringUtils";
+import React from 'react'
+import { generateRandomId } from '../../utils/StringUtils'
 
 interface Props {
   show: boolean;
   number: number;
-  placeholderElement: JSX.Element;
+  placeholderElement: React.ReactNode;
 }
 
 export const Placeholder = ({ show, number, placeholderElement }: Props) => {
   if (!show) {
-    return null;
+    return null
   }
 
   return (
     <>
-      {Array.from(Array(number).fill(1)).map((item) => {
-        return <div key={generateRandomId()}>{placeholderElement}</div>;
+      {Array.from(Array(number).fill(1)).map(() => {
+        return <div key={generateRandomId()}>{placeholderElement}</div>
       })}
     </>
-  );
-};
+  )
+}

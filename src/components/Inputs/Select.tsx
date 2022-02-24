@@ -8,7 +8,7 @@ import { Select as ChakraSelect } from 'chakra-react-select'
 interface Props {
   name: string;
   label: TranslationsDictionary;
-  isRequired: boolean;
+  isRequired: boolean; // TODO: Remove this prop
   placeholder?: string;
   bottomNote?: string;
   options: MultiSelectOption[];
@@ -20,7 +20,6 @@ export const Select = ({
   closeMenuOnSelect,
   name,
   label,
-  isRequired,
   placeholder,
   bottomNote,
   options,
@@ -34,7 +33,7 @@ export const Select = ({
         {translate(label)}
       </Text>
       <Controller
-        render={({ field: { onChange, onBlur, value, name, ref } }) => (
+        render={({ field: { onChange, value, ref } }) => (
           <ChakraSelect
             isMulti={isMultiSelect}
             placeholder={placeholder}
