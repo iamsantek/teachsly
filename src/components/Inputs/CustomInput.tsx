@@ -1,6 +1,6 @@
-import { CSSProperties, FC } from "react";
-import { Input, Label } from "reactstrap";
-import { InputType } from "reactstrap/es/Input";
+import React, { CSSProperties, FC } from 'react'
+import { Input, Label } from 'reactstrap'
+import { InputType } from 'reactstrap/es/Input'
 
 interface Props {
   type: InputType;
@@ -12,8 +12,8 @@ interface Props {
 }
 
 const styles: CSSProperties = {
-  fontWeight: "300",
-};
+  fontWeight: '300'
+}
 
 export const CustomInput: FC<Props> = ({
   onChange,
@@ -22,10 +22,10 @@ export const CustomInput: FC<Props> = ({
   value,
   labelName,
   children,
-  multipleSelect,
+  multipleSelect
 }) => (
   <div className="my-2">
-    <Label style={{ fontFamily: "Lato" }}>{labelName}</Label>
+    <Label style={{ fontFamily: 'Lato' }}>{labelName}</Label>
     <Input
       type={type}
       multiple={multipleSelect}
@@ -38,4 +38,4 @@ export const CustomInput: FC<Props> = ({
       {children}
     </Input>
   </div>
-);
+)
