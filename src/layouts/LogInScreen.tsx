@@ -7,36 +7,10 @@ import {
   Text,
   useColorModeValue
 } from '@chakra-ui/react'
-import { useForm } from 'react-hook-form'
+
 import SignIn from '../components/SignIn'
-import AuthService from '../services/AuthService'
-
-interface SignInAttempt {
-  email: string;
-  password: string;
-}
-
-const logIn = async (credentials: SignInAttempt) => {
-  console.log(credentials)
-
-  const response = await AuthService.signIn(
-    credentials.email,
-    credentials.password
-  )
-
-  console.log(response)
-}
 
 export const LogInScreen = () => {
-  const formControls = useForm<SignInAttempt>()
-  const {
-    control,
-    watch,
-    handleSubmit,
-    reset,
-    formState: { errors }
-  } = formControls
-
   return (
     <Flex
       minH={'100vh'}
