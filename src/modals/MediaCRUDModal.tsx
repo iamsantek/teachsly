@@ -6,7 +6,6 @@ import {
 } from '../interfaces/AlertNotification'
 import { translate } from '../utils/LanguageUtils'
 import { Media, MediaWithMultiSelect } from '../interfaces/Media'
-import { defaultMedia } from '../constants/Media'
 import StorageService from '../services/aws/StorageService'
 import { GroupType } from '@aws-sdk/client-cognito-identity-provider'
 import {
@@ -35,6 +34,7 @@ import { FileUploader } from '../components/Inputs/FileUploader'
 import { PermissionsList } from '../components/Lists/PermissionsList'
 import UserGroupsService from '../services/UserGroupsService'
 import { ModalFooter } from '../components/Modals/ModalFooter'
+import { defaultMedia } from '../constants/Media'
 
 interface Props {
   isOpen: boolean;

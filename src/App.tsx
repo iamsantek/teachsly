@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useEffect, useState } from 'react'
-import { useLocation, useRoutes } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components'
 import { defaultDashboardContext } from './constants/DashboardContext'
 import UserService from './services/UserService'
@@ -13,6 +13,7 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import DashboardLayout from './layouts/DashboardLayout'
 import { defaultTheme } from './constants/Theme'
 import { LogInScreen } from './layouts/LogInScreen'
+import { ApplicationRoute } from './interfaces/Routes'
 
 Amplify.configure(awsExports)
 
@@ -22,7 +23,7 @@ const App = () => {
     defaultDashboardContext
   )
 
-  const [routes, setRoutes] = useState<Route[]>([])
+  const [routes, setRoutes] = useState<ApplicationRoute[]>([])
   const theme = extendTheme(defaultTheme)
 
   useEffect(() => {
@@ -60,8 +61,6 @@ const App = () => {
   }, [])
 
   const routeComponent = useRoutes(routes)
-  const location = useLocation()
-  const routeName = routes.find((route) => route.path === location.pathname)
 
   return authState === AuthState.SignedIn && dashboardInformation.user
     ? (

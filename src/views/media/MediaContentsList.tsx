@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
-import { Media, Media as PlatformMedia } from '../../interfaces/Media'
+import { useState, useEffect, useContext } from 'react'
+import { Media as PlatformMedia } from '../../interfaces/Media'
 import { Box, Button, Center, Stack } from '@chakra-ui/react'
 import { ContentLine } from '../../components/ContentLine/ContentLine'
 import MediaService from '../../services/MediaService'
@@ -25,7 +25,7 @@ export const MediaContentsList = () => {
   const [medias, setMedias] = useState<PlatformMedia[]>([])
   const [viewMediaContentModalVisibility, setViewMediaContentModalVisibility] =
     useState<boolean>(false)
-  const [selectedMedia, setSelectedMedia] = useState<Media | undefined>(
+  const [selectedMedia, setSelectedMedia] = useState<PlatformMedia | undefined>(
     undefined
   )
   const [crudModalVisibility, setCrudModalVisibility] =
@@ -40,7 +40,7 @@ export const MediaContentsList = () => {
     setIsLoadingNewPage(false)
 
     setMedias((previousMedias) =>
-      previousMedias.concat((medias?.items as Media[]) || [])
+      previousMedias.concat((medias?.items as PlatformMedia[]) || [])
     )
   }
 
@@ -57,7 +57,7 @@ export const MediaContentsList = () => {
     await MediaService.generateSignedUrl(key)
   }
 
-  const onView = (media: Media) => {
+  const onView = (media: PlatformMedia) => {
     setSelectedMedia(media)
     setViewMediaContentModalVisibility(true)
   }
@@ -99,7 +99,7 @@ export const MediaContentsList = () => {
   return (
     <>
       <ViewMediaContentModal
-        media={selectedMedia as Media}
+        media={selectedMedia as PlatformMedia}
         isOpen={viewMediaContentModalVisibility}
         onClose={() => setViewMediaContentModalVisibility(false)}
       />

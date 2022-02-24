@@ -1,1 +1,1 @@
-export const GRAPHQL_MAX_PAGE_RESULTS = 2
+export const GRAPHQL_MAX_PAGE_RESULTS = 10
