@@ -1,4 +1,3 @@
-import React from 'react'
 import UserList from './views/UserList'
 import { UserTypes } from './enums/UserTypes'
 import { ApplicationRoute, ApplicationRoutes } from './interfaces/Routes'

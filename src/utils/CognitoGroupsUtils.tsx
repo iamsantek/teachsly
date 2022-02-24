@@ -1,4 +1,3 @@
-import React from 'react'
 import { GroupType } from '@aws-sdk/client-cognito-identity-provider'
 import { UserTypes } from '../enums/UserTypes'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'

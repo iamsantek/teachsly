@@ -1,4 +1,3 @@
-import React from 'react'
 import { List, ListItem, ListIcon, Stack, Text } from '@chakra-ui/react'
 import { AiFillCheckCircle } from 'react-icons/ai'
 import { FaTimesCircle } from 'react-icons/fa'

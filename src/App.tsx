@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useRoutes } from 'react-router-dom'
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components'
 import { defaultDashboardContext } from './constants/DashboardContext'

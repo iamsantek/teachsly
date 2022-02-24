@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { generateRandomId, splitCamelCase } from '../../utils/StringUtils'
 import { HStack, Badge } from '@chakra-ui/react'
 

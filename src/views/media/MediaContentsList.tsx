@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react';
 import { Media, Media as PlatformMedia } from '../../interfaces/Media'
 import { Box, Button, Center, Stack } from '@chakra-ui/react'
 import { ContentLine } from '../../components/ContentLine/ContentLine'

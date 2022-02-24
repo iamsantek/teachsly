@@ -5,4 +5,5 @@ node_modules
 amplify
 package.*
 public
-
+*.min.css
+*.map

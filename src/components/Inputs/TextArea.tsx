@@ -1,4 +1,3 @@
-import React from 'react'
 import { Stack, Text, Textarea } from '@chakra-ui/react'
 import { TranslationsDictionary } from '../../dictionaries/dictionary'
 import { translate } from '../../utils/LanguageUtils'

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Button, Spinner } from 'reactstrap'
 import { MessageLevel } from '../../interfaces/AlertNotification'
 import { translate } from '../../utils/LanguageUtils'

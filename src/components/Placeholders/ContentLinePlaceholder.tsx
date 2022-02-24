@@ -1,4 +1,3 @@
-import React from 'react'
 import { HStack, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 
 export const ContentLinePlaceholder = () => (

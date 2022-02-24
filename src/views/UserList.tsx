@@ -1,5 +1,5 @@
 import { Avatar } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 // core components
 import { UserTypes } from '../enums/UserTypes'
 import { DynamoDBUser } from '../models/index.js'

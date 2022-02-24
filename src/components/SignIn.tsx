@@ -1,4 +1,3 @@
-import React from 'react'
 import { AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react'
 
 const SignIn = () => (
