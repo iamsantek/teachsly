@@ -19,7 +19,7 @@ export const renderAllCognitoGroups = (
         return {
           label: `${splitCamelCase(group.GroupName)} ${group.Description}`,
           value: group.GroupName,
-          colorScheme: 'red'
+          colorScheme: 'brand'
         }
       })
   )

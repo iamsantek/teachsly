@@ -18,7 +18,7 @@ import { ModalFooter } from '../components/Modals/ModalFooter'
 import { Select } from '../components/Inputs/Select'
 import { renderMultiSelectOptions } from '../utils/SelectUtils'
 import { CourseWithMultiSelect } from '../interfaces/Course'
-import { Toast } from '../components/Toast/Toast'
+import { ToastNotification } from '../observables/ToastNotification'
 
 interface Props {
   isOpen: boolean;
@@ -85,7 +85,7 @@ const CourseCRUDModal = ({
       onClose()
       setIsLoading(false)
 
-      Toast({
+      ToastNotification({
         status: 'SUCCESS',
         description: 'COURSE_CREATED_MESSAGE'
       })
@@ -107,7 +107,7 @@ const CourseCRUDModal = ({
       onUpdate(updatedCourse)
       onClose()
 
-      Toast({
+      ToastNotification({
         status: 'SUCCESS',
         description: 'COURSE_UPDATED_SUCCESS'
       })

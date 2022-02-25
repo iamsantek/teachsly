@@ -19,7 +19,7 @@ import { AiOutlinePlus } from 'react-icons/ai'
 import { BadgeList } from '../../components/Badges/BadgeList'
 import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
 import { Placeholder } from '../../components/Placeholders/Placeholder'
-import { Toast } from '../../components/Toast/Toast'
+import { ToastNotification } from '../../observables/ToastNotification'
 
 export const MediaContentsList = () => {
   const [medias, setMedias] = useState<PlatformMedia[]>([])
@@ -67,6 +67,11 @@ export const MediaContentsList = () => {
     setCrudModalVisibility(true)
   }
 
+  const onClose = () => {
+    setSelectedMedia(undefined)
+    setCrudModalVisibility(false)
+  }
+
   const onDelete = async (mediaToDelete: PlatformMedia) => {
     const isSuccessfullyDeleted = await MediaService.deleteMedia(
       mediaToDelete.id as string
@@ -77,7 +82,7 @@ export const MediaContentsList = () => {
         medias.filter((media) => media.id !== mediaToDelete.id)
       )
 
-      Toast({
+      ToastNotification({
         status: 'SUCCESS',
         description: 'MEDIA_DELETED'
       })
@@ -107,7 +112,7 @@ export const MediaContentsList = () => {
       <MediaCRUDModal
         isOpen={crudModalVisibility}
         onUpdate={onUpdate}
-        onClose={() => setCrudModalVisibility(false)}
+        onClose={onClose}
         onCreate={(media) => setMedias([media, ...medias])}
         mediaToUpdate={selectedMedia}
       />

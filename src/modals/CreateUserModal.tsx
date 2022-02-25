@@ -1,12 +1,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, Form } from 'reactstrap'
-import { CustomButton } from '../components/Buttons/CustomButton'
 import { defaultCreateStudentModal } from '../constants/Modal'
-import {
-  AlertNotification,
-  MessageLevel
-} from '../interfaces/AlertNotification'
 import { translate } from '../utils/LanguageUtils'
 import { CustomInput } from '../components/Inputs/CustomInput'
 import UserService from '../services/UserService'
@@ -54,10 +49,10 @@ const CreateUserModal = (props: Props) => {
       props.onClose()
       setIsLoading(false)
 
-      new AlertNotification(
-        MessageLevel.SUCCESS,
-        translate('STUDENT_CREATED_MESSAGE')
-      )
+      // new AlertNotification(
+      //   MessageLevel.SUCCESS,
+      //   translate('STUDENT_CREATED_MESSAGE')
+      // )
     }
   }
 
@@ -117,14 +112,14 @@ const CreateUserModal = (props: Props) => {
       </ModalBody>
       <ModalFooter>
         <Button onClick={props.onClose}>{translate('CANCEL')}</Button>{' '}
-        <CustomButton
+        {/* <CustomButton
           isLoading={isLoading}
           type={MessageLevel.INFO}
           buttonType="submit"
           onClick={createUser}
         >
           {translate('CREATE_STUDENT_BUTTON')}
-        </CustomButton>
+        </CustomButton> */}
       </ModalFooter>
     </Modal>
   )

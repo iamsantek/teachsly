@@ -11,6 +11,7 @@ import { BsFillPeopleFill } from 'react-icons/bs'
 import { AdminHomeScreen } from './views/homeScreen/AdminHomeScreen'
 import { MdOutlinePayments } from 'react-icons/md'
 import { CoursesList } from './views/courses/CoursesList'
+import { StudentsList } from './views/students/StudentsList'
 
 const adminHomeScreen: ApplicationRoute = {
   name: 'Home',
@@ -20,7 +21,7 @@ const adminHomeScreen: ApplicationRoute = {
 }
 
 const payments: ApplicationRoute = {
-  name: 'Payments',
+  name: 'Pagos',
   icon: MdOutlinePayments,
   path: '/',
   element: <AdminHomeScreen />
@@ -37,7 +38,7 @@ const students: ApplicationRoute = {
   path: '/students',
   name: 'Estudiantes',
   icon: BsFillPeopleFill,
-  element: <UserList listType={UserTypes.STUDENT} />
+  element: <StudentsList />
 }
 
 const teachers: ApplicationRoute = {

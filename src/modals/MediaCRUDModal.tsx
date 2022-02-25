@@ -31,7 +31,7 @@ import { PermissionsList } from '../components/Lists/PermissionsList'
 import UserGroupsService from '../services/UserGroupsService'
 import { ModalFooter } from '../components/Modals/ModalFooter'
 import { defaultMedia } from '../constants/Medias'
-import { Toast } from '../components/Toast/Toast'
+import { ToastNotification } from '../observables/ToastNotification'
 
 interface Props {
   isOpen: boolean;
@@ -127,13 +127,13 @@ const MediaCRUDModal = ({
     setIsLoading(false)
 
     if (!uploadedMedia) {
-      Toast({
+      ToastNotification({
         description: 'MEDIA_CREATED_FAILED_MESSAGE',
         status: 'ERROR'
       })
     }
 
-    Toast({
+    ToastNotification({
       description: 'MEDIA_CREATED_MESSAGE',
       status: 'SUCCESS'
     })
@@ -145,11 +145,22 @@ const MediaCRUDModal = ({
 
     if (updatedMedia) {
       onUpdate(updatedMedia)
-      onClose()
+      ToastNotification({
+        description: 'MEDIA_UPDATED_MESSAGE',
+        status: 'SUCCESS'
+      })
+    } else {
+      ToastNotification({
+        description: 'MEDIA_UPDATED_ERROR_MESSAGE',
+        status: 'ERROR'
+      })
     }
+
+    setIsLoading(false)
+    onClose()
   }
 
-  const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) {
       return
     }
@@ -158,11 +169,13 @@ const MediaCRUDModal = ({
   }
 
   const onSubmit = (media: MediaWithMultiSelect) => {
+    setIsLoading(true)
     const hasErrors = Object.keys(errors).length !== 0
 
     if (hasErrors) {
       // TODO: Implement form errors
       console.log(errors)
+      setIsLoading(false)
       return
     }
 
@@ -218,14 +231,14 @@ const MediaCRUDModal = ({
 
                   <TextArea
                     name="content"
-                    label="DESCRIPTION"
-                    isRequired={true}
-                    placeholder={translate('DESCRIPTION')}
+                    label="COMMENTARIES"
+                    isRequired={false}
+                    placeholder={translate('COMMENTARIES')}
                   />
 
                   <FileUploader
                     name="file"
-                    onChange={onChange}
+                    onChange={onChangeFile}
                     label="ATTACH_FILE"
                   />
 

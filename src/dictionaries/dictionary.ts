@@ -31,7 +31,9 @@ export enum LanguageES {
   UPDATE_MEDIA_BUTTON = 'Editar contenido',
   UPDATE_COURSE_BUTTON = 'Editar curso',
   MEDIA_CREATED_MESSAGE = 'El contenido se cargo exitosamente a la plataforma.',
-  MEDIA_CREATED_FAILED_MESSAGE = 'No se pudo cargar el contenido correctamente. Por favor, intentar nuevamente.',
+  MEDIA_CREATED_FAILED_MESSAGE = 'No se pudo cargar el contenido correctamente. Por favor, intentá nuevamente.',
+  MEDIA_UPDATED_MESSAGE = 'El contenido ha sido actualizado correctamente.',
+  MEDIA_UPDATED_ERROR_MESSAGE = 'Ocurrió un error al actualizar el contenido. Por favor, intentá nuevamente.',
   DAYS_OF_THE_WEEK = 'Lunes,Martes,Miercoles,Jueves,Viernes,Sabado',
   GROUP_MULTI_SELECT_TITLE = 'Cursos/Grupos que tendrán acceso a este contenido',
   ATTACH_FILE = 'Adjuntar archivo',
@@ -50,6 +52,7 @@ export enum LanguageES {
   ADD_COURSE_BUTTON = 'Nuevo curso',
   COURSE_LINK_HELPER = 'Ingresar link del accesso al curso solo si es virtual',
   COURSE_LINK = 'Link de acceso',
+  COMMENTARIES = 'Comentarios'
 }
 
 export enum LanguageEN {
@@ -81,6 +84,8 @@ export enum LanguageEN {
   UPDATE_COURSE_BUTTON = 'Update course',
   MEDIA_CREATED_MESSAGE = '🚀 Great! The Media has been successfully created.',
   MEDIA_CREATED_FAILED_MESSAGE = 'An error has occurred when creation the media. Please try again',
+  MEDIA_UPDATED_MESSAGE = 'Media has been successfully updated.',
+  MEDIA_UPDATED_ERROR_MESSAGE = 'An error has occurred when updating the media. Please try again',
   DAYS_OF_THE_WEEK = 'Monday,Tuesday,Wednesday,Thursday,Friday,Saturday',
   GROUP_MULTI_SELECT_TITLE = 'Courses/groups who will have access to this content',
   ATTACH_FILE = 'Attach file',
@@ -99,4 +104,5 @@ export enum LanguageEN {
   ADD_COURSE_BUTTON = 'New curso',
   COURSE_LINK_HELPER = 'Provide link only if its a virtual course',
   COURSE_LINK = 'Access link',
+  COMMENTARIES = 'Commentaries'
 }

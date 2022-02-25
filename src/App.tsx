@@ -8,7 +8,7 @@ import { UserDashboardContext } from './contexts/UserDashboardContext'
 import Amplify from 'aws-amplify'
 import awsExports from './aws-exports'
 import { applicationRoutes } from './routes'
-import CustomAlert from './components/Alerts/Alert'
+import ToastWrapper from './components/Toast/ToastWrapper'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import DashboardLayout from './layouts/DashboardLayout'
 import { defaultTheme } from './constants/Theme'
@@ -27,6 +27,7 @@ const App = () => {
   const theme = extendTheme(defaultTheme)
 
   useEffect(() => {
+    console.log(dashboardInformation)
     return onAuthUIStateChange(async (nextAuthState, authData) => {
       if (
         nextAuthState === AuthState.VerifyContact ||
@@ -67,7 +68,7 @@ const App = () => {
     <ChakraProvider theme={theme}>
       <UserDashboardContext.Provider value={dashboardInformation}>
         <DashboardLayout>
-          <CustomAlert />
+          <ToastWrapper />
           {routeComponent}
         </DashboardLayout>
       </UserDashboardContext.Provider>

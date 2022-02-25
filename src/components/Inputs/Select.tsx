@@ -1,4 +1,4 @@
-import { Stack, Text } from '@chakra-ui/react'
+import { Flex, Stack, Text } from '@chakra-ui/react'
 import { TranslationsDictionary } from '../../dictionaries/dictionary'
 import { translate } from '../../utils/LanguageUtils'
 import { Controller, useFormContext } from 'react-hook-form'
@@ -23,22 +23,30 @@ export const Select = ({
   placeholder,
   bottomNote,
   options,
-  isMultiSelect
+  isMultiSelect,
+  isRequired
 }: Props) => {
   const { control } = useFormContext()
 
   return (
     <Stack spacing={1}>
-      <Text fontWeight={600} fontSize="sm" textStyle="title">
-        {translate(label)}
-      </Text>
+      <Flex>
+        <Text fontWeight={600} fontSize="sm" textStyle="title">
+          {translate(label)}
+        </Text>
+        {isRequired && (
+          <Text color="brand.500" marginLeft={1}>
+            *
+          </Text>
+        )}
+      </Flex>
       <Controller
         render={({ field: { onChange, value, ref } }) => (
           <ChakraSelect
             isMulti={isMultiSelect}
             placeholder={placeholder}
             options={options}
-            focusBorderColor="primary.300"
+            focusBorderColor="brand.300"
             closeMenuOnSelect={closeMenuOnSelect}
             onChange={onChange}
             value={value}

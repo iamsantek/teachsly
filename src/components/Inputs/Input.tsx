@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Stack, Text, Input as ChakraInput } from '@chakra-ui/react'
+import { Stack, Text, Input as ChakraInput, Flex } from '@chakra-ui/react'
 import { TranslationsDictionary } from '../../dictionaries/dictionary'
 import { translate } from '../../utils/LanguageUtils'
 import { useFormContext } from 'react-hook-form'
@@ -25,9 +25,16 @@ export const Input = ({
 
   return (
     <Stack spacing={1}>
-      <Text fontWeight={600} fontSize="sm" textStyle="title">
-        {translate(label)}
-      </Text>
+      <Flex>
+        <Text fontWeight={600} fontSize="sm" textStyle="title">
+          {translate(label)}
+        </Text>
+        {isRequired && (
+          <Text color="brand.500" marginLeft={1}>
+            *
+          </Text>
+        )}
+      </Flex>
       <ChakraInput
         placeholder={placeholder}
         size="md"
@@ -36,7 +43,7 @@ export const Input = ({
       />
 
       {bottomNote && (
-        <Text color="gray.500" fontSize="sm" marginLeft={1}>
+        <Text color="gray.900" fontSize="sm" marginLeft={1}>
           {bottomNote}
         </Text>
       )}
