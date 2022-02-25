@@ -9,7 +9,7 @@ class ObservableService {
 
   initState () {
     this.listenersByEvent = []
-    this.addEvent(ObservableTopics.NotificationAlert)
+    this.addEvent(ObservableTopics.ToastNotification)
   }
 
   private addEvent (eventName: any) {

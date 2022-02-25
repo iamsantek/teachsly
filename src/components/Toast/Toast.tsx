@@ -1,8 +1,10 @@
 import {
   AlertStatus,
   createStandaloneToast,
-  ToastPositionWithLogical
+  ToastPositionWithLogical,
+  useTheme
 } from '@chakra-ui/react'
+import { FC } from 'react'
 import { TranslationsDictionary } from '../../dictionaries/dictionary'
 import { translate } from '../../utils/LanguageUtils'
 
@@ -13,20 +15,26 @@ interface Props {
   duration?: number;
 }
 
-export const Toast = ({
+export const Toast: FC<Props> = ({
   description,
   status,
   position = 'top',
   duration = 5000
 }: Props) => {
-  const toast = createStandaloneToast()
+  const theme = useTheme()
+  const toast = createStandaloneToast({ theme })
 
-  return toast({
-    title: translate(status),
-    description: translate(description),
-    status: status.toLowerCase() as AlertStatus,
-    duration,
-    isClosable: true,
-    position
-  })
+  return (
+    <>
+    {toast({
+      title: translate(status),
+      description: translate(description),
+      status: status.toLowerCase() as AlertStatus,
+      duration,
+      isClosable: true,
+      position
+    })}
+    </>
+
+  )
 }
