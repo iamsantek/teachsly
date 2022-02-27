@@ -76,27 +76,28 @@ export const listMedia = /* GraphQL */ `
     }
   }
 `;
-export const getDynamoDBUser = /* GraphQL */ `
-  query GetDynamoDBUser($id: ID!) {
-    getDynamoDBUser(id: $id) {
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
       id
       name
       email
       phone
       cognitoId
       groups
+      isDisabledUser
       createdAt
       updatedAt
     }
   }
 `;
-export const listDynamoDBUsers = /* GraphQL */ `
-  query ListDynamoDBUsers(
-    $filter: ModelDynamoDBUserFilterInput
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listDynamoDBUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         name
@@ -104,6 +105,7 @@ export const listDynamoDBUsers = /* GraphQL */ `
         phone
         cognitoId
         groups
+        isDisabledUser
         createdAt
         updatedAt
       }

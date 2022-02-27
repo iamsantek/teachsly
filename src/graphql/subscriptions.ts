@@ -92,43 +92,46 @@ export const onDeleteMedia = /* GraphQL */ `
     }
   }
 `;
-export const onCreateDynamoDBUser = /* GraphQL */ `
-  subscription OnCreateDynamoDBUser {
-    onCreateDynamoDBUser {
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser {
+    onCreateUser {
       id
       name
       email
       phone
       cognitoId
       groups
+      isDisabledUser
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateDynamoDBUser = /* GraphQL */ `
-  subscription OnUpdateDynamoDBUser {
-    onUpdateDynamoDBUser {
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser {
+    onUpdateUser {
       id
       name
       email
       phone
       cognitoId
       groups
+      isDisabledUser
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteDynamoDBUser = /* GraphQL */ `
-  subscription OnDeleteDynamoDBUser {
-    onDeleteDynamoDBUser {
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser {
+    onDeleteUser {
       id
       name
       email
       phone
       cognitoId
       groups
+      isDisabledUser
       createdAt
       updatedAt
     }

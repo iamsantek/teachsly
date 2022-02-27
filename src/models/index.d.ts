@@ -1,26 +1,24 @@
-import {
-  ModelInit,
-  MutableModel,
-  PersistentModelConstructor,
-} from "@aws-amplify/datastore";
+import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
 export enum MediaType {
   LINK = "LINK",
   PDF = "PDF",
-  VIDEO = "VIDEO",
+  VIDEO = "VIDEO"
 }
 
+
+
 type CourseMetaData = {
-  readOnlyFields: "createdAt" | "updatedAt";
-};
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
 
 type MediaMetaData = {
-  readOnlyFields: "createdAt" | "updatedAt";
-};
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
 
-type DynamoDBUserMetaData = {
-  readOnlyFields: "createdAt" | "updatedAt";
-};
+type UserMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
 
 export declare class Course {
   readonly id: string;
@@ -32,12 +30,7 @@ export declare class Course {
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Course, CourseMetaData>);
-  static copyOf(
-    source: Course,
-    mutator: (
-      draft: MutableModel<Course, CourseMetaData>
-    ) => MutableModel<Course, CourseMetaData> | void
-  ): Course;
+  static copyOf(source: Course, mutator: (draft: MutableModel<Course, CourseMetaData>) => MutableModel<Course, CourseMetaData> | void): Course;
 }
 
 export declare class Media {
@@ -51,28 +44,19 @@ export declare class Media {
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Media, MediaMetaData>);
-  static copyOf(
-    source: Media,
-    mutator: (
-      draft: MutableModel<Media, MediaMetaData>
-    ) => MutableModel<Media, MediaMetaData> | void
-  ): Media;
+  static copyOf(source: Media, mutator: (draft: MutableModel<Media, MediaMetaData>) => MutableModel<Media, MediaMetaData> | void): Media;
 }
 
-export declare class DynamoDBUser {
+export declare class User {
   readonly id: string;
   readonly name: string;
   readonly email: string;
-  readonly phone?: number;
+  readonly phone?: string;
   readonly cognitoId: string;
   readonly groups: (string | null)[];
+  readonly isDisabledUser?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<DynamoDBUser, DynamoDBUserMetaData>);
-  static copyOf(
-    source: DynamoDBUser,
-    mutator: (
-      draft: MutableModel<DynamoDBUser, DynamoDBUserMetaData>
-    ) => MutableModel<DynamoDBUser, DynamoDBUserMetaData> | void
-  ): DynamoDBUser;
+  constructor(init: ModelInit<User, UserMetaData>);
+  static copyOf(source: User, mutator: (draft: MutableModel<User, UserMetaData>) => MutableModel<User, UserMetaData> | void): User;
 }

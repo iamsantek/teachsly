@@ -110,52 +110,55 @@ export const deleteMedia = /* GraphQL */ `
     }
   }
 `;
-export const createDynamoDBUser = /* GraphQL */ `
-  mutation CreateDynamoDBUser(
-    $input: CreateDynamoDBUserInput!
-    $condition: ModelDynamoDBUserConditionInput
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    createDynamoDBUser(input: $input, condition: $condition) {
+    createUser(input: $input, condition: $condition) {
       id
       name
       email
       phone
       cognitoId
       groups
+      isDisabledUser
       createdAt
       updatedAt
     }
   }
 `;
-export const updateDynamoDBUser = /* GraphQL */ `
-  mutation UpdateDynamoDBUser(
-    $input: UpdateDynamoDBUserInput!
-    $condition: ModelDynamoDBUserConditionInput
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    updateDynamoDBUser(input: $input, condition: $condition) {
+    updateUser(input: $input, condition: $condition) {
       id
       name
       email
       phone
       cognitoId
       groups
+      isDisabledUser
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteDynamoDBUser = /* GraphQL */ `
-  mutation DeleteDynamoDBUser(
-    $input: DeleteDynamoDBUserInput!
-    $condition: ModelDynamoDBUserConditionInput
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    deleteDynamoDBUser(input: $input, condition: $condition) {
+    deleteUser(input: $input, condition: $condition) {
       id
       name
       email
       phone
       cognitoId
       groups
+      isDisabledUser
       createdAt
       updatedAt
     }
