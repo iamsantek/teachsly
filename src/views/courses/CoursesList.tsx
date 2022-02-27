@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { LoadMoreButton } from '../../components/Buttons/LoadMoreButton'
 import { ContentLine } from '../../components/ContentLine/ContentLine'
 import { SectionHeader } from '../../components/Headers/SectionHeader'
 import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
@@ -27,17 +28,17 @@ export const CoursesList = () => {
   const [courseModalVisibility, seCourseModalVisibility] =
     useState<boolean>(false)
   const [selectedCourse, setSelectedCourse] = useState<Course>()
-  const [nextPageResultToken, setNextPageResultToken] = useState<string>()
+  const [nextPageResultToken, setNextPageResultToken] = useState<string | null>()
   const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(true)
 
   const fetchCourses = async () => {
     const courses = await CourseService.fetchCourses(nextPageResultToken)
 
-    setNextPageResultToken(courses?.nextToken)
+    setNextPageResultToken(courses?.listCourses?.nextToken)
     setIsLoadingNewPage(false)
 
     setCourses((previousCourses) =>
-      previousCourses.concat((courses?.items as Course[]) || [])
+      previousCourses.concat((courses?.listCourses?.items as Course[]) || [])
     )
   }
 
@@ -125,20 +126,7 @@ export const CoursesList = () => {
           />
         </Box>
       </Stack>
-      <Center>
-        {nextPageResultToken && (
-          <Button
-            rounded={'lg'}
-            colorScheme="brand"
-            onClick={loadMore}
-            marginTop={4}
-            isLoading={isLoadingNewPage}
-            loadingText={translate('PROCESSING')}
-          >
-            {translate('LOAD_MORE')}
-          </Button>
-        )}
-      </Center>
+      <LoadMoreButton show={!!nextPageResultToken} isLoading={isLoadingNewPage} onClick={loadMore} />
     </>
   )
 }
