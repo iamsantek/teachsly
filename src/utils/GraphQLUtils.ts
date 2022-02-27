@@ -1,22 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 interface NotAllowedProperties {
-  createdAt: string;
-  updatedAt: string;
-  _deleted: string;
-  _lastChangedAt: string;
-  owner: string;
+  createdAt?: string;
+  updatedAt?: string;
+  _deleted?: string;
+  _lastChangedAt?: string;
+  owner?: string | null | undefined;
 }
 
 // TODO: Type this util
 export const removeNotAllowedPropertiesFromModel = (model: any) => {
+  if (!model) {
+    return
+  }
+
   const {
     createdAt,
     updatedAt,
     _deleted,
     _lastChangedAt,
     owner,
-    ...updatedMedia
+    ...updatedModel
   } = model
 
-  return updatedMedia
+  return updatedModel
 }
