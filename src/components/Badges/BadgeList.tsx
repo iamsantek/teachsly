@@ -13,10 +13,9 @@ export const BadgeList: React.FC<Props> = ({ badges }) => (
       return (
         <Badge
           key={id}
-          variant="outline"
-          rounded={'sm'}
-          color="brand.500"
-          borderColor={'red'}
+          rounded='md'
+          bg='brand.500'
+          color='white'
         >
           {splitCamelCase(badge)}
         </Badge>
