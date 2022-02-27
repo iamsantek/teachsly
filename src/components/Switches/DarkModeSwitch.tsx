@@ -3,8 +3,8 @@ import {
   useColorMode,
   Switch,
   FormControl,
-  FormLabel,
-  useColorModeValue
+  useColorModeValue,
+  Text
 } from '@chakra-ui/react'
 
 const DarkModeSwitch: React.FC = () => {
@@ -21,14 +21,13 @@ const DarkModeSwitch: React.FC = () => {
       left={0}
       p={4}
       borderTopWidth="1px"
-      transitionDuration="200ms"
     >
-      <FormLabel htmlFor="color-mode-switch" mb="0">
+      <Text textStyle={'paragraph'} marginRight={3} color={useColorModeValue('black', 'white')}>
         Dark Mode
-      </FormLabel>
+        </Text>
       <Switch
         id="color-mode-switch"
-        colorScheme="messenger"
+        colorScheme="brand"
         isChecked={isDark}
         onChange={toggleColorMode}
       />

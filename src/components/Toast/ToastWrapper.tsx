@@ -1,5 +1,6 @@
 
-import { useState } from 'react'
+import { Box } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 import { TranslationsDictionary } from '../../dictionaries/dictionary'
 import { ObservableTopics } from '../../interfaces/ObservableTopics'
 import ObservableService from '../../observables/ObservableService'
@@ -12,28 +13,32 @@ export interface ToastMessage {
 
 const ToastWrapper = () => {
   const [toastMessage, setToastMessage] = useState<ToastMessage>()
-
   const renderAlert = (toastMessage: ToastMessage) => {
     setToastMessage(toastMessage)
   }
 
-  ObservableService.addListener(
-    ObservableTopics.ToastNotification,
-    renderAlert
-  )
+  useEffect(() => {
+    ObservableService.addListener(
+      ObservableTopics.ToastNotification,
+      renderAlert
+    )
 
-  if (!toastMessage?.description) {
-    return null
-  }
+    return () => {
+      ObservableService.removeListener(
+        ObservableTopics.ToastNotification,
+        () => {}
+      )
+    }
+  }, [])
 
-  const { status, description } = toastMessage
   return (
-    <>
+    <Box visibility={'hidden'}>
       {Toast({
-        description,
-        status
+        description: toastMessage?.description as TranslationsDictionary,
+        status: toastMessage?.status as any,
+        onCloseComplete: () => setToastMessage(undefined)
       })}
-    </>
+    </Box>
   )
 }
 

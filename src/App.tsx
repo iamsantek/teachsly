@@ -27,7 +27,6 @@ const App = () => {
   const theme = extendTheme(defaultTheme)
 
   useEffect(() => {
-    console.log(dashboardInformation)
     return onAuthUIStateChange(async (nextAuthState, authData) => {
       if (
         nextAuthState === AuthState.VerifyContact ||

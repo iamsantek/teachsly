@@ -7,7 +7,7 @@ import { CustomRouteObject } from '../../interfaces/Routes'
 export const SectionHeader: FC = ({ children }) => {
   const { routes } = useContext(UserDashboardContext)
   const location = useLocation()
-  const { name: sectionName } = routes.find(
+  const { name: sectionName } = routes?.find(
     (route) => route.path === location.pathname
   ) as CustomRouteObject
 
