@@ -38,7 +38,7 @@ type Media @model
   groups: [String]
 }
 
-type DynamoDBUser @model
+type User @model
 @auth(rules: [
   {allow: groups, groups: ["Admin"], operations: [create, read, update, delete] },
   {allow: groups, groups: ["Students","Teachers"], operations: [read] },
@@ -47,7 +47,8 @@ type DynamoDBUser @model
   id: ID!
   name: String!
   email: String!
-  phone: Int
+  phone: String
   cognitoId: ID!
   groups: [String]!
+  isDisabledUser: Boolean
 } 

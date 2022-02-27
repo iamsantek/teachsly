@@ -24,7 +24,7 @@
         },
         "TheOfficeAuthApiCustomMessage": {
           "deploymentBucketName": "amplify-theofficeplatform-dev-225223-deployment",
-          "s3Key": "amplify-builds/TheOfficeAuthApiCustomMessage-3070655061554f774751-build.zip"
+          "s3Key": "amplify-builds/TheOfficeAuthApiCustomMessage-7a4a5268344677777470-build.zip"
         }
       },
       "auth": {
