@@ -6,13 +6,8 @@ import {
 import { API } from 'aws-amplify'
 import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
+import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import Logger from '../utils/Logger'
-
-export interface GraphQLResultWithNextToken<T> {
-  items: T | T[];
-  nextToken: string;
-}
-
 interface SingleResult<T> {
   [key: string]: T | Array<T>;
 }
@@ -21,9 +16,7 @@ export interface GraphQLResultType<T> {
   errors?: object;
 }
 
-interface QueryInput {
-  input: string;
-}
+type QueryInput = string | Object;
 
 export interface FilterInput {
   filter: Object;
@@ -32,8 +25,8 @@ export interface FilterInput {
 type QueryParameters = {
   query: string;
   input?: QueryInput | undefined;
-  nextToken?: string | undefined;
-  filter?: FilterInput | undefined;
+  nextToken?: string | null;
+  filter?: Object | undefined;
   limit?: number;
 }
 
@@ -60,27 +53,25 @@ class GraphQLService {
     limit = GRAPHQL_MAX_PAGE_RESULTS,
     nextToken = undefined,
     filter = undefined
-  }: QueryParameters): Promise<GraphQLResultWithNextToken<T> | undefined> => {
+  }: QueryParameters): Promise<T | undefined> => {
     try {
+      const sanitizedInput = removeNotAllowedPropertiesFromModel(input)
+
       const models = await API.graphql(
         graphqlOperation(query, {
-          input,
+          input: sanitizedInput,
           filter,
           limit,
           nextToken
         })
-      ) as GraphQLResult
+      ) as GraphQLResult<T>
 
-      // TODO: Improve this weird handling to get the results from GraphQL
-      const result: {[key: string]: any} = models.data as object
-      const queryKey = Object.entries(result)[0][0]
-
-      return result[queryKey]
+      return models.data as T
     } catch (e) {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.GraphQLService,
-        'Error when executing Graph QL Query',
+        'Error when executing GraphQL Query',
         e
       )
     }

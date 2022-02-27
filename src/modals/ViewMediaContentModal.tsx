@@ -9,12 +9,14 @@ import {
   ModalBody,
   Stack
 } from '@chakra-ui/react'
-import { AiOutlineCloudDownload } from 'react-icons/ai'
-import { BsFillPlayFill } from 'react-icons/bs'
 import { Media } from '../interfaces/Media'
 import { MediaType } from '../models'
 import MediaService from '../services/MediaService'
 import { translate } from '../utils/LanguageUtils'
+import { BiLinkExternal } from 'react-icons/bi'
+import { BadgeList } from '../components/Badges/BadgeList'
+import { useState } from 'react'
+import { mediaContentLineIcons as MediaIcons } from '../constants/Medias'
 
 interface Props {
   isOpen: boolean;
@@ -23,17 +25,28 @@ interface Props {
 }
 
 export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
-  const isPlayableContent = [MediaType.VIDEO, MediaType.LINK].includes(
-    media?.type
-  )
-  const isDownloadable = [MediaType.PDF].includes(media?.type)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const onClick = (link: string, type: MediaType) => {
+    setIsLoading(true)
+    const isExternalLink = [MediaType.VIDEO, MediaType.LINK].includes(
+      type
+    )
+
+    isExternalLink ? window.open(link, '_blank') : MediaService.generateSignedUrl(link)
+    setIsLoading(false)
+  }
+
 
   return (
     <>
       <Modal size={'lg'} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader textStyle={'paragraph'}>{media?.title}</ModalHeader>
+          <ModalHeader textStyle={'paragraph'} flex="1" flexDirection="row">
+
+            {media?.title}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody marginBottom={3}>
             <Stack spacing={4}>
@@ -45,24 +58,17 @@ export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
                   <Text textStyle={'paragraph'}>{media?.content}</Text>
                 </>
               )}
-              {isPlayableContent && (
-                <Button
-                  leftIcon={<BsFillPlayFill />}
-                  layerStyle={'base'}
-                  onClick={() => window.open(media.link, '_blank')}
-                >
-                  {translate('SEE_CONTENT')}
-                </Button>
-              )}
-              {isDownloadable && (
-                <Button
-                  leftIcon={<AiOutlineCloudDownload />}
-                  layerStyle={'base'}
-                  onClick={() => MediaService.generateSignedUrl(media.link)}
-                >
-                  {translate('DOWNLOAD')}
-                </Button>
-              )}
+              <Text textStyle={'title'}>{translate('MEDIA_GROUPS')}</Text>
+              <BadgeList badges={media?.groups} />
+              <Button
+                layerStyle={'base'}
+                rightIcon={<BiLinkExternal />}
+                onClick={() => onClick(media?.link, media?.type)}
+                isLoading={isLoading}
+                loadingText={translate('PROCESSING')}
+              >
+                {translate('SEE_CONTENT')}
+              </Button>
             </Stack>
           </ModalBody>
         </ModalContent>

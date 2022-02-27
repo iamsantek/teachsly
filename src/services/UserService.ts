@@ -1,16 +1,22 @@
-import { DynamoDBUser } from '../API'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { UserTypes } from '../enums/UserTypes'
-import { listDynamoDBUsers } from '../graphql/queries'
+import { listUsers } from '../graphql/queries'
+import { updateUser as updateUserMutation } from '../graphql/mutations'
 import { User } from '../platform-models/User'
 import Logger from '../utils/Logger'
 import AuthService from './AuthService'
-import GraphQLService, { FilterInput, GraphQLResultWithNextToken } from './GraphQLService'
+import GraphQLService, { FilterInput } from './GraphQLService'
+import { ListUsersQuery, ModelUserConditionInput, UpdateUserInput, UpdateUserMutation } from '../API'
 
 class UserService {
-  public async createUser (user: User) {
+  public async createUser (user: User, type: UserTypes) {
     try {
-      const cognitoUser = await AuthService.createUser(user)
+      const updatedUser: User = {
+        ...user,
+        name: user.name.trim(),
+        groups: [...user.groups, type]
+      }
+      const cognitoUser = await AuthService.createUser(updatedUser)
 
       if (!cognitoUser) {
         return
@@ -37,7 +43,7 @@ class UserService {
     return { groups: { contains: type } }
   }
 
-  private filterByCognitoId = (cognitoId: string) => {
+  private filterByCognitoId = (cognitoId: string): ModelUserConditionInput => {
     return { cognitoId: { eq: cognitoId } }
   }
 
@@ -45,13 +51,13 @@ class UserService {
     const filterByCognitoId = this.filterByCognitoId(cognitoId)
     const users = await this.fetchUsers(filterByCognitoId)
 
-    return users?.items && (users.items as DynamoDBUser[])[0]
+    return users?.listUsers?.items[0]
   }
 
-  public fetchUsersByType = async (type: UserTypes | 'ALL') => {
+  public fetchUsersByType = async (type: UserTypes | 'ALL', nextToken: string | null = null) => {
     const filter = type !== 'ALL' ? this.filterByGroupType(type) : {}
 
-    return await this.fetchUsers(filter)
+    return await this.fetchUsers(filter, nextToken)
   }
 
   public getUserType = (user: User) => {
@@ -64,10 +70,19 @@ class UserService {
     return Object.values(UserTypes).find((group) => groups?.includes(group))
   }
 
-  private fetchUsers = async (filter: Object): Promise<GraphQLResultWithNextToken<DynamoDBUser> | undefined> => {
-    return GraphQLService.fetchQuery({
-      query: listDynamoDBUsers,
-      filter: filter as FilterInput
+  private fetchUsers = async (filter: Object, nextToken?: string | null) => {
+    return GraphQLService.fetchQuery<ListUsersQuery>({
+      query: listUsers,
+      filter: filter as FilterInput,
+      nextToken
+    })
+  }
+
+  public updateUser = async (user: UpdateUserInput) => {
+    return GraphQLService.fetchQuery<UpdateUserMutation>({
+      query: updateUserMutation,
+      filter: this.filterByCognitoId(user.cognitoId as string),
+      input: user
     })
   }
 }

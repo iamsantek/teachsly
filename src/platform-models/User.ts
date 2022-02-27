@@ -1,19 +1,16 @@
 import { UserTypes } from '../enums/UserTypes'
+import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 
-export class User {
+export interface User {
   id: string;
   email: string;
   name: string;
   groups: string[];
-  type: UserTypes;
-  phone: number;
+  type?: UserTypes;
+  phone: string;
+  isDisabledUser: boolean | null;
+}
 
-  constructor (user: User) {
-    this.id = user.id
-    this.email = user.email
-    this.name = user.name
-    this.groups = user.groups
-    this.type = user.type
-    this.phone = user.phone
-  }
+export interface UserWithMultiSelect extends Omit<User, 'groups'> {
+  groups: MultiSelectOption[];
 }

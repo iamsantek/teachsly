@@ -4,15 +4,16 @@ import { deleteMedia, updateMedia } from '../graphql/mutations'
 import { listMedia } from '../graphql/queries'
 import { Media } from '../interfaces/Media'
 import Logger from '../utils/Logger'
-import GraphQLService, { GraphQLResultWithNextToken } from './GraphQLService'
+import GraphQLService from './GraphQLService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import StorageService from './aws/StorageService'
+import { ListMediaQuery } from '../API'
 
 class MediaService {
   public fetchMedias = async (
-    nextToken?: string
-  ): Promise<GraphQLResultWithNextToken<Media> | undefined> => {
-    return GraphQLService.fetchQuery({
+    nextToken?: string | null
+  ) => {
+    return GraphQLService.fetchQuery<ListMediaQuery>({
       query: listMedia,
       nextToken
     })

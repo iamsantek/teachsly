@@ -6,7 +6,7 @@ import StorageService from '../services/aws/StorageService'
 import { GroupType } from '@aws-sdk/client-cognito-identity-provider'
 import {
   mapSelectedCognitoGroups,
-  renderAllCognitoGroups
+  renderUserGroups
 } from '../utils/CognitoGroupsUtils'
 import MediaService from '../services/MediaService'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -32,6 +32,7 @@ import UserGroupsService from '../services/UserGroupsService'
 import { ModalFooter } from '../components/Modals/ModalFooter'
 import { defaultMedia } from '../constants/Medias'
 import { ToastNotification } from '../observables/ToastNotification'
+import { UserTypes } from '../enums/UserTypes'
 
 interface Props {
   isOpen: boolean;
@@ -65,6 +66,7 @@ const MediaCRUDModal = ({
 
   const groupsSubscriber = watch('groups')
   const mediaId = watch('id')
+  const { value: mediaType } = watch('type')
 
   useEffect(() => {
     const fetchCognitoGroups = async () => {
@@ -214,7 +216,7 @@ const MediaCRUDModal = ({
                     label="GROUP_MULTI_SELECT_TITLE"
                     isRequired={true}
                     placeholder={translate('DESCRIPTION')}
-                    options={renderAllCognitoGroups(userGroups)}
+                    options={renderUserGroups(userGroups, [UserTypes.TEACHER])}
                     isMultiSelect
                     closeMenuOnSelect={false}
                   />
@@ -229,17 +231,27 @@ const MediaCRUDModal = ({
                     closeMenuOnSelect={true}
                   />
 
+                  {mediaType === MediaType.PDF && (
+                    <FileUploader
+                      name="file"
+                      onChange={onChangeFile}
+                      label="ATTACH_FILE"
+                    />
+                  )}
+                 {[MediaType.LINK, MediaType.VIDEO].includes(mediaType as MediaType) && (
+                  <CustomInput
+                    name="link"
+                    label="MEDIA_LINK_DESCRIPTION"
+                    isRequired={true}
+                    placeholder={translate('MEDIA_LINK_DESCRIPTION')}
+                  />
+                 )}
+
                   <TextArea
                     name="content"
                     label="COMMENTARIES"
                     isRequired={false}
                     placeholder={translate('COMMENTARIES')}
-                  />
-
-                  <FileUploader
-                    name="file"
-                    onChange={onChangeFile}
-                    label="ATTACH_FILE"
                   />
 
                   <PermissionsList
