@@ -6,18 +6,19 @@ import { Course } from '../models'
 import { Course as PlatformCourse } from '../platform-models/Course'
 import DateTimeUtils, { TimeFormats } from '../utils/DateTimeUtils'
 import Logger from '../utils/Logger'
-import GraphQLService, { GraphQLResultWithNextToken } from './GraphQLService'
+import GraphQLService from './GraphQLService'
 import CognitoService from './aws/CognitoService'
 import { formatCognitoGroupDescription } from '../utils/CognitoGroupsUtils'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
+import { ListCoursesQuery } from '../API'
 
 class CourseService {
   public fetchCourses = async (
-    nextToken?: string,
+    nextToken?: string | null,
     limit = GRAPHQL_MAX_PAGE_RESULTS
-  ): Promise<GraphQLResultWithNextToken<Course> | undefined> => {
-    return GraphQLService.fetchQuery({
+  ) => {
+    return GraphQLService.fetchQuery<ListCoursesQuery>({
       query: listCourses,
       nextToken,
       limit

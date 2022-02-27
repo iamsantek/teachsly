@@ -47,7 +47,7 @@ const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
     <Link
       as={NavLink}
       to={path as string}
-      style={{ textDecoration: 'none' }}
+      style={{ textDecoration: 'none', fontWeight: 800 }}
       _focus={{ boxShadow: 'none' }}
     >
       <Flex
@@ -58,7 +58,7 @@ const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: 'cyan.400',
+          bg: 'brand.400',
           color: 'white'
         }}
         {...rest}
@@ -85,11 +85,10 @@ interface SidebarProps extends BoxProps {
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const { user } = useContext(UserDashboardContext)
-  const routes = applicationRoutes[user?.type as UserTypes]
+  const routes = applicationRoutes[user?.type as UserTypes]?.filter((route) => route.path !== '*')
 
   return (
     <Box
-      transition="3s ease"
       bg={useColorModeValue('white', 'gray.900')}
       borderRight="1px"
       borderRightColor={useColorModeValue('gray.200', 'gray.700')}
@@ -109,7 +108,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <Image w={[36, 40]} padding={[0, 4]} src={logo} />
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-      {routes.map((link: any, index: number) => (
+      {routes?.map((link: any, index: number) => (
         <NavItem key={index} icon={link.icon} path={link.path}>
           {link.name}
         </NavItem>

@@ -4,25 +4,29 @@ import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import DateTimeUtils, { TimeFormats } from './DateTimeUtils'
 import { splitCamelCase } from './StringUtils'
 
-export const renderAllCognitoGroups = (
-  groups: GroupType[]
+export const renderUserGroups = (
+  groups: GroupType[],
+  skipGroups: UserTypes[] = []
 ): MultiSelectOption[] => {
-  return (
-    groups
-      // .filter(
-      //   (group) =>
-      //     ![UserTypes.STUDENT].includes(
-      //       group.GroupName as UserTypes
-      //     )
-      // )
-      .map((group) => {
-        return {
-          label: `${splitCamelCase(group.GroupName)} ${group.Description}`,
-          value: group.GroupName,
-          colorScheme: 'brand'
-        }
-      })
-  )
+  let filteredGroups = [...groups].filter(group => group.GroupName !== UserTypes.ADMIN)
+
+  if (skipGroups.length > 0) {
+    filteredGroups = filteredGroups.filter(
+      (group) =>
+        !skipGroups.includes(
+          group.GroupName as UserTypes
+        )
+    )
+  }
+
+  return filteredGroups
+    .map((group) => {
+      return {
+        label: `${splitCamelCase(group.GroupName)} ${group.Description}`,
+        value: group.GroupName,
+        colorScheme: 'brand'
+      }
+    })
 }
 
 export const mapSelectedCognitoGroups = (
@@ -33,9 +37,8 @@ export const mapSelectedCognitoGroups = (
     .filter((group) => selectedGroups.includes(group.GroupName || ''))
     .map((filteredGroups) => {
       return {
-        label: `${splitCamelCase(filteredGroups.GroupName)} ${
-          filteredGroups.Description
-        }`,
+        label: `${splitCamelCase(filteredGroups.GroupName)} ${filteredGroups.Description
+          }`,
         value: filteredGroups.GroupName,
         colorScheme: 'red'
       }

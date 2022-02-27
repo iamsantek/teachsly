@@ -1,19 +1,19 @@
 import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { User } from '../platform-models/User'
-import { DynamoDBUser } from '../models/index'
+import { User as UserAPI } from '../models/index'
 import Logger from '../utils/Logger'
 import CognitoService from './aws/CognitoService'
 import GraphQLService from './GraphQLService'
 import { Auth, graphqlOperation } from 'aws-amplify'
-import { createDynamoDBUser } from '../graphql/mutations'
+import { createUser } from '../graphql/mutations'
 
 class AuthService {
   public createUser = async (user: User) => {
-    const { name, email: username } = user
+    const { name, email: username, phone } = user
 
     try {
       const adminCreateUserCommandResponse =
-        await CognitoService.createCognitoUser(username, name) // Create Cognito user in the User Pool
+        await CognitoService.createCognitoUser(username, name, phone) // Create Cognito user in the User Pool
       const confirmCognitoUserResponse =
         await CognitoService.confirmCognitoUser(username) // Auto-confirm email
 
@@ -28,7 +28,7 @@ class AuthService {
       const { userId, fullName, email } = CognitoService.parseCognitoUser(
         adminCreateUserCommandResponse?.Attributes
       )
-      const createDynamoDBUserResponse = await this.createDynamoDBUser(
+      const createDynamoDBUserResponse = await this.persistUser(
         user,
         userId
       )
@@ -53,7 +53,7 @@ class AuthService {
     }
   }
 
-  private createDynamoDBUser = async (
+  private persistUser = async (
     user: User,
     cognitoId: string | undefined
   ) => {
@@ -62,7 +62,7 @@ class AuthService {
     }
 
     const { name, email, groups, phone } = user
-    const dynamoDbBUser = new DynamoDBUser({
+    const dynamoDbBUser = new UserAPI({
       name,
       email,
       cognitoId,
@@ -71,7 +71,7 @@ class AuthService {
     })
 
     return await GraphQLService.graphQL(
-      graphqlOperation(createDynamoDBUser, { input: dynamoDbBUser })
+      graphqlOperation(createUser, { input: dynamoDbBUser })
     )
   }
 

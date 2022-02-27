@@ -149,7 +149,7 @@ class CognitoService {
     }
   }
 
-  private getCreateUserConfiguration = (username: string, name: string) => ({
+  private getCreateUserConfiguration = (username: string, name: string, phone: string) => ({
     UserPoolId: awsmobile.aws_user_pools_id,
     Username: username,
     DesiredDeliveryMediums: ['EMAIL'],
@@ -158,18 +158,24 @@ class CognitoService {
       {
         Name: 'name',
         Value: name
+      },
+      {
+        Name: 'phone_number',
+        Value: `+${phone}`
       }
     ]
   })
 
   public createCognitoUser = async (
     username: string,
-    name: string
+    name: string,
+    phone: string
   ) => {
     // Create user in the Cognito User Pool
     const adminCreateUserCommandConfig = this.getCreateUserConfiguration(
       username,
-      name
+      name,
+      phone
     )
     const cognitoIdentityProviderClient =
       this.createCognitoIdentityProviderClient()
