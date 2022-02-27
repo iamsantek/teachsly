@@ -20,6 +20,7 @@ import { BadgeList } from '../../components/Badges/BadgeList'
 import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
 import { Placeholder } from '../../components/Placeholders/Placeholder'
 import { ToastNotification } from '../../observables/ToastNotification'
+import { LoadMoreButton } from '../../components/Buttons/LoadMoreButton'
 
 export const MediaContentsList = () => {
   const [medias, setMedias] = useState<PlatformMedia[]>([])
@@ -30,17 +31,17 @@ export const MediaContentsList = () => {
   )
   const [crudModalVisibility, setCrudModalVisibility] =
     useState<boolean>(false)
-  const [nextPageResultToken, setNextPageResultToken] = useState<string>()
+  const [nextPageResultToken, setNextPageResultToken] = useState<string | null>()
   const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(true)
 
   const fetchMedia = async () => {
     const medias = await MediaService.fetchMedias(nextPageResultToken)
 
-    setNextPageResultToken(medias?.nextToken)
+    setNextPageResultToken(medias?.listMedia?.nextToken)
     setIsLoadingNewPage(false)
 
     setMedias((previousMedias) =>
-      previousMedias.concat((medias?.items as PlatformMedia[]) || [])
+      previousMedias.concat((medias?.listMedia?.items as PlatformMedia[]) || [])
     )
   }
 
@@ -158,20 +159,7 @@ export const MediaContentsList = () => {
           />
         </Box>
       </Stack>
-      <Center>
-        {nextPageResultToken && (
-          <Button
-            rounded={'lg'}
-            colorScheme="brand"
-            onClick={loadMore}
-            marginTop={4}
-            isLoading={isLoadingNewPage}
-            loadingText={translate('PROCESSING')}
-          >
-            {translate('LOAD_MORE')}
-          </Button>
-        )}
-      </Center>
+      <LoadMoreButton show={!!nextPageResultToken} isLoading={isLoadingNewPage} onClick={loadMore} />
     </>
   )
 }
