@@ -37,7 +37,7 @@ const adminCoursesScreen: ApplicationRoute = {
 
 const students: ApplicationRoute = {
   path: '/students',
-  name: 'Estudiantes',
+  name: 'Alumnos',
   icon: BsFillPeopleFill,
   element: <StudentsList />
 }
@@ -89,6 +89,7 @@ const studentRoutes: ApplicationRoute[] = [
 const teachersRoutes: ApplicationRoute[] = [
   teachersHomeScreen,
   mediaContents,
+  students,
   { path: '*', element: <TeachersHomeScreen /> }
 ]
 

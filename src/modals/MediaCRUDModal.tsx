@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { memo, useContext, useEffect, useState } from 'react'
 import * as React from 'react'
 import { translate } from '../utils/LanguageUtils'
 import { Media, MediaWithMultiSelect } from '../interfaces/Media'
@@ -33,6 +33,7 @@ import { ModalFooter } from '../components/Modals/ModalFooter'
 import { defaultMedia } from '../constants/Medias'
 import { ToastNotification } from '../observables/ToastNotification'
 import { UserTypes } from '../enums/UserTypes'
+import { UserDashboardContext } from '../contexts/UserDashboardContext'
 
 interface Props {
   isOpen: boolean;
@@ -67,6 +68,8 @@ const MediaCRUDModal = ({
   const groupsSubscriber = watch('groups')
   const mediaId = watch('id')
   const { value: mediaType } = watch('type')
+
+  const { user } = useContext(UserDashboardContext)
 
   useEffect(() => {
     const fetchCognitoGroups = async () => {
@@ -184,6 +187,12 @@ const MediaCRUDModal = ({
     mediaId ? updateMedia(media) : createMedia(media)
   }
 
+  const selectGroupOptions = () => {
+    const filteredGroups = userGroups.filter(group => user?.groups.includes(group.GroupName as string))
+
+    return renderUserGroups(filteredGroups)
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
@@ -216,7 +225,7 @@ const MediaCRUDModal = ({
                     label="GROUP_MULTI_SELECT_TITLE"
                     isRequired={true}
                     placeholder={translate('DESCRIPTION')}
-                    options={renderUserGroups(userGroups, [UserTypes.TEACHER])}
+                    options={selectGroupOptions()}
                     isMultiSelect
                     closeMenuOnSelect={false}
                   />
@@ -275,4 +284,4 @@ const MediaCRUDModal = ({
   )
 }
 
-export default MediaCRUDModal
+export default memo(MediaCRUDModal)

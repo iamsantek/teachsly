@@ -1,23 +1,17 @@
 import { GroupType } from '@aws-sdk/client-cognito-identity-provider'
+import { nonStudentGroups } from '../constants/User'
 import { UserTypes } from '../enums/UserTypes'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
+import { User } from '../platform-models/User'
 import DateTimeUtils, { TimeFormats } from './DateTimeUtils'
 import { splitCamelCase } from './StringUtils'
 
 export const renderUserGroups = (
   groups: GroupType[],
-  skipGroups: UserTypes[] = []
+  skipGroups: string[] = []
 ): MultiSelectOption[] => {
-  let filteredGroups = [...groups].filter(group => group.GroupName !== UserTypes.ADMIN)
 
-  if (skipGroups.length > 0) {
-    filteredGroups = filteredGroups.filter(
-      (group) =>
-        !skipGroups.includes(
-          group.GroupName as UserTypes
-        )
-    )
-  }
+  const filteredGroups = [...groups].filter(group => !nonStudentGroups.includes(group.GroupName as UserTypes) || skipGroups.includes(group.GroupName as UserTypes))
 
   return filteredGroups
     .map((group) => {
@@ -40,24 +34,14 @@ export const mapSelectedCognitoGroups = (
         label: `${splitCamelCase(filteredGroups.GroupName)} ${filteredGroups.Description
           }`,
         value: filteredGroups.GroupName,
-        colorScheme: 'red'
+        colorScheme: 'brand'
       }
     })
 }
 
-export const renderCognitoGroupsList = (
-  groups: GroupType[]
-) =>
-  // It only renders the groups that are courses
-  groups
-    .filter(
-      (group) => ![UserTypes.STUDENT].includes(group.GroupName as UserTypes)
-    )
-    .map((group, index) => (
-      <option key={index} value={group.GroupName}>
-        {splitCamelCase(group.GroupName)} {group.Description}
-      </option>
-    ))
+export const isAdmin = (user?: User | null) => user?.type === UserTypes.ADMIN
+
+export const isTeacher = (user?: User | null) => user?.type === UserTypes.TEACHER
 
 export const formatCognitoGroupDescription = (
   days: string[],

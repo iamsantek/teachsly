@@ -12,7 +12,6 @@ import { translate } from '../../utils/LanguageUtils'
 import { MediaType } from '../../models'
 import MediaCRUDModal from '../../modals/MediaCRUDModal'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
-import UserGroupsService from '../../services/UserGroupsService'
 import { UserTypes } from '../../enums/UserTypes'
 import { SectionHeader } from '../../components/Headers/SectionHeader'
 import { AiOutlinePlus } from 'react-icons/ai'
@@ -21,6 +20,8 @@ import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLin
 import { Placeholder } from '../../components/Placeholders/Placeholder'
 import { ToastNotification } from '../../observables/ToastNotification'
 import { LoadMoreButton } from '../../components/Buttons/LoadMoreButton'
+import { nonStudentGroups } from '../../constants/User'
+import { isAdmin } from '../../utils/CognitoGroupsUtils'
 
 export const MediaContentsList = () => {
   const [medias, setMedias] = useState<PlatformMedia[]>([])
@@ -100,7 +101,7 @@ export const MediaContentsList = () => {
   }
 
   const { user } = useContext(UserDashboardContext)
-  const isAdmin = UserGroupsService.isUser(user, UserTypes.ADMIN)
+  const hasAdminRole = isAdmin(user)
 
   return (
     <>
@@ -110,29 +111,34 @@ export const MediaContentsList = () => {
         onClose={() => setViewMediaContentModalVisibility(false)}
       />
 
-      <MediaCRUDModal
-        isOpen={crudModalVisibility}
-        onUpdate={onUpdate}
-        onClose={onClose}
-        onCreate={(media) => setMedias([media, ...medias])}
-        mediaToUpdate={selectedMedia}
-      />
-
+      {hasAdminRole && (
+        <MediaCRUDModal
+          isOpen={crudModalVisibility}
+          onUpdate={onUpdate}
+          onClose={onClose}
+          onCreate={(media) => setMedias([media, ...medias])}
+          mediaToUpdate={selectedMedia}
+        />
+      )}
       <Stack spacing={4} flexDirection={'column'}>
         <SectionHeader>
-          <Center>
-            <Button
-              leftIcon={<AiOutlinePlus />}
-              onClick={() => setCrudModalVisibility(true)}
-              colorScheme="brand"
-            >
-              {translate('MEDIA_UPLOAD_MODAL_TITLE')}
-            </Button>
-          </Center>
+          {hasAdminRole && (
+            <Center>
+              <Button
+                leftIcon={<AiOutlinePlus />}
+                onClick={() => setCrudModalVisibility(true)}
+                colorScheme="brand"
+              >
+                {translate('MEDIA_UPLOAD_MODAL_TITLE')}
+              </Button>
+            </Center>
+          )}
         </SectionHeader>
         <Box>
           {medias.map((media) => {
             const Icon = MediaIcon[media.type]
+            const badges = media.groups.filter(group => !nonStudentGroups.includes(group as UserTypes))
+
             return (
               <ContentLine
                 key={media.id}
@@ -143,11 +149,11 @@ export const MediaContentsList = () => {
                     ? () => onDownload(media.link)
                     : undefined
                 }
-                onEdit={isAdmin ? () => onEdit(media) : undefined}
-                onDelete={isAdmin ? () => onDelete(media) : undefined}
+                onEdit={hasAdminRole ? () => onEdit(media) : undefined}
+                onDelete={hasAdminRole ? () => onDelete(media) : undefined}
               >
                 <CommonContentLineTitle title={media.title} badges={media.groups}>
-                  <BadgeList badges={media.groups || []} />
+                  <BadgeList badges={badges} />
                 </CommonContentLineTitle>
               </ContentLine>
             )

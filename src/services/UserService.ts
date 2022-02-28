@@ -54,8 +54,8 @@ class UserService {
     return users?.listUsers?.items[0]
   }
 
-  public fetchUsersByType = async (type: UserTypes | 'ALL', nextToken: string | null = null) => {
-    const filter = type !== 'ALL' ? this.filterByGroupType(type) : {}
+  public fetchUsersByType = async (type: UserTypes, nextToken: string | null = null) => {
+    const filter = this.filterByGroupType(type)
 
     return await this.fetchUsers(filter, nextToken)
   }

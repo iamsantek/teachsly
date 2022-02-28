@@ -64,6 +64,9 @@ const UserCRUDModal = ({
   const userId = watch('id')
   const isDisabledUser = watch('isDisabledUser')
 
+  const newUserButtonName = userType === UserTypes.STUDENT ? 'CREATE_STUDENT_BUTTON' : 'CREATE_TEACHER_BUTTON'
+  const editUserButtonName = userType === UserTypes.STUDENT ? 'EDIT_STUDENT_BUTTON' : 'EDIT_TEACHER_BUTTON'
+
   useEffect(() => {
     const fetchCognitoGroups = async () => {
       const groups = await UserGroupsService.getUserGroups()
@@ -173,9 +176,6 @@ const UserCRUDModal = ({
 
     updateUser(disabledUser)
   }
-
-  const newUserButtonName = userType === UserTypes.STUDENT ? 'CREATE_STUDENT_BUTTON' : 'CREATE_TEACHER_BUTTON'
-  const editUserButtonName = userType === UserTypes.STUDENT ? 'EDIT_STUDENT_BUTTON' : 'EDIT_TEACHER_BUTTON'
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">

@@ -1,16 +1,18 @@
 import { Avatar, Badge, Box, Button, Center, Stack } from '@chakra-ui/react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { LoadMoreButton } from '../components/Buttons/LoadMoreButton'
 import { ContentLine } from '../components/ContentLine/ContentLine'
 import { SectionHeader } from '../components/Headers/SectionHeader'
 import { ContentLinePlaceholder } from '../components/Placeholders/ContentLinePlaceholder'
 import { Placeholder } from '../components/Placeholders/Placeholder'
+import { UserDashboardContext } from '../contexts/UserDashboardContext'
 import { UserTypes } from '../enums/UserTypes'
 import UserCRUDModal from '../modals/UserCRUDModal'
 import { ViewUserModal } from '../modals/ViewUserModal'
 import { User } from '../platform-models/User'
 import UserService from '../services/UserService'
+import { isAdmin, isTeacher } from '../utils/CognitoGroupsUtils'
 import { findAndUpdateContent } from '../utils/GeneralUtils'
 import { translate } from '../utils/LanguageUtils'
 import { CommonContentLineTitle } from './media/CommonContentLineTitle'
@@ -29,14 +31,26 @@ const UserList = ({
   const [crudModalVisibility, setCrudModalVisibility] = useState<boolean>(false)
   const [viewModalVisibility, setViewModalVisibility] = useState<boolean>(false)
 
+  const { user: loggedUser } = useContext(UserDashboardContext)
+
   const fetchUsers = useCallback(async () => {
     const usersResult = await UserService.fetchUsersByType(listType, nextPageResultToken)
+    const users = usersResult?.listUsers?.items as User[] || []
+    let filteredGroups = [...users]
+
+    const hasTeacherRole = isTeacher(loggedUser)
+
+    if (hasTeacherRole) {
+      filteredGroups = users.filter(
+        user => user.groups.find(group => loggedUser?.groups.includes(group))
+      )
+    }
 
     setNextPageResultToken(usersResult?.listUsers?.nextToken)
     setIsLoadingNewPage(false)
 
     setUsers((previousUsers) =>
-      previousUsers.concat((usersResult?.listUsers?.items as User[]) || [])
+      previousUsers.concat(filteredGroups || [])
     )
   }, [])
 
@@ -71,16 +85,21 @@ const UserList = ({
     setSelectedUser(undefined)
   }
 
+  const hasAdminRole = isAdmin(loggedUser)
+
   return (
     <>
-      <UserCRUDModal
-        isOpen={crudModalVisibility}
-        onClose={() => onClose()}
-        onCreate={(user) => setUsers([user, ...users])}
-        onUpdate={onUpdate}
-        userType={listType}
-        userToUpdate={selectedUser}
-      />
+      {hasAdminRole && (
+        <UserCRUDModal
+          isOpen={crudModalVisibility}
+          onClose={() => onClose()}
+          onCreate={(user) => setUsers([user, ...users])}
+          onUpdate={onUpdate}
+          userType={listType}
+          userToUpdate={selectedUser}
+        />
+      )}
+
       <ViewUserModal
         isOpen={viewModalVisibility}
         onClose={() => setViewModalVisibility(false)}
@@ -89,15 +108,17 @@ const UserList = ({
       />
       <Stack spacing={4}>
         <SectionHeader>
-          <Center>
-            <Button
-              leftIcon={<AiOutlinePlus />}
-              onClick={() => setCrudModalVisibility(true)}
-              colorScheme="brand"
-            >
-              {newUserButtonName}
-            </Button>
-          </Center>
+          {hasAdminRole && (
+            <Center>
+              <Button
+                leftIcon={<AiOutlinePlus />}
+                onClick={() => setCrudModalVisibility(true)}
+                colorScheme="brand"
+              >
+                {newUserButtonName}
+              </Button>
+            </Center>
+          )}
         </SectionHeader>
         <Box>
           {users.map((user) => {
@@ -106,7 +127,7 @@ const UserList = ({
                 key={user.id}
                 leftIcon={<Avatar name={user.name} />}
                 onView={() => onView(user)}
-                onEdit={() => onEdit(user)}
+                onEdit={hasAdminRole ? () => onEdit(user) : undefined}
               >
                 <CommonContentLineTitle title={user.name}>
                   {user.isDisabledUser && <Badge colorScheme='red'>{translate('DEACTIVATED_USER')}</Badge>}
