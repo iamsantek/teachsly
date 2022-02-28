@@ -30,11 +30,11 @@ import logo from '../assets/img/brand/the-office-logo-max.png'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
 import UserService from '../services/UserService'
 import { User } from '../platform-models/User'
-import { applicationRoutes } from '../routes'
-import { UserTypes } from '../enums/UserTypes'
 import { NavLink } from 'react-router-dom'
 import { Footer } from '../components/Footers/Footer'
 import DarkModeSwitch from '../components/Switches/DarkModeSwitch'
+import { translate } from '../utils/LanguageUtils'
+import AuthService from '../services/AuthService'
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
@@ -84,8 +84,8 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
-  const { user } = useContext(UserDashboardContext)
-  const routes = applicationRoutes[user?.type as UserTypes]?.filter((route) => route.path !== '*')
+  const { routes: applicationRoutes } = useContext(UserDashboardContext)
+  const routes = applicationRoutes?.filter((route) => route.path !== '*')
 
   return (
     <Box
@@ -187,11 +187,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}
             >
-              <MenuItem as={'div'}>Profile</MenuItem>
-              <MenuItem as={'div'}>Settings</MenuItem>
-              <MenuItem as="div">Billing</MenuItem>
               <MenuDivider />
-              <MenuItem as={'div'}>Sign out</MenuItem>
+              <MenuItem onClick={async () => await AuthService.signOut()}>{translate('SIGN_OUT')}</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

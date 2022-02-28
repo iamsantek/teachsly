@@ -4,6 +4,8 @@ export type TranslationsDictionary =
   | keyof typeof LanguageES;
 
 export enum LanguageES {
+  DISABLED_ACCOUNT_ALERT_TITLE = 'Tu cuenta ha sido desactivada.',
+  DISABLED_ACCOUNT_ALERT_DESCRIPTION = 'Por favor, comunicate con nosotros para más información.',
   DEACTIVATED_USER = 'Usuario deshabilitado',
   DEACTIVATED_USER_BUTTON = 'Desactivar usuario',
   DEACTIVATED_USER_DESCRIPTION = 'El usuario dejará de tener acceso a la plataforma y a todos sus contenidos.',
@@ -69,9 +71,12 @@ export enum LanguageES {
   MEDIA_LINK_DESCRIPTION = 'Link del contenido',
   CREATE_STUDENT_MODAL_TITLE = 'Nuevo estudiante',
   CREATE_TEACHER_MODAL_TITLE = 'Nuevo profesor',
+  SIGN_OUT = 'Cerrar sesión'
 }
 
 export enum LanguageEN {
+  DISABLED_ACCOUNT_ALERT_TITLE = 'Your account has been disabled.',
+  DISABLED_ACCOUNT_ALERT_DESCRIPTION = 'Please, contact us for further information.',
   DEACTIVATED_USER = 'Deactivated user',
   DEACTIVATED_USER_BUTTON = 'Deactivate user',
   ACTIVE_USER_BUTTON = 'Activate user',
@@ -137,4 +142,6 @@ export enum LanguageEN {
   CREATE_TEACHER_MODAL_TITLE = 'New teacher',
   EDIT_TEACHER_BUTTON = 'Edit teacher',
   EDIT_STUDENT_BUTTON = 'Edit student',
+  SIGN_OUT = 'Sign out'
+
 }

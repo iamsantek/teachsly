@@ -7,13 +7,15 @@ import UserService from './services/UserService'
 import { UserDashboardContext } from './contexts/UserDashboardContext'
 import Amplify from 'aws-amplify'
 import awsExports from './aws-exports'
-import { applicationRoutes } from './routes'
+import { applicationRoutes, disabledAccountRoutes } from './routes'
 import ToastWrapper from './components/Toast/ToastWrapper'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import DashboardLayout from './layouts/DashboardLayout'
 import { defaultTheme } from './constants/Theme'
 import { LogInScreen } from './layouts/LogInScreen'
 import { ApplicationRoute } from './interfaces/Routes'
+import { AmplifyAuthenticator } from '@aws-amplify/ui-react'
+import { SpinnerScreen } from './views/others/SpinnerScreen'
 
 Amplify.configure(awsExports)
 
@@ -43,9 +45,11 @@ const App = () => {
       const cognitoId = authData.attributes.sub
       const user = await UserService.fetchUserByCognitoId(cognitoId)
       const userType = UserService.getUserType(user)
+      let routes: ApplicationRoute[] = []
 
       if (userType) {
-        setRoutes(applicationRoutes[userType])
+        routes = user?.isDisabledUser ? disabledAccountRoutes : applicationRoutes[userType]
+        setRoutes(routes)
       }
 
       setDashboardInformation({
@@ -53,7 +57,7 @@ const App = () => {
           ...user,
           type: userType
         },
-        routes: applicationRoutes[userType]
+        routes
       })
 
       setAuthState(nextAuthState)
@@ -62,21 +66,35 @@ const App = () => {
 
   const routeComponent = useRoutes(routes)
 
+  if (!authState) {
+    return (
+      <AmplifyAuthenticator>
+        <ChakraProvider>
+          <SpinnerScreen />
+        </ChakraProvider>
+      </AmplifyAuthenticator>
+    )
+  }
+
   return authState === AuthState.SignedIn && dashboardInformation.user
     ? (
-    <ChakraProvider theme={theme}>
-      <UserDashboardContext.Provider value={dashboardInformation}>
-        <DashboardLayout>
-          <ToastWrapper />
-          {routeComponent}
-        </DashboardLayout>
-      </UserDashboardContext.Provider>
-    </ChakraProvider>
+      <AmplifyAuthenticator>
+        <ChakraProvider theme={theme}>
+          <UserDashboardContext.Provider value={dashboardInformation}>
+            <DashboardLayout>
+              <ToastWrapper />
+              {routeComponent}
+            </DashboardLayout>
+          </UserDashboardContext.Provider>
+        </ChakraProvider>
+      </AmplifyAuthenticator>
       )
     : (
-    <ChakraProvider>
-      <LogInScreen />
-    </ChakraProvider>
+      <AmplifyAuthenticator>
+        <ChakraProvider>
+          <LogInScreen />
+        </ChakraProvider>
+      </AmplifyAuthenticator>
       )
 }
 

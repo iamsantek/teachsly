@@ -1,7 +1,6 @@
-import { AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react'
+import { AmplifySignIn } from '@aws-amplify/ui-react'
 
 const SignIn = () => (
-  <AmplifyAuthenticator>
     <AmplifySignIn
       headerText="The Office English Learning"
       slot="sign-in"
@@ -10,7 +9,6 @@ const SignIn = () => (
       // @ts-ignore
       style={{ '--container-height': 'auto', '--background-color': 'red' }}
     />
-  </AmplifyAuthenticator>
 )
 
 export default SignIn
