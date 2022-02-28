@@ -61,6 +61,8 @@ export const CoursesList = () => {
     fetchCourses()
   }
 
+  const color = useColorModeValue('gray.500', 'white')
+
   return (
     <>
       <CourseCRUDModal
@@ -106,7 +108,7 @@ export const CoursesList = () => {
                 <CommonContentLineTitle title={course.name}>
                   <Text
                     textStyle={'title'}
-                    color={useColorModeValue('gray.500', 'white')}
+                    color={color}
                   >
                     {days} ({startTime} - {endTime})
                   </Text>

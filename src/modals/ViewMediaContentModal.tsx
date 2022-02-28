@@ -16,7 +16,6 @@ import { translate } from '../utils/LanguageUtils'
 import { BiLinkExternal } from 'react-icons/bi'
 import { BadgeList } from '../components/Badges/BadgeList'
 import { useState } from 'react'
-import { mediaContentLineIcons as MediaIcons } from '../constants/Medias'
 
 interface Props {
   isOpen: boolean;
@@ -36,7 +35,6 @@ export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
     isExternalLink ? window.open(link, '_blank') : MediaService.generateSignedUrl(link)
     setIsLoading(false)
   }
-
 
   return (
     <>

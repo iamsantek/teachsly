@@ -38,11 +38,11 @@ const UserList = ({
     setUsers((previousUsers) =>
       previousUsers.concat((usersResult?.listUsers?.items as User[]) || [])
     )
-  }, [listType, nextPageResultToken])
+  }, [])
 
   useEffect(() => {
     fetchUsers()
-  }, [fetchUsers, listType])
+  }, [listType, fetchUsers])
 
   const newUserButtonName = translate(listType === UserTypes.STUDENT ? 'CREATE_STUDENT_MODAL_TITLE' : 'CREATE_TEACHER_MODAL_TITLE')
 
