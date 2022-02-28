@@ -10,7 +10,6 @@ export const renderUserGroups = (
   groups: GroupType[],
   skipGroups: string[] = []
 ): MultiSelectOption[] => {
-
   const filteredGroups = [...groups].filter(group => !nonStudentGroups.includes(group.GroupName as UserTypes) || skipGroups.includes(group.GroupName as UserTypes))
 
   return filteredGroups

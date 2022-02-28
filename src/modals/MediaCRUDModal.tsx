@@ -32,7 +32,6 @@ import UserGroupsService from '../services/UserGroupsService'
 import { ModalFooter } from '../components/Modals/ModalFooter'
 import { defaultMedia } from '../constants/Medias'
 import { ToastNotification } from '../observables/ToastNotification'
-import { UserTypes } from '../enums/UserTypes'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
 
 interface Props {
