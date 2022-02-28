@@ -27,6 +27,7 @@ import { UserTypes } from '../enums/UserTypes'
 import { MdDangerous } from 'react-icons/md'
 import { ConfirmationDialog } from '../components/AlertDialog/ConfirmationDialog'
 import { UpdateUserInput } from '../API'
+import { AiFillCheckCircle } from 'react-icons/ai'
 
 interface Props {
   isOpen: boolean;
@@ -61,6 +62,7 @@ const UserCRUDModal = ({
   } = formControls
 
   const userId = watch('id')
+  const isDisabledUser = watch('isDisabledUser')
 
   useEffect(() => {
     const fetchCognitoGroups = async () => {
@@ -85,7 +87,7 @@ const UserCRUDModal = ({
 
       reset(user)
     }
-  }, [userToUpdate, reset])
+  }, [userToUpdate])
 
   useEffect(() => {
     if (!isOpen) {
@@ -126,20 +128,14 @@ const UserCRUDModal = ({
   const updateUser = async (user: UpdateUserInput) => {
     const updatedUser = await UserService.updateUser(user)
 
-    console.log(updatedUser)
-
     if (updatedUser) {
       onUpdate(updatedUser.updateUser as User)
-      ToastNotification({
-        description: 'MEDIA_UPDATED_MESSAGE',
-        status: 'SUCCESS'
-      })
-    } else {
-      ToastNotification({
-        description: 'MEDIA_UPDATED_ERROR_MESSAGE',
-        status: 'ERROR'
-      })
     }
+
+    ToastNotification({
+      description: updatedUser ? 'USER_UPDATE_SUCCESS' : 'USER_UPDATE_ERROR',
+      status: updatedUser ? 'SUCCESS' : 'ERROR'
+    })
 
     setIsLoading(false)
     onClose()
@@ -167,12 +163,12 @@ const UserCRUDModal = ({
     return userId ? `${translate('EDITING')} '${userToUpdate?.name}'` : newUserModalTitle
   }
 
-  const disableUser = () => {
+  const toggleAccountStatus = () => {
     setShowDeleteUserConfirmation(false)
     const user: UpdateUserInput = formatUser(watch())
     const disabledUser = {
       ...user,
-      isActiveAccount: true
+      isDisabledUser: !isDisabledUser
     }
 
     updateUser(disabledUser)
@@ -227,10 +223,10 @@ const UserCRUDModal = ({
                 <ConfirmationDialog
                   isOpen={showDeleteUserConfirmation}
                   onClose={() => setShowDeleteUserConfirmation(false)}
-                  title='DEACTIVATED_USER_BUTTON'
-                  description='DEACTIVATED_USER_DESCRIPTION'
-                  confirmButtonText='DEACTIVATED_USER_BUTTON'
-                  onAction={disableUser}
+                  title={isDisabledUser ? 'ACTIVE_USER_BUTTON' : 'DEACTIVATED_USER_BUTTON'}
+                  description={isDisabledUser ? 'ACTIVE_USER_DESCRIPTION' : 'DEACTIVATED_USER_DESCRIPTION'}
+                  confirmButtonText={isDisabledUser ? 'ACTIVE_USER_BUTTON' : 'DEACTIVATED_USER_BUTTON'}
+                  onAction={toggleAccountStatus}
                 />
               </ModalBody>
               <ModalFooter
@@ -238,13 +234,15 @@ const UserCRUDModal = ({
                 sendButtonText={userToUpdate ? editUserButtonName : newUserButtonName}
                 onClose={onClose}
               >
-                <Button
-                  onClick={() => setShowDeleteUserConfirmation(true)}
-                  leftIcon={<MdDangerous />}
+                {userToUpdate && (
+                  <Button
 
-                >
-                  {translate('DEACTIVATED_USER_BUTTON')}
-                </Button>
+                    onClick={() => setShowDeleteUserConfirmation(true)}
+                    leftIcon={isDisabledUser ? <AiFillCheckCircle /> : <MdDangerous />}
+                  >
+                    {translate(isDisabledUser ? 'ACTIVE_USER_BUTTON' : 'DEACTIVATED_USER_BUTTON')}
+                  </Button>
+                )}
               </ModalFooter>
             </form>
           </FormProvider>

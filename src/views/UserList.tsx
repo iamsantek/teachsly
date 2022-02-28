@@ -46,7 +46,7 @@ const UserList = ({
 
   const newUserButtonName = translate(listType === UserTypes.STUDENT ? 'CREATE_STUDENT_MODAL_TITLE' : 'CREATE_TEACHER_MODAL_TITLE')
 
-  const loadMore = () => {
+  const onLoadMore = () => {
     setIsLoadingNewPage(true)
     fetchUsers()
   }
@@ -66,11 +66,16 @@ const UserList = ({
     setUsers(updatedUsers)
   }
 
+  const onClose = () => {
+    setCrudModalVisibility(false)
+    setSelectedUser(undefined)
+  }
+
   return (
     <>
       <UserCRUDModal
         isOpen={crudModalVisibility}
-        onClose={() => setCrudModalVisibility(false)}
+        onClose={() => onClose()}
         onCreate={(user) => setUsers([user, ...users])}
         onUpdate={onUpdate}
         userType={listType}
@@ -115,7 +120,7 @@ const UserList = ({
             number={2}
             placeholderElement={<ContentLinePlaceholder />}
           />
-          <LoadMoreButton show={!!nextPageResultToken} isLoading={isLoadingNewPage} onClick={loadMore} />
+          <LoadMoreButton show={!!nextPageResultToken} isLoading={isLoadingNewPage} onClick={onLoadMore} />
         </Box>
       </Stack>
     </>

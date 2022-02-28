@@ -59,7 +59,6 @@ const CourseCRUDModal = ({
         scheduleDates: renderMultiSelectOptions(courseToUpdate.scheduleDates)
       }
 
-      // setCourse(course);
       reset(course)
     }
   }, [courseToUpdate])
