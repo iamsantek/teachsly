@@ -187,7 +187,7 @@ const MediaCRUDModal = ({
   }
 
   const selectGroupOptions = () => {
-    const filteredGroups = userGroups.filter(group => user?.groups.includes(group.GroupName as string))
+    const filteredGroups = userGroups.filter(group => !user?.groups.includes(group.GroupName as string))
 
     return renderUserGroups(filteredGroups)
   }
