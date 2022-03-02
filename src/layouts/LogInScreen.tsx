@@ -7,7 +7,6 @@ import {
   Text,
   useColorModeValue
 } from '@chakra-ui/react'
-
 import SignIn from '../components/SignIn'
 
 export const LogInScreen = () => {

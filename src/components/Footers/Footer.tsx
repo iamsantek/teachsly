@@ -8,10 +8,11 @@ import {
   useColorModeValue,
   Circle
 } from '@chakra-ui/react'
-import { FaInstagram, FaFacebook } from 'react-icons/fa'
+import { FaInstagram } from 'react-icons/fa'
 import { GeneralInformation } from '../../enums/GeneralInformation'
 import { BsCodeSlash } from 'react-icons/bs'
 import { FiLink } from 'react-icons/fi'
+import { RiFacebookBoxLine } from 'react-icons/ri'
 
 const SocialButton = ({
   children,
@@ -72,7 +73,7 @@ export const Footer = () => {
             <FiLink />
           </SocialButton>
           <SocialButton label={'Twitter'} href={GeneralInformation.FACEBOOK}>
-            <FaFacebook />
+            <RiFacebookBoxLine />
           </SocialButton>
           <SocialButton label={'Instagram'} href={GeneralInformation.INSTAGRAM}>
             <FaInstagram />
