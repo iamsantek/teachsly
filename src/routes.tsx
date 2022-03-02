@@ -4,69 +4,69 @@ import { ApplicationRoute, ApplicationRoutes } from './interfaces/Routes'
 import { FiHome } from 'react-icons/fi'
 import { MediaContentsScreen } from './views/media/MediaContentsScreen'
 import { StudentsHomeScreen } from './views/homeScreen/StudentsHomeScreen'
-import { GiTeacher, GiWhiteBook } from 'react-icons/gi'
-import { AiFillHome } from 'react-icons/ai'
-import { ImBooks } from 'react-icons/im'
-import { BsFillPeopleFill } from 'react-icons/bs'
+import { AiFillFolder, AiFillHome } from 'react-icons/ai'
+import { BsFillCalendar2WeekFill, BsFillPeopleFill } from 'react-icons/bs'
 import { AdminHomeScreen } from './views/homeScreen/AdminHomeScreen'
-import { MdOutlinePayments } from 'react-icons/md'
 import { CoursesList } from './views/courses/CoursesList'
 import { StudentsList } from './views/students/StudentsList'
 import { TeachersHomeScreen } from './views/homeScreen/TeachersHomeScreen'
+import { translate } from './utils/LanguageUtils'
+import { PaymentsScreen } from './views/payments/PaymentsScreen'
+import { FaMoneyCheckAlt } from 'react-icons/fa'
 
 const adminHomeScreen: ApplicationRoute = {
-  name: 'Home',
+  name: translate('MENU_HOME'),
   icon: AiFillHome,
   path: '/',
   element: <AdminHomeScreen />
 }
 
 const payments: ApplicationRoute = {
-  name: 'Pagos',
-  icon: MdOutlinePayments,
+  name: translate('MENU_PAYMENTS'),
+  icon: FaMoneyCheckAlt,
   path: '/',
-  element: <AdminHomeScreen />
+  element: <PaymentsScreen />
 }
 
 const adminCoursesScreen: ApplicationRoute = {
-  name: 'Cursos',
-  icon: ImBooks,
+  name: translate('MENU_COURSES'),
+  icon: BsFillCalendar2WeekFill,
   path: '/courses',
   element: <CoursesList />
 }
 
 const students: ApplicationRoute = {
   path: '/students',
-  name: 'Alumnos',
+  name: translate('MENU_STUDENTS'),
   icon: BsFillPeopleFill,
   element: <StudentsList />
 }
 
 const teachers: ApplicationRoute = {
   path: '/teachers',
-  name: 'Profesores',
-  icon: GiTeacher,
+  name: translate('MENU_TEACHERS'),
+  icon: BsFillPeopleFill,
   element: <UserList listType={UserTypes.TEACHER} />
 }
 
 const studentHomeScreen: ApplicationRoute = {
   path: '/',
-  name: 'Home',
+  name: translate('MENU_HOME'),
   icon: FiHome,
   element: <StudentsHomeScreen />
 }
 
 const teachersHomeScreen: ApplicationRoute = {
   path: '/',
-  name: 'Home',
+  name: translate('MENU_HOME'),
   icon: FiHome,
   element: <TeachersHomeScreen />
 }
 
 const mediaContents: ApplicationRoute = {
   path: '/contents',
-  name: 'Contenidos',
-  icon: GiWhiteBook,
+  name: translate('MENU_CONTENTS'),
+  icon: AiFillFolder,
   element: <MediaContentsScreen />
 }
 

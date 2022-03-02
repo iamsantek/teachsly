@@ -71,7 +71,13 @@ export enum LanguageES {
   MEDIA_LINK_DESCRIPTION = 'Link del contenido',
   CREATE_STUDENT_MODAL_TITLE = 'Nuevo estudiante',
   CREATE_TEACHER_MODAL_TITLE = 'Nuevo profesor',
-  SIGN_OUT = 'Cerrar sesión'
+  SIGN_OUT = 'Cerrar sesión',
+  MENU_HOME = 'Home',
+  MENU_CONTENTS = 'Contenidos',
+  MENU_COURSES = 'Cursos',
+  MENU_TEACHERS = 'Profesores',
+  MENU_STUDENTS = 'Alumnos',
+  MENU_PAYMENTS = 'Pagos'
 }
 
 export enum LanguageEN {
@@ -142,6 +148,11 @@ export enum LanguageEN {
   CREATE_TEACHER_MODAL_TITLE = 'New teacher',
   EDIT_TEACHER_BUTTON = 'Edit teacher',
   EDIT_STUDENT_BUTTON = 'Edit student',
-  SIGN_OUT = 'Sign out'
-
+  SIGN_OUT = 'Sign out',
+  MENU_HOME = 'Home',
+  MENU_CONTENTS = 'Contents',
+  MENU_COURSES = 'Courses',
+  MENU_TEACHERS = 'Teachers',
+  MENU_STUDENTS = 'Students',
+  MENU_PAYMENTS = 'Payments'
 }
