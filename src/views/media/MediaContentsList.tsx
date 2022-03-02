@@ -69,9 +69,10 @@ export const MediaContentsList = () => {
     setCrudModalVisibility(true)
   }
 
-  const onClose = () => {
+  const onClose = (modal: 'ViewMediaContentModal' | 'MediaCRUDModal') => {
     setSelectedMedia(undefined)
-    setCrudModalVisibility(false)
+
+    modal === 'MediaCRUDModal' ? setCrudModalVisibility(false) : setViewMediaContentModalVisibility(false)
   }
 
   const onDelete = async (mediaToDelete: PlatformMedia) => {
@@ -108,14 +109,14 @@ export const MediaContentsList = () => {
       <ViewMediaContentModal
         media={selectedMedia as PlatformMedia}
         isOpen={viewMediaContentModalVisibility}
-        onClose={() => setViewMediaContentModalVisibility(false)}
+        onClose={() => onClose('ViewMediaContentModal')}
       />
 
       {hasAdminRole && (
         <MediaCRUDModal
           isOpen={crudModalVisibility}
           onUpdate={onUpdate}
-          onClose={onClose}
+          onClose={() => onClose('MediaCRUDModal')}
           onCreate={(media) => setMedias([media, ...medias])}
           mediaToUpdate={selectedMedia}
         />
