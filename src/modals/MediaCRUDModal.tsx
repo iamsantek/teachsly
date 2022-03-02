@@ -80,21 +80,24 @@ const MediaCRUDModal = ({
   }, [])
 
   useEffect(() => {
-    if (mediaToUpdate) {
-      const mappedValues = mapSelectedCognitoGroups(
-        userGroups,
-        mediaToUpdate.groups
-      )
-      const type = mapSingleValueToMultiSelectOption(mediaToUpdate.type)
-
-      const media: MediaWithMultiSelect = {
-        ...mediaToUpdate,
-        groups: mappedValues,
-        type
-      }
-
-      reset(media)
+    if (!mediaToUpdate) {
+      reset(defaultMedia as MediaWithMultiSelect)
+      return
     }
+
+    const mappedValues = mapSelectedCognitoGroups(
+      userGroups,
+      mediaToUpdate.groups
+    )
+    const type = mapSingleValueToMultiSelectOption(mediaToUpdate.type)
+
+    const media: MediaWithMultiSelect = {
+      ...mediaToUpdate,
+      groups: mappedValues,
+      type
+    }
+
+    reset(media)
   }, [mediaToUpdate])
 
   useEffect(() => {
