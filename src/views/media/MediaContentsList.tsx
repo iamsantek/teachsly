@@ -12,16 +12,14 @@ import { translate } from '../../utils/LanguageUtils'
 import { MediaType } from '../../models'
 import MediaCRUDModal from '../../modals/MediaCRUDModal'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
-import { UserTypes } from '../../enums/UserTypes'
 import { SectionHeader } from '../../components/Headers/SectionHeader'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { BadgeList } from '../../components/Badges/BadgeList'
 import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
 import { Placeholder } from '../../components/Placeholders/Placeholder'
 import { ToastNotification } from '../../observables/ToastNotification'
 import { LoadMoreButton } from '../../components/Buttons/LoadMoreButton'
-import { nonStudentGroups } from '../../constants/User'
 import { isAdmin } from '../../utils/CognitoGroupsUtils'
+import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPlaceholder'
 
 export const MediaContentsList = () => {
   const [medias, setMedias] = useState<PlatformMedia[]>([])
@@ -138,7 +136,6 @@ export const MediaContentsList = () => {
         <Box>
           {medias.map((media) => {
             const Icon = MediaIcon[media.type]
-            const badges = media.groups.filter(group => !nonStudentGroups.includes(group as UserTypes))
 
             return (
               <ContentLine
@@ -153,9 +150,7 @@ export const MediaContentsList = () => {
                 onEdit={hasAdminRole ? () => onEdit(media) : undefined}
                 onDelete={hasAdminRole ? () => onDelete(media) : undefined}
               >
-                <CommonContentLineTitle title={media.title} badges={media.groups}>
-                  <BadgeList badges={badges} />
-                </CommonContentLineTitle>
+                <CommonContentLineTitle title={media.title} badges={media.groups} />
               </ContentLine>
             )
           })}
@@ -164,6 +159,7 @@ export const MediaContentsList = () => {
             number={2}
             placeholderElement={<ContentLinePlaceholder />}
           />
+          <NoContentPlaceholder show={medias.length === 0 && !isLoadingNewPage} />
         </Box>
       </Stack>
       <LoadMoreButton show={!!nextPageResultToken} isLoading={isLoadingNewPage} onClick={loadMore} />

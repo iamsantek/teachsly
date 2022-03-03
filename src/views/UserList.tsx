@@ -5,6 +5,7 @@ import { LoadMoreButton } from '../components/Buttons/LoadMoreButton'
 import { ContentLine } from '../components/ContentLine/ContentLine'
 import { SectionHeader } from '../components/Headers/SectionHeader'
 import { ContentLinePlaceholder } from '../components/Placeholders/ContentLinePlaceholder'
+import { NoContentPlaceholder } from '../components/Placeholders/NoContentPlaceholder'
 import { Placeholder } from '../components/Placeholders/Placeholder'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
 import { UserTypes } from '../enums/UserTypes'
@@ -136,6 +137,7 @@ const UserList = ({
               </ContentLine>
             )
           })}
+          <NoContentPlaceholder show={users.length === 0 && !isLoadingNewPage} />
           <Placeholder
             show={isLoadingNewPage}
             number={2}
