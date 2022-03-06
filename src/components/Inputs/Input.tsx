@@ -43,7 +43,7 @@ export const Input = ({
       />
 
       {bottomNote && (
-        <Text color="gray.900" fontSize="sm" marginLeft={1}>
+        <Text color="gray.900" textStyle={'paragraph'} marginLeft={1}>
           {bottomNote}
         </Text>
       )}

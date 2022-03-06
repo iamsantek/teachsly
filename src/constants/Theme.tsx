@@ -26,11 +26,11 @@ export const defaultTheme = {
       fontFamily: 'Noto Sans',
       fontWeight: 700
     },
-    paragraph: {
+    paragraph: () => ({
       color: 'black',
       fontFamily: 'Noto Sans',
       fontWeight: 400
-    }
+    })
   },
   layerStyles: {
     base: {

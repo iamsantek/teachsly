@@ -32,7 +32,8 @@ export enum LanguageES {
   COURSE_UPDATED_SUCCESS = 'El curso se actualizó correctamente.',
   COURSE_NAME = 'Nombre del curso',
   COURSE_DATES = 'Dias del curso',
-  COURSE_SCHEDULE = 'Horarios del curso',
+  COURSE_SCHEDULE = 'Horario de inicio',
+  COURSE_END_SCHEDULE = 'Horario de finalización',
   CREATE_COURSE_BUTTON = 'Crear Curso',
   CREATE_COURSE_MODAL_TITLE = 'Creación de Curso',
   MEDIA_UPLOAD_MODAL_TITLE = 'Subir contenido',
@@ -71,7 +72,15 @@ export enum LanguageES {
   MEDIA_LINK_DESCRIPTION = 'Link del contenido',
   CREATE_STUDENT_MODAL_TITLE = 'Nuevo estudiante',
   CREATE_TEACHER_MODAL_TITLE = 'Nuevo profesor',
-  SIGN_OUT = 'Cerrar sesión'
+  SIGN_OUT = 'Cerrar sesión',
+  MENU_HOME = 'Home',
+  MENU_CONTENTS = 'Contenidos',
+  MENU_COURSES = 'Cursos',
+  MENU_TEACHERS = 'Profesores',
+  MENU_STUDENTS = 'Alumnos',
+  MENU_PAYMENTS = 'Pagos',
+  NO_CONTENT_TILE = 'Sin resultados',
+  NO_CONTENT_DESCRIPTION = 'No hay resultados para esta busqueda.'
 }
 
 export enum LanguageEN {
@@ -101,7 +110,8 @@ export enum LanguageEN {
   COURSE_CREATED_MESSAGE = 'A new course has been added to the platform.',
   COURSE_NAME = 'Course name',
   COURSE_DATES = 'Course days',
-  COURSE_SCHEDULE = 'Timetable',
+  COURSE_SCHEDULE = 'Start time',
+  COURSE_END_SCHEDULE = 'End time',
   COURSE_UPDATED_SUCCESS = 'The Course has been successfully updated',
   CREATE_COURSE_BUTTON = 'Create Course',
   CREATE_COURSE_MODAL_TITLE = 'Course creation',
@@ -142,6 +152,13 @@ export enum LanguageEN {
   CREATE_TEACHER_MODAL_TITLE = 'New teacher',
   EDIT_TEACHER_BUTTON = 'Edit teacher',
   EDIT_STUDENT_BUTTON = 'Edit student',
-  SIGN_OUT = 'Sign out'
-
+  SIGN_OUT = 'Sign out',
+  MENU_HOME = 'Home',
+  MENU_CONTENTS = 'Contents',
+  MENU_COURSES = 'Courses',
+  MENU_TEACHERS = 'Teachers',
+  MENU_STUDENTS = 'Students',
+  MENU_PAYMENTS = 'Payments',
+  NO_CONTENT_TILE = 'No results',
+  NO_CONTENT_DESCRIPTION = 'There are no results for this search.'
 }

@@ -14,6 +14,7 @@ import { LoadMoreButton } from '../../components/Buttons/LoadMoreButton'
 import { ContentLine } from '../../components/ContentLine/ContentLine'
 import { SectionHeader } from '../../components/Headers/SectionHeader'
 import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
+import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPlaceholder'
 import { Placeholder } from '../../components/Placeholders/Placeholder'
 import CourseCRUDModal from '../../modals/CourseCRUDModal'
 import { Course } from '../../platform-models/Course'
@@ -126,6 +127,7 @@ export const CoursesList = () => {
             number={2}
             placeholderElement={<ContentLinePlaceholder />}
           />
+          <NoContentPlaceholder show={courses.length === 0 && !isLoadingNewPage} />
         </Box>
       </Stack>
       <LoadMoreButton show={!!nextPageResultToken} isLoading={isLoadingNewPage} onClick={loadMore} />

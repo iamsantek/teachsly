@@ -14,10 +14,9 @@
   },
   "homepage": "",
   "scripts": {
-    "start": "BROWSER='google chrome' BROWSER_ARGS='--remote-debugging-port=9222' react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "BROWSER='google chrome' BROWSER_ARGS='--remote-debugging-port=9222' node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
     "compile:scss": "node-sass --importer node_modules/node-sass-package-importer/dist/cli.js src/assets/scss/argon-dashboard-react.scss src/assets/css/argon-dashboard-react.css",
     "minify:scss": "node-sass --importer node_modules/node-sass-package-importer/dist/cli.js src/assets/scss/argon-dashboard-react.scss src/assets/css/argon-dashboard-react.min.css --output-style compressed",
@@ -38,11 +37,14 @@
     "@aws-sdk/client-cognito-identity-provider": "^3.46.0",
     "@aws-sdk/credential-providers": "^3.49.0",
     "@aws-sdk/property-provider": "^3.49.0",
+    "@babel/core": "^7.16.0",
     "@chakra-ui/react": "^1.8.3",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@fontsource/noto-sans": "^4.5.4",
     "@fortawesome/fontawesome-free": "5.15.3",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
+    "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -50,30 +52,71 @@
     "autoprefixer": "^10.4.2",
     "aws-amplify": "^4.3.8",
     "aws-sdk": "^2.1067.0",
+    "babel-jest": "^27.4.2",
+    "babel-loader": "^8.2.3",
+    "babel-plugin-named-asset-import": "^0.3.8",
+    "babel-preset-react-app": "^10.0.1",
+    "bfj": "^7.0.2",
     "bootstrap": "4.6.0",
+    "browserslist": "^4.18.1",
+    "camelcase": "^6.2.1",
+    "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "chakra-react-select": "^3.0.4",
     "chart.js": "2.9.4",
     "classnames": "2.3.1",
+    "css-loader": "^6.5.1",
+    "css-minimizer-webpack-plugin": "^3.2.0",
     "dayjs": "^1.10.7",
+    "dotenv": "^10.0.0",
+    "dotenv-expand": "^5.1.0",
+    "eslint": "^8.3.0",
+    "eslint-config-react-app": "^7.0.0",
+    "eslint-webpack-plugin": "^3.1.1",
+    "file-loader": "^6.2.0",
     "framer-motion": "^5.6.0",
+    "fs-extra": "^10.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.4.3",
+    "jest-resolve": "^27.4.2",
+    "jest-watch-typeahead": "^1.0.0",
+    "mini-css-extract-plugin": "^2.4.5",
     "moment": "2.29.1",
     "node-sass": "^7.0.1",
     "node-sass-package-importer": "5.3.2",
     "nouislider": "15.2.0",
-    "postcss": "^8.4.6",
+    "postcss": "^8.4.4",
     "postcss-cli": "^9.1.0",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-loader": "^6.2.1",
+    "postcss-normalize": "^10.0.1",
+    "postcss-preset-env": "^7.0.1",
+    "prompts": "^2.4.2",
     "react": "17.0.2",
+    "react-app-polyfill": "^3.0.0",
     "react-chartjs-2": "2.11.1",
     "react-copy-to-clipboard": "5.0.3",
     "react-datetime": "3.0.4",
+    "react-dev-utils": "^12.0.0",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.26.1",
     "react-icons": "^4.3.1",
+    "react-refresh": "^0.11.0",
     "react-router-dom": "^6.2.1",
-    "react-scripts": "^5.0.0",
-    "tailwindcss": "^3.0.18",
+    "resolve": "^1.20.0",
+    "resolve-url-loader": "^4.0.0",
+    "sass-loader": "^12.3.0",
+    "semver": "^7.3.5",
+    "source-map-loader": "^3.0.0",
+    "style-loader": "^3.3.1",
+    "tailwindcss": "^3.0.2",
+    "terser-webpack-plugin": "^5.2.5",
     "typescript": "^4.5.2",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "webpack": "^5.64.4",
+    "webpack-dev-server": "^4.6.0",
+    "webpack-manifest-plugin": "^4.0.2",
+    "workbox-webpack-plugin": "^6.4.1"
   },
   "devDependencies": {
     "@types/chart.js": "^2.9.35",
@@ -95,5 +138,59 @@
   "optionalDependencies": {
     "eslint-plugin-flowtype": "5.8.0",
     "jquery": "3.6.0"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "setupFilesAfterEnv": [],
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jsdom",
+    "transform": {
+      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "modulePaths": [],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web",
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ],
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ],
+    "resetMocks": true
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
   }
 }

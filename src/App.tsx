@@ -1,7 +1,6 @@
 // @ts-nocheck
 import { useEffect, useState } from 'react'
 import { useRoutes } from 'react-router-dom'
-import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components'
 import { defaultDashboardContext } from './constants/DashboardContext'
 import UserService from './services/UserService'
 import { UserDashboardContext } from './contexts/UserDashboardContext'
@@ -14,71 +13,62 @@ import DashboardLayout from './layouts/DashboardLayout'
 import { defaultTheme } from './constants/Theme'
 import { LogInScreen } from './layouts/LogInScreen'
 import { ApplicationRoute } from './interfaces/Routes'
-import { AmplifyAuthenticator } from '@aws-amplify/ui-react'
+import { useAuthenticator } from '@aws-amplify/ui-react'
 import { SpinnerScreen } from './views/others/SpinnerScreen'
+import { CognitoUserAmplify } from '@aws-amplify/ui'
+import './App.css'
 
 Amplify.configure(awsExports)
 
 const App = () => {
-  const [authState, setAuthState] = useState<AuthState | null>(null)
   const [dashboardInformation, setDashboardInformation] = useState(
     defaultDashboardContext
   )
-
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [routes, setRoutes] = useState<ApplicationRoute[]>([])
   const theme = extendTheme(defaultTheme)
 
-  useEffect(() => {
-    return onAuthUIStateChange(async (nextAuthState, authData) => {
-      if (
-        nextAuthState === AuthState.VerifyContact ||
-        nextAuthState === AuthState.SignedOut ||
-        nextAuthState === AuthState.ResetPassword ||
-        !authData
-      ) {
-        setDashboardInformation({
-          user: null
-        })
-        return
-      }
+  const { user, isPending } = useAuthenticator((context) => [context.user])
 
-      const cognitoId = authData.attributes.sub
-      const user = await UserService.fetchUserByCognitoId(cognitoId)
-      const userType = UserService.getUserType(user)
-      let routes: ApplicationRoute[] = []
+  const fetchRoutes = async (cognitoUser: CognitoUserAmplify) => {
+    const cognitoId = cognitoUser?.attributes.sub
 
-      if (userType) {
-        routes = user?.isDisabledUser ? disabledAccountRoutes : applicationRoutes[userType]
-        setRoutes(routes)
-      }
+    const user = await UserService.fetchUserByCognitoId(cognitoId)
 
-      setDashboardInformation({
-        user: {
-          ...user,
-          type: userType
-        },
-        routes
-      })
+    const userType = UserService.getUserType(user)
+    let routes: ApplicationRoute[] = []
 
-      setAuthState(nextAuthState)
+    if (userType) {
+      routes = user?.isDisabledUser ? disabledAccountRoutes : applicationRoutes[userType]
+      setRoutes(routes)
+    }
+
+    setDashboardInformation({
+      user: {
+        ...user,
+        type: userType
+      },
+      routes
     })
-  }, [])
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    fetchRoutes(user)
+  }, [user])
 
   const routeComponent = useRoutes(routes)
 
-  if (!authState) {
+  if (isLoading || isPending) {
     return (
-      <AmplifyAuthenticator>
         <ChakraProvider>
           <SpinnerScreen />
         </ChakraProvider>
-      </AmplifyAuthenticator>
     )
   }
 
-  return authState === AuthState.SignedIn && dashboardInformation.user
+  return user && dashboardInformation.user
     ? (
-      <AmplifyAuthenticator>
         <ChakraProvider theme={theme}>
           <UserDashboardContext.Provider value={dashboardInformation}>
             <DashboardLayout>
@@ -87,14 +77,12 @@ const App = () => {
             </DashboardLayout>
           </UserDashboardContext.Provider>
         </ChakraProvider>
-      </AmplifyAuthenticator>
+
       )
     : (
-      <AmplifyAuthenticator>
         <ChakraProvider>
           <LogInScreen />
         </ChakraProvider>
-      </AmplifyAuthenticator>
       )
 }
 

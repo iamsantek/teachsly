@@ -16,7 +16,8 @@ import {
   ModalBody,
   ModalContent,
   ModalOverlay,
-  ModalHeader
+  ModalHeader,
+  useColorModeValue
 } from '@chakra-ui/react'
 import { Input as CustomInput } from '../components/Inputs/Input'
 import { TextArea } from '../components/Inputs/TextArea'
@@ -80,21 +81,24 @@ const MediaCRUDModal = ({
   }, [])
 
   useEffect(() => {
-    if (mediaToUpdate) {
-      const mappedValues = mapSelectedCognitoGroups(
-        userGroups,
-        mediaToUpdate.groups
-      )
-      const type = mapSingleValueToMultiSelectOption(mediaToUpdate.type)
-
-      const media: MediaWithMultiSelect = {
-        ...mediaToUpdate,
-        groups: mappedValues,
-        type
-      }
-
-      reset(media)
+    if (!mediaToUpdate) {
+      reset(defaultMedia as MediaWithMultiSelect)
+      return
     }
+
+    const mappedValues = mapSelectedCognitoGroups(
+      userGroups,
+      mediaToUpdate.groups
+    )
+    const type = mapSingleValueToMultiSelectOption(mediaToUpdate.type)
+
+    const media: MediaWithMultiSelect = {
+      ...mediaToUpdate,
+      groups: mappedValues,
+      type
+    }
+
+    reset(media)
   }, [mediaToUpdate])
 
   useEffect(() => {
@@ -196,7 +200,7 @@ const MediaCRUDModal = ({
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader textStyle={'paragraph'}>
+        <ModalHeader textStyle={'paragraph'} color={useColorModeValue('black', 'white')}>
           {mediaId
             ? `${translate('EDITING')} '${mediaToUpdate?.title}'`
             : translate('MEDIA_UPLOAD_MODAL_TITLE')}

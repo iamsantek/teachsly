@@ -18,7 +18,6 @@ import {
   FlexProps,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
   Image,
@@ -26,7 +25,7 @@ import {
 } from '@chakra-ui/react'
 import { FiMenu, FiBell, FiChevronDown } from 'react-icons/fi'
 import { IconType } from 'react-icons'
-import logo from '../assets/img/brand/the-office-logo-max.png'
+import logo from '../assets/img/brand/logo@2x.png'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
 import UserService from '../services/UserService'
 import { User } from '../platform-models/User'
@@ -34,21 +33,23 @@ import { NavLink } from 'react-router-dom'
 import { Footer } from '../components/Footers/Footer'
 import DarkModeSwitch from '../components/Switches/DarkModeSwitch'
 import { translate } from '../utils/LanguageUtils'
-import AuthService from '../services/AuthService'
+import { useAuthenticator } from '@aws-amplify/ui-react'
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
   children: ReactText;
   path?: string;
+  onClose: () => void;
 }
 
-const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, onClose, children, path, ...rest }: NavItemProps) => {
   return (
     <Link
       as={NavLink}
       to={path as string}
       style={{ textDecoration: 'none', fontWeight: 800 }}
       _focus={{ boxShadow: 'none' }}
+      onClick={() => onClose()}
     >
       <Flex
         align="center"
@@ -109,7 +110,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {routes?.map((link: any, index: number) => (
-        <NavItem key={index} icon={link.icon} path={link.path}>
+        <NavItem key={index} icon={link.icon} path={link.path} onClose={onClose}>
           {link.name}
         </NavItem>
       ))}
@@ -125,6 +126,7 @@ interface MobileProps extends FlexProps {
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { user } = useContext(UserDashboardContext)
+  const { signOut } = useAuthenticator()
 
   return (
     <Flex
@@ -187,8 +189,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}
             >
-              <MenuDivider />
-              <MenuItem onClick={async () => await AuthService.signOut()}>{translate('SIGN_OUT')}</MenuItem>
+              <MenuItem onClick={signOut}>{translate('SIGN_OUT')}</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
