@@ -2,6 +2,10 @@
   "github": {
     "release": true
   },
+  "npm": {
+    "publish": false,
+    "ignoreVersion": true
+  },
   "plugins": {
     "@release-it/bumper": {
       "in": "composer.json",
