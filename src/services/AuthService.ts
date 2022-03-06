@@ -87,11 +87,6 @@ class AuthService {
       )
     }
   }
-
-  public signOut = async () => {
-    await Auth.signOut()
-    location.reload()
-  }
 }
 
 export default new AuthService()

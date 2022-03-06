@@ -2,12 +2,16 @@ import {
   Flex,
   Box,
   Stack,
-  Link,
   Heading,
   Text,
-  useColorModeValue
+  useColorModeValue,
+  Image,
+  Center
 } from '@chakra-ui/react'
 import SignIn from '../components/SignIn'
+import logo from '../assets/img/brand/logo.png'
+import { GeneralInformation } from '../enums/GeneralInformation'
+import { SocialButtons } from '../components/Buttons/SocialButtons'
 
 export const LogInScreen = () => {
   return (
@@ -19,21 +23,22 @@ export const LogInScreen = () => {
     >
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Stack align={'center'}>
-          <Heading fontSize={'4xl'}>Sign in to your account</Heading>
-          <Text fontSize={'lg'} color={'gray.600'}>
-            to enjoy all of our cool <Link color={'blue.400'}>features</Link> ✌️
-          </Text>
+          <Heading textStyle={'title'} fontSize={['2xl', '4xl']}>{GeneralInformation.PROJECT_NAME}</Heading>
+          <Box>
+            <Center>
+              <Image src={logo} alt={GeneralInformation.PROJECT_NAME} />
+            </Center>
+          </Box>
         </Stack>
-        <Box
-          rounded={'lg'}
-          bg={useColorModeValue('white', 'gray.700')}
-          boxShadow={'lg'}
-          p={8}
-        >
-          <Stack>
-            <SignIn />
-          </Stack>
-        </Box>
+        <SignIn />
+        <Stack spacing={4}>
+          <Center flexDirection={'column'}>
+            <Text textStyle={'paragraph'} fontWeight='bold' fontSize={'xs'} marginY={4}>
+              {GeneralInformation.PROJECT_NAME} {new Date().getFullYear()}
+            </Text>
+            <SocialButtons />
+          </Center>
+        </Stack>
       </Stack>
     </Flex>
   )
