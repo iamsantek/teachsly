@@ -20,9 +20,8 @@ export const LogInScreen = () => {
       justify={'center'}
       bg={useColorModeValue('gray.50', 'gray.800')}
     >
-      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={3} px={6}>
         <Stack align={'center'}>
-          <Heading textStyle={'title'} fontSize={['2xl', '4xl']}>{GeneralInformation.PROJECT_NAME}</Heading>
           <Box boxSize={60}>
             <Center>
               <Image src={require('../assets/img/brand/logo@2x.png')} alt={GeneralInformation.PROJECT_NAME} />
