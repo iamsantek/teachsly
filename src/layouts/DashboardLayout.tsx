@@ -25,7 +25,6 @@ import {
 } from '@chakra-ui/react'
 import { FiMenu, FiBell, FiChevronDown } from 'react-icons/fi'
 import { IconType } from 'react-icons'
-import logo from '../assets/img/brand/logo@2x.png'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
 import UserService from '../services/UserService'
 import { User } from '../platform-models/User'
@@ -106,7 +105,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         justifyContent="space-between"
         marginBottom={[10, 5]}
       >
-        <Image w={[36, 40]} padding={[0, 4]} src={logo} />
+        <Image w={[36, 40]} padding={[0, 4]} src={require('../assets/img/brand/logo.png')} />
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {routes?.map((link: any, index: number) => (
@@ -147,7 +146,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         aria-label="open menu"
         icon={<FiMenu />}
       />
-      <Image w={20} display={{ base: 'flex', md: 'none' }} src={logo} />
+      <Image w={20} display={{ base: 'flex', md: 'none' }} src={require('../assets/img/brand/logo.png')} />
 
       <HStack spacing={{ base: '0', md: '6' }}>
         <IconButton

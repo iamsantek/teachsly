@@ -9,7 +9,6 @@ import {
   Center
 } from '@chakra-ui/react'
 import SignIn from '../components/SignIn'
-import logo from '../assets/img/brand/logo.png'
 import { GeneralInformation } from '../enums/GeneralInformation'
 import { SocialButtons } from '../components/Buttons/SocialButtons'
 
@@ -24,9 +23,9 @@ export const LogInScreen = () => {
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Stack align={'center'}>
           <Heading textStyle={'title'} fontSize={['2xl', '4xl']}>{GeneralInformation.PROJECT_NAME}</Heading>
-          <Box>
+          <Box boxSize={60}>
             <Center>
-              <Image src={logo} alt={GeneralInformation.PROJECT_NAME} />
+              <Image src={require('../assets/img/brand/logo@2x.png')} alt={GeneralInformation.PROJECT_NAME} />
             </Center>
           </Box>
         </Stack>
