@@ -33,7 +33,7 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "@aws-amplify/ui-react": "^1.2.5",
+    "@aws-amplify/ui-react": "^2.8.0",
     "@aws-sdk/client-cognito-identity-provider": "^3.46.0",
     "@aws-sdk/credential-providers": "^3.49.0",
     "@aws-sdk/property-provider": "^3.49.0",
@@ -50,7 +50,7 @@
     "@testing-library/user-event": "^12.1.10",
     "@types/uuid": "^8.3.4",
     "autoprefixer": "^10.4.2",
-    "aws-amplify": "^4.3.8",
+    "aws-amplify": "^4.3.15",
     "aws-sdk": "^2.1067.0",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",
@@ -133,6 +133,7 @@
     "eslint-plugin-promise": "^5.2.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "node-polyfill-webpack-plugin": "^1.1.4",
     "prettier": "2.5.0"
   },
   "optionalDependencies": {
