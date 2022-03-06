@@ -16,7 +16,8 @@ import {
   ModalBody,
   ModalContent,
   ModalOverlay,
-  ModalHeader
+  ModalHeader,
+  useColorModeValue
 } from '@chakra-ui/react'
 import { Input as CustomInput } from '../components/Inputs/Input'
 import { TextArea } from '../components/Inputs/TextArea'
@@ -199,7 +200,7 @@ const MediaCRUDModal = ({
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader textStyle={'paragraph'}>
+        <ModalHeader textStyle={'paragraph'} color={useColorModeValue('black', 'white')}>
           {mediaId
             ? `${translate('EDITING')} '${mediaToUpdate?.title}'`
             : translate('MEDIA_UPLOAD_MODAL_TITLE')}

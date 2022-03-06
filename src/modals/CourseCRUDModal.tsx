@@ -154,7 +154,7 @@ const CourseCRUDModal = ({
 
                 <CustomInput
                   name="scheduleEndTime"
-                  label="COURSE_SCHEDULE"
+                  label='COURSE_END_SCHEDULE'
                   isRequired={true}
                   type="time"
                 />
