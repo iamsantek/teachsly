@@ -9,6 +9,7 @@ export interface Media {
   type: MediaType;
   groups: string[];
   content?: string;
+  uploadedBy: string;
 }
 
 export interface MediaWithMultiSelect extends Omit<Media, 'groups' | 'type'> {

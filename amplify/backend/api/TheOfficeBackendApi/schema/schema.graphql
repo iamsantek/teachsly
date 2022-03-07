@@ -36,6 +36,7 @@ type Media @model
   link: String!
   content: String
   groups: [String]
+  uploadedBy: String
 }
 
 type User @model

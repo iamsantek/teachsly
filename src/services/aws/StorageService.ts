@@ -59,7 +59,7 @@ class StorageService {
 
   public persistMedia = async (media: PlatformMedia, file?: File) => {
     const fileUploaded = await this.uploadToS3(file)
-    const { title, description, type, groups, content } = media
+    const { title, description, type, groups, content, uploadedBy } = media
 
     try {
       const filterGroups = (groups as string[]).filter((group) => group)
@@ -70,6 +70,7 @@ class StorageService {
         link: fileUploaded?.key || '',
         type,
         content,
+        uploadedBy,
         groups: [UserTypes.ADMIN, ...(filterGroups as string[])]
       })
 

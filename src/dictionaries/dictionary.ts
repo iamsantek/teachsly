@@ -80,7 +80,8 @@ export enum LanguageES {
   MENU_STUDENTS = 'Alumnos',
   MENU_PAYMENTS = 'Pagos',
   NO_CONTENT_TILE = 'Sin resultados',
-  NO_CONTENT_DESCRIPTION = 'No hay resultados para esta busqueda.'
+  NO_CONTENT_DESCRIPTION = 'No hay resultados para esta busqueda.',
+  UPLOADED_BY = 'Subido por'
 }
 
 export enum LanguageEN {
@@ -160,5 +161,6 @@ export enum LanguageEN {
   MENU_STUDENTS = 'Students',
   MENU_PAYMENTS = 'Payments',
   NO_CONTENT_TILE = 'No results',
-  NO_CONTENT_DESCRIPTION = 'There are no results for this search.'
+  NO_CONTENT_DESCRIPTION = 'There are no results for this search.',
+  UPLOADED_BY = 'Uploaded by'
 }

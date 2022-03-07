@@ -56,6 +56,12 @@ export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
                   <Text textStyle={'paragraph'}>{media?.content}</Text>
                 </>
               )}
+              {media?.uploadedBy && (
+                <>
+                  <Text textStyle={'title'}>{translate('UPLOADED_BY')}</Text>
+                  <Text textStyle={'paragraph'}>{media?.uploadedBy}</Text>
+                </>
+              )}
               <Text textStyle={'title'}>{translate('MEDIA_GROUPS')}</Text>
               <BadgeList badges={media?.groups} />
               <Button

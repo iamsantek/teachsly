@@ -41,6 +41,7 @@ export declare class Media {
   readonly link: string;
   readonly content?: string;
   readonly groups?: (string | null)[];
+  readonly uploadedBy?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Media, MediaMetaData>);

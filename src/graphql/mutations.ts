@@ -66,6 +66,7 @@ export const createMedia = /* GraphQL */ `
       link
       content
       groups
+      uploadedBy
       createdAt
       updatedAt
       owner
@@ -85,6 +86,7 @@ export const updateMedia = /* GraphQL */ `
       link
       content
       groups
+      uploadedBy
       createdAt
       updatedAt
       owner
@@ -104,6 +106,7 @@ export const deleteMedia = /* GraphQL */ `
       link
       content
       groups
+      uploadedBy
       createdAt
       updatedAt
       owner

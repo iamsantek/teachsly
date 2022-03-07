@@ -47,6 +47,7 @@ export const getMedia = /* GraphQL */ `
       link
       content
       groups
+      uploadedBy
       createdAt
       updatedAt
       owner
@@ -68,6 +69,7 @@ export const listMedia = /* GraphQL */ `
         link
         content
         groups
+        uploadedBy
         createdAt
         updatedAt
         owner

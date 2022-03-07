@@ -42,7 +42,6 @@ export const ContentLine: FC<Props> = ({
       transform: 'scale(1.01)',
       cursor: 'pointer'
     }}
-    onClick={onView}
   >
     <Flex justify={'space-between'}>
       <Circle
@@ -55,7 +54,7 @@ export const ContentLine: FC<Props> = ({
       >
         {LeftIcon}
       </Circle>
-      <Flex flex="1" justifyContent="space-between">
+      <Flex flex="1" justifyContent="space-between" onClick={onView}>
         {children}
       </Flex>
       <Wrap>

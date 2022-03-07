@@ -160,6 +160,13 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
+                "uploadedBy": {
+                    "name": "uploadedBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -353,5 +360,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "f96cc1fec9efbf77c7b4b8c350d1eb8e"
+    "version": "ea2a22dfa2a21315282931b0b8b2ae76"
 };

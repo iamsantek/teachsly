@@ -114,7 +114,8 @@ const MediaCRUDModal = ({
     return {
       ...media,
       groups: groupsArray as string[],
-      type
+      type,
+      uploadedBy: user?.name || ''
     }
   }
 

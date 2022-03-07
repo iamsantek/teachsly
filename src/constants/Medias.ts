@@ -10,7 +10,8 @@ export const defaultMedia: Media | MediaWithMultiSelect = {
   link: '',
   type: MediaType.LINK,
   groups: [],
-  content: ''
+  content: '',
+  uploadedBy: ''
 }
 
 export const mediaIcons = {
