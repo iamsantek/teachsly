@@ -7,6 +7,7 @@ import {
 } from '@chakra-ui/react'
 import { GeneralInformation } from '../../enums/GeneralInformation'
 import { SocialButtons } from '../Buttons/SocialButtons'
+import { version } from '../../version'
 
 export const Footer = () => {
   return (
@@ -26,7 +27,7 @@ export const Footer = () => {
         spacing={4}
       >
         <Text textStyle={'title'} fontSize={'xs'}>
-          {GeneralInformation.PROJECT_NAME} {new Date().getFullYear()}
+          {GeneralInformation.PROJECT_NAME} {new Date().getFullYear()} {`v${version}`}
         </Text>
 
         <SocialButtons />
