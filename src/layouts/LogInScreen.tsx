@@ -2,7 +2,6 @@ import {
   Flex,
   Box,
   Stack,
-  Heading,
   Text,
   useColorModeValue,
   Image,
