@@ -81,9 +81,10 @@ const UserList = ({
     setUsers(updatedUsers)
   }
 
-  const onClose = () => {
-    setCrudModalVisibility(false)
+  const onClose = (modal: 'UserCRUDModal' | 'ViewUserModal') => {
     setSelectedUser(undefined)
+
+    modal === 'ViewUserModal' ? setViewModalVisibility(false) : setCrudModalVisibility(false)
   }
 
   const hasAdminRole = isAdmin(loggedUser)
@@ -93,7 +94,7 @@ const UserList = ({
       {hasAdminRole && (
         <UserCRUDModal
           isOpen={crudModalVisibility}
-          onClose={() => onClose()}
+          onClose={() => onClose('UserCRUDModal')}
           onCreate={(user) => setUsers([user, ...users])}
           onUpdate={onUpdate}
           userType={listType}
@@ -103,7 +104,7 @@ const UserList = ({
 
       <ViewUserModal
         isOpen={viewModalVisibility}
-        onClose={() => setViewModalVisibility(false)}
+        onClose={() => onClose('ViewUserModal')}
         user={selectedUser}
 
       />
