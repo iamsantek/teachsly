@@ -32,13 +32,13 @@ const ToastWrapper = () => {
   }, [])
 
   return (
-    <Box visibility={'hidden'}>
-      {Toast({
-        description: toastMessage?.description as TranslationsDictionary,
-        status: toastMessage?.status as any,
-        onCloseComplete: () => setToastMessage(undefined)
-      })}
-    </Box>
+
+    Toast({
+      description: toastMessage?.description as TranslationsDictionary,
+      status: toastMessage?.status as any,
+      onCloseComplete: () => setToastMessage(undefined)
+    })
+
   )
 }
 
