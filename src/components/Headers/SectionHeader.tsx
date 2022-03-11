@@ -7,14 +7,14 @@ import { CustomRouteObject } from '../../interfaces/Routes'
 export const SectionHeader: FC = ({ children }) => {
   const { routes } = useContext(UserDashboardContext)
   const location = useLocation()
-  const { name: sectionName } = routes?.find(
+  const route = routes?.find(
     (route) => route.path === location.pathname
-  ) as CustomRouteObject
+  ) as CustomRouteObject | undefined
 
   return (
     <Stack direction={['column', 'row']} spacing={3}>
       <Heading textStyle={'title'} marginY={4} marginRight={3} as="h4">
-        {sectionName}
+        {route?.name}
       </Heading>
       {children}
     </Stack>

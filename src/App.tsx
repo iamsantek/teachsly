@@ -31,7 +31,7 @@ const App = () => {
   const { user, isPending } = useAuthenticator((context) => [context.user])
 
   const fetchRoutes = async (cognitoUser: CognitoUserAmplify) => {
-    const cognitoId = cognitoUser?.attributes.sub
+    const cognitoId = cognitoUser?.attributes?.sub
 
     const user = await UserService.fetchUserByCognitoId(cognitoId)
 
@@ -72,10 +72,10 @@ const App = () => {
         <ChakraProvider theme={theme}>
           <UserDashboardContext.Provider value={dashboardInformation}>
             <DashboardLayout>
-              <ToastWrapper />
               {routeComponent}
             </DashboardLayout>
           </UserDashboardContext.Provider>
+          <ToastWrapper />
         </ChakraProvider>
 
       )
