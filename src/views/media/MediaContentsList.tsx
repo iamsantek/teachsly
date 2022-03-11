@@ -20,6 +20,7 @@ import { ToastNotification } from '../../observables/ToastNotification'
 import { LoadMoreButton } from '../../components/Buttons/LoadMoreButton'
 import { isAdmin } from '../../utils/CognitoGroupsUtils'
 import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPlaceholder'
+import { ConfirmationDialog } from '../../components/AlertDialog/ConfirmationDialog'
 
 export const MediaContentsList = () => {
   const [medias, setMedias] = useState<PlatformMedia[]>([])
@@ -32,6 +33,7 @@ export const MediaContentsList = () => {
     useState<boolean>(false)
   const [nextPageResultToken, setNextPageResultToken] = useState<string | null>()
   const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(true)
+  const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] = useState<boolean>(false)
 
   const fetchMedia = async () => {
     const medias = await MediaService.fetchMedias(nextPageResultToken)
@@ -73,15 +75,23 @@ export const MediaContentsList = () => {
     modal === 'MediaCRUDModal' ? setCrudModalVisibility(false) : setViewMediaContentModalVisibility(false)
   }
 
-  const onDelete = async (mediaToDelete: PlatformMedia) => {
+  const showDeleteContentDialog = (mediaToDelete: PlatformMedia) => {
+    setShowDeleteUserConfirmation(true)
+    setSelectedMedia(mediaToDelete)
+  }
+
+  const onDelete = async () => {
     const isSuccessfullyDeleted = await MediaService.deleteMedia(
-      mediaToDelete.id as string
+      selectedMedia?.id as string
     )
 
     if (isSuccessfullyDeleted) {
       setMedias((medias) =>
-        medias.filter((media) => media.id !== mediaToDelete.id)
+        medias.filter((media) => media.id !== selectedMedia?.id)
       )
+
+      setShowDeleteUserConfirmation(false)
+      setSelectedMedia(undefined)
 
       ToastNotification({
         status: 'SUCCESS',
@@ -108,6 +118,15 @@ export const MediaContentsList = () => {
         media={selectedMedia as PlatformMedia}
         isOpen={viewMediaContentModalVisibility}
         onClose={() => onClose('ViewMediaContentModal')}
+      />
+
+      <ConfirmationDialog
+        isOpen={showDeleteUserConfirmation}
+        onClose={() => setShowDeleteUserConfirmation(false)}
+        title='DELETE_MEDIA_TITLE'
+        description='DELETE_MEDIA_CONFIRMATION_MESSAGE'
+        confirmButtonText={'DELETE'}
+        onAction={onDelete}
       />
 
       {hasAdminRole && (
@@ -148,7 +167,7 @@ export const MediaContentsList = () => {
                     : undefined
                 }
                 onEdit={hasAdminRole ? () => onEdit(media) : undefined}
-                onDelete={hasAdminRole ? () => onDelete(media) : undefined}
+                onDelete={hasAdminRole ? () => showDeleteContentDialog(media) : undefined}
               >
                 <CommonContentLineTitle title={media.title} badges={media.groups} />
               </ContentLine>
