@@ -1,5 +1,4 @@
 
-import { Box } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { TranslationsDictionary } from '../../dictionaries/dictionary'
 import { ObservableTopics } from '../../interfaces/ObservableTopics'
