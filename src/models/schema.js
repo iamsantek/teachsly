@@ -20,7 +20,7 @@ export const schema = {
                 "scheduleDates": {
                     "name": "scheduleDates",
                     "isArray": true,
-                    "type": "String",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": false
@@ -46,6 +46,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "isActive": {
+                    "name": "isActive",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -68,6 +75,10 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "searchable",
                     "properties": {}
                 },
                 {
@@ -164,7 +175,7 @@ export const schema = {
                     "name": "uploadedBy",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "createdAt": {
@@ -189,6 +200,10 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "searchable",
                     "properties": {}
                 },
                 {
@@ -289,6 +304,15 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "disabledReason": {
+                    "name": "disabledReason",
+                    "isArray": false,
+                    "type": {
+                        "enum": "DisabledAccountReasons"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -311,6 +335,10 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "searchable",
                     "properties": {}
                 },
                 {
@@ -357,8 +385,15 @@ export const schema = {
                 "PDF",
                 "VIDEO"
             ]
+        },
+        "DisabledAccountReasons": {
+            "name": "DisabledAccountReasons",
+            "values": [
+                "DISABLED_BY_ADMIN",
+                "PAYMENT_NOT_COMPLETED"
+            ]
         }
     },
     "nonModels": {},
-    "version": "ea2a22dfa2a21315282931b0b8b2ae76"
+    "version": "d42573a1fdd80801f3a9f397ad86b79a"
 };

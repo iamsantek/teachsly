@@ -6,6 +6,11 @@ export enum MediaType {
   VIDEO = "VIDEO"
 }
 
+export enum DisabledAccountReasons {
+  DISABLED_BY_ADMIN = "DISABLED_BY_ADMIN",
+  PAYMENT_NOT_COMPLETED = "PAYMENT_NOT_COMPLETED"
+}
+
 
 
 type CourseMetaData = {
@@ -23,10 +28,11 @@ type UserMetaData = {
 export declare class Course {
   readonly id: string;
   readonly name: string;
-  readonly scheduleDates: (string | null)[];
+  readonly scheduleDates: (number | null)[];
   readonly scheduleStartTime: string;
   readonly scheduleEndTime: string;
   readonly virtualClassLink?: string;
+  readonly isActive?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Course, CourseMetaData>);
@@ -41,7 +47,7 @@ export declare class Media {
   readonly link: string;
   readonly content?: string;
   readonly groups?: (string | null)[];
-  readonly uploadedBy?: string;
+  readonly uploadedBy: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Media, MediaMetaData>);
@@ -56,6 +62,7 @@ export declare class User {
   readonly cognitoId: string;
   readonly groups: (string | null)[];
   readonly isDisabledUser?: boolean;
+  readonly disabledReason?: DisabledAccountReasons | keyof typeof DisabledAccountReasons;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<User, UserMetaData>);

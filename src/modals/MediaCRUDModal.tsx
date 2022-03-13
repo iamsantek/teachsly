@@ -220,7 +220,7 @@ const MediaCRUDModal = ({
                     placeholder={translate('DESCRIPTION')}
                     options={renderCourseList(courses, Object.values(UserTypes))}
                     isMultiSelect
-                    closeMenuOnSelect={false}
+                    closeMenuOnSelect={true}
                   />
 
                   <Select
