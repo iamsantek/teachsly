@@ -7,11 +7,14 @@ import {
   AdminUpdateUserAttributesCommand,
   AdminCreateUserCommand,
   AttributeType,
-  CreateGroupCommand
+  CreateGroupCommand,
+  AdminRemoveUserFromGroupCommand
 } from '@aws-sdk/client-cognito-identity-provider'
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers'
+import { UpdateUserInput } from '../../API'
 import awsmobile from '../../aws-exports'
 import { LogLevel, LogTypes } from '../../enums/LogTypes'
+import { UserTypes } from '../../enums/UserTypes'
 import Logger from '../../utils/Logger'
 
 const logTag = LogTypes.AuthService
@@ -43,21 +46,16 @@ class CognitoService {
     groups: string[]
   ) => {
     try {
-      const adminAddUserToGroupConfig = this.getListGroupsCommandConfig()
-
       const adminAddUserToGroupCommandPromises = groups.map((groupName) => {
-        const adminAddUserToGroupCommand = new AdminAddUserToGroupCommand({
-          ...adminAddUserToGroupConfig,
-          GroupName: groupName,
-          Username: userId
-        })
+        const config = this.getGroupsConfiguration(groupName, userId)
+        const adminAddUserToGroupCommand = new AdminAddUserToGroupCommand(config)
 
         return this.cognitoIdentityProviderClient.send(
           adminAddUserToGroupCommand
         )
       })
 
-      return await Promise.all(adminAddUserToGroupCommandPromises)
+      return Promise.all(adminAddUserToGroupCommandPromises)
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
@@ -102,19 +100,21 @@ class CognitoService {
       {
         Name: 'email_verified',
         Value: 'true'
+      },
+      {
+        Name: 'phone_number_verified',
+        Value: 'true'
       }
     ]
   })
 
   public getCognitoGroups = async () => {
     try {
-      const cognitoIdentityProviderClient =
-        this.createCognitoIdentityProviderClient()
       const listGroupsCommandConfig = this.getListGroupsCommandConfig()
 
       const listGroupsCommand = new ListGroupsCommand(listGroupsCommandConfig)
       const listGroupsCommandResponse =
-        await cognitoIdentityProviderClient.send(listGroupsCommand)
+        await this.cognitoIdentityProviderClient.send(listGroupsCommand)
 
       return listGroupsCommandResponse.Groups?.filter(Boolean)
     } catch (error) {
@@ -161,7 +161,7 @@ class CognitoService {
       },
       {
         Name: 'phone_number',
-        Value: `+${phone}`
+        Value: `+${phone.replace(/\s/g, '')}`
       }
     ]
   })
@@ -177,13 +177,11 @@ class CognitoService {
       name,
       phone
     )
-    const cognitoIdentityProviderClient =
-      this.createCognitoIdentityProviderClient()
     const adminCreateUserCommand = new AdminCreateUserCommand(
       adminCreateUserCommandConfig
     )
     const adminCreateUserCommandResponse =
-      await cognitoIdentityProviderClient.send(adminCreateUserCommand)
+      await this.cognitoIdentityProviderClient.send(adminCreateUserCommand)
 
     return adminCreateUserCommandResponse.User
   }
@@ -219,22 +217,18 @@ class CognitoService {
   }
 
   private getCreateGroupCommandConfig = (
-    groupName: string,
-    description: string
+    groupName: string
   ) => ({
     GroupName: groupName.replace(/\s/g, ''),
-    Description: description,
     UserPoolId: awsmobile.aws_user_pools_id
   })
 
   public createCognitoGroup = async (
-    groupName: string,
-    description: string
+    groupName: string
   ) => {
     try {
       const createGroupCommandInput = this.getCreateGroupCommandConfig(
-        groupName,
-        description
+        groupName
       )
       const createGroupCommand = new CreateGroupCommand(
         createGroupCommandInput
@@ -249,6 +243,62 @@ class CognitoService {
         error
       )
     }
+  }
+
+  private getAdminUpdateUserAttributesCommandConfig = (user: UpdateUserInput) => ({
+    UserPoolId: awsmobile.aws_user_pools_id,
+    Username: user.email as string,
+    UserAttributes: [
+      {
+        Name: 'phone_number',
+        Value: `+${user.phone?.replace(/\s/g, '')}`
+      },
+      {
+        Name: 'name',
+        Value: user.name as string
+      },
+      {
+        Name: 'phone_number',
+        Value: `+${user.phone?.replace(/\s/g, '')}`
+      },
+      {
+        Name: 'phone_number_verified',
+        Value: 'true'
+      }
+    ]
+  })
+
+  private getGroupsConfiguration = (group: string, username: string) => ({
+    UserPoolId: awsmobile.aws_user_pools_id,
+    GroupName: group,
+    Username: username
+  })
+
+  public updateCognitoUser = async (user: UpdateUserInput) => {
+    try {
+      const config = this.getAdminUpdateUserAttributesCommandConfig(user)
+      const command = new AdminUpdateUserAttributesCommand(config)
+
+      return this.cognitoIdentityProviderClient.send(command)
+    } catch (error) {
+      Logger.log(
+        LogLevel.ERROR,
+        logTag,
+        'Error when updating Cognito user',
+        error
+      )
+    }
+  }
+
+  public deleteUserFromGroups = async (userId: string, groups: string[]) => {
+    const adminRemoveUserFromGroupCommandResponses = groups.filter(group => !Object.values(UserTypes).includes(group as UserTypes)).map(groupToDelete => {
+      const config = this.getGroupsConfiguration(groupToDelete, userId)
+
+      const command = new AdminRemoveUserFromGroupCommand(config)
+      return this.cognitoIdentityProviderClient.send(command)
+    })
+
+    return Promise.all(adminRemoveUserFromGroupCommandResponses)
   }
 }
 
