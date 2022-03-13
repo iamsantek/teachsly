@@ -27,7 +27,7 @@ type QueryParameters = {
   input?: QueryInput | undefined;
   nextToken?: string | null;
   filter?: Object | undefined;
-  limit?: number;
+  limit?: number | null;
 }
 
 class GraphQLService {
