@@ -26,14 +26,16 @@ import { CommonContentLineTitle } from '../media/CommonContentLineTitle'
 
 export const CoursesList = () => {
   const [courses, setCourses] = useState<Course[]>([])
-  const [courseModalVisibility, seCourseModalVisibility] =
+  const [courseModalVisibility, setCourseModalVisibility] =
     useState<boolean>(false)
   const [selectedCourse, setSelectedCourse] = useState<Course>()
   const [nextPageResultToken, setNextPageResultToken] = useState<string | null>()
   const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(true)
 
   const fetchCourses = async () => {
-    const courses = await CourseService.fetchCourses(nextPageResultToken)
+    const courses = await CourseService.fetchCourses({
+      nextToken: nextPageResultToken
+    })
 
     setNextPageResultToken(courses?.listCourses?.nextToken)
     setIsLoadingNewPage(false)
@@ -49,7 +51,7 @@ export const CoursesList = () => {
 
   const onEdit = (course: Course) => {
     setSelectedCourse(course)
-    seCourseModalVisibility(true)
+    setCourseModalVisibility(true)
   }
 
   const onUpdate = (updatedCourse: Course) => {
@@ -64,12 +66,17 @@ export const CoursesList = () => {
 
   const color = useColorModeValue('gray.500', 'white')
 
+  const onClose = () => {
+    setSelectedCourse(undefined)
+    setCourseModalVisibility(false)
+  }
+
   return (
     <>
       <CourseCRUDModal
         onCreate={(course) => setCourses([course, ...courses])}
         isOpen={courseModalVisibility}
-        onClose={() => seCourseModalVisibility(false)}
+        onClose={onClose}
         courseToUpdate={selectedCourse}
         onUpdate={onUpdate}
       />
@@ -78,7 +85,7 @@ export const CoursesList = () => {
           <Center>
             <Button
               leftIcon={<AiOutlinePlus />}
-              onClick={() => seCourseModalVisibility(true)}
+              onClick={() => setCourseModalVisibility(true)}
               colorScheme="brand"
             >
               {translate('ADD_COURSE_BUTTON')}
@@ -88,7 +95,7 @@ export const CoursesList = () => {
         <Box>
           {courses.map((course) => {
             const days = DateTimeUtils.shortDays(
-              course.scheduleDates as string[]
+              course.scheduleDates
             )
             const startTime = DateTimeUtils.formateHour(
               course.scheduleStartTime,
