@@ -7,6 +7,7 @@ import Logger from '../utils/Logger'
 import AuthService from './AuthService'
 import GraphQLService, { FilterInput } from './GraphQLService'
 import { ListUsersQuery, ModelUserConditionInput, UpdateUserInput, UpdateUserMutation } from '../API'
+import CognitoService from './aws/CognitoService'
 
 class UserService {
   public async createUser (user: User, type: UserTypes) {
@@ -78,12 +79,51 @@ class UserService {
     })
   }
 
-  public updateUser = async (user: UpdateUserInput) => {
-    return GraphQLService.fetchQuery<UpdateUserMutation>({
-      query: updateUserMutation,
-      filter: this.filterByCognitoId(user.cognitoId as string),
-      input: user
-    })
+  private updateUserGroups = async (email: string, updatedGroups: string[], previousGroups: string[]) => {
+    const deletedGroups = previousGroups.filter(x => !updatedGroups.includes(x))
+
+    const deleteUserFromGroups = CognitoService.deleteUserFromGroups(
+      email,
+      deletedGroups
+    )
+
+    const assignUserToCognitoGroup = CognitoService.assignUserToCognitoGroup(
+      email,
+      updatedGroups
+    )
+
+    return Promise.all([deleteUserFromGroups, assignUserToCognitoGroup])
+  }
+
+  public updateUser = async (user: UpdateUserInput, shouldUpdateGroups = false, previousGroups: string[] = []) => {
+    try {
+      if (shouldUpdateGroups) {
+        const updateUserGroups = await this.updateUserGroups(
+          user.email as string,
+          user.groups as string[],
+          previousGroups
+        )
+
+        if (!updateUserGroups) {
+          return
+        }
+      }
+
+      await CognitoService.updateCognitoUser(user)
+
+      return GraphQLService.fetchQuery<UpdateUserMutation>({
+        query: updateUserMutation,
+        filter: this.filterByCognitoId(user.cognitoId as string),
+        input: user
+      })
+    } catch (error) {
+      Logger.log(
+        LogLevel.ERROR,
+        LogTypes.UserService,
+        'Error when updating user',
+        error
+      )
+    }
   }
 }
 

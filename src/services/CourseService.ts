@@ -1,6 +1,6 @@
 import { graphqlOperation } from 'aws-amplify'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
-import { listCourses } from '../graphql/queries'
+import { listCourses, searchCourses } from '../graphql/queries'
 import { createCourse, updateCourse } from '../graphql/mutations'
 import { Course } from '../models'
 import { Course as PlatformCourse } from '../platform-models/Course'
@@ -8,18 +8,32 @@ import DateTimeUtils, { TimeFormats } from '../utils/DateTimeUtils'
 import Logger from '../utils/Logger'
 import GraphQLService from './GraphQLService'
 import CognitoService from './aws/CognitoService'
-import { formatCognitoGroupDescription } from '../utils/CognitoGroupsUtils'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
-import { ListCoursesQuery } from '../API'
+import { ListCoursesQuery, SearchCoursesQuery } from '../API'
+import { UserTypes } from '../enums/UserTypes'
+
+interface FetchCourseParams {
+  nextToken?: string | null,
+  limit?: number | null,
+  filterDisabledCourses?: boolean;
+}
 
 class CourseService {
-  public fetchCourses = async (
-    nextToken?: string | null,
-    limit = GRAPHQL_MAX_PAGE_RESULTS
-  ) => {
+  public fetchCourses = async ({
+    nextToken = null,
+    limit = GRAPHQL_MAX_PAGE_RESULTS,
+    filterDisabledCourses = true
+  }: FetchCourseParams) => {
     return GraphQLService.fetchQuery<ListCoursesQuery>({
       query: listCourses,
+      filter: filterDisabledCourses
+        ? {
+            isActive: {
+              eq: 'true'
+            }
+          }
+        : {},
       nextToken,
       limit
     })
@@ -48,15 +62,8 @@ class CourseService {
       virtualClassLink: courseCreation.virtualClassLink
     })
 
-    const cognitoGroupDescription = formatCognitoGroupDescription(
-      scheduleDates,
-      courseCreation.scheduleStartTime,
-      courseCreation.scheduleEndTime
-    )
-
     const createCognitoGroupResponse = await CognitoService.createCognitoGroup(
-      courseCreation.name,
-      cognitoGroupDescription
+      courseCreation.name
     )
 
     if (createCognitoGroupResponse?.Group) {
@@ -95,6 +102,27 @@ class CourseService {
     })
   }
 
+  private courseNamesFilter = (courseNames: string[]) => courseNames.map(course => {
+    return {
+      name: { eq: course }
+    }
+  })
+
+  public fetchCoursesByName = async (courseNames: string[]) => {
+    try {
+      const response = await GraphQLService.fetchQuery<ListCoursesQuery>({
+        query: listCourses,
+        filter: {
+          or: this.courseNamesFilter(courseNames)
+        }
+      })
+
+      return response?.listCourses?.items
+    } catch (error) {
+
+    }
+  }
+
   public fetchCoursesByIds = async (courseIds: string[]) => {
     try {
       const courses = await GraphQLService.graphQL<any>(
@@ -106,6 +134,30 @@ class CourseService {
         LogLevel.ERROR,
         LogTypes.CourseService,
         'Error when fetching courses by ids',
+        error
+      )
+    }
+  }
+
+  public getEnrolledCourses = (groups: string[]) => {
+    return groups?.filter(group => !Object.values(UserTypes).includes(group as UserTypes))
+  }
+
+  public searchCoursesByName = async (courseNames: string[]) => {
+    try {
+      const filterCourses = this.courseNamesFilter(courseNames)
+      console.log(filterCourses)
+      return GraphQLService.fetchQuery<SearchCoursesQuery>({
+        query: searchCourses,
+        filter: {
+          or: filterCourses
+        }
+      })
+    } catch (error) {
+      Logger.log(
+        LogLevel.ERROR,
+        LogTypes.CourseService,
+        'Error when searching courses',
         error
       )
     }

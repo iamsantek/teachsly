@@ -8,11 +8,17 @@ const MediaType = {
   "VIDEO": "VIDEO"
 };
 
+const DisabledAccountReasons = {
+  "DISABLED_BY_ADMIN": "DISABLED_BY_ADMIN",
+  "PAYMENT_NOT_COMPLETED": "PAYMENT_NOT_COMPLETED"
+};
+
 const { Course, Media, User } = initSchema(schema);
 
 export {
   Course,
   Media,
   User,
-  MediaType
+  MediaType,
+  DisabledAccountReasons
 };

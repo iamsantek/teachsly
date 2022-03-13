@@ -75,7 +75,7 @@ export enum LanguageES {
   CREATE_STUDENT_MODAL_TITLE = 'Nuevo estudiante',
   CREATE_TEACHER_MODAL_TITLE = 'Nuevo profesor',
   SIGN_OUT = 'Cerrar sesión',
-  MENU_HOME = 'Home',
+  MENU_HOME = 'Inicio',
   MENU_CONTENTS = 'Contenidos',
   MENU_COURSES = 'Cursos',
   MENU_TEACHERS = 'Profesores',
@@ -83,7 +83,8 @@ export enum LanguageES {
   MENU_PAYMENTS = 'Pagos',
   NO_CONTENT_TILE = 'Sin resultados',
   NO_CONTENT_DESCRIPTION = 'No hay resultados para esta busqueda.',
-  UPLOADED_BY = 'Subido por'
+  UPLOADED_BY = 'Subido por',
+  PHONE_NUMBER_HELPER_TEXT = 'Código de país + código de área + número de teléfono. Sin + ni espacios.'
 }
 
 export enum LanguageEN {
@@ -166,5 +167,6 @@ export enum LanguageEN {
   MENU_PAYMENTS = 'Payments',
   NO_CONTENT_TILE = 'No results',
   NO_CONTENT_DESCRIPTION = 'There are no results for this search.',
-  UPLOADED_BY = 'Uploaded by'
+  UPLOADED_BY = 'Uploaded by',
+  PHONE_NUMBER_HELPER_TEXT = 'Country code + Area code + Phone number. Without + and spaces.'
 }

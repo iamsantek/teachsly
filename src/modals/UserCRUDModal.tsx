@@ -1,10 +1,5 @@
 import { useEffect, useState } from 'react'
 import { translate } from '../utils/LanguageUtils'
-import { GroupType } from '@aws-sdk/client-cognito-identity-provider'
-import {
-  mapSelectedCognitoGroups,
-  renderUserGroups
-} from '../utils/CognitoGroupsUtils'
 import { FormProvider, useForm } from 'react-hook-form'
 import {
   Modal,
@@ -17,7 +12,6 @@ import {
 } from '@chakra-ui/react'
 import { Input as CustomInput } from '../components/Inputs/Input'
 import { Select } from '../components/Inputs/Select'
-import UserGroupsService from '../services/UserGroupsService'
 import { ModalFooter } from '../components/Modals/ModalFooter'
 import { ToastNotification } from '../observables/ToastNotification'
 import { User, UserWithMultiSelect } from '../platform-models/User'
@@ -26,8 +20,10 @@ import UserService from '../services/UserService'
 import { UserTypes } from '../enums/UserTypes'
 import { MdDangerous } from 'react-icons/md'
 import { ConfirmationDialog } from '../components/AlertDialog/ConfirmationDialog'
-import { UpdateUserInput } from '../API'
+import { Course, UpdateUserInput } from '../API'
 import { AiFillCheckCircle } from 'react-icons/ai'
+import CourseService from '../services/CourseService'
+import { renderCourseList, transformGroups } from '../utils/CourseUtils'
 
 interface Props {
   isOpen: boolean;
@@ -36,6 +32,15 @@ interface Props {
   onUpdate: (user: User) => void;
   userToUpdate?: User;
   userType: UserTypes;
+}
+
+const formatUser = (user: UserWithMultiSelect): User => {
+  const groupsArray = user.groups.map((group) => group.value)
+
+  return {
+    ...user,
+    groups: groupsArray as string[]
+  }
 }
 
 const UserCRUDModal = ({
@@ -47,8 +52,8 @@ const UserCRUDModal = ({
   userType
 }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [userGroups, setUserGroups] = useState<GroupType[]>([])
   const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] = useState<boolean>(false)
+  const [courses, setCourses] = useState<Course[]>([])
 
   const formControls = useForm({
     defaultValues: defaultUser as UserWithMultiSelect
@@ -58,7 +63,7 @@ const UserCRUDModal = ({
     watch,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors, isDirty, dirtyFields }
   } = formControls
 
   const userId = watch('id')
@@ -68,20 +73,17 @@ const UserCRUDModal = ({
   const editUserButtonName = userType === UserTypes.STUDENT ? 'EDIT_STUDENT_BUTTON' : 'EDIT_TEACHER_BUTTON'
 
   useEffect(() => {
-    const fetchCognitoGroups = async () => {
-      const groups = await UserGroupsService.getUserGroups()
-      setUserGroups(groups || [])
+    const fetchCourses = async () => {
+      const courses = await CourseService.fetchCourses({})
+      setCourses(courses?.listCourses?.items as Course[] || [])
     }
 
-    fetchCognitoGroups()
+    fetchCourses()
   }, [])
 
   useEffect(() => {
     if (userToUpdate) {
-      const mappedValues = mapSelectedCognitoGroups(
-        userGroups,
-        userToUpdate.groups
-      )
+      const mappedValues = transformGroups(courses, userToUpdate.groups)
 
       const user: UserWithMultiSelect = {
         ...userToUpdate,
@@ -97,15 +99,6 @@ const UserCRUDModal = ({
       reset(defaultUser as UserWithMultiSelect)
     }
   }, [isOpen])
-
-  const formatUser = (user: UserWithMultiSelect) => {
-    const groupsArray = user.groups.map((group) => group.value)
-
-    return {
-      ...user,
-      groups: groupsArray as string[]
-    }
-  }
 
   const createUser = async (user: UserWithMultiSelect) => {
     const formattedUser = formatUser(user)
@@ -129,15 +122,21 @@ const UserCRUDModal = ({
   }
 
   const updateUser = async (user: UpdateUserInput) => {
-    const updatedUser = await UserService.updateUser(user)
+    const updatedFields = Object.keys(dirtyFields)
+    if (!isDirty && !!updatedFields) {
+      return
+    }
 
-    if (updatedUser) {
-      onUpdate(updatedUser.updateUser as User)
+    const shouldUpdateGroups = Object.keys(dirtyFields).includes('groups')
+    const updateUserResponse = await UserService.updateUser(user, shouldUpdateGroups, userToUpdate?.groups as string[])
+
+    if (updateUserResponse) {
+      onUpdate(updateUserResponse.updateUser as User)
     }
 
     ToastNotification({
-      description: updatedUser ? 'USER_UPDATE_SUCCESS' : 'USER_UPDATE_ERROR',
-      status: updatedUser ? 'SUCCESS' : 'ERROR'
+      description: updateUserResponse ? 'USER_UPDATE_SUCCESS' : 'USER_UPDATE_ERROR',
+      status: updateUserResponse ? 'SUCCESS' : 'ERROR'
     })
 
     setIsLoading(false)
@@ -200,6 +199,7 @@ const UserCRUDModal = ({
                     label="EMAIL"
                     isRequired={true}
                     placeholder={translate('EMAIL')}
+                    isDisabled={!!userToUpdate}
                   />
 
                   <CustomInput
@@ -208,6 +208,7 @@ const UserCRUDModal = ({
                     isRequired={true}
                     type='tel'
                     placeholder={translate('PHONE_NUMBER')}
+                    bottomNote={translate('PHONE_NUMBER_HELPER_TEXT')}
                   />
 
                   <Select
@@ -215,9 +216,9 @@ const UserCRUDModal = ({
                     label="COURSES"
                     isRequired={true}
                     placeholder={translate('COURSES')}
-                    options={renderUserGroups(userGroups, Object.values(UserTypes))}
+                    options={renderCourseList(courses, Object.values(UserTypes))}
                     isMultiSelect
-                    closeMenuOnSelect={false}
+                    closeMenuOnSelect={true}
                   />
                 </Stack>
                 <ConfirmationDialog

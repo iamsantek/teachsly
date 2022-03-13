@@ -11,6 +11,7 @@ interface Props {
   placeholder?: string;
   bottomNote?: string;
   type?: React.HTMLInputTypeAttribute;
+  isDisabled?: boolean;
 }
 
 export const Input = ({
@@ -19,7 +20,8 @@ export const Input = ({
   isRequired,
   placeholder,
   bottomNote,
-  type
+  type,
+  isDisabled
 }: Props) => {
   const { register } = useFormContext()
 
@@ -39,11 +41,12 @@ export const Input = ({
         placeholder={placeholder}
         size="md"
         type={type}
+        isDisabled={isDisabled}
         {...register(name, { required: isRequired, maxLength: 80 })}
       />
 
       {bottomNote && (
-        <Text color="gray.900" textStyle={'paragraph'} marginLeft={1}>
+        <Text color="gray.500" textStyle={'paragraph'} marginLeft={1}>
           {bottomNote}
         </Text>
       )}

@@ -16,7 +16,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 import DateTimeUtils from '../utils/DateTimeUtils'
 import { ModalFooter } from '../components/Modals/ModalFooter'
 import { Select } from '../components/Inputs/Select'
-import { renderMultiSelectOptions } from '../utils/SelectUtils'
 import { CourseWithMultiSelect } from '../interfaces/Course'
 import { ToastNotification } from '../observables/ToastNotification'
 
@@ -56,9 +55,10 @@ const CourseCRUDModal = ({
     if (courseToUpdate) {
       const course: CourseWithMultiSelect = {
         ...courseToUpdate,
-        scheduleDates: renderMultiSelectOptions(courseToUpdate.scheduleDates)
+        scheduleDates: DateTimeUtils.dayIndexesToMultiSelectOption(courseToUpdate.scheduleDates)
       }
 
+      console.log(course)
       reset(course)
     }
   }, [courseToUpdate])
@@ -74,7 +74,7 @@ const CourseCRUDModal = ({
 
     const updatedCourse: Course = {
       ...course,
-      scheduleDates: course.scheduleDates.map((date) => date.value) as string[]
+      scheduleDates: course.scheduleDates.map((date) => Number(date.value)) as number[]
     }
 
     const createdCourse = await CourseService.createCourse(updatedCourse)
@@ -93,7 +93,7 @@ const CourseCRUDModal = ({
 
   const formatCourse = (course: CourseWithMultiSelect): Course => ({
     ...course,
-    scheduleDates: course.scheduleDates.map((day) => day.value) as string[]
+    scheduleDates: course.scheduleDates.map((day) => Number(day.value)) as number[]
   })
 
   const updateCourse = async (course: CourseWithMultiSelect) => {
@@ -164,7 +164,7 @@ const CourseCRUDModal = ({
                   label="COURSE_DATES"
                   isRequired={true}
                   placeholder={translate('COURSE_DATES')}
-                  options={renderMultiSelectOptions(daysOfTheWeek)}
+                  options={DateTimeUtils.daysToMultiSelectOption(daysOfTheWeek)}
                   isMultiSelect={true}
                   closeMenuOnSelect={true}
                 />

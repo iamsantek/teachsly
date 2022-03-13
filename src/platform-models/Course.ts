@@ -1,7 +1,7 @@
 export interface Course {
   id: string;
   name: string;
-  scheduleDates: string[];
+  scheduleDates: number[];
   scheduleStartTime: string;
   scheduleEndTime: string;
   virtualClassLink: string;

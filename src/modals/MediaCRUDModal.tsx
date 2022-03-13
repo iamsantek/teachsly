@@ -3,11 +3,6 @@ import * as React from 'react'
 import { translate } from '../utils/LanguageUtils'
 import { Media, MediaWithMultiSelect } from '../interfaces/Media'
 import StorageService from '../services/aws/StorageService'
-import { GroupType } from '@aws-sdk/client-cognito-identity-provider'
-import {
-  mapSelectedCognitoGroups,
-  renderUserGroups
-} from '../utils/CognitoGroupsUtils'
 import MediaService from '../services/MediaService'
 import { FormProvider, useForm } from 'react-hook-form'
 import {
@@ -29,11 +24,14 @@ import {
 import { MediaType } from '../models'
 import { FileUploader } from '../components/Inputs/FileUploader'
 import { PermissionsList } from '../components/Lists/PermissionsList'
-import UserGroupsService from '../services/UserGroupsService'
 import { ModalFooter } from '../components/Modals/ModalFooter'
 import { defaultMedia } from '../constants/Medias'
 import { ToastNotification } from '../observables/ToastNotification'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
+import { Course } from '../API'
+import CourseService from '../services/CourseService'
+import { UserTypes } from '../enums/UserTypes'
+import { renderCourseList, transformGroups } from '../utils/CourseUtils'
 
 interface Props {
   isOpen: boolean;
@@ -52,7 +50,7 @@ const MediaCRUDModal = ({
 }: Props) => {
   const [file, setFile] = useState<File>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [userGroups, setUserGroups] = useState<GroupType[]>([])
+  const [courses, setCourses] = useState<Course[]>([])
 
   const formControls = useForm({
     defaultValues: defaultMedia as MediaWithMultiSelect
@@ -72,12 +70,12 @@ const MediaCRUDModal = ({
   const { user } = useContext(UserDashboardContext)
 
   useEffect(() => {
-    const fetchCognitoGroups = async () => {
-      const groups = await UserGroupsService.getUserGroups()
-      setUserGroups(groups || [])
+    const fetchCourses = async () => {
+      const courses = await CourseService.fetchCourses({})
+      setCourses(courses?.listCourses?.items as Course[] || [])
     }
 
-    fetchCognitoGroups()
+    fetchCourses()
   }, [])
 
   useEffect(() => {
@@ -86,10 +84,7 @@ const MediaCRUDModal = ({
       return
     }
 
-    const mappedValues = mapSelectedCognitoGroups(
-      userGroups,
-      mediaToUpdate.groups
-    )
+    const mappedValues = transformGroups(courses, mediaToUpdate.groups)
     const type = mapSingleValueToMultiSelectOption(mediaToUpdate.type)
 
     const media: MediaWithMultiSelect = {
@@ -191,12 +186,6 @@ const MediaCRUDModal = ({
     mediaId ? updateMedia(media) : createMedia(media)
   }
 
-  const selectGroupOptions = () => {
-    const filteredGroups = userGroups.filter(group => !user?.groups.includes(group.GroupName as string))
-
-    return renderUserGroups(filteredGroups)
-  }
-
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
@@ -229,7 +218,7 @@ const MediaCRUDModal = ({
                     label="GROUP_MULTI_SELECT_TITLE"
                     isRequired={true}
                     placeholder={translate('DESCRIPTION')}
-                    options={selectGroupOptions()}
+                    options={renderCourseList(courses, Object.values(UserTypes))}
                     isMultiSelect
                     closeMenuOnSelect={false}
                   />

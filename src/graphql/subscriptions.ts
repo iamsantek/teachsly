@@ -11,6 +11,7 @@ export const onCreateCourse = /* GraphQL */ `
       scheduleStartTime
       scheduleEndTime
       virtualClassLink
+      isActive
       createdAt
       updatedAt
     }
@@ -25,6 +26,7 @@ export const onUpdateCourse = /* GraphQL */ `
       scheduleStartTime
       scheduleEndTime
       virtualClassLink
+      isActive
       createdAt
       updatedAt
     }
@@ -39,6 +41,7 @@ export const onDeleteCourse = /* GraphQL */ `
       scheduleStartTime
       scheduleEndTime
       virtualClassLink
+      isActive
       createdAt
       updatedAt
     }
@@ -105,6 +108,7 @@ export const onCreateUser = /* GraphQL */ `
       cognitoId
       groups
       isDisabledUser
+      disabledReason
       createdAt
       updatedAt
     }
@@ -120,6 +124,7 @@ export const onUpdateUser = /* GraphQL */ `
       cognitoId
       groups
       isDisabledUser
+      disabledReason
       createdAt
       updatedAt
     }
@@ -135,6 +140,7 @@ export const onDeleteUser = /* GraphQL */ `
       cognitoId
       groups
       isDisabledUser
+      disabledReason
       createdAt
       updatedAt
     }
