@@ -11,10 +11,14 @@ import { ListMediaQuery } from '../API'
 
 class MediaService {
   public fetchMedias = async (
-    nextToken?: string | null
+    nextToken?: string | null,
+    courseName?: string | undefined
   ) => {
     return GraphQLService.fetchQuery<ListMediaQuery>({
       query: listMedia,
+      filter: courseName
+        ? { groups: { contains: courseName } }
+        : undefined,
       nextToken
     })
   }
@@ -65,6 +69,15 @@ class MediaService {
     if (signedURL) {
       window.open(signedURL, '_blank')
     }
+  }
+
+  public fetchMediaByCourse = async (courseName: string) => {
+    return GraphQLService.fetchQuery<ListMediaQuery>({
+      query: listMedia,
+      filter: {
+        name: { eq: courseName }
+      }
+    })
   }
 }
 

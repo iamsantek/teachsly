@@ -1,14 +1,17 @@
 /* eslint-disable no-unused-vars */
 import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { awsDateFormat } from '../constants/DateTimeFormats'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import { translate } from './LanguageUtils'
+import 'dayjs/locale/es'
 
 export enum TimeFormats {
   AWSTime = 'HH:mm:ss.SSS',
   TwentyFourHours = 'HH:mm',
 }
 
+dayjs.extend(relativeTime)
 class DateTimeUtils {
   public formatDate = (date: string) => {
     return dayjs(date).format(awsDateFormat)

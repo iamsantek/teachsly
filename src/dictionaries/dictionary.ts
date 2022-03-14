@@ -84,7 +84,8 @@ export enum LanguageES {
   NO_CONTENT_TILE = 'Sin resultados',
   NO_CONTENT_DESCRIPTION = 'No hay resultados para esta busqueda.',
   UPLOADED_BY = 'Subido por',
-  PHONE_NUMBER_HELPER_TEXT = 'Código de país + código de área + número de teléfono. Sin + ni espacios.'
+  PHONE_NUMBER_HELPER_TEXT = 'Código de país + código de área + número de teléfono. Sin + ni espacios.',
+  ON_SITE_CLASS = 'Curso presencial',
 }
 
 export enum LanguageEN {
@@ -149,7 +150,7 @@ export enum LanguageEN {
   CONTENT = 'Content',
   EDITING = 'Editing',
   VIRTUAL_COURSE = 'Virtual course',
-  ADD_COURSE_BUTTON = 'New curso',
+  ADD_COURSE_BUTTON = 'New course',
   COURSE_LINK_HELPER = 'Provide link only if its a virtual course',
   COURSE_LINK = 'Access link',
   COMMENTARIES = 'Commentaries',
@@ -168,5 +169,6 @@ export enum LanguageEN {
   NO_CONTENT_TILE = 'No results',
   NO_CONTENT_DESCRIPTION = 'There are no results for this search.',
   UPLOADED_BY = 'Uploaded by',
-  PHONE_NUMBER_HELPER_TEXT = 'Country code + Area code + Phone number. Without + and spaces.'
+  PHONE_NUMBER_HELPER_TEXT = 'Country code + Area code + Phone number. Without + and spaces.',
+  ON_SITE_CLASS = 'On site course',
 }

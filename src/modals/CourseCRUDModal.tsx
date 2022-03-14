@@ -58,7 +58,6 @@ const CourseCRUDModal = ({
         scheduleDates: DateTimeUtils.dayIndexesToMultiSelectOption(courseToUpdate.scheduleDates)
       }
 
-      console.log(course)
       reset(course)
     }
   }, [courseToUpdate])

@@ -1,6 +1,6 @@
 import { graphqlOperation } from 'aws-amplify'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
-import { listCourses, searchCourses } from '../graphql/queries'
+import { listCourses } from '../graphql/queries'
 import { createCourse, updateCourse } from '../graphql/mutations'
 import { Course } from '../models'
 import { Course as PlatformCourse } from '../platform-models/Course'
@@ -10,7 +10,7 @@ import GraphQLService from './GraphQLService'
 import CognitoService from './aws/CognitoService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
-import { ListCoursesQuery, SearchCoursesQuery } from '../API'
+import { ListCoursesQuery } from '../API'
 import { UserTypes } from '../enums/UserTypes'
 
 interface FetchCourseParams {
@@ -108,37 +108,6 @@ class CourseService {
     }
   })
 
-  public fetchCoursesByName = async (courseNames: string[]) => {
-    try {
-      const response = await GraphQLService.fetchQuery<ListCoursesQuery>({
-        query: listCourses,
-        filter: {
-          or: this.courseNamesFilter(courseNames)
-        }
-      })
-
-      return response?.listCourses?.items
-    } catch (error) {
-
-    }
-  }
-
-  public fetchCoursesByIds = async (courseIds: string[]) => {
-    try {
-      const courses = await GraphQLService.graphQL<any>(
-        graphqlOperation(listCourses, { id: courseIds })
-      )
-      return courses?.data?.listCourses.items || []
-    } catch (error) {
-      Logger.log(
-        LogLevel.ERROR,
-        LogTypes.CourseService,
-        'Error when fetching courses by ids',
-        error
-      )
-    }
-  }
-
   public getEnrolledCourses = (groups: string[]) => {
     return groups?.filter(group => !Object.values(UserTypes).includes(group as UserTypes))
   }
@@ -146,9 +115,8 @@ class CourseService {
   public searchCoursesByName = async (courseNames: string[]) => {
     try {
       const filterCourses = this.courseNamesFilter(courseNames)
-      console.log(filterCourses)
-      return GraphQLService.fetchQuery<SearchCoursesQuery>({
-        query: searchCourses,
+      return GraphQLService.fetchQuery<ListCoursesQuery>({
+        query: listCourses,
         filter: {
           or: filterCourses
         }
