@@ -11,6 +11,7 @@ export type CreateCourseInput = {
   virtualClassLink?: string | null,
   isActive?: boolean | null,
   externalId: string,
+  scheduleYear: number,
 };
 
 export type ModelCourseConditionInput = {
@@ -21,6 +22,7 @@ export type ModelCourseConditionInput = {
   virtualClassLink?: ModelStringInput | null,
   isActive?: ModelBooleanInput | null,
   externalId?: ModelStringInput | null,
+  scheduleYear?: ModelIntInput | null,
   and?: Array< ModelCourseConditionInput | null > | null,
   or?: Array< ModelCourseConditionInput | null > | null,
   not?: ModelCourseConditionInput | null,
@@ -95,6 +97,7 @@ export type Course = {
   virtualClassLink?: string | null,
   isActive?: boolean | null,
   externalId: string,
+  scheduleYear: number,
   createdAt: string,
   updatedAt: string,
 };
@@ -108,6 +111,7 @@ export type UpdateCourseInput = {
   virtualClassLink?: string | null,
   isActive?: boolean | null,
   externalId?: string | null,
+  scheduleYear?: number | null,
 };
 
 export type DeleteCourseInput = {
@@ -269,6 +273,7 @@ export type ModelCourseFilterInput = {
   virtualClassLink?: ModelStringInput | null,
   isActive?: ModelBooleanInput | null,
   externalId?: ModelStringInput | null,
+  scheduleYear?: ModelIntInput | null,
   and?: Array< ModelCourseFilterInput | null > | null,
   or?: Array< ModelCourseFilterInput | null > | null,
   not?: ModelCourseFilterInput | null,
@@ -336,6 +341,7 @@ export type CreateCourseMutation = {
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
+    scheduleYear: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -357,6 +363,7 @@ export type UpdateCourseMutation = {
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
+    scheduleYear: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -378,6 +385,7 @@ export type DeleteCourseMutation = {
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
+    scheduleYear: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -527,6 +535,7 @@ export type GetCourseQuery = {
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
+    scheduleYear: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -551,6 +560,7 @@ export type ListCoursesQuery = {
       virtualClassLink?: string | null,
       isActive?: boolean | null,
       externalId: string,
+      scheduleYear: number,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -663,6 +673,7 @@ export type OnCreateCourseSubscription = {
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
+    scheduleYear: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -679,6 +690,7 @@ export type OnUpdateCourseSubscription = {
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
+    scheduleYear: number,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -695,6 +707,7 @@ export type OnDeleteCourseSubscription = {
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
+    scheduleYear: number,
     createdAt: string,
     updatedAt: string,
   } | null,

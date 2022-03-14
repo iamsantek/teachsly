@@ -86,6 +86,7 @@ export enum LanguageES {
   UPLOADED_BY = 'Subido por',
   PHONE_NUMBER_HELPER_TEXT = 'Código de país + código de área + número de teléfono. Sin + ni espacios.',
   ON_SITE_CLASS = 'Presencial',
+  COURSE_YEAR = 'Año de cursada'
 }
 
 export enum LanguageEN {
@@ -171,4 +172,5 @@ export enum LanguageEN {
   UPLOADED_BY = 'Uploaded by',
   PHONE_NUMBER_HELPER_TEXT = 'Country code + Area code + Phone number. Without + and spaces.',
   ON_SITE_CLASS = 'On site course',
+  COURSE_YEAR = 'Course year'
 }

@@ -1,6 +1,7 @@
 import { CourseWithMultiSelect } from '../interfaces/Course'
 import { Course } from '../platform-models/Course'
 
+const currentYear = new Date().getFullYear().toString()
 export const defaultCourse: Course | CourseWithMultiSelect = {
   id: '',
   name: '',
@@ -8,5 +9,6 @@ export const defaultCourse: Course | CourseWithMultiSelect = {
   scheduleEndTime: '',
   scheduleStartTime: '',
   virtualClassLink: '',
-  externalId: ''
+  externalId: '',
+  scheduleYear: { label: currentYear, value: currentYear }
 }

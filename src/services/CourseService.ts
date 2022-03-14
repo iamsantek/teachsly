@@ -60,11 +60,12 @@ class CourseService {
       scheduleStartTime,
       scheduleEndTime,
       virtualClassLink: courseCreation.virtualClassLink,
-      externalId: courseCreation.name.replace(/\s/g, '')
+      externalId: courseCreation.name.replace(/\s/g, ''),
+      scheduleYear: Number(courseCreation.scheduleYear)
     })
 
     const createCognitoGroupResponse = await CognitoService.createCognitoGroup(
-      courseCreation.name
+      `${courseCreation.name} ${courseCreation.scheduleYear}`
     )
 
     if (createCognitoGroupResponse?.Group) {
