@@ -1,5 +1,4 @@
 type Course @model
-@searchable
 @auth(rules: [
   {allow: groups, groups: ["Admin"]},
   {allow: groups, groups: ["Students","Teachers"], operations: [read] },
@@ -7,11 +6,10 @@ type Course @model
   {
   id: ID!
   name: String!
-  scheduleDates: [Int]!
+  scheduleDates: [String]!
   scheduleStartTime: AWSTime!
   scheduleEndTime: AWSTime!
   virtualClassLink: String
-  isActive: Boolean @default(value: "true")
 }
 
 input AMPLIFY {
@@ -25,7 +23,6 @@ enum MediaType {
 }
 
 type Media @model
-@searchable
 @auth(rules: [
   {allow: owner},
   {allow: groups, groups: ["Admin"], operations: [create, read, update, delete] },
@@ -39,16 +36,10 @@ type Media @model
   link: String!
   content: String
   groups: [String]
-  uploadedBy: String!
-}
-
-enum DisabledAccountReasons {
-  DISABLED_BY_ADMIN,
-  PAYMENT_NOT_COMPLETED
+  uploadedBy: String
 }
 
 type User @model
-@searchable
 @auth(rules: [
   {allow: groups, groups: ["Admin"], operations: [create, read, update, delete] },
   {allow: groups, groups: ["Students","Teachers"], operations: [read] },
@@ -57,9 +48,8 @@ type User @model
   id: ID!
   name: String!
   email: String!
-  phone: String!
+  phone: String
   cognitoId: ID!
   groups: [String]!
-  isDisabledUser: Boolean @default(value: "false")
-  disabledReason: DisabledAccountReasons
+  isDisabledUser: Boolean
 } 
