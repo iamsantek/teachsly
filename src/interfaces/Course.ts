@@ -7,6 +7,7 @@ export interface CourseSchedule {
   scheduleDates: string[];
 }
 
-export interface CourseWithMultiSelect extends Omit<Course, 'scheduleDates'> {
+export interface CourseWithMultiSelect extends Omit<Course, 'scheduleDates' | 'scheduleYear'> {
   scheduleDates: MultiSelectOption[];
+  scheduleYear: MultiSelectOption;
 }

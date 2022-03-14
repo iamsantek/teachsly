@@ -18,6 +18,7 @@ import { ModalFooter } from '../components/Modals/ModalFooter'
 import { Select } from '../components/Inputs/Select'
 import { CourseWithMultiSelect } from '../interfaces/Course'
 import { ToastNotification } from '../observables/ToastNotification'
+import { mapSingleValueToMultiSelectOption, renderMultiSelectOptions } from '../utils/SelectUtils'
 
 interface Props {
   isOpen: boolean;
@@ -55,7 +56,8 @@ const CourseCRUDModal = ({
     if (courseToUpdate) {
       const course: CourseWithMultiSelect = {
         ...courseToUpdate,
-        scheduleDates: DateTimeUtils.dayIndexesToMultiSelectOption(courseToUpdate.scheduleDates)
+        scheduleDates: DateTimeUtils.dayIndexesToMultiSelectOption(courseToUpdate.scheduleDates),
+        scheduleYear: mapSingleValueToMultiSelectOption(String(courseToUpdate.scheduleYear))
       }
 
       reset(course)
@@ -73,7 +75,8 @@ const CourseCRUDModal = ({
 
     const updatedCourse: Course = {
       ...course,
-      scheduleDates: course.scheduleDates.map((date) => Number(date.value)) as number[]
+      scheduleDates: course.scheduleDates.map((date) => Number(date.value)) as number[],
+      scheduleYear: Number(course.scheduleYear.value)
     }
 
     const createdCourse = await CourseService.createCourse(updatedCourse)
@@ -92,7 +95,8 @@ const CourseCRUDModal = ({
 
   const formatCourse = (course: CourseWithMultiSelect): Course => ({
     ...course,
-    scheduleDates: course.scheduleDates.map((day) => Number(day.value)) as number[]
+    scheduleDates: course.scheduleDates.map((day) => Number(day.value)) as number[],
+    scheduleYear: Number(course.scheduleYear.value)
   })
 
   const updateCourse = async (course: CourseWithMultiSelect) => {
@@ -123,6 +127,9 @@ const CourseCRUDModal = ({
 
     courseId ? updateCourse(course) : createCourse(course)
   }
+
+  const date = new Date()
+  const years = [date.getFullYear(), date.getFullYear() + 1, date.getFullYear() + 2]
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
@@ -166,6 +173,7 @@ const CourseCRUDModal = ({
                   options={DateTimeUtils.daysToMultiSelectOption(daysOfTheWeek)}
                   isMultiSelect={true}
                   closeMenuOnSelect={true}
+                  rules={{ required: true }}
                 />
 
                 <CustomInput
@@ -173,6 +181,14 @@ const CourseCRUDModal = ({
                   label="COURSE_LINK"
                   isRequired={false}
                   bottomNote={translate('COURSE_LINK_HELPER')}
+                />
+                <Select
+                  name="scheduleYear"
+                  label="COURSE_YEAR"
+                  isRequired={true}
+                  options={renderMultiSelectOptions(years.map(year => year.toString()))}
+                  isMultiSelect={false}
+                  closeMenuOnSelect={true}
                 />
               </Stack>
             </ModalBody>

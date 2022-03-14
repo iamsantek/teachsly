@@ -14,6 +14,7 @@ interface Props {
   options: MultiSelectOption[];
   isMultiSelect: boolean;
   closeMenuOnSelect: boolean;
+  rules?: Object;
 }
 
 export const Select = ({
@@ -55,6 +56,9 @@ export const Select = ({
         )}
         control={control}
         name={name}
+        rules={{
+          required: true
+        }}
       />
       {bottomNote && (
         <Text color="gray.400" marginLeft={1}>
