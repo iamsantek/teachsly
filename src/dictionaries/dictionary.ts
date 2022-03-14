@@ -85,7 +85,7 @@ export enum LanguageES {
   NO_CONTENT_DESCRIPTION = 'No hay resultados para esta busqueda.',
   UPLOADED_BY = 'Subido por',
   PHONE_NUMBER_HELPER_TEXT = 'Código de país + código de área + número de teléfono. Sin + ni espacios.',
-  ON_SITE_CLASS = 'Curso presencial',
+  ON_SITE_CLASS = 'Presencial',
 }
 
 export enum LanguageEN {

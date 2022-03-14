@@ -5,7 +5,6 @@ export const ContentLinePlaceholder = () => {
 
   return (
     <HStack
-      marginY={4}
       padding={4}
       boxShadow="lg"
       bg={color}
