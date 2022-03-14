@@ -15,7 +15,7 @@ export const CourseCardButtons = ({ course }: Props) => {
     <TooltipHelper label='Ver contenido'>
       <Box
         as={NavLink}
-        to={`/courses/${course.name.replace(/\s/g, '')}`}
+        to={`/courses/${course.externalId.replace(/\s/g, '')}`}
       >
         <IconButton
           icon={<AiFillFolder />}

@@ -14,7 +14,7 @@ export const SectionHeader: FC = ({ children }) => {
 
   return (
     <Stack direction={['column', 'row']} spacing={3}>
-      <Heading textStyle={'title'} marginY={4} marginRight={3} as="h4">
+      <Heading textStyle={'title'} marginBottom={4} marginRight={3} as="h4">
         {route?.name || splitCamelCase(params?.id)}
       </Heading>
       {children}

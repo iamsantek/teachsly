@@ -5,4 +5,5 @@ export interface Course {
   scheduleStartTime: string;
   scheduleEndTime: string;
   virtualClassLink: string;
+  externalId: string
 }

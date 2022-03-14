@@ -33,6 +33,7 @@ export declare class Course {
   readonly scheduleEndTime: string;
   readonly virtualClassLink?: string;
   readonly isActive?: boolean;
+  readonly externalId: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Course, CourseMetaData>);

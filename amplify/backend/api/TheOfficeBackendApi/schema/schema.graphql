@@ -6,10 +6,12 @@ type Course @model
   {
   id: ID!
   name: String!
-  scheduleDates: [String]!
+  scheduleDates: [Int]!
   scheduleStartTime: AWSTime!
   scheduleEndTime: AWSTime!
   virtualClassLink: String
+  isActive: Boolean @default(value: "true")
+  externalId: String!
 }
 
 input AMPLIFY {
@@ -36,7 +38,12 @@ type Media @model
   link: String!
   content: String
   groups: [String]
-  uploadedBy: String
+  uploadedBy: String!
+}
+
+enum DisabledAccountReasons {
+  DISABLED_BY_ADMIN,
+  PAYMENT_NOT_COMPLETED
 }
 
 type User @model
@@ -51,5 +58,6 @@ type User @model
   phone: String
   cognitoId: ID!
   groups: [String]!
-  isDisabledUser: Boolean
+  isDisabledUser: Boolean @default(value: "false")
+  disabledReason: DisabledAccountReasons
 } 
