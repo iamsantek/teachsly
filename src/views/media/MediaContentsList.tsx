@@ -21,6 +21,7 @@ import { LoadMoreButton } from '../../components/Buttons/LoadMoreButton'
 import { isAdmin } from '../../utils/CognitoGroupsUtils'
 import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPlaceholder'
 import { ConfirmationDialog } from '../../components/AlertDialog/ConfirmationDialog'
+import { useParams } from 'react-router-dom'
 
 export const MediaContentsList = () => {
   const [medias, setMedias] = useState<PlatformMedia[]>([])
@@ -35,8 +36,10 @@ export const MediaContentsList = () => {
   const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(true)
   const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] = useState<boolean>(false)
 
-  const fetchMedia = async () => {
-    const medias = await MediaService.fetchMedias(nextPageResultToken)
+  const { id: courseId } = useParams()
+
+  const fetchMedia = async (courseId: string | undefined = undefined) => {
+    const medias = await MediaService.fetchMedias(nextPageResultToken, courseId)
 
     setNextPageResultToken(medias?.listMedia?.nextToken)
     setIsLoadingNewPage(false)
@@ -47,8 +50,8 @@ export const MediaContentsList = () => {
   }
 
   useEffect(() => {
-    fetchMedia()
-  }, [])
+    fetchMedia(courseId)
+  }, [courseId])
 
   const loadMore = () => {
     setIsLoadingNewPage(true)

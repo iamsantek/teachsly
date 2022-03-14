@@ -1,7 +1,8 @@
+import { Wrap, WrapItem } from '@chakra-ui/react'
 import { useContext, useEffect, useState } from 'react'
 import { Course } from '../../API'
 import { CourseCardPreview } from '../../components/Card/CourseCardPreview'
-import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
+import { CoursePreviewPlaceholder } from '../../components/Placeholders/CoursePreviewPlaceholder'
 import { Placeholder } from '../../components/Placeholders/Placeholder'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import CourseService from '../../services/CourseService'
@@ -16,7 +17,7 @@ export const StudentsCourseList = () => {
     const fetchCourses = async () => {
       const enrolledCourses = CourseService.getEnrolledCourses(user?.groups as string[]).map(course => splitCamelCase(course))
       const courses = await CourseService.searchCoursesByName(enrolledCourses)
-      const activeCourses = courses?.searchCourses?.items.filter(course => course?.isActive)
+      const activeCourses = courses?.listCourses?.items.filter(course => course?.isActive)
 
       setCourses(activeCourses as Course[] || [])
       setIsLoading(false)
@@ -27,12 +28,18 @@ export const StudentsCourseList = () => {
 
   return (
     <>
-      {courses.map(course => <CourseCardPreview course={course} key={course.id} />)}
-
+      <Wrap spacing={4}>
+        {courses.map(course =>
+          <WrapItem key={course.id}>
+            <CourseCardPreview course={course} key={course.id} />
+          </WrapItem>
+        )}
+      </Wrap>
       <Placeholder
         show={isLoading}
         number={2}
-        placeholderElement={<ContentLinePlaceholder />}
+        placeholderElement={<CoursePreviewPlaceholder />}
+        orientation='row'
       />
     </>
   )

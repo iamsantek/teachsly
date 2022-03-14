@@ -47,7 +47,6 @@ class StorageService {
         contentType: file.type
       })
     } catch (error) {
-      console.log(error)
       Logger.log(
         LogLevel.ERROR,
         LogTypes.StorageService,

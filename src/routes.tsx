@@ -83,7 +83,8 @@ const adminRoutes: ApplicationRoute[] = [
 const studentRoutes: ApplicationRoute[] = [
   studentHomeScreen,
   mediaContents,
-  { path: '*', element: <StudentsHomeScreen /> }
+  { path: '*', element: <StudentsHomeScreen /> },
+  { path: '/courses/:id', element: <MediaContentsScreen /> }
 ]
 
 const teachersRoutes: ApplicationRoute[] = [
