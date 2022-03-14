@@ -28,7 +28,6 @@ export const CourseCardPreview = ({ course }: Props) => {
             borderWidth="1px"
             boxShadow="lg"
             p={4}
-            maxW='sm'
             borderRadius='lg'
             overflow='hidden'
             display={'flex'}
@@ -67,7 +66,7 @@ export const CourseCardPreview = ({ course }: Props) => {
 
                 </Box>
             </Box>
-            <Box>
+            <Box ml={10}>
                 <CourseCardButtons course={course} />
             </Box>
         </Box>
