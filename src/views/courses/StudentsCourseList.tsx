@@ -6,7 +6,6 @@ import { CoursePreviewPlaceholder } from '../../components/Placeholders/CoursePr
 import { Placeholder } from '../../components/Placeholders/Placeholder'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import CourseService from '../../services/CourseService'
-import { splitCamelCase } from '../../utils/StringUtils'
 
 export const StudentsCourseList = () => {
   const [courses, setCourses] = useState<Course[]>([])
@@ -15,8 +14,8 @@ export const StudentsCourseList = () => {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const enrolledCourses = CourseService.getEnrolledCourses(user?.groups as string[]).map(course => splitCamelCase(course))
-      const courses = await CourseService.searchCoursesByName(enrolledCourses)
+      const enrolledCourses = CourseService.getEnrolledCourses(user?.groups as string[])
+      const courses = await CourseService.searchCourses(enrolledCourses)
       const activeCourses = courses?.listCourses?.items.filter(course => course?.isActive)
 
       setCourses(activeCourses as Course[] || [])

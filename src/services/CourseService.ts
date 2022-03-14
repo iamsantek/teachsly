@@ -10,7 +10,7 @@ import GraphQLService from './GraphQLService'
 import CognitoService from './aws/CognitoService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
-import { ListCoursesQuery } from '../API'
+import { CreateCourseInput, ListCoursesQuery } from '../API'
 import { UserTypes } from '../enums/UserTypes'
 
 interface FetchCourseParams {
@@ -59,7 +59,8 @@ class CourseService {
       scheduleDates,
       scheduleStartTime,
       scheduleEndTime,
-      virtualClassLink: courseCreation.virtualClassLink
+      virtualClassLink: courseCreation.virtualClassLink,
+      externalId: courseCreation.name.replace(/\s/g, '')
     })
 
     const createCognitoGroupResponse = await CognitoService.createCognitoGroup(
@@ -67,9 +68,10 @@ class CourseService {
     )
 
     if (createCognitoGroupResponse?.Group) {
-      return await GraphQLService.graphQL(
-        graphqlOperation(createCourse, { input: course })
-      )
+      return GraphQLService.fetchQuery<CreateCourseInput>({
+        query: createCourse,
+        input: course
+      })
     }
 
     Logger.log(
@@ -104,7 +106,7 @@ class CourseService {
 
   private courseNamesFilter = (courseNames: string[]) => courseNames.map(course => {
     return {
-      name: { eq: course }
+      externalId: { eq: course }
     }
   })
 
@@ -112,7 +114,7 @@ class CourseService {
     return groups?.filter(group => !Object.values(UserTypes).includes(group as UserTypes))
   }
 
-  public searchCoursesByName = async (courseNames: string[]) => {
+  public searchCourses = async (courseNames: string[]) => {
     try {
       const filterCourses = this.courseNamesFilter(courseNames)
       return GraphQLService.fetchQuery<ListCoursesQuery>({

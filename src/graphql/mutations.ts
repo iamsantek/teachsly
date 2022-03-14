@@ -15,6 +15,7 @@ export const createCourse = /* GraphQL */ `
       scheduleEndTime
       virtualClassLink
       isActive
+      externalId
       createdAt
       updatedAt
     }
@@ -33,6 +34,7 @@ export const updateCourse = /* GraphQL */ `
       scheduleEndTime
       virtualClassLink
       isActive
+      externalId
       createdAt
       updatedAt
     }
@@ -51,6 +53,7 @@ export const deleteCourse = /* GraphQL */ `
       scheduleEndTime
       virtualClassLink
       isActive
+      externalId
       createdAt
       updatedAt
     }

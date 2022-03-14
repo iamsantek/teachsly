@@ -10,6 +10,7 @@ export type CreateCourseInput = {
   scheduleEndTime: string,
   virtualClassLink?: string | null,
   isActive?: boolean | null,
+  externalId: string,
 };
 
 export type ModelCourseConditionInput = {
@@ -19,6 +20,7 @@ export type ModelCourseConditionInput = {
   scheduleEndTime?: ModelStringInput | null,
   virtualClassLink?: ModelStringInput | null,
   isActive?: ModelBooleanInput | null,
+  externalId?: ModelStringInput | null,
   and?: Array< ModelCourseConditionInput | null > | null,
   or?: Array< ModelCourseConditionInput | null > | null,
   not?: ModelCourseConditionInput | null,
@@ -92,6 +94,7 @@ export type Course = {
   scheduleEndTime: string,
   virtualClassLink?: string | null,
   isActive?: boolean | null,
+  externalId: string,
   createdAt: string,
   updatedAt: string,
 };
@@ -104,6 +107,7 @@ export type UpdateCourseInput = {
   scheduleEndTime?: string | null,
   virtualClassLink?: string | null,
   isActive?: boolean | null,
+  externalId?: string | null,
 };
 
 export type DeleteCourseInput = {
@@ -256,279 +260,6 @@ export type DeleteUserInput = {
   id: string,
 };
 
-export type SearchableCourseFilterInput = {
-  id?: SearchableIDFilterInput | null,
-  name?: SearchableStringFilterInput | null,
-  scheduleDates?: SearchableIntFilterInput | null,
-  scheduleStartTime?: SearchableStringFilterInput | null,
-  scheduleEndTime?: SearchableStringFilterInput | null,
-  virtualClassLink?: SearchableStringFilterInput | null,
-  isActive?: SearchableBooleanFilterInput | null,
-  createdAt?: SearchableStringFilterInput | null,
-  updatedAt?: SearchableStringFilterInput | null,
-  and?: Array< SearchableCourseFilterInput | null > | null,
-  or?: Array< SearchableCourseFilterInput | null > | null,
-  not?: SearchableCourseFilterInput | null,
-};
-
-export type SearchableIDFilterInput = {
-  ne?: string | null,
-  gt?: string | null,
-  lt?: string | null,
-  gte?: string | null,
-  lte?: string | null,
-  eq?: string | null,
-  match?: string | null,
-  matchPhrase?: string | null,
-  matchPhrasePrefix?: string | null,
-  multiMatch?: string | null,
-  exists?: boolean | null,
-  wildcard?: string | null,
-  regexp?: string | null,
-  range?: Array< string | null > | null,
-};
-
-export type SearchableStringFilterInput = {
-  ne?: string | null,
-  gt?: string | null,
-  lt?: string | null,
-  gte?: string | null,
-  lte?: string | null,
-  eq?: string | null,
-  match?: string | null,
-  matchPhrase?: string | null,
-  matchPhrasePrefix?: string | null,
-  multiMatch?: string | null,
-  exists?: boolean | null,
-  wildcard?: string | null,
-  regexp?: string | null,
-  range?: Array< string | null > | null,
-};
-
-export type SearchableIntFilterInput = {
-  ne?: number | null,
-  gt?: number | null,
-  lt?: number | null,
-  gte?: number | null,
-  lte?: number | null,
-  eq?: number | null,
-  range?: Array< number | null > | null,
-};
-
-export type SearchableBooleanFilterInput = {
-  eq?: boolean | null,
-  ne?: boolean | null,
-};
-
-export type SearchableCourseSortInput = {
-  field?: SearchableCourseSortableFields | null,
-  direction?: SearchableSortDirection | null,
-};
-
-export enum SearchableCourseSortableFields {
-  id = "id",
-  name = "name",
-  scheduleDates = "scheduleDates",
-  scheduleStartTime = "scheduleStartTime",
-  scheduleEndTime = "scheduleEndTime",
-  virtualClassLink = "virtualClassLink",
-  isActive = "isActive",
-  createdAt = "createdAt",
-  updatedAt = "updatedAt",
-}
-
-
-export enum SearchableSortDirection {
-  asc = "asc",
-  desc = "desc",
-}
-
-
-export type SearchableCourseAggregationInput = {
-  name: string,
-  type: SearchableAggregateType,
-  field: SearchableCourseAggregateField,
-};
-
-export enum SearchableAggregateType {
-  terms = "terms",
-  avg = "avg",
-  min = "min",
-  max = "max",
-  sum = "sum",
-}
-
-
-export enum SearchableCourseAggregateField {
-  id = "id",
-  name = "name",
-  scheduleDates = "scheduleDates",
-  scheduleStartTime = "scheduleStartTime",
-  scheduleEndTime = "scheduleEndTime",
-  virtualClassLink = "virtualClassLink",
-  isActive = "isActive",
-  createdAt = "createdAt",
-  updatedAt = "updatedAt",
-}
-
-
-export type SearchableCourseConnection = {
-  __typename: "SearchableCourseConnection",
-  items:  Array<Course | null >,
-  nextToken?: string | null,
-  total?: number | null,
-  aggregateItems:  Array<SearchableAggregateResult | null >,
-};
-
-export type SearchableAggregateResult = {
-  __typename: "SearchableAggregateResult",
-  name: string,
-  result?: SearchableAggregateGenericResult | null,
-};
-
-export type SearchableAggregateGenericResult = SearchableAggregateScalarResult | SearchableAggregateBucketResult
-
-
-export type SearchableAggregateScalarResult = {
-  __typename: "SearchableAggregateScalarResult",
-  value: number,
-};
-
-export type SearchableAggregateBucketResult = {
-  __typename: "SearchableAggregateBucketResult",
-  buckets?:  Array<SearchableAggregateBucketResultItem | null > | null,
-};
-
-export type SearchableAggregateBucketResultItem = {
-  __typename: "SearchableAggregateBucketResultItem",
-  key: string,
-  doc_count: number,
-};
-
-export type SearchableMediaFilterInput = {
-  id?: SearchableIDFilterInput | null,
-  title?: SearchableStringFilterInput | null,
-  description?: SearchableStringFilterInput | null,
-  link?: SearchableStringFilterInput | null,
-  content?: SearchableStringFilterInput | null,
-  groups?: SearchableStringFilterInput | null,
-  uploadedBy?: SearchableStringFilterInput | null,
-  createdAt?: SearchableStringFilterInput | null,
-  updatedAt?: SearchableStringFilterInput | null,
-  type?: SearchableStringFilterInput | null,
-  and?: Array< SearchableMediaFilterInput | null > | null,
-  or?: Array< SearchableMediaFilterInput | null > | null,
-  not?: SearchableMediaFilterInput | null,
-};
-
-export type SearchableMediaSortInput = {
-  field?: SearchableMediaSortableFields | null,
-  direction?: SearchableSortDirection | null,
-};
-
-export enum SearchableMediaSortableFields {
-  id = "id",
-  title = "title",
-  description = "description",
-  link = "link",
-  content = "content",
-  groups = "groups",
-  uploadedBy = "uploadedBy",
-  createdAt = "createdAt",
-  updatedAt = "updatedAt",
-}
-
-
-export type SearchableMediaAggregationInput = {
-  name: string,
-  type: SearchableAggregateType,
-  field: SearchableMediaAggregateField,
-};
-
-export enum SearchableMediaAggregateField {
-  id = "id",
-  title = "title",
-  type = "type",
-  description = "description",
-  link = "link",
-  content = "content",
-  groups = "groups",
-  uploadedBy = "uploadedBy",
-  createdAt = "createdAt",
-  updatedAt = "updatedAt",
-}
-
-
-export type SearchableMediaConnection = {
-  __typename: "SearchableMediaConnection",
-  items:  Array<Media | null >,
-  nextToken?: string | null,
-  total?: number | null,
-  aggregateItems:  Array<SearchableAggregateResult | null >,
-};
-
-export type SearchableUserFilterInput = {
-  id?: SearchableIDFilterInput | null,
-  name?: SearchableStringFilterInput | null,
-  email?: SearchableStringFilterInput | null,
-  phone?: SearchableStringFilterInput | null,
-  cognitoId?: SearchableIDFilterInput | null,
-  groups?: SearchableStringFilterInput | null,
-  isDisabledUser?: SearchableBooleanFilterInput | null,
-  createdAt?: SearchableStringFilterInput | null,
-  updatedAt?: SearchableStringFilterInput | null,
-  disabledReason?: SearchableStringFilterInput | null,
-  and?: Array< SearchableUserFilterInput | null > | null,
-  or?: Array< SearchableUserFilterInput | null > | null,
-  not?: SearchableUserFilterInput | null,
-};
-
-export type SearchableUserSortInput = {
-  field?: SearchableUserSortableFields | null,
-  direction?: SearchableSortDirection | null,
-};
-
-export enum SearchableUserSortableFields {
-  id = "id",
-  name = "name",
-  email = "email",
-  phone = "phone",
-  cognitoId = "cognitoId",
-  groups = "groups",
-  isDisabledUser = "isDisabledUser",
-  createdAt = "createdAt",
-  updatedAt = "updatedAt",
-}
-
-
-export type SearchableUserAggregationInput = {
-  name: string,
-  type: SearchableAggregateType,
-  field: SearchableUserAggregateField,
-};
-
-export enum SearchableUserAggregateField {
-  id = "id",
-  name = "name",
-  email = "email",
-  phone = "phone",
-  cognitoId = "cognitoId",
-  groups = "groups",
-  isDisabledUser = "isDisabledUser",
-  disabledReason = "disabledReason",
-  createdAt = "createdAt",
-  updatedAt = "updatedAt",
-}
-
-
-export type SearchableUserConnection = {
-  __typename: "SearchableUserConnection",
-  items:  Array<User | null >,
-  nextToken?: string | null,
-  total?: number | null,
-  aggregateItems:  Array<SearchableAggregateResult | null >,
-};
-
 export type ModelCourseFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -537,6 +268,7 @@ export type ModelCourseFilterInput = {
   scheduleEndTime?: ModelStringInput | null,
   virtualClassLink?: ModelStringInput | null,
   isActive?: ModelBooleanInput | null,
+  externalId?: ModelStringInput | null,
   and?: Array< ModelCourseFilterInput | null > | null,
   or?: Array< ModelCourseFilterInput | null > | null,
   not?: ModelCourseFilterInput | null,
@@ -603,6 +335,7 @@ export type CreateCourseMutation = {
     scheduleEndTime: string,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
+    externalId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -623,6 +356,7 @@ export type UpdateCourseMutation = {
     scheduleEndTime: string,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
+    externalId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -643,6 +377,7 @@ export type DeleteCourseMutation = {
     scheduleEndTime: string,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
+    externalId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -777,144 +512,6 @@ export type DeleteUserMutation = {
   } | null,
 };
 
-export type SearchCoursesQueryVariables = {
-  filter?: SearchableCourseFilterInput | null,
-  sort?: Array< SearchableCourseSortInput | null > | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  from?: number | null,
-  aggregates?: Array< SearchableCourseAggregationInput | null > | null,
-};
-
-export type SearchCoursesQuery = {
-  searchCourses?:  {
-    __typename: "SearchableCourseConnection",
-    items:  Array< {
-      __typename: "Course",
-      id: string,
-      name: string,
-      scheduleDates: Array< number | null >,
-      scheduleStartTime: string,
-      scheduleEndTime: string,
-      virtualClassLink?: string | null,
-      isActive?: boolean | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-    total?: number | null,
-    aggregateItems:  Array< {
-      __typename: "SearchableAggregateResult",
-      name: string,
-      result: ( {
-          __typename: "SearchableAggregateScalarResult",
-          value: number,
-        } | {
-          __typename: "SearchableAggregateBucketResult",
-          buckets?:  Array< {
-            __typename: string,
-            key: string,
-            doc_count: number,
-          } | null > | null,
-        }
-      ) | null,
-    } | null >,
-  } | null,
-};
-
-export type SearchMediaQueryVariables = {
-  filter?: SearchableMediaFilterInput | null,
-  sort?: Array< SearchableMediaSortInput | null > | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  from?: number | null,
-  aggregates?: Array< SearchableMediaAggregationInput | null > | null,
-};
-
-export type SearchMediaQuery = {
-  searchMedia?:  {
-    __typename: "SearchableMediaConnection",
-    items:  Array< {
-      __typename: "Media",
-      id: string,
-      title: string,
-      type: MediaType,
-      description?: string | null,
-      link: string,
-      content?: string | null,
-      groups?: Array< string | null > | null,
-      uploadedBy: string,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    total?: number | null,
-    aggregateItems:  Array< {
-      __typename: "SearchableAggregateResult",
-      name: string,
-      result: ( {
-          __typename: "SearchableAggregateScalarResult",
-          value: number,
-        } | {
-          __typename: "SearchableAggregateBucketResult",
-          buckets?:  Array< {
-            __typename: string,
-            key: string,
-            doc_count: number,
-          } | null > | null,
-        }
-      ) | null,
-    } | null >,
-  } | null,
-};
-
-export type SearchUsersQueryVariables = {
-  filter?: SearchableUserFilterInput | null,
-  sort?: Array< SearchableUserSortInput | null > | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  from?: number | null,
-  aggregates?: Array< SearchableUserAggregationInput | null > | null,
-};
-
-export type SearchUsersQuery = {
-  searchUsers?:  {
-    __typename: "SearchableUserConnection",
-    items:  Array< {
-      __typename: "User",
-      id: string,
-      name: string,
-      email: string,
-      phone?: string | null,
-      cognitoId: string,
-      groups: Array< string | null >,
-      isDisabledUser?: boolean | null,
-      disabledReason?: DisabledAccountReasons | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-    total?: number | null,
-    aggregateItems:  Array< {
-      __typename: "SearchableAggregateResult",
-      name: string,
-      result: ( {
-          __typename: "SearchableAggregateScalarResult",
-          value: number,
-        } | {
-          __typename: "SearchableAggregateBucketResult",
-          buckets?:  Array< {
-            __typename: string,
-            key: string,
-            doc_count: number,
-          } | null > | null,
-        }
-      ) | null,
-    } | null >,
-  } | null,
-};
-
 export type GetCourseQueryVariables = {
   id: string,
 };
@@ -929,6 +526,7 @@ export type GetCourseQuery = {
     scheduleEndTime: string,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
+    externalId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -952,6 +550,7 @@ export type ListCoursesQuery = {
       scheduleEndTime: string,
       virtualClassLink?: string | null,
       isActive?: boolean | null,
+      externalId: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -1063,6 +662,7 @@ export type OnCreateCourseSubscription = {
     scheduleEndTime: string,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
+    externalId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1078,6 +678,7 @@ export type OnUpdateCourseSubscription = {
     scheduleEndTime: string,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
+    externalId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1093,6 +694,7 @@ export type OnDeleteCourseSubscription = {
     scheduleEndTime: string,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
+    externalId: string,
     createdAt: string,
     updatedAt: string,
   } | null,

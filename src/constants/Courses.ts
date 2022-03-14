@@ -7,5 +7,6 @@ export const defaultCourse: Course | CourseWithMultiSelect = {
   scheduleDates: [],
   scheduleEndTime: '',
   scheduleStartTime: '',
-  virtualClassLink: ''
+  virtualClassLink: '',
+  externalId: ''
 }
