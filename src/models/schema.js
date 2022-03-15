@@ -53,6 +53,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "externalId": {
+                    "name": "externalId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "scheduleYear": {
+                    "name": "scheduleYear",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -75,10 +89,6 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "searchable",
                     "properties": {}
                 },
                 {
@@ -200,10 +210,6 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "searchable",
                     "properties": {}
                 },
                 {
@@ -338,10 +344,6 @@ export const schema = {
                     "properties": {}
                 },
                 {
-                    "type": "searchable",
-                    "properties": {}
-                },
-                {
                     "type": "auth",
                     "properties": {
                         "rules": [
@@ -395,5 +397,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "d42573a1fdd80801f3a9f397ad86b79a"
+    "version": "849610ec94be50a40c695f20f0118cac"
 };
