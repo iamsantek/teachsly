@@ -18,7 +18,7 @@ import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLin
 import { Placeholder } from '../../components/Placeholders/Placeholder'
 import { ToastNotification } from '../../observables/ToastNotification'
 import { LoadMoreButton } from '../../components/Buttons/LoadMoreButton'
-import { isAdmin } from '../../utils/CognitoGroupsUtils'
+import { isAdmin, isTeacher } from '../../utils/CognitoGroupsUtils'
 import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPlaceholder'
 import { ConfirmationDialog } from '../../components/AlertDialog/ConfirmationDialog'
 import { useParams } from 'react-router-dom'
@@ -114,6 +114,7 @@ export const MediaContentsList = () => {
 
   const { user } = useContext(UserDashboardContext)
   const hasAdminRole = isAdmin(user)
+  const hasTeacherRole = isTeacher(user)
 
   return (
     <>
@@ -132,7 +133,7 @@ export const MediaContentsList = () => {
         onAction={onDelete}
       />
 
-      {hasAdminRole && (
+      {(hasAdminRole || hasTeacherRole) && (
         <MediaCRUDModal
           isOpen={crudModalVisibility}
           onUpdate={onUpdate}
@@ -143,7 +144,7 @@ export const MediaContentsList = () => {
       )}
       <Stack spacing={4} flexDirection={'column'}>
         <SectionHeader>
-          {hasAdminRole && (
+          {(hasAdminRole || hasTeacherRole) && (
             <Center>
               <Button
                 leftIcon={<AiOutlinePlus />}

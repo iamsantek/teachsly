@@ -80,6 +80,8 @@ const adminRoutes: ApplicationRoute[] = [
   { path: '*', element: <AdminHomeScreen /> }
 ]
 
+const mediaContentDetailRoute = { path: '/courses/:id', element: <MediaContentsScreen /> }
+
 const studentRoutes: ApplicationRoute[] = [
   studentHomeScreen,
   mediaContents,
@@ -91,12 +93,13 @@ const teachersRoutes: ApplicationRoute[] = [
   teachersHomeScreen,
   mediaContents,
   students,
-  { path: '*', element: <TeachersHomeScreen /> }
+  mediaContentDetailRoute
 ]
 
 export const disabledAccountRoutes: ApplicationRoute[] = [
   studentHomeScreen,
-  { path: '*', element: <StudentsHomeScreen /> }
+  { path: '*', element: <StudentsHomeScreen /> },
+  mediaContentDetailRoute
 ]
 
 export const applicationRoutes: ApplicationRoutes = {
