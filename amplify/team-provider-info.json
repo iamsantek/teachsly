@@ -1,4 +1,30 @@
 {
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-theofficeenglishlear-prod-174021-authRole",
+      "UnauthRoleArn": "arn:aws:iam::017261671711:role/amplify-theofficeenglishlear-prod-174021-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::017261671711:role/amplify-theofficeenglishlear-prod-174021-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-theofficeenglishlear-prod-174021-deployment",
+      "UnauthRoleName": "amplify-theofficeenglishlear-prod-174021-unauthRole",
+      "StackName": "amplify-theofficeenglishlear-prod-174021",
+      "StackId": "arn:aws:cloudformation:us-east-1:017261671711:stack/amplify-theofficeenglishlear-prod-174021/8081e4c0-98bd-11ec-b558-0e47ad93d915",
+      "AmplifyAppId": "d1qxvtw9vp11j9",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-theofficeenglishlear-prod-174021-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "function": {
+        "TheOfficeAuthApiCustomMessage": {
+          "deploymentBucketName": "amplify-theofficeenglishlear-prod-174021-deployment",
+          "s3Key": "amplify-builds/TheOfficeAuthApiCustomMessage-7a4a5268344677777470-build.zip"
+        }
+      },
+      "auth": {
+        "userPoolGroups": {},
+        "TheOfficeAuthApi": {}
+      }
+    }
+  },
   "dev": {
     "awscloudformation": {
       "AuthRoleName": "amplify-theofficeplatform-dev-225223-authRole",
