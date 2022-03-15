@@ -49,6 +49,10 @@ class UserService {
   }
 
   public fetchUserByCognitoId = async (cognitoId: string) => {
+    if (!cognitoId) {
+      return
+    }
+
     const filterByCognitoId = this.filterByCognitoId(cognitoId)
     const users = await this.fetchUsers(filterByCognitoId)
 

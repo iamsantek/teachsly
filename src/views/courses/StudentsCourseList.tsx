@@ -14,6 +14,10 @@ export const StudentsCourseList = () => {
 
   useEffect(() => {
     const fetchCourses = async () => {
+      if (!user?.groups) {
+        return
+      }
+
       const enrolledCourses = CourseService.getEnrolledCourses(user?.groups as string[])
       const courses = await CourseService.searchCourses(enrolledCourses)
       const activeCourses = courses?.listCourses?.items.filter(course => course?.isActive)
