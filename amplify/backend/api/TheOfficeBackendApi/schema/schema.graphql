@@ -12,6 +12,7 @@ type Course @model
   virtualClassLink: String
   isActive: Boolean @default(value: "true")
   externalId: String!
+  scheduleYear: Int!
 }
 
 input AMPLIFY {
