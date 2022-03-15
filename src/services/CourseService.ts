@@ -12,6 +12,7 @@ import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
 import { CreateCourseInput, ListCoursesQuery } from '../API'
 import { UserTypes } from '../enums/UserTypes'
+import { generateExternalId } from '../utils/CourseUtils'
 
 interface FetchCourseParams {
   nextToken?: string | null,
@@ -53,6 +54,7 @@ class CourseService {
       TimeFormats.AWSTime
     )
     const scheduleDates = Array.from(courseCreation.scheduleDates.values())
+    const groupExternalId = generateExternalId(courseCreation)
 
     const course = new Course({
       name: courseCreation.name,
@@ -60,13 +62,11 @@ class CourseService {
       scheduleStartTime,
       scheduleEndTime,
       virtualClassLink: courseCreation.virtualClassLink,
-      externalId: `${courseCreation.name.replace(/\s/g, '')}${courseCreation.scheduleYear}`,
+      externalId: groupExternalId,
       scheduleYear: Number(courseCreation.scheduleYear)
     })
 
-    const createCognitoGroupResponse = await CognitoService.createCognitoGroup(
-      `${courseCreation.name} ${courseCreation.scheduleYear}`
-    )
+    const createCognitoGroupResponse = await CognitoService.createCognitoGroup(groupExternalId)
 
     if (createCognitoGroupResponse?.Group) {
       return GraphQLService.fetchQuery<CreateCourseInput>({

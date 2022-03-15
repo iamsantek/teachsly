@@ -3,6 +3,9 @@ import { UserTypes } from '../enums/UserTypes'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import DateTimeUtils, { TimeFormats } from './DateTimeUtils'
 import { splitCamelCase } from './StringUtils'
+import { Course as CourseAPI } from '../platform-models/Course'
+
+export const generateExternalId = (course: Course | CourseAPI) => `${course.name.replace(/\s+/g, '')}${course.scheduleYear}`
 
 export const renderCourseList = (courses: Course[], additionalGroups?: string[]): MultiSelectOption[] => {
   const groupList = courses.map(course => {
@@ -12,7 +15,7 @@ export const renderCourseList = (courses: Course[], additionalGroups?: string[])
 
     return {
       label: `${course.name} (${dates} ${startTime} - ${endTime})`,
-      value: course.name.replace(/\s+/g, ''),
+      value: generateExternalId(course),
       colorScheme: 'brand'
     }
   })
