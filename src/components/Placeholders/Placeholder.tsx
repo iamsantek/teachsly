@@ -15,7 +15,7 @@ export const Placeholder = ({ show, number, placeholderElement, orientation = 'c
   }
 
   return (
-    <Box display={'flex'} flexDirection={orientation} gap={4}>
+    <Box display={'flex'} flexDirection={orientation} gap={4} marginY={4}>
       {Array.from(Array(number).fill(1)).map(() => {
         return <div key={generateRandomId()}>{placeholderElement}</div>
       })}

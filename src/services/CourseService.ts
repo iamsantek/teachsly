@@ -60,7 +60,7 @@ class CourseService {
       scheduleStartTime,
       scheduleEndTime,
       virtualClassLink: courseCreation.virtualClassLink,
-      externalId: courseCreation.name.replace(/\s/g, ''),
+      externalId: `${courseCreation.name.replace(/\s/g, '')}${courseCreation.scheduleYear}`,
       scheduleYear: Number(courseCreation.scheduleYear)
     })
 

@@ -10,6 +10,8 @@ export const ContentLinePlaceholder = () => {
       bg={color}
       flex={1}
       flexDirection="row"
+      rounded="lg"
+      borderWidth="1px"
     >
       <SkeletonCircle />
       <SkeletonText width={1} flex={1} />
