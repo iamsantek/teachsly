@@ -17,6 +17,7 @@ import { useAuthenticator } from '@aws-amplify/ui-react'
 import { SpinnerScreen } from './views/others/SpinnerScreen'
 import { CognitoUserAmplify } from '@aws-amplify/ui'
 import './App.css'
+import CourseService from './services/CourseService'
 
 Amplify.configure(awsExports)
 
@@ -28,12 +29,27 @@ const App = () => {
   const [routes, setRoutes] = useState<ApplicationRoute[]>([])
   const theme = extendTheme(defaultTheme)
 
-  const { user, isPending } = useAuthenticator((context) => [context.user])
+  const { user } = useAuthenticator((context) => [context.user])
+
+  const fetchCourses = async () => {
+    if (!user) {
+      return []
+    }
+
+    const courses = await CourseService.fetchCourses({
+      nextToken: undefined
+    })
+
+    return courses?.listCourses?.items
+  }
 
   const fetchRoutes = async (cognitoUser: CognitoUserAmplify) => {
     const cognitoId = cognitoUser?.attributes?.sub
 
-    const user = await UserService.fetchUserByCognitoId(cognitoId)
+    const userResponse = UserService.fetchUserByCognitoId(cognitoId)
+    const courseResponse = fetchCourses()
+
+    const [user, courses] = await Promise.all([userResponse, courseResponse])
 
     const userType = UserService.getUserType(user)
     let routes: ApplicationRoute[] = []
@@ -48,8 +64,10 @@ const App = () => {
         ...user,
         type: userType
       },
-      routes
+      routes,
+      courses
     })
+
     setIsLoading(false)
   }
 
@@ -59,7 +77,7 @@ const App = () => {
 
   const routeComponent = useRoutes(routes)
 
-  if (isLoading || isPending) {
+  if (isLoading) {
     return (
         <ChakraProvider>
           <SpinnerScreen />
