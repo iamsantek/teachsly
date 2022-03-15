@@ -34,6 +34,7 @@ export declare class Course {
   readonly virtualClassLink?: string;
   readonly isActive?: boolean;
   readonly externalId: string;
+  readonly scheduleYear: number;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Course, CourseMetaData>);
