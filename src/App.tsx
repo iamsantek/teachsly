@@ -8,7 +8,7 @@ import Amplify from 'aws-amplify'
 import awsExports from './aws-exports'
 import { applicationRoutes, disabledAccountRoutes } from './routes'
 import ToastWrapper from './components/Toast/ToastWrapper'
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { ChakraProvider, extendTheme, Image, Text } from '@chakra-ui/react'
 import DashboardLayout from './layouts/DashboardLayout'
 import { defaultTheme } from './constants/Theme'
 import { LogInScreen } from './layouts/LogInScreen'
@@ -25,7 +25,6 @@ const App = () => {
   const [dashboardInformation, setDashboardInformation] = useState(
     defaultDashboardContext
   )
-  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [routes, setRoutes] = useState<ApplicationRoute[]>([])
   const theme = extendTheme(defaultTheme)
 
@@ -67,8 +66,6 @@ const App = () => {
       routes,
       courses
     })
-
-    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -76,32 +73,18 @@ const App = () => {
   }, [user])
 
   const routeComponent = useRoutes(routes)
+  const isLoading = !(user && dashboardInformation.routes.length > 0 && dashboardInformation.courses.length > 0)
 
-  if (isLoading) {
-    return (
-        <ChakraProvider>
-          <SpinnerScreen />
-        </ChakraProvider>
-    )
-  }
-
-  return user && dashboardInformation.user
-    ? (
+  return (
         <ChakraProvider theme={theme}>
           <UserDashboardContext.Provider value={dashboardInformation}>
-            <DashboardLayout>
-              {routeComponent}
-            </DashboardLayout>
+              {!isLoading && <DashboardLayout>{routeComponent}</DashboardLayout>}
+              {!user && <LogInScreen />}
+              {isLoading && <SpinnerScreen />}
           </UserDashboardContext.Provider>
           <ToastWrapper />
         </ChakraProvider>
-
-      )
-    : (
-        <ChakraProvider>
-          <LogInScreen />
-        </ChakraProvider>
-      )
+  )
 }
 
 export default App

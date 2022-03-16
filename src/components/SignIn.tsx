@@ -4,10 +4,12 @@ import { Authenticator, translations } from '@aws-amplify/ui-react'
 import { I18n } from 'aws-amplify'
 I18n.putVocabularies(translations)
 
-const SignIn = () => (
+const SignIn = () => {
+  return (
     <Authenticator
-    hideSignUp={true}
+      hideSignUp={true}
     />
-)
+  )
+}
 
 export default SignIn

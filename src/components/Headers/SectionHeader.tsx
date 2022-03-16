@@ -1,5 +1,5 @@
 import { FC, useContext } from 'react'
-import { Heading, Skeleton, Stack } from '@chakra-ui/react'
+import { Center, Heading, Skeleton, Stack } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { CustomRouteObject } from '../../interfaces/Routes'
@@ -15,11 +15,13 @@ export const SectionHeader: FC = ({ children }) => {
 
   return (
     <Skeleton isLoaded={routes.length !== 0}>
-    <Stack direction={['column', 'row']} spacing={3}>
-      <Heading textStyle={'title'} marginBottom={4} marginRight={3} as="h4">
-        {route?.name || detailViewName?.name}
-      </Heading>
-      {children}
+    <Stack direction={['column', 'row']} spacing={3} marginBottom={4} >
+      <Center gap={4}>
+        <Heading textStyle={'title'} marginRight={3} as="h4">
+          {route?.name || detailViewName?.name}
+        </Heading>
+        {children}
+      </Center>
     </Stack>
     </Skeleton>
   )
