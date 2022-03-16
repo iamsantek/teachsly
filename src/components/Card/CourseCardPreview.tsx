@@ -25,24 +25,26 @@ export const CourseCardPreview = ({ course }: Props) => {
   return (
         <Box
             rounded="lg"
+            flexBasis='100%'
             borderWidth="1px"
             boxShadow="lg"
             p={4}
             borderRadius='lg'
             overflow='hidden'
-            display={'flex'}
+            display='flex'
             flexDirection='row'
             gap={4}
             alignContent='flex-start'
-            justifyContent={'space-between'}
+            justifyContent='space-between'
+            height='100%'
+            width='100%'
         >
             <Box display={'flex'} gap={3}>
                 <Avatar name={name} />
                 <Box
                     display='flex'
                     alignItems='baseline'
-                    justifyContent={'space-between'}
-                    flexDirection={'column'}
+                    flexDirection='column'
                     gap={3}
                 >
                     <Badge

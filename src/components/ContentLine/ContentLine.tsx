@@ -49,8 +49,6 @@ export const ContentLine: FC<Props> = ({
         bg="brand.500"
         color='whiteAlpha.900'
         marginRight={[3, 5]}
-        display={{ base: 'none', md: 'flex' }}
-
       >
         {LeftIcon}
       </Circle>

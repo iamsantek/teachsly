@@ -18,7 +18,7 @@ export const SectionHeader: FC = ({ children }) => {
     <Stack direction={['column', 'row']} spacing={3} marginBottom={4} >
       <Center gap={4}>
         <Heading textStyle={'title'} marginRight={3} as="h4">
-          {route?.name || detailViewName?.name}
+          {route?.name} {detailViewName?.name}
         </Heading>
         {children}
       </Center>

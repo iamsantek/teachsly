@@ -87,7 +87,8 @@ export enum LanguageES {
   PHONE_NUMBER_HELPER_TEXT = 'Código de país + código de área + número de teléfono. Sin + ni espacios.',
   ON_SITE_CLASS = 'Presencial',
   COURSE_YEAR = 'Año de cursada',
-  GO_TO_VIRTUAL_CLASS = 'Ir a la clase virtual'
+  GO_TO_VIRTUAL_CLASS = 'Ir a la clase virtual',
+  GO_TO_STUDENTS_LIST = 'Ver lista de estudiantes'
 }
 
 export enum LanguageEN {
@@ -174,5 +175,6 @@ export enum LanguageEN {
   PHONE_NUMBER_HELPER_TEXT = 'Country code + Area code + Phone number. Without + and spaces.',
   ON_SITE_CLASS = 'On site course',
   COURSE_YEAR = 'Course year',
-  GO_TO_VIRTUAL_CLASS = 'Go to virtual class'
+  GO_TO_VIRTUAL_CLASS = 'Go to virtual class',
+  GO_TO_STUDENTS_LIST = 'See students list'
 }

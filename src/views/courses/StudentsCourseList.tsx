@@ -31,9 +31,9 @@ export const StudentsCourseList = () => {
 
   return (
     <>
-      <Wrap spacing={4}>
+      <Wrap spacing={4} display='flex' mx={'auto'}>
         {courses.map(course =>
-          <WrapItem key={course.id}>
+          <WrapItem key={course.id} w={['100%', 'auto']}>
             <CourseCardPreview course={course} key={course.id} />
           </WrapItem>
         )}

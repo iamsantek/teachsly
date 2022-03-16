@@ -83,6 +83,19 @@ class UserService {
     })
   }
 
+  public fetchUsersByCourse = async (courseName: string | undefined = undefined, nextToken: string | null = null) => {
+    return GraphQLService.fetchQuery<ListUsersQuery>({
+      query: listUsers,
+      filter: {
+        and: [
+          { isDisabledUser: { eq: 'false' } },
+          courseName && { groups: { contains: courseName } }
+        ]
+      },
+      nextToken
+    })
+  }
+
   private updateUserGroups = async (email: string, updatedGroups: string[], previousGroups: string[]) => {
     const deletedGroups = previousGroups.filter(x => !updatedGroups.includes(x))
 

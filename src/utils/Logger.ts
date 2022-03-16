@@ -4,7 +4,7 @@ class Logger {
   static log<T> (level: LogLevel, tag: LogTypes, message: string, error?: T) {
     if (level === LogLevel.ERROR) {
       console.error(
-        `[${level}] [${tag}]: ${message} \n Error StackTrace:\n ${error}`
+        `[${level}] [${tag}]: ${message} \n Error StackTrace:\n ${JSON.stringify(error)}`
       )
       return
     }

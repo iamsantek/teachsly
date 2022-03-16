@@ -2,7 +2,6 @@ import { Course } from '../API'
 import { UserTypes } from '../enums/UserTypes'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import DateTimeUtils, { TimeFormats } from './DateTimeUtils'
-import { splitCamelCase } from './StringUtils'
 import { Course as CourseAPI } from '../platform-models/Course'
 
 export const generateExternalId = (course: Course | CourseAPI) => `${course.name.replace(/\s+/g, '')}${course.scheduleYear}`
@@ -30,9 +29,8 @@ export const renderCourseList = (courses: Course[], additionalGroups?: string[])
 }
 
 export const transformGroups = (courses: Course[], selectedGroups: string[]) => {
-  const coursesWithSpaces = selectedGroups.map(group => splitCamelCase(group))
-  const userRoles = Object.values(UserTypes).filter(group => coursesWithSpaces.includes(group))
-  const selectedCourses = courses.filter(course => coursesWithSpaces.includes(course.name))
+  const userRoles = Object.values(UserTypes).filter(group => selectedGroups.includes(group))
+  const selectedCourses = courses.filter(course => selectedGroups.includes(course.externalId))
 
   return renderCourseList(selectedCourses, userRoles)
 }

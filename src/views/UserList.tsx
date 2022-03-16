@@ -1,6 +1,7 @@
 import { Avatar, Badge, Box, Button, Center, Stack } from '@chakra-ui/react'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { useParams } from 'react-router-dom'
 import { LoadMoreButton } from '../components/Buttons/LoadMoreButton'
 import { ContentLine } from '../components/ContentLine/ContentLine'
 import { SectionHeader } from '../components/Headers/SectionHeader'
@@ -34,8 +35,10 @@ const UserList = ({
 
   const { user: loggedUser } = useContext(UserDashboardContext)
 
+  const { id: courseId } = useParams()
+
   const fetchUsers = useCallback(async () => {
-    const usersResult = await UserService.fetchUsersByType(listType, nextPageResultToken)
+    const usersResult = await UserService.fetchUsersByCourse(courseId, nextPageResultToken)
     const users = usersResult?.listUsers?.items as User[] || []
     let filteredGroups = [...users]
 
