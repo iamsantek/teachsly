@@ -1,13 +1,12 @@
 import { Storage } from '@aws-amplify/storage'
-import { graphqlOperation } from 'aws-amplify'
 import { v4 as uuidv4 } from 'uuid'
+import { CreateMediaMutation } from '../../API'
 import { LogLevel, LogTypes } from '../../enums/LogTypes'
-import { UserTypes } from '../../enums/UserTypes'
 import { createMedia } from '../../graphql/mutations'
 import { Media as PlatformMedia } from '../../interfaces/Media'
 import { Media } from '../../models'
 import Logger from '../../utils/Logger'
-import GraphQLService, { GraphQLResultType } from '../GraphQLService'
+import GraphQLService from '../GraphQLService'
 
 class StorageService {
   private getExtensionType = (file: File) =>
@@ -58,7 +57,7 @@ class StorageService {
 
   public persistMedia = async (media: PlatformMedia, file?: File) => {
     const fileUploaded = await this.uploadToS3(file)
-    const { title, description, type, groups, content, uploadedBy } = media
+    const { title, description, type, groups, content, uploadedBy, link } = media
 
     try {
       const filterGroups = (groups as string[]).filter((group) => group)
@@ -66,21 +65,19 @@ class StorageService {
       const media = new Media({
         title,
         description,
-        link: fileUploaded?.key || '',
+        link: fileUploaded?.key || link,
         type,
         content,
         uploadedBy,
-        groups: [UserTypes.ADMIN, ...(filterGroups as string[])]
+        groups: filterGroups as string[]
       })
 
-      const createdMedia = await GraphQLService.graphQL(
-        graphqlOperation(createMedia, { input: media })
-      )
+      const createdMedia = await GraphQLService.fetchQuery<CreateMediaMutation>({
+        query: createMedia,
+        input: media
+      })
 
-      if (createdMedia) {
-        const results = createdMedia as GraphQLResultType<Media>
-        return (results?.data?.createMedia as PlatformMedia) || null
-      }
+      return createdMedia?.createMedia as PlatformMedia
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,

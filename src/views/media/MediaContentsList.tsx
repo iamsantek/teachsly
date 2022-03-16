@@ -112,7 +112,7 @@ export const MediaContentsList = () => {
     setMedias(updatedMedias)
   }
 
-  const { user } = useContext(UserDashboardContext)
+  const { user, externalUserId } = useContext(UserDashboardContext)
   const hasAdminRole = isAdmin(user)
   const hasTeacherRole = isTeacher(user)
 
@@ -159,6 +159,7 @@ export const MediaContentsList = () => {
         <Box>
           {medias.map((media) => {
             const Icon = MediaIcon[media.type]
+            const isMediaOwner = externalUserId === (media as any).owner
 
             return (
               <ContentLine
@@ -170,8 +171,8 @@ export const MediaContentsList = () => {
                     ? () => onDownload(media.link)
                     : undefined
                 }
-                onEdit={hasAdminRole ? () => onEdit(media) : undefined}
-                onDelete={hasAdminRole ? () => showDeleteContentDialog(media) : undefined}
+                onEdit={(hasAdminRole || isMediaOwner) ? () => onEdit(media) : undefined}
+                onDelete={(hasAdminRole || isMediaOwner) ? () => showDeleteContentDialog(media) : undefined}
               >
                 <CommonContentLineTitle title={media.title} badges={media.groups} />
               </ContentLine>

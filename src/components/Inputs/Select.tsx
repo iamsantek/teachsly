@@ -15,6 +15,7 @@ interface Props {
   isMultiSelect: boolean;
   closeMenuOnSelect: boolean;
   rules?: Object;
+  isDisabled?: boolean;
 }
 
 export const Select = ({
@@ -25,7 +26,8 @@ export const Select = ({
   bottomNote,
   options,
   isMultiSelect,
-  isRequired
+  isRequired,
+  isDisabled
 }: Props) => {
   const { control } = useFormContext()
 
@@ -52,6 +54,7 @@ export const Select = ({
             onChange={onChange}
             value={value}
             ref={ref}
+            isDisabled={isDisabled}
           />
         )}
         control={control}

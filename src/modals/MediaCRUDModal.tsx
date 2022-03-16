@@ -12,7 +12,8 @@ import {
   ModalContent,
   ModalOverlay,
   ModalHeader,
-  useColorModeValue
+  useColorModeValue,
+  Box
 } from '@chakra-ui/react'
 import { Input as CustomInput } from '../components/Inputs/Input'
 import { TextArea } from '../components/Inputs/TextArea'
@@ -231,23 +232,24 @@ const MediaCRUDModal = ({
                     options={renderMultiSelectOptions(Object.values(MediaType))}
                     isMultiSelect={false}
                     closeMenuOnSelect={true}
+                    isDisabled={!!mediaToUpdate}
                   />
 
-                  {mediaType === MediaType.PDF && (
+                  {mediaType === MediaType.PDF && !mediaToUpdate && (
                     <FileUploader
                       name="file"
                       onChange={onChangeFile}
                       label="ATTACH_FILE"
                     />
                   )}
-                 {[MediaType.LINK, MediaType.VIDEO].includes(mediaType as MediaType) && (
+                 <Box display={[MediaType.LINK, MediaType.VIDEO].includes(mediaType as MediaType) ? 'inline-block' : 'none'} w='100%'>
                   <CustomInput
                     name="link"
                     label="MEDIA_LINK_DESCRIPTION"
                     isRequired={true}
                     placeholder={translate('MEDIA_LINK_DESCRIPTION')}
                   />
-                 )}
+                 </Box>
 
                   <TextArea
                     name="content"

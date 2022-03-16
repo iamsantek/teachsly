@@ -5,5 +5,6 @@ import { ApplicationRoute } from './Routes'
 export interface DashboardContext {
   user: User | null;
   routes: ApplicationRoute[];
-  courses: Course[]
+  courses: Course[],
+  externalUserId: string | null
 }

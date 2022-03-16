@@ -64,7 +64,8 @@ const App = () => {
         type: userType
       },
       routes,
-      courses
+      courses,
+      externalUserId: cognitoId
     })
   }
 
