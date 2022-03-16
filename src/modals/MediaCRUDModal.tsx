@@ -33,6 +33,7 @@ import { Course } from '../API'
 import CourseService from '../services/CourseService'
 import { UserTypes } from '../enums/UserTypes'
 import { renderCourseList, transformGroups } from '../utils/CourseUtils'
+import { isAdmin } from '../utils/CognitoGroupsUtils'
 
 interface Props {
   isOpen: boolean;
@@ -41,6 +42,8 @@ interface Props {
   onUpdate: (media: Media) => void;
   mediaToUpdate?: Media;
 }
+
+const generalGroups = [UserTypes.STUDENT, UserTypes.TEACHER]
 
 const MediaCRUDModal = ({
   isOpen,
@@ -72,8 +75,13 @@ const MediaCRUDModal = ({
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const courses = await CourseService.fetchCourses({})
-      setCourses(courses?.listCourses?.items as Course[] || [])
+      const coursesResponse = await CourseService.fetchCourses({})
+      const courses = coursesResponse?.listCourses?.items as Course[] || []
+      const hasRoleAdmin = isAdmin(user)
+
+      setCourses(
+        hasRoleAdmin ? courses : courses.filter(course => user?.groups.includes(course.externalId))
+      )
     }
 
     fetchCourses()
@@ -219,7 +227,7 @@ const MediaCRUDModal = ({
                     label="GROUP_MULTI_SELECT_TITLE"
                     isRequired={true}
                     placeholder={translate('DESCRIPTION')}
-                    options={renderCourseList(courses, Object.values(UserTypes))}
+                    options={renderCourseList(courses, generalGroups)}
                     isMultiSelect
                     closeMenuOnSelect={true}
                   />

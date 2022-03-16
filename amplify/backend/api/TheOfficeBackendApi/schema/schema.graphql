@@ -21,7 +21,7 @@ input AMPLIFY {
 
 enum MediaType {
   LINK,
-  PDF,
+  FILE,
   VIDEO
 }
 
