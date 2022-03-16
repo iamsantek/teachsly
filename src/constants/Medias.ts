@@ -16,12 +16,12 @@ export const defaultMedia: Media | MediaWithMultiSelect = {
 
 export const mediaIcons = {
   [MediaType.LINK]: 'fa fa-link',
-  [MediaType.PDF]: 'fa fa-file',
+  [MediaType.FILE]: 'fa fa-file',
   [MediaType.VIDEO]: 'fa fa-play'
 }
 
 export const mediaContentLineIcons: { [key in MediaType]: IconType } = {
   [MediaType.LINK]: AiOutlineLink,
-  [MediaType.PDF]: AiFillFilePdf,
+  [MediaType.FILE]: AiFillFilePdf,
   [MediaType.VIDEO]: BsFillPlayFill
 }

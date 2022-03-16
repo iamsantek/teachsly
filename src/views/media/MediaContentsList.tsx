@@ -167,7 +167,7 @@ export const MediaContentsList = () => {
                 leftIcon={<Icon />}
                 onView={() => onView(media)}
                 onDownload={
-                  media.link && media.type === MediaType.PDF
+                  media.link && media.type === MediaType.FILE
                     ? () => onDownload(media.link)
                     : undefined
                 }

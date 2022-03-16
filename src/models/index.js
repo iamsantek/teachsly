@@ -4,7 +4,7 @@ import { schema } from './schema';
 
 const MediaType = {
   "LINK": "LINK",
-  "PDF": "PDF",
+  "FILE": "FILE",
   "VIDEO": "VIDEO"
 };
 

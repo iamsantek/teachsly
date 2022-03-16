@@ -243,7 +243,7 @@ const MediaCRUDModal = ({
                     isDisabled={!!mediaToUpdate}
                   />
 
-                  {mediaType === MediaType.PDF && !mediaToUpdate && (
+                  {mediaType === MediaType.FILE && !mediaToUpdate && (
                     <FileUploader
                       name="file"
                       onChange={onChangeFile}

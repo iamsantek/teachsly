@@ -384,7 +384,7 @@ export const schema = {
             "name": "MediaType",
             "values": [
                 "LINK",
-                "PDF",
+                "FILE",
                 "VIDEO"
             ]
         },
