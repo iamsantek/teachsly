@@ -8,7 +8,6 @@ import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import Logger from '../utils/Logger'
-import AnalyticsService from './AnalyticsService'
 interface SingleResult<T> {
   [key: string]: T | Array<T>;
 }
