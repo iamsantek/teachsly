@@ -58,7 +58,7 @@ class GraphQLService {
     try {
       const sanitizedInput = removeNotAllowedPropertiesFromModel(input)
 
-      const models = API.graphql(
+      const models = await API.graphql(
         graphqlOperation(query, {
           input: sanitizedInput,
           filter,
