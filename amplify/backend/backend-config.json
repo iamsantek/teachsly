@@ -123,5 +123,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
+  },
+  "analytics": {
+    "TheOfficePinPointAPI": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

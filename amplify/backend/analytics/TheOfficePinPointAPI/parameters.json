@@ -1,0 +1,21 @@
+{
+    "appName": "TheOfficePinPointAPI",
+    "roleName": "pinpointLambdaRole45060118",
+    "cloudformationPolicyName": "cloudformationPolicy45060118",
+    "cloudWatchPolicyName": "cloudWatchPolicy45060118",
+    "pinpointPolicyName": "pinpointPolicy45060118",
+    "authPolicyName": "pinpoint_amplify_45060118",
+    "unauthPolicyName": "pinpoint_amplify_45060118",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}
