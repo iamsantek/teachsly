@@ -1,16 +1,9 @@
-import { Analytics } from 'aws-amplify'
-import { LogLevel, LogTypes } from '../enums/LogTypes'
-
-interface AnalyticsEvent<T> {
-    name: string,
-    type: LogTypes,
-    level: LogLevel,
-    payload: T
-}
+import { AnalyticsEvent } from '../enums/Analytics'
+import CloudWatchService from './aws/CloudWatchService'
 
 class AnalyticsService {
-  public recordEvent = <T>(event: AnalyticsEvent<T>) => {
-    Analytics.record(event)
+  public recordEvent = async (event: AnalyticsEvent) => {
+    CloudWatchService.recordEvent(event)
   }
 }
 

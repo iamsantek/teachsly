@@ -67,18 +67,8 @@ class GraphQLService {
         })
       ) as GraphQLResult<T>
 
-      if (models?.errors && models.errors.length > 0) {
-        const errors = models.errors?.map(error => error.message).join(' | ')
-        AnalyticsService.recordEvent({
-          type: LogTypes.GraphQLService,
-          level: LogLevel.ERROR,
-          name: LogTypes.GraphQLService,
-          payload: errors
-        })
-      }
-
       return models.data as T
-    } catch (e) {
+    } catch (e: any) {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.GraphQLService,

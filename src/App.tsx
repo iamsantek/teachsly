@@ -18,8 +18,16 @@ import { SpinnerScreen } from './views/others/SpinnerScreen'
 import { CognitoUserAmplify } from '@aws-amplify/ui'
 import './App.css'
 import CourseService from './services/CourseService'
+import { GeneralInformation } from './enums/GeneralInformation'
+import { removeWhiteSpaces } from './utils/StringUtils'
 
-Amplify.configure(awsExports)
+Amplify.configure({
+  Logging: {
+    logGroupName: removeWhiteSpaces(GeneralInformation.PROJECT_NAME),
+    logStreamName: 'ANALYTICS'
+  },
+  ...awsExports
+})
 
 const App = () => {
   const [dashboardInformation, setDashboardInformation] = useState(

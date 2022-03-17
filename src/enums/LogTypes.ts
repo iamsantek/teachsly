@@ -9,7 +9,7 @@ export enum LogTypes {
 }
 
 export enum LogLevel {
-  WARNING,
-  INFO,
-  ERROR,
+  WARNING = 'WARNING',
+  INFO = 'INFO',
+  ERROR = 'ERROR',
 }
