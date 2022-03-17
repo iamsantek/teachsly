@@ -4,8 +4,9 @@ import { User as UserAPI } from '../models/index'
 import Logger from '../utils/Logger'
 import CognitoService from './aws/CognitoService'
 import GraphQLService from './GraphQLService'
-import { Auth, graphqlOperation } from 'aws-amplify'
+import { Auth } from 'aws-amplify'
 import { createUser } from '../graphql/mutations'
+import { CreateUserMutation } from '../API'
 
 class AuthService {
   public createUser = async (user: User) => {
@@ -70,9 +71,10 @@ class AuthService {
       phone
     })
 
-    return await GraphQLService.graphQL(
-      graphqlOperation(createUser, { input: dynamoDbBUser })
-    )
+    return GraphQLService.fetchQuery<CreateUserMutation>({
+      query: createUser,
+      input: dynamoDbBUser
+    })
   }
 
   public signIn = async (email: string, password: string) => {

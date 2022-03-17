@@ -8,6 +8,7 @@ import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import Logger from '../utils/Logger'
+import AnalyticsService from './AnalyticsService'
 interface SingleResult<T> {
   [key: string]: T | Array<T>;
 }
@@ -57,7 +58,7 @@ class GraphQLService {
     try {
       const sanitizedInput = removeNotAllowedPropertiesFromModel(input)
 
-      const models = await API.graphql(
+      const models = API.graphql(
         graphqlOperation(query, {
           input: sanitizedInput,
           filter,
@@ -65,6 +66,16 @@ class GraphQLService {
           nextToken
         })
       ) as GraphQLResult<T>
+
+      if (models?.errors && models.errors.length > 0) {
+        const errors = models.errors?.map(error => error.message).join(' | ')
+        AnalyticsService.recordEvent({
+          type: LogTypes.GraphQLService,
+          level: LogLevel.ERROR,
+          name: LogTypes.GraphQLService,
+          payload: errors
+        })
+      }
 
       return models.data as T
     } catch (e) {

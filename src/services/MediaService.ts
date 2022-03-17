@@ -1,4 +1,3 @@
-import { graphqlOperation } from 'aws-amplify'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { deleteMedia, updateMedia } from '../graphql/mutations'
 import { listMedia } from '../graphql/queries'
@@ -7,7 +6,7 @@ import Logger from '../utils/Logger'
 import GraphQLService from './GraphQLService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import StorageService from './aws/StorageService'
-import { ListMediaQuery } from '../API'
+import { DeleteMediaMutation, ListMediaQuery, UpdateMediaMutation } from '../API'
 
 class MediaService {
   public fetchMedias = async (
@@ -25,13 +24,12 @@ class MediaService {
 
   public updateMedia = async (media: Media) => {
     try {
-      const models = await GraphQLService.graphQL<any>(
-        graphqlOperation(updateMedia, {
-          input: removeNotAllowedPropertiesFromModel(media)
-        })
-      )
+      const models = await GraphQLService.fetchQuery<UpdateMediaMutation>({
+        query: updateMedia,
+        input: removeNotAllowedPropertiesFromModel(media)
+      })
 
-      return (models?.data?.updateMedia as Media) || []
+      return (models?.updateMedia as Media) || []
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
@@ -44,15 +42,14 @@ class MediaService {
 
   public deleteMedia = async (mediaId: string) => {
     try {
-      const media = await GraphQLService.graphQL<any>(
-        graphqlOperation(deleteMedia, {
-          input: {
-            id: mediaId
-          }
-        })
-      )
+      const media = await GraphQLService.fetchQuery<DeleteMediaMutation>({
+        query: deleteMedia,
+        input: {
+          id: mediaId
+        }
+      })
 
-      return media?.data?.deleteMedia as Media
+      return media?.deleteMedia as Media
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,

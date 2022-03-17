@@ -1,4 +1,3 @@
-import { graphqlOperation } from 'aws-amplify'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { listCourses } from '../graphql/queries'
 import { createCourse, updateCourse } from '../graphql/mutations'
@@ -10,7 +9,7 @@ import GraphQLService from './GraphQLService'
 import CognitoService from './aws/CognitoService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
-import { CreateCourseInput, ListCoursesQuery } from '../API'
+import { CreateCourseInput, ListCoursesQuery, UpdateCourseMutation } from '../API'
 import { UserTypes } from '../enums/UserTypes'
 import { generateExternalId } from '../utils/CourseUtils'
 
@@ -84,13 +83,12 @@ class CourseService {
 
   public updateCourse = async (course: Course) => {
     try {
-      const models = await GraphQLService.graphQL<any>(
-        graphqlOperation(updateCourse, {
-          input: removeNotAllowedPropertiesFromModel(course)
-        })
-      )
+      const models = await GraphQLService.fetchQuery<UpdateCourseMutation>({
+        query: updateCourse,
+        input: removeNotAllowedPropertiesFromModel(course)
+      })
 
-      return (models?.data?.updateCourse as Course) || []
+      return (models?.updateCourse as Course) || []
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
