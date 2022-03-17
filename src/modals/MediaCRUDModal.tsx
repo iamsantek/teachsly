@@ -182,6 +182,7 @@ const MediaCRUDModal = ({
   }
 
   const onSubmit = (media: MediaWithMultiSelect) => {
+    console.log('On SUBMIT')
     setIsLoading(true)
     const hasErrors = Object.keys(errors).length !== 0
 
@@ -250,11 +251,11 @@ const MediaCRUDModal = ({
                       label="ATTACH_FILE"
                     />
                   )}
-                 <Box display={[MediaType.LINK, MediaType.VIDEO].includes(mediaType as MediaType) ? 'inline-block' : 'none'} w='100%'>
+                 <Box display={[MediaType.LINK].includes(mediaType as MediaType) ? 'inline-block' : 'none'} w='100%'>
                   <CustomInput
                     name="link"
                     label="MEDIA_LINK_DESCRIPTION"
-                    isRequired={true}
+                    isRequired={[MediaType.LINK].includes(mediaType as MediaType)}
                     placeholder={translate('MEDIA_LINK_DESCRIPTION')}
                   />
                  </Box>

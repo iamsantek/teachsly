@@ -132,7 +132,6 @@ export type CreateMediaInput = {
 export enum MediaType {
   LINK = "LINK",
   FILE = "FILE",
-  VIDEO = "VIDEO",
 }
 
 

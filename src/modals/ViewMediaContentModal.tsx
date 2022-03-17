@@ -28,7 +28,7 @@ export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
 
   const onClick = (link: string, type: MediaType) => {
     setIsLoading(true)
-    const isExternalLink = [MediaType.VIDEO, MediaType.LINK].includes(
+    const isExternalLink = [MediaType.LINK].includes(
       type
     )
 

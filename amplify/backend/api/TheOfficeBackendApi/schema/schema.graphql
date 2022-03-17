@@ -21,8 +21,7 @@ input AMPLIFY {
 
 enum MediaType {
   LINK,
-  FILE,
-  VIDEO
+  FILE
 }
 
 type Media @model

@@ -2,8 +2,7 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 export enum MediaType {
   LINK = "LINK",
-  FILE = "FILE",
-  VIDEO = "VIDEO"
+  FILE = "FILE"
 }
 
 export enum DisabledAccountReasons {

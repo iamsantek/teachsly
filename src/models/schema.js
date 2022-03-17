@@ -384,8 +384,7 @@ export const schema = {
             "name": "MediaType",
             "values": [
                 "LINK",
-                "FILE",
-                "VIDEO"
+                "FILE"
             ]
         },
         "DisabledAccountReasons": {

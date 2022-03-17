@@ -4,8 +4,7 @@ import { schema } from './schema';
 
 const MediaType = {
   "LINK": "LINK",
-  "FILE": "FILE",
-  "VIDEO": "VIDEO"
+  "FILE": "FILE"
 };
 
 const DisabledAccountReasons = {
