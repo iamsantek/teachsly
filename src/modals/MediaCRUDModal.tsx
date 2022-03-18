@@ -71,20 +71,18 @@ const MediaCRUDModal = ({
   const mediaId = watch('id')
   const { value: mediaType } = watch('type')
 
-  const { user } = useContext(UserDashboardContext)
+  const { user, courses: allCourses } = useContext(UserDashboardContext)
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      const coursesResponse = await CourseService.fetchCourses({})
-      const courses = coursesResponse?.listCourses?.items as Course[] || []
+    const filterCourses = async () => {
       const hasRoleAdmin = isAdmin(user)
 
       setCourses(
-        hasRoleAdmin ? courses : courses.filter(course => user?.groups.includes(course.externalId))
+        hasRoleAdmin ? allCourses : allCourses.filter(course => user?.groups.includes(course.externalId))
       )
     }
 
-    fetchCourses()
+    filterCourses()
   }, [])
 
   useEffect(() => {

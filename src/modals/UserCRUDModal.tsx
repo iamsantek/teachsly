@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { translate } from '../utils/LanguageUtils'
 import { FormProvider, useForm } from 'react-hook-form'
 import {
@@ -20,10 +20,10 @@ import UserService from '../services/UserService'
 import { UserTypes } from '../enums/UserTypes'
 import { MdDangerous } from 'react-icons/md'
 import { ConfirmationDialog } from '../components/AlertDialog/ConfirmationDialog'
-import { Course, UpdateUserInput } from '../API'
+import { UpdateUserInput } from '../API'
 import { AiFillCheckCircle } from 'react-icons/ai'
-import CourseService from '../services/CourseService'
 import { renderCourseList, transformGroups } from '../utils/CourseUtils'
+import { UserDashboardContext } from '../contexts/UserDashboardContext'
 
 interface Props {
   isOpen: boolean;
@@ -53,7 +53,8 @@ const UserCRUDModal = ({
 }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] = useState<boolean>(false)
-  const [courses, setCourses] = useState<Course[]>([])
+
+  const { courses } = useContext(UserDashboardContext)
 
   const formControls = useForm({
     defaultValues: defaultUser as UserWithMultiSelect
@@ -71,15 +72,6 @@ const UserCRUDModal = ({
 
   const newUserButtonName = userType === UserTypes.STUDENT ? 'CREATE_STUDENT_BUTTON' : 'CREATE_TEACHER_BUTTON'
   const editUserButtonName = userType === UserTypes.STUDENT ? 'EDIT_STUDENT_BUTTON' : 'EDIT_TEACHER_BUTTON'
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      const courses = await CourseService.fetchCourses({})
-      setCourses(courses?.listCourses?.items as Course[] || [])
-    }
-
-    fetchCourses()
-  }, [])
 
   useEffect(() => {
     if (userToUpdate) {
