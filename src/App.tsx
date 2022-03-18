@@ -36,7 +36,7 @@ const App = () => {
   const [routes, setRoutes] = useState<ApplicationRoute[]>([])
   const theme = extendTheme(defaultTheme)
 
-  const { user } = useAuthenticator((context) => [context.user])
+  const { user, route: authRoute } = useAuthenticator((context) => [context.user])
 
   const fetchCourses = async () => {
     if (!user) {
@@ -82,17 +82,17 @@ const App = () => {
   }, [user])
 
   const routeComponent = useRoutes(routes)
-  const isLoading = !(user && dashboardInformation.routes.length > 0 && dashboardInformation.courses.length > 0)
+  const isContextLoaded = user && dashboardInformation.routes.length > 0 && dashboardInformation.courses.length > 0
 
   return (
-        <ChakraProvider theme={theme}>
-          <UserDashboardContext.Provider value={dashboardInformation}>
-              {!isLoading && <DashboardLayout>{routeComponent}</DashboardLayout>}
-              {!user && <LogInScreen />}
-              {isLoading && <SpinnerScreen />}
-          </UserDashboardContext.Provider>
-          <ToastWrapper />
-        </ChakraProvider>
+    <ChakraProvider theme={theme}>
+      <UserDashboardContext.Provider value={dashboardInformation}>
+        {authRoute === 'authenticated'
+          ? isContextLoaded ? <DashboardLayout>{routeComponent}</DashboardLayout> : <SpinnerScreen />
+          : <LogInScreen />}
+      </UserDashboardContext.Provider>
+      <ToastWrapper />
+    </ChakraProvider>
   )
 }
 
