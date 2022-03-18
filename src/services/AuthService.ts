@@ -7,14 +7,15 @@ import GraphQLService from './GraphQLService'
 import { Auth } from 'aws-amplify'
 import { createUser } from '../graphql/mutations'
 import { CreateUserMutation } from '../API'
+import { UserTypes } from '../enums/UserTypes'
 
 class AuthService {
   public createUser = async (user: User) => {
-    const { name, email: username, phone } = user
+    const { name, email: username, phone, type } = user
 
     try {
       const adminCreateUserCommandResponse =
-        await CognitoService.createCognitoUser(username, name, phone) // Create Cognito user in the User Pool
+        await CognitoService.createCognitoUser(username, name, phone, type as UserTypes) // Create Cognito user in the User Pool
       const confirmCognitoUserResponse =
         await CognitoService.confirmCognitoUser(username) // Auto-confirm email
 

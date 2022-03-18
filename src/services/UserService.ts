@@ -15,7 +15,8 @@ class UserService {
       const updatedUser: User = {
         ...user,
         name: user.name.trim(),
-        groups: [...user.groups, type]
+        groups: [...user.groups, type],
+        type
       }
       const cognitoUser = await AuthService.createUser(updatedUser)
 

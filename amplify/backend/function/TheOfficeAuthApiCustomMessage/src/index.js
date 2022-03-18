@@ -1,12 +1,18 @@
 exports.handler = (event, context, callback) => {
   // insert code to be executed by your lambda trigger
-  event.response.autoConfirmUser = true;
+  event.response.autoConfirmUser = true
 
-  const email = event.request.userAttributes.email;
+  const type = event.request.userAttributes['custom:type']
+  const email = event.request.usernameParameter
   const code = event.request.codeParameter
-  const name = event.request.userAttributes.name;
+  const name = event.request.userAttributes.name
 
-  const templateInvite = (name,email,code)=> `<html>
+  const teachersCopy = 'A través de nuestra plataforma vas a poder visualizar tus cursos, enviarles material a tus estudiantes, enviar y corregir tareas, subir contenido y mucho más!'
+  const studentsCopy = 'A través de nuestra plataforma vas a poder visualizar tus cursos, ver el material, visualizar y enviar tus tareas, ver contenidos extra, abonar tu cuota y mucho más!'
+
+  const copy = type === 'Students' ? studentsCopy : teachersCopy
+
+  const templateInvite = (name, email, code, copy) => `<html>
 
 <body style="
       background-color: #333;
@@ -21,7 +27,7 @@ exports.handler = (event, context, callback) => {
         font-weight: normal;
         line-height: 19px;
       " align="center">
-        <div style="padding: 20">
+        <div style="padding: 35px">
             <img style="
             border: 0;
             display: block;
@@ -63,7 +69,7 @@ exports.handler = (event, context, callback) => {
             color: #000;
             text-align: left;
           ">
-                A través de nuestra plataforma vas a poder tener tus cursos, libros y material extra a un solo click.
+            ${copy}
             </p>
             <p style="
             margin-top: 20px;
@@ -89,7 +95,7 @@ exports.handler = (event, context, callback) => {
                 </h2>
                 <h2 style="
               margin-top: 10px;
-              margin-bottom: 0;
+              margin-bottom: 10px;
               font-size: 16px;
               line-height: 24px;
               color: #000;
@@ -132,12 +138,122 @@ exports.handler = (event, context, callback) => {
 </body>
 
 </html>
-`;
+`
+
+  const forgotPasswordTemplate = (name, code) => `<html>
+<body style="
+      background-color: #333;
+      font-family: PT Sans, Trebuchet MS, sans-serif;
+    ">
+    <div style="
+        margin: 0 auto;
+        width: 600px;
+        background-color: #fff;
+        font-size: 1.2rem;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 19px;
+      " align="center">
+        <div style="padding: 35px">
+            <img style="
+            border: 0;
+            display: block;
+            height: auto;
+            width: 100%;
+            max-width: 373px;
+          " alt="Animage" height="200" width="300" src="https://i.imgur.com/g1DAd29.png" />
+            <h2 style="
+            font-size: 28px;
+            margin-top: 20px;
+            margin-bottom: 0;
+            font-style: normal;
+            font-weight: bold;
+            color: #000;
+            font-size: 24px;
+            line-height: 32px;
+            text-align: center;
+          ">
+                Hola ${name}!
+            </h2>
+            <h3 style="
+            font-size: 20px;
+            margin-top: 20px;
+            margin-bottom: 0;
+            font-style: normal;
+            font-weight: bold;
+            color: #38a3c5;
+            font-size: 24px;
+            line-height: 32px;
+            text-align: center;
+          ">
+                Recuperación de contraseña
+            </h3>
+            <p style="
+            margin-top: 20px;
+            margin-bottom: 0;
+            font-size: 16px;
+            line-height: 24px;
+            color: #000;
+            text-align: left;
+          ">
+                A continuación te dejamos el código para que puedas recuperar tu cuenta. Ingresalo junto con tu nueva contraseña para volver a tener acceso a la plataforma.
+            </p>
+            <p style="
+            margin-top: 20px;
+            margin-bottom: 0;
+            font-size: 16px;
+            line-height: 24px;
+            color: #000;
+            text-align: left;
+          ">
+          Si no estás tratando de recuperar tu cuenta, por favor ignora este mensaje.
+            </p>
+            <div style="display: inline-block; width: 100%;">
+                <h2 style="
+              margin-top: 10px;
+              margin-bottom: 0;
+              font-size: 45px;
+              line-height: 24px;
+              color: #000;
+              text-align: center;
+   
+            ">
+                    ${code}
+                </h2>
+            </div>
+            <div style="display: inline-block; width: 100%;">
+                <h2 style="
+                margin-top: 10px;
+                margin-bottom: 0;
+                font-size: 16px;
+                line-height: 16px;
+                color: #000;
+                text-align: left;
+                ">
+                    Gracias por confiar en nosotros,
+                </h2>
+                <h2 style="
+                margin-top: 5px;
+                margin-bottom: 0;
+                font-size: 16px;
+                line-height: 24px;
+                color: #000;
+                text-align: left;
+                ">
+                    The Office English Learning Team
+                </h2>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+`
 
   event.response = {
-    emailSubject: "🚀 Welcome aboard! Acceso a nuestra plataforma",
-    emailMessage: templateInvite(name,event.request.usernameParameter,event.request.codeParameter)
-  };
-  
-  callback(null, event);
-};
+    emailSubject: event.triggerSource === 'CustomMessage_ForgotPassword' ? '🔑 Recuperá tu contraseña' : '🚀 Welcome aboard! Acceso a nuestra plataforma',
+    emailMessage: event.triggerSource === 'CustomMessage_ForgotPassword' ? forgotPasswordTemplate(name, code) : templateInvite(name, email, code, copy)
+  }
+
+  callback(null, event)
+}
