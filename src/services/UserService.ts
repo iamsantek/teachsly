@@ -5,8 +5,8 @@ import { updateUser as updateUserMutation } from '../graphql/mutations'
 import { User } from '../platform-models/User'
 import Logger from '../utils/Logger'
 import AuthService from './AuthService'
-import GraphQLService, { FilterInput } from './GraphQLService'
-import { ListUsersQuery, ModelUserConditionInput, UpdateUserInput, UpdateUserMutation } from '../API'
+import GraphQLService from './GraphQLService'
+import { ListUsersQuery, ModelUserFilterInput, UpdateUserInput, UpdateUserMutation } from '../API'
 import CognitoService from './aws/CognitoService'
 
 class UserService {
@@ -41,29 +41,17 @@ class UserService {
     }
   }
 
-  private filterByGroupType = (type: UserTypes) => {
-    return { groups: { contains: type } }
-  }
-
-  private filterByCognitoId = (cognitoId: string): ModelUserConditionInput => {
-    return { cognitoId: { eq: cognitoId } }
-  }
+  private cognitoIdFilter = (cognitoId: string): ModelUserFilterInput => ({ cognitoId: { eq: cognitoId } })
 
   public fetchUserByCognitoId = async (cognitoId: string) => {
     if (!cognitoId) {
       return
     }
 
-    const filterByCognitoId = this.filterByCognitoId(cognitoId)
-    const users = await this.fetchUsers(filterByCognitoId)
+    const filter = this.cognitoIdFilter(cognitoId)
+    const users = await this.fetchUsers(filter)
 
     return users?.listUsers?.items[0]
-  }
-
-  public fetchUsersByType = async (type: UserTypes, nextToken: string | null = null) => {
-    const filter = this.filterByGroupType(type)
-
-    return await this.fetchUsers(filter, nextToken)
   }
 
   public getUserType = (user: User) => {
@@ -76,25 +64,27 @@ class UserService {
     return Object.values(UserTypes).find((group) => groups?.includes(group))
   }
 
-  private fetchUsers = async (filter: Object, nextToken?: string | null) => {
+  private fetchUsers = async (filter: ModelUserFilterInput, nextToken?: string | null) => {
     return GraphQLService.fetchQuery<ListUsersQuery>({
       query: listUsers,
-      filter: filter as FilterInput,
+      filter: filter,
       nextToken
     })
   }
 
-  public fetchUsersByCourse = async (courseName: string | undefined = undefined, nextToken: string | null = null) => {
-    return GraphQLService.fetchQuery<ListUsersQuery>({
-      query: listUsers,
-      filter: {
-        and: [
-          { isDisabledUser: { eq: 'false' } },
-          courseName && { groups: { contains: courseName } }
-        ]
-      },
-      nextToken
-    })
+  public fetchUsersByCourseOrType = async (courseOrType: string | UserTypes | undefined = undefined, nextToken: string | null = null) => {
+    if (!courseOrType) {
+      return
+    }
+
+    const usersByCourseFilter: ModelUserFilterInput = {
+      and: [
+        { isDisabledUser: { eq: false } },
+        { groups: { contains: courseOrType } }
+      ]
+    }
+
+    return this.fetchUsers(usersByCourseFilter, nextToken)
   }
 
   private updateUserGroups = async (email: string, updatedGroups: string[], previousGroups: string[]) => {
@@ -131,7 +121,7 @@ class UserService {
 
       return GraphQLService.fetchQuery<UpdateUserMutation>({
         query: updateUserMutation,
-        filter: this.filterByCognitoId(user.cognitoId as string),
+        filter: this.cognitoIdFilter(user.cognitoId as string),
         input: user
       })
     } catch (error) {

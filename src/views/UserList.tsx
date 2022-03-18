@@ -38,7 +38,8 @@ const UserList = ({
   const { id: courseId } = useParams()
 
   const fetchUsers = useCallback(async () => {
-    const usersResult = await UserService.fetchUsersByCourse(courseId, nextPageResultToken)
+    const filter = courseId || listType
+    const usersResult = await UserService.fetchUsersByCourseOrType(filter, nextPageResultToken)
     const users = usersResult?.listUsers?.items as User[] || []
     let filteredGroups = [...users]
 
