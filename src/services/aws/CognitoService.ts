@@ -161,7 +161,7 @@ class CognitoService {
       },
       {
         Name: 'phone_number',
-        Value: `+${phone.replace(/\s/g, '')}`
+        Value: `+${phone.replace(/\D/g, '')}`
       },
       {
         Name: 'custom:type',
