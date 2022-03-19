@@ -82,7 +82,7 @@ const App = () => {
   }, [user])
 
   const routeComponent = useRoutes(routes)
-  const isContextLoaded = user && dashboardInformation.routes.length > 0 && dashboardInformation.courses.length > 0
+  const isContextLoaded = user && dashboardInformation.routes.length > 0
 
   return (
     <ChakraProvider theme={theme}>

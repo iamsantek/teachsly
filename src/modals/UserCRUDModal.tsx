@@ -74,16 +74,19 @@ const UserCRUDModal = ({
   const editUserButtonName = userType === UserTypes.STUDENT ? 'EDIT_STUDENT_BUTTON' : 'EDIT_TEACHER_BUTTON'
 
   useEffect(() => {
-    if (userToUpdate) {
-      const mappedValues = transformGroups(courses, userToUpdate.groups)
-
-      const user: UserWithMultiSelect = {
-        ...userToUpdate,
-        groups: mappedValues
-      }
-
-      reset(user)
+    if (!userToUpdate) {
+      reset(defaultUser as UserWithMultiSelect)
+      return
     }
+
+    const mappedValues = transformGroups(courses, userToUpdate.groups)
+
+    const user: UserWithMultiSelect = {
+      ...userToUpdate,
+      groups: mappedValues
+    }
+
+    reset(user)
   }, [userToUpdate])
 
   useEffect(() => {
@@ -208,7 +211,7 @@ const UserCRUDModal = ({
                     label="COURSES"
                     isRequired={true}
                     placeholder={translate('COURSES')}
-                    options={renderCourseList(courses, Object.values(UserTypes))}
+                    options={renderCourseList(courses)}
                     isMultiSelect
                     closeMenuOnSelect={true}
                   />
