@@ -2,8 +2,9 @@ exports.handler = (event, context, callback) => {
   // insert code to be executed by your lambda trigger
   event.response.autoConfirmUser = true
 
+  const emailType = event.triggerSource
   const type = event.request.userAttributes['custom:type']
-  const email = event.request.usernameParameter
+  const email = emailType === 'CustomMessage_ForgotPassword' ? event.request.userAttributes.email : event.request.usernameParameter
   const code = event.request.codeParameter
   const name = event.request.userAttributes.name
 
