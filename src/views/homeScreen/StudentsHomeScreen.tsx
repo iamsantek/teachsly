@@ -6,7 +6,7 @@ import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { StudentsCourseList } from '../courses/StudentsCourseList'
 
 export const StudentsHomeScreen = () => {
-  const { user } = useContext(UserDashboardContext)
+  const { context: { user } } = useContext(UserDashboardContext)
   return (
         <Stack>
             {user?.isDisabledUser && <DisabledAccountWarning />}

@@ -112,7 +112,7 @@ export const MediaContentsList = () => {
     setMedias(updatedMedias)
   }
 
-  const { user, externalUserId } = useContext(UserDashboardContext)
+  const { context: { user, externalUserId } } = useContext(UserDashboardContext)
   const hasAdminRole = isAdmin(user)
   const hasTeacherRole = isTeacher(user)
 

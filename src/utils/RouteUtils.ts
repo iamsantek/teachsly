@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
 
 export function useGroupRoutes () {
-  const { user } = useContext(UserDashboardContext)
+  const { context: { user } } = useContext(UserDashboardContext)
   const groups = user?.groups
   const { id: courseId } = useParams()
 

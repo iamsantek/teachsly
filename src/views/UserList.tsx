@@ -33,7 +33,7 @@ const UserList = ({
   const [crudModalVisibility, setCrudModalVisibility] = useState<boolean>(false)
   const [viewModalVisibility, setViewModalVisibility] = useState<boolean>(false)
 
-  const { user: loggedUser } = useContext(UserDashboardContext)
+  const { context: { user: loggedUser } } = useContext(UserDashboardContext)
 
   const { id: courseId } = useParams()
 

@@ -1,9 +1,8 @@
 // @ts-nocheck
 import { useEffect, useState } from 'react'
 import { useRoutes } from 'react-router-dom'
-import { defaultDashboardContext } from './constants/DashboardContext'
+import { defaultUserContext } from './constants/DashboardContext'
 import UserService from './services/UserService'
-import { UserDashboardContext } from './contexts/UserDashboardContext'
 import Amplify from 'aws-amplify'
 import awsExports from './aws-exports'
 import { applicationRoutes, disabledAccountRoutes } from './routes'
@@ -18,20 +17,14 @@ import { SpinnerScreen } from './views/others/SpinnerScreen'
 import { CognitoUserAmplify } from '@aws-amplify/ui'
 import './App.css'
 import CourseService from './services/CourseService'
-import { GeneralInformation } from './enums/GeneralInformation'
-import { removeWhiteSpaces } from './utils/StringUtils'
+import { ApplicationContext, UserContext } from './interfaces/DashboardContext'
+import { UserDashboardContext } from './contexts/UserDashboardContext'
 
-Amplify.configure({
-  Logging: {
-    logGroupName: removeWhiteSpaces(GeneralInformation.PROJECT_NAME),
-    logStreamName: 'ANALYTICS'
-  },
-  ...awsExports
-})
+Amplify.configure(awsExports)
 
 const App = () => {
-  const [dashboardInformation, setDashboardInformation] = useState(
-    defaultDashboardContext
+  const [userSettings, setUserSettings] = useState<UserContext>(
+    defaultUserContext
   )
   const [routes, setRoutes] = useState<ApplicationRoute[]>([])
   const theme = extendTheme(defaultTheme)
@@ -66,7 +59,7 @@ const App = () => {
       setRoutes(routes)
     }
 
-    setDashboardInformation({
+    setUserSettings({
       user: {
         ...user,
         type: userType
@@ -82,11 +75,16 @@ const App = () => {
   }, [user])
 
   const routeComponent = useRoutes(routes)
-  const isContextLoaded = user && dashboardInformation.routes.length > 0
+  const isContextLoaded = user && userSettings.routes.length > 0
+
+  const dashboardContext: ApplicationContext = {
+    context: userSettings,
+    setApplicationContext: setUserSettings
+  }
 
   return (
     <ChakraProvider theme={theme}>
-      <UserDashboardContext.Provider value={dashboardInformation}>
+      <UserDashboardContext.Provider value={dashboardContext}>
         {authRoute === 'authenticated'
           ? isContextLoaded ? <DashboardLayout>{routeComponent}</DashboardLayout> : <SpinnerScreen />
           : <LogInScreen />}

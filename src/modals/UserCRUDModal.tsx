@@ -54,7 +54,7 @@ const UserCRUDModal = ({
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] = useState<boolean>(false)
 
-  const { courses } = useContext(UserDashboardContext)
+  const { context: { courses } } = useContext(UserDashboardContext)
 
   const formControls = useForm({
     defaultValues: defaultUser as UserWithMultiSelect

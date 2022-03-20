@@ -9,7 +9,7 @@ import CourseService from '../../services/CourseService'
 
 export const StudentsCourseList = () => {
   const [courses, setCourses] = useState<Course[]>([])
-  const { user } = useContext(UserDashboardContext)
+  const { context: { user } } = useContext(UserDashboardContext)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {

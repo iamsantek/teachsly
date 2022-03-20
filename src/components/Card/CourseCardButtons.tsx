@@ -15,7 +15,7 @@ interface Props {
 
 export const CourseCardButtons = ({ course: { externalId, virtualClassLink } }: Props) => {
   const color = useColorModeValue('gray.300', 'gray.700')
-  const { user } = useContext(UserDashboardContext)
+  const { context: { user } } = useContext(UserDashboardContext)
   const hasTeacherRole = isTeacher(user)
 
   return (

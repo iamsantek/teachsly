@@ -8,7 +8,7 @@ import {
   Text,
   useColorModeValue
 } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { LoadMoreButton } from '../../components/Buttons/LoadMoreButton'
 import { ContentLine } from '../../components/ContentLine/ContentLine'
@@ -16,6 +16,7 @@ import { SectionHeader } from '../../components/Headers/SectionHeader'
 import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
 import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPlaceholder'
 import { Placeholder } from '../../components/Placeholders/Placeholder'
+import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import CourseCRUDModal from '../../modals/CourseCRUDModal'
 import { Course } from '../../platform-models/Course'
 import CourseService from '../../services/CourseService'
@@ -23,6 +24,7 @@ import DateTimeUtils, { TimeFormats } from '../../utils/DateTimeUtils'
 import { findAndUpdateContent } from '../../utils/GeneralUtils'
 import { translate } from '../../utils/LanguageUtils'
 import { CommonContentLineTitle } from '../media/CommonContentLineTitle'
+import { Course as CourseAPI } from '../../API'
 
 export const CoursesList = () => {
   const [courses, setCourses] = useState<Course[]>([])
@@ -31,6 +33,8 @@ export const CoursesList = () => {
   const [selectedCourse, setSelectedCourse] = useState<Course>()
   const [nextPageResultToken, setNextPageResultToken] = useState<string | null>()
   const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(true)
+
+  const { context, setApplicationContext } = useContext(UserDashboardContext)
 
   const fetchCourses = async () => {
     const courses = await CourseService.fetchCourses({
@@ -71,10 +75,18 @@ export const CoursesList = () => {
     setCourseModalVisibility(false)
   }
 
+  const onCreate = (newCourse: Course) => {
+    setCourses([newCourse, ...courses])
+    setApplicationContext({
+      ...context,
+      courses: [newCourse as CourseAPI, ...courses as CourseAPI[]]
+    })
+  }
+
   return (
     <>
       <CourseCRUDModal
-        onCreate={(course) => setCourses([course, ...courses])}
+        onCreate={onCreate}
         isOpen={courseModalVisibility}
         onClose={onClose}
         courseToUpdate={selectedCourse}

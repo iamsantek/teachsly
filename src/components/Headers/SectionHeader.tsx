@@ -5,7 +5,7 @@ import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { CustomRouteObject } from '../../interfaces/Routes'
 
 export const SectionHeader: FC = ({ children }) => {
-  const { routes, courses } = useContext(UserDashboardContext)
+  const { context: { routes, courses } } = useContext(UserDashboardContext)
   const params = useParams()
   const route = routes?.find(
     (route) => route.path === location.pathname

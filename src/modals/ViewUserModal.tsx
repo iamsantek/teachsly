@@ -27,7 +27,7 @@ interface Props {
 
 export const ViewUserModal = ({ isOpen, onClose, user }: Props) => {
   const color = useColorModeValue('black', 'white')
-  const { courses } = useContext(UserDashboardContext)
+  const { context: { courses } } = useContext(UserDashboardContext)
   const groups = courses.filter(course => user?.groups.includes(course.externalId)).map(course => course.name)
 
   return (

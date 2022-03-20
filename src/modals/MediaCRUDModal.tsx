@@ -70,7 +70,7 @@ const MediaCRUDModal = ({
   const mediaId = watch('id')
   const { value: mediaType } = watch('type')
 
-  const { user, courses: allCourses } = useContext(UserDashboardContext)
+  const { context: { user, courses: allCourses } } = useContext(UserDashboardContext)
 
   useEffect(() => {
     const filterCourses = async () => {

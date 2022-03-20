@@ -84,7 +84,7 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
-  const { routes: applicationRoutes } = useContext(UserDashboardContext)
+  const { context: { routes: applicationRoutes } } = useContext(UserDashboardContext)
   const routes = applicationRoutes?.filter((route) => route.path !== '*')
 
   return (
@@ -124,7 +124,7 @@ interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
-  const { user } = useContext(UserDashboardContext)
+  const { context: { user } } = useContext(UserDashboardContext)
   const { signOut } = useAuthenticator()
 
   return (
