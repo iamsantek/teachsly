@@ -37,7 +37,7 @@ type Media @model
   description: String
   link: String!
   content: String
-  groups: [String]
+  groups: [String!]!
   uploadedBy: String!
 }
 
@@ -55,9 +55,9 @@ type User @model
   id: ID!
   name: String!
   email: String!
-  phone: String
+  phone: String!
   cognitoId: ID!
-  groups: [String]!
+  groups: [String!]!
   isDisabledUser: Boolean @default(value: "false")
   disabledReason: DisabledAccountReasons
 } 

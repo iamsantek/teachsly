@@ -1,5 +1,5 @@
 import { UserTypes } from '../enums/UserTypes'
-import { User } from '../platform-models/User'
+import { User } from '../API'
 import CognitoService from './aws/CognitoService'
 
 class UserGroupsService {

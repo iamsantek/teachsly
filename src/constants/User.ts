@@ -1,14 +1,15 @@
+import { CreateUserInput } from '../API'
 import { UserTypes } from '../enums/UserTypes'
-import { User, UserWithMultiSelect } from '../platform-models/User'
+import { UserWithMultiSelect } from '../platform-models/User'
 
 export const nonStudentGroups = [UserTypes.ADMIN, UserTypes.TEACHER]
 
-export const defaultUser: User | UserWithMultiSelect = {
-  id: '',
+export const defaultUser: CreateUserInput | UserWithMultiSelect = {
+  id: null,
   name: '',
   groups: [],
   email: '',
   phone: '',
-  type: UserTypes.STUDENT,
-  isDisabledUser: null
+  isDisabledUser: null,
+  cognitoId: ''
 }

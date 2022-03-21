@@ -1,17 +1,22 @@
 import { LogLevel, LogTypes } from '../enums/LogTypes'
-import { User } from '../platform-models/User'
-import { User as UserAPI } from '../models/index'
 import Logger from '../utils/Logger'
 import CognitoService from './aws/CognitoService'
 import GraphQLService from './GraphQLService'
 import { Auth } from 'aws-amplify'
 import { createUser } from '../graphql/mutations'
-import { CreateUserMutation } from '../API'
+import { CreateUserInput, CreateUserMutation } from '../API'
 import { UserTypes } from '../enums/UserTypes'
+import { User } from '../models'
 
 class AuthService {
-  public createUser = async (user: User) => {
-    const { name, email: username, phone, type } = user
+  public createUser = async (user: CreateUserInput, type: UserTypes) => {
+    const { name, email: username, phone } = user
+
+    const updatedUser: CreateUserInput = {
+      ...user,
+      name: user.name.trim(),
+      groups: [...user.groups, type]
+    }
 
     try {
       const adminCreateUserCommandResponse =
@@ -27,24 +32,24 @@ class AuthService {
         return
       }
 
-      const { userId, fullName, email } = CognitoService.parseCognitoUser(
+      const { userId } = CognitoService.parseCognitoUser(
         adminCreateUserCommandResponse?.Attributes
       )
       const createDynamoDBUserResponse = await this.persistUser(
-        user,
+        updatedUser,
         userId
       )
       const assignUserToCognitoGroupResponse =
         await CognitoService.assignUserToCognitoGroup(
           userId || '',
-          user.groups
+          updatedUser.groups as string[]
         )
 
       if (!assignUserToCognitoGroupResponse || !createDynamoDBUserResponse) {
         return
       }
 
-      return { userId, fullName, email }
+      return createDynamoDBUserResponse.createUser
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
@@ -56,7 +61,7 @@ class AuthService {
   }
 
   private persistUser = async (
-    user: User,
+    user: CreateUserInput,
     cognitoId: string | undefined
   ) => {
     if (!cognitoId) {
@@ -64,7 +69,7 @@ class AuthService {
     }
 
     const { name, email, groups, phone } = user
-    const dynamoDbBUser = new UserAPI({
+    const dynamoDbBUser = new User({
       name,
       email,
       cognitoId,

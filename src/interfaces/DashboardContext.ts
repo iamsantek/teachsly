@@ -1,5 +1,4 @@
-import { Course } from '../API'
-import { User } from '../platform-models/User'
+import { Course, User } from '../API'
 import { ApplicationRoute } from './Routes'
 
 export interface UserContext {

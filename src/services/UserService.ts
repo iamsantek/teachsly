@@ -2,23 +2,16 @@ import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { UserTypes } from '../enums/UserTypes'
 import { listUsers } from '../graphql/queries'
 import { updateUser as updateUserMutation } from '../graphql/mutations'
-import { User } from '../platform-models/User'
+import { User as UserAPI, ListUsersQuery, ModelUserFilterInput, UpdateUserInput, UpdateUserMutation, CreateUserInput } from '../API'
 import Logger from '../utils/Logger'
 import AuthService from './AuthService'
 import GraphQLService from './GraphQLService'
-import { ListUsersQuery, ModelUserFilterInput, UpdateUserInput, UpdateUserMutation } from '../API'
 import CognitoService from './aws/CognitoService'
 
 class UserService {
-  public async createUser (user: User, type: UserTypes) {
+  public async createUser (user: CreateUserInput, type: UserTypes) {
     try {
-      const updatedUser: User = {
-        ...user,
-        name: user.name.trim(),
-        groups: [...user.groups, type],
-        type
-      }
-      const cognitoUser = await AuthService.createUser(updatedUser)
+      const cognitoUser = await AuthService.createUser(user, type)
 
       if (!cognitoUser) {
         return
@@ -43,7 +36,7 @@ class UserService {
 
   private cognitoIdFilter = (cognitoId: string): ModelUserFilterInput => ({ cognitoId: { eq: cognitoId } })
 
-  public fetchUserByCognitoId = async (cognitoId: string) => {
+  public fetchUserByCognitoId = async (cognitoId: string | undefined) => {
     if (!cognitoId) {
       return
     }
@@ -54,7 +47,7 @@ class UserService {
     return users?.listUsers?.items[0]
   }
 
-  public getUserType = (user: User) => {
+  public getUserType = (user: UserAPI | undefined | null) => {
     if (!user) {
       return
     }

@@ -1,7 +1,7 @@
 import { GroupType } from '@aws-sdk/client-cognito-identity-provider'
 import { UserTypes } from '../enums/UserTypes'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
-import { User } from '../platform-models/User'
+import { User } from '../API'
 import { splitCamelCase } from './StringUtils'
 
 export const mapSelectedCognitoGroups = (
@@ -20,6 +20,6 @@ export const mapSelectedCognitoGroups = (
     })
 }
 
-export const isAdmin = (user?: User | null) => user?.type === UserTypes.ADMIN
+export const isAdmin = (user?: User | null) => user?.groups.includes(UserTypes.ADMIN)
 
-export const isTeacher = (user?: User | null) => user?.type === UserTypes.TEACHER
+export const isTeacher = (user?: User | null) => user?.groups.includes(UserTypes.TEACHER)

@@ -14,13 +14,13 @@ import { Input as CustomInput } from '../components/Inputs/Input'
 import { Select } from '../components/Inputs/Select'
 import { ModalFooter } from '../components/Modals/ModalFooter'
 import { ToastNotification } from '../observables/ToastNotification'
-import { User, UserWithMultiSelect } from '../platform-models/User'
+import { UserWithMultiSelect } from '../platform-models/User'
+import { CreateUserInput, UpdateUserInput, User } from '../API'
 import { defaultUser } from '../constants/User'
 import UserService from '../services/UserService'
 import { UserTypes } from '../enums/UserTypes'
 import { MdDangerous } from 'react-icons/md'
 import { ConfirmationDialog } from '../components/AlertDialog/ConfirmationDialog'
-import { UpdateUserInput } from '../API'
 import { AiFillCheckCircle } from 'react-icons/ai'
 import { renderCourseList, transformGroups } from '../utils/CourseUtils'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
@@ -34,13 +34,13 @@ interface Props {
   userType: UserTypes;
 }
 
-const formatUser = (user: UserWithMultiSelect): User => {
-  const groupsArray = user.groups.map((group) => group.value)
+function formatUser (user: UserWithMultiSelect) {
+  const groupsArray = user?.groups?.map((group) => group.value)
 
   return {
     ...user,
     groups: groupsArray as string[]
-  }
+  } as CreateUserInput | UpdateUserInput
 }
 
 const UserCRUDModal = ({
@@ -96,11 +96,11 @@ const UserCRUDModal = ({
   }, [isOpen])
 
   const createUser = async (user: UserWithMultiSelect) => {
-    const formattedUser = formatUser(user)
+    const formattedUser = formatUser(user) as CreateUserInput
     const createdUser = await UserService.createUser(formattedUser, userType)
 
     if (createdUser) {
-      onCreate(formattedUser)
+      onCreate(createdUser)
       ToastNotification({
         status: 'SUCCESS',
         description: userType === UserTypes.STUDENT ? 'STUDENT_CREATED_MESSAGE' : 'TEACHER_CREATED_MESSAGE'
@@ -151,7 +151,7 @@ const UserCRUDModal = ({
 
     const updatedUser = formatUser(user)
 
-    userId ? updateUser(updatedUser) : createUser(user)
+    userId ? updateUser(updatedUser as UpdateUserInput) : createUser(user)
   }
 
   const modalTitle = () => {
@@ -162,13 +162,13 @@ const UserCRUDModal = ({
 
   const toggleAccountStatus = () => {
     setShowDeleteUserConfirmation(false)
-    const user: UpdateUserInput = formatUser(watch())
+    const user = formatUser(watch())
     const disabledUser = {
       ...user,
       isDisabledUser: !isDisabledUser
     }
 
-    updateUser(disabledUser)
+    updateUser(disabledUser as UpdateUserInput)
   }
 
   return (

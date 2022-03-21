@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { translate } from '../utils/LanguageUtils'
 import { BadgeList } from '../components/Badges/BadgeList'
-import { User } from '../platform-models/User'
+import { User } from '../API'
 import { BsWhatsapp } from 'react-icons/bs'
 import { AiFillPhone } from 'react-icons/ai'
 import { useContext } from 'react'

@@ -285,7 +285,7 @@ export const schema = {
                     "name": "phone",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "cognitoId": {
@@ -299,7 +299,7 @@ export const schema = {
                     "name": "groups",
                     "isArray": true,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": [],
                     "isArrayNullable": false
                 },
@@ -396,5 +396,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "849610ec94be50a40c695f20f0118cac"
+    "version": "a29c0f88e15b383325669de617775465"
 };

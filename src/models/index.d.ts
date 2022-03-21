@@ -59,9 +59,9 @@ export declare class User {
   readonly id: string;
   readonly name: string;
   readonly email: string;
-  readonly phone?: string;
+  readonly phone: string;
   readonly cognitoId: string;
-  readonly groups: (string | null)[];
+  readonly groups: string[];
   readonly isDisabledUser?: boolean;
   readonly disabledReason?: DisabledAccountReasons | keyof typeof DisabledAccountReasons;
   readonly createdAt?: string;

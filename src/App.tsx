@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useEffect, useState } from 'react'
 import { useRoutes } from 'react-router-dom'
 import { defaultUserContext } from './constants/DashboardContext'
@@ -19,6 +18,7 @@ import './App.css'
 import CourseService from './services/CourseService'
 import { ApplicationContext, UserContext } from './interfaces/DashboardContext'
 import { UserDashboardContext } from './contexts/UserDashboardContext'
+import { Course, User } from './API'
 
 Amplify.configure(awsExports)
 
@@ -60,13 +60,10 @@ const App = () => {
     }
 
     setUserSettings({
-      user: {
-        ...user,
-        type: userType
-      },
+      user: user as User,
       routes,
-      courses,
-      externalUserId: cognitoId
+      courses: courses as Course[],
+      externalUserId: cognitoId as string
     })
   }
 
@@ -81,6 +78,8 @@ const App = () => {
     context: userSettings,
     setApplicationContext: setUserSettings
   }
+
+  console.log(authRoute)
 
   return (
     <ChakraProvider theme={theme}>

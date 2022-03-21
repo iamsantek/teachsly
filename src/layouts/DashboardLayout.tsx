@@ -27,7 +27,6 @@ import { FiMenu, FiBell, FiChevronDown } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
 import UserService from '../services/UserService'
-import { User } from '../platform-models/User'
 import { NavLink } from 'react-router-dom'
 import { Footer } from '../components/Footers/Footer'
 import DarkModeSwitch from '../components/Switches/DarkModeSwitch'
@@ -176,7 +175,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                     {user?.name as string}
                   </Text>
                   <Text fontSize="xs">
-                    {UserService.getUserType(user as User)}
+                    {UserService.getUserType(user)}
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
