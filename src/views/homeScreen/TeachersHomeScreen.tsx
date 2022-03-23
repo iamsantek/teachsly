@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import { DisabledAccountWarning } from '../../components/Alert/DisabledAccountWarning'
 import { SectionHeader } from '../../components/Headers/SectionHeader'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
-import { StudentsCourseList } from '../courses/StudentsCourseList'
+import { CourseList } from '../courses/CourseList'
 
 export const TeachersHomeScreen = () => {
   const { context: { user } } = useContext(UserDashboardContext)
@@ -11,7 +11,7 @@ export const TeachersHomeScreen = () => {
     <Stack>
       {user?.isDisabledUser && <DisabledAccountWarning />}
       <SectionHeader />
-      <StudentsCourseList />
+      <CourseList />
     </Stack>
   )
 }

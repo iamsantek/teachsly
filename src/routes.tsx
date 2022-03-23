@@ -7,7 +7,7 @@ import { StudentsHomeScreen } from './views/homeScreen/StudentsHomeScreen'
 import { AiFillFolder, AiFillHome } from 'react-icons/ai'
 import { BsFillCalendar2WeekFill, BsFillPeopleFill } from 'react-icons/bs'
 import { AdminHomeScreen } from './views/homeScreen/AdminHomeScreen'
-import { CoursesList } from './views/courses/CoursesList'
+import { AdminCourseList } from './views/courses/AdminCourseList'
 import { StudentsList } from './views/students/StudentsList'
 import { TeachersHomeScreen } from './views/homeScreen/TeachersHomeScreen'
 import { translate } from './utils/LanguageUtils'
@@ -32,7 +32,7 @@ const adminCoursesScreen: ApplicationRoute = {
   name: translate('MENU_COURSES'),
   icon: BsFillCalendar2WeekFill,
   path: '/courses',
-  element: <CoursesList />
+  element: <AdminCourseList />
 }
 
 const students: ApplicationRoute = {

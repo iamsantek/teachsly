@@ -7,12 +7,10 @@ import { Placeholder } from '../../components/Placeholders/Placeholder'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import CourseService from '../../services/CourseService'
 
-export const StudentsCourseList = () => {
+export const CourseList = () => {
   const [currentCourses, setCurrentCourses] = useState<Course[]>([])
-  const { context: { user } } = useContext(UserDashboardContext)
+  const { context: { user, courses } } = useContext(UserDashboardContext)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-
-  const { context: { courses } } = useContext(UserDashboardContext)
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -21,10 +19,9 @@ export const StudentsCourseList = () => {
       }
 
       const enrolledCourses = CourseService.getEnrolledCourses(user?.groups as string[])
-      const userCourses = courses.filter(course => enrolledCourses.includes(course.externalId))
-      const activeCourses = userCourses?.filter(course => course?.isActive)
+      const userCourses = courses.filter(course => enrolledCourses.includes(course.externalId) && course.isActive)
 
-      setCurrentCourses(activeCourses as Course[] || [])
+      setCurrentCourses(userCourses || [])
       setIsLoading(false)
     }
 

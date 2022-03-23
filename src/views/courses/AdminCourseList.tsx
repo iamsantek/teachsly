@@ -26,7 +26,7 @@ import { translate } from '../../utils/LanguageUtils'
 import { CommonContentLineTitle } from '../media/CommonContentLineTitle'
 import { Course as CourseAPI } from '../../API'
 
-export const CoursesList = () => {
+export const AdminCourseList = () => {
   const [courses, setCourses] = useState<Course[]>([])
   const [courseModalVisibility, setCourseModalVisibility] =
     useState<boolean>(false)

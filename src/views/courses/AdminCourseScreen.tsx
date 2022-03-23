@@ -1,7 +1,7 @@
 import { Stack } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { useGroupRoutes } from '../../utils/RouteUtils'
-import { CoursesList } from './CoursesList'
+import { AdminCourseList } from './AdminCourseList'
 
 export const CourseList = () => {
   const { isAllowedRoute } = useGroupRoutes()
@@ -15,7 +15,7 @@ export const CourseList = () => {
   
   return (
     <Stack spacing={4}>
-      <CoursesList />
+      <AdminCourseList />
     </Stack>
   )
 }
