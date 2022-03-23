@@ -44,7 +44,7 @@ const App = () => {
   }
 
   const fetchRoutes = async (cognitoUser: CognitoUserAmplify) => {
-    const cognitoId = cognitoUser?.attributes?.sub
+    const cognitoId = cognitoUser?.username
 
     const userResponse = UserService.fetchUserByCognitoId(cognitoId)
     const courseResponse = fetchCourses()
@@ -68,8 +68,11 @@ const App = () => {
   }
 
   useEffect(() => {
-    fetchRoutes(user)
-  }, [user])
+    if (authRoute === 'authenticated') {
+      console.log(user)
+      fetchRoutes(user)
+    }
+  }, [authRoute])
 
   const routeComponent = useRoutes(routes)
   const isContextLoaded = user && userSettings.routes.length > 0
@@ -78,8 +81,6 @@ const App = () => {
     context: userSettings,
     setApplicationContext: setUserSettings
   }
-
-  console.log(authRoute)
 
   return (
     <ChakraProvider theme={theme}>

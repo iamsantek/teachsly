@@ -48,13 +48,7 @@ class UserService {
   }
 
   public getUserType = (user: UserAPI | undefined | null) => {
-    if (!user) {
-      return
-    }
-
-    const { groups } = user
-
-    return Object.values(UserTypes).find((group) => groups?.includes(group))
+    return Object.values(UserTypes).find((groupType) => user?.groups?.includes(groupType))
   }
 
   private fetchUsers = async (filter: ModelUserFilterInput, nextToken?: string | null) => {
