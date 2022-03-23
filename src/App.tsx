@@ -19,6 +19,7 @@ import CourseService from './services/CourseService'
 import { ApplicationContext, UserContext } from './interfaces/DashboardContext'
 import { UserDashboardContext } from './contexts/UserDashboardContext'
 import { Course, User } from './API'
+import { isDevEnvironment } from './utils/EnvironmentUtils'
 
 Amplify.configure(awsExports)
 
@@ -30,6 +31,9 @@ const App = () => {
   const theme = extendTheme(defaultTheme)
 
   const { user, route: authRoute } = useAuthenticator((context) => [context.user])
+
+  console.log(`ENV: ${process.env.ENVIRONMENT}`)
+  console.log(isDevEnvironment())
 
   const fetchCourses = async () => {
     if (!user) {
