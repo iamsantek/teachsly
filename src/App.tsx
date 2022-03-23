@@ -33,8 +33,6 @@ const App = () => {
   const { user, route: authRoute } = useAuthenticator((context) => [context.user])
 
   console.log(process.env)
-  console.log(`ENV: ${process.env.ENVIRONMENT}`)
-  console.log(isDevEnvironment())
 
   const fetchCourses = async () => {
     if (!user) {
