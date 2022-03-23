@@ -31,7 +31,7 @@ const App = () => {
 
   const { user, route: authRoute } = useAuthenticator((context) => [context.user])
 
-  console.log(process.env.GRAPHQL_API_ENDPOINT)
+  console.log(process.env)
 
   const fetchCourses = async () => {
     if (!user) {
