@@ -19,7 +19,6 @@ import CourseService from './services/CourseService'
 import { ApplicationContext, UserContext } from './interfaces/DashboardContext'
 import { UserDashboardContext } from './contexts/UserDashboardContext'
 import { Course, User } from './API'
-import { isDevEnvironment } from './utils/EnvironmentUtils'
 
 Amplify.configure(awsExports)
 
