@@ -19,8 +19,12 @@ import CourseService from './services/CourseService'
 import { ApplicationContext, UserContext } from './interfaces/DashboardContext'
 import { UserDashboardContext } from './contexts/UserDashboardContext'
 import { Course, User } from './API'
+import { GRAPHQL_ENDPOINT } from './constants/Environment'
 
-Amplify.configure(awsExports)
+Amplify.configure({
+  ...awsExports,
+  aws_appsync_graphqlEndpoint: GRAPHQL_ENDPOINT
+})
 
 const App = () => {
   const [userSettings, setUserSettings] = useState<UserContext>(
@@ -30,8 +34,6 @@ const App = () => {
   const theme = extendTheme(defaultTheme)
 
   const { user, route: authRoute } = useAuthenticator((context) => [context.user])
-
-  console.log(process.env)
 
   const fetchCourses = async () => {
     if (!user) {

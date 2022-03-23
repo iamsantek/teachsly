@@ -1,10 +1,12 @@
 import Amplify, { Logger, AWSCloudWatchProvider } from 'aws-amplify'
+import { BACKEND_ENV } from '../../constants/Environment'
 import { AnalyticsEvent } from '../../enums/Analytics'
 import { GeneralInformation } from '../../enums/GeneralInformation'
+import { BackendEnvironments } from '../../interfaces/BackendEnvironments'
 
 class CloudWatchService {
   public recordEvent = (event: AnalyticsEvent) => {
-    if (process.env.NODE_ENV === 'development') {
+    if (BACKEND_ENV === BackendEnvironments.QA) {
       return
     }
 
