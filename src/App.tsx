@@ -26,13 +26,6 @@ Amplify.configure({
   aws_appsync_graphqlEndpoint: GRAPHQL_ENDPOINT
 })
 
-Auth.configure({
-  region: awsExports.aws_cognito_region,
-  userPoolId: awsExports.aws_user_pools_id,
-  userPoolWebClientId: awsExports.aws_user_pools_web_client_id,
-  endpoint: AUTH_URL
-})
-
 const App = () => {
   const [userSettings, setUserSettings] = useState<UserContext>(
     defaultUserContext
