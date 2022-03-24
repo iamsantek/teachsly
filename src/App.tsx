@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRoutes } from 'react-router-dom'
 import { defaultUserContext } from './constants/DashboardContext'
 import UserService from './services/UserService'
-import Amplify from 'aws-amplify'
+import Amplify, { Auth } from 'aws-amplify'
 import awsExports from './aws-exports'
 import { applicationRoutes, disabledAccountRoutes } from './routes'
 import ToastWrapper from './components/Toast/ToastWrapper'
@@ -19,11 +19,18 @@ import CourseService from './services/CourseService'
 import { ApplicationContext, UserContext } from './interfaces/DashboardContext'
 import { UserDashboardContext } from './contexts/UserDashboardContext'
 import { Course, User } from './API'
-import { GRAPHQL_ENDPOINT } from './constants/Environment'
+import { AUTH_URL, GRAPHQL_ENDPOINT } from './constants/Environment'
 
 Amplify.configure({
   ...awsExports,
   aws_appsync_graphqlEndpoint: GRAPHQL_ENDPOINT
+})
+
+Auth.configure({
+  region: awsExports.aws_cognito_region,
+  userPoolId: awsExports.aws_user_pools_id,
+  userPoolWebClientId: awsExports.aws_user_pools_web_client_id,
+  endpoint: AUTH_URL
 })
 
 const App = () => {
