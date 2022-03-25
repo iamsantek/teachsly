@@ -6,7 +6,7 @@ import Logger from '../utils/Logger'
 import GraphQLService from './GraphQLService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import StorageService from './aws/StorageService'
-import { DeleteMediaMutation, ListMediaQuery, UpdateMediaMutation } from '../API'
+import { DeleteMediaMutation, ListMediaQuery, MediaType, UpdateMediaMutation } from '../API'
 
 class MediaService {
   public fetchMedias = async (
@@ -62,6 +62,16 @@ class MediaService {
 
   public generateSignedUrl = async (key: string) => {
     return StorageService.getSignedUrl(key)
+  }
+
+  public getMediaLink = async (key: string, type: MediaType) => {
+    if (type === MediaType.LINK) {
+      return key
+    }
+
+    const signedUrl = await this.generateSignedUrl(key)
+
+    return signedUrl?.url as string
   }
 
   public fetchMediaByCourse = async (courseName: string) => {

@@ -28,8 +28,9 @@ export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
   const onClick = async (link: string) => {
     setIsLoading(true)
 
-    const signedUrl = await MediaService.generateSignedUrl(link)
-    window.open(signedUrl?.url, '_blank')
+    const signedUrl = await MediaService.getMediaLink(link, media.type)
+
+    window.open(signedUrl, '_blank')
     setIsLoading(false)
   }
 
