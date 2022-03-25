@@ -10,7 +10,6 @@ import {
   Stack
 } from '@chakra-ui/react'
 import { Media } from '../interfaces/Media'
-import { MediaType } from '../models'
 import MediaService from '../services/MediaService'
 import { translate } from '../utils/LanguageUtils'
 import { BiLinkExternal } from 'react-icons/bi'
@@ -26,13 +25,11 @@ interface Props {
 export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const onClick = (link: string, type: MediaType) => {
+  const onClick = async (link: string) => {
     setIsLoading(true)
-    const isExternalLink = [MediaType.LINK].includes(
-      type
-    )
 
-    isExternalLink ? window.open(link, '_blank') : MediaService.generateSignedUrl(link)
+    const signedUrl = await MediaService.generateSignedUrl(link)
+    window.open(signedUrl?.url, '_blank')
     setIsLoading(false)
   }
 
@@ -67,7 +64,7 @@ export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
               <Button
                 layerStyle={'base'}
                 rightIcon={<BiLinkExternal />}
-                onClick={() => onClick(media?.link, media?.type)}
+                onClick={() => onClick(media?.link)}
                 isLoading={isLoading}
                 loadingText={translate('PROCESSING')}
               >

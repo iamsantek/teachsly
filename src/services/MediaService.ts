@@ -61,11 +61,7 @@ class MediaService {
   }
 
   public generateSignedUrl = async (key: string) => {
-    const signedURL = await StorageService.getSignedUrl(key)
-
-    if (signedURL) {
-      window.open(signedURL, '_blank')
-    }
+    return StorageService.getSignedUrl(key)
   }
 
   public fetchMediaByCourse = async (courseName: string) => {

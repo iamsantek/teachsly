@@ -7,6 +7,7 @@ import { Media as PlatformMedia } from '../../interfaces/Media'
 import { Media } from '../../models'
 import Logger from '../../utils/Logger'
 import GraphQLService from '../GraphQLService'
+import CloudFrontService from './CloudFrontService'
 
 class StorageService {
   private getExtensionType = (file: File) =>
@@ -14,7 +15,7 @@ class StorageService {
 
   public getSignedUrl = async (key: string) => {
     try {
-      const signedURL = await Storage.get(key)
+      const signedURL = await CloudFrontService.getCDNUrl(key)
 
       return signedURL
     } catch (error) {
