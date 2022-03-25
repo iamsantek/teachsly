@@ -32,6 +32,7 @@ import { Footer } from '../components/Footers/Footer'
 import DarkModeSwitch from '../components/Switches/DarkModeSwitch'
 import { translate } from '../utils/LanguageUtils'
 import { useAuthenticator } from '@aws-amplify/ui-react'
+import { ApplicationRoute, CustomRouteObject } from '../interfaces/Routes'
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
@@ -84,7 +85,7 @@ interface SidebarProps extends BoxProps {
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const { context: { routes: applicationRoutes } } = useContext(UserDashboardContext)
-  const routes = applicationRoutes?.filter((route) => route.path !== '*')
+  const routes = applicationRoutes?.filter((route: ApplicationRoute) => (route as CustomRouteObject).name)
 
   return (
     <Box
