@@ -7,7 +7,6 @@ import Logger from '../utils/Logger'
 import GraphQLService from './GraphQLService'
 import CognitoService from './aws/CognitoService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
-import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
 import { Course as CourseAPI, CreateCourseInput, CreateCourseMutation, ListCoursesQuery, UpdateCourseMutation } from '../API'
 import { UserTypes } from '../enums/UserTypes'
 import { generateExternalId } from '../utils/CourseUtils'
@@ -21,7 +20,7 @@ interface FetchCourseParams {
 class CourseService {
   public fetchCourses = async ({
     nextToken = null,
-    limit = GRAPHQL_MAX_PAGE_RESULTS,
+    limit = undefined,
     filterDisabledCourses = true
   }: FetchCourseParams) => {
     return GraphQLService.fetchQuery<ListCoursesQuery>({

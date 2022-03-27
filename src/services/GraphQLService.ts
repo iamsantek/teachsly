@@ -4,7 +4,6 @@ import {
   GraphQLResult
 } from '@aws-amplify/api-graphql'
 import { API } from 'aws-amplify'
-import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import Logger from '../utils/Logger'
@@ -50,7 +49,7 @@ class GraphQLService {
   public fetchQuery = async <T>({
     query,
     input = undefined,
-    limit = GRAPHQL_MAX_PAGE_RESULTS,
+    limit = undefined,
     nextToken = undefined,
     filter = undefined
   }: QueryParameters): Promise<T | undefined> => {

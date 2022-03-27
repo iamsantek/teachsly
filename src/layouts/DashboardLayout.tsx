@@ -9,7 +9,6 @@ import {
   VStack,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
@@ -27,7 +26,7 @@ import { FiMenu, FiBell, FiChevronDown } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
 import UserService from '../services/UserService'
-import { NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Footer } from '../components/Footers/Footer'
 import DarkModeSwitch from '../components/Switches/DarkModeSwitch'
 import { translate } from '../utils/LanguageUtils'
@@ -42,13 +41,15 @@ interface NavItemProps extends FlexProps {
 }
 
 const NavItem = ({ icon, onClose, children, path, ...rest }: NavItemProps) => {
+  const navigate = useNavigate()
   return (
-    <Link
-      as={NavLink}
-      to={path as string}
+    <Box
       style={{ textDecoration: 'none', fontWeight: 800 }}
       _focus={{ boxShadow: 'none' }}
-      onClick={() => onClose()}
+      onClick={() => {
+        navigate(path as string)
+        onClose()
+      }}
     >
       <Flex
         align="center"
@@ -75,7 +76,7 @@ const NavItem = ({ icon, onClose, children, path, ...rest }: NavItemProps) => {
         )}
         {children}
       </Flex>
-    </Link>
+    </Box>
   )
 }
 
