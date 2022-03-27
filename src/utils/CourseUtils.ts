@@ -1,10 +1,9 @@
-import { Course } from '../API'
+import { Course, CreateCourseInput } from '../API'
 import { UserTypes } from '../enums/UserTypes'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import DateTimeUtils, { TimeFormats } from './DateTimeUtils'
-import { Course as CourseAPI } from '../platform-models/Course'
 
-export const generateExternalId = (course: Course | CourseAPI) => `${course.name.replace(/\s+/g, '')}${course.scheduleYear}`
+export const generateExternalId = (course: CreateCourseInput | Course) => `${course.name.replace(/\s+/g, '')}${course.scheduleYear}`
 
 export const renderCourseList = (courses: Course[], additionalGroups?: string[]): MultiSelectOption[] => {
   const groupList = courses.map(course => {

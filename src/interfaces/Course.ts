@@ -1,4 +1,4 @@
-import { Course } from '../platform-models/Course'
+import { CreateCourseInput } from '../API';
 import { MultiSelectOption } from './MultiSelectOption'
 
 export interface CourseSchedule {
@@ -7,7 +7,7 @@ export interface CourseSchedule {
   scheduleDates: string[];
 }
 
-export interface CourseWithMultiSelect extends Omit<Course, 'scheduleDates' | 'scheduleYear'> {
+export interface CourseWithMultiSelect extends Omit<CreateCourseInput, 'scheduleDates' | 'scheduleYear'> {
   scheduleDates: MultiSelectOption[];
   scheduleYear: MultiSelectOption;
 }

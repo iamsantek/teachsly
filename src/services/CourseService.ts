@@ -2,14 +2,13 @@ import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { listCourses } from '../graphql/queries'
 import { createCourse, updateCourse } from '../graphql/mutations'
 import { Course } from '../models'
-import { Course as PlatformCourse } from '../platform-models/Course'
 import DateTimeUtils, { TimeFormats } from '../utils/DateTimeUtils'
 import Logger from '../utils/Logger'
 import GraphQLService from './GraphQLService'
 import CognitoService from './aws/CognitoService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import { GRAPHQL_MAX_PAGE_RESULTS } from '../constants/GraphQL'
-import { CreateCourseInput, ListCoursesQuery, UpdateCourseMutation } from '../API'
+import { Course as CourseAPI, CreateCourseInput, CreateCourseMutation, ListCoursesQuery, UpdateCourseMutation } from '../API'
 import { UserTypes } from '../enums/UserTypes'
 import { generateExternalId } from '../utils/CourseUtils'
 
@@ -43,7 +42,7 @@ class CourseService {
     // TODO: Implement delete course logic
   }
 
-  public createCourse = async (courseCreation: PlatformCourse) => {
+  public createCourse = async (courseCreation: CreateCourseInput) => {
     const scheduleStartTime = DateTimeUtils.formateHour(
       courseCreation.scheduleStartTime,
       TimeFormats.AWSTime
@@ -60,7 +59,7 @@ class CourseService {
       scheduleDates,
       scheduleStartTime,
       scheduleEndTime,
-      virtualClassLink: courseCreation.virtualClassLink,
+      virtualClassLink: courseCreation.virtualClassLink as string,
       externalId: groupExternalId,
       scheduleYear: Number(courseCreation.scheduleYear)
     })
@@ -68,7 +67,7 @@ class CourseService {
     const createCognitoGroupResponse = await CognitoService.createCognitoGroup(groupExternalId)
 
     if (createCognitoGroupResponse?.Group) {
-      return GraphQLService.fetchQuery<CreateCourseInput>({
+      return GraphQLService.fetchQuery<CreateCourseMutation>({
         query: createCourse,
         input: course
       })
@@ -81,14 +80,14 @@ class CourseService {
     )
   }
 
-  public updateCourse = async (course: Course) => {
+  public updateCourse = async (course: CourseAPI) => {
     try {
       const models = await GraphQLService.fetchQuery<UpdateCourseMutation>({
         query: updateCourse,
         input: removeNotAllowedPropertiesFromModel(course)
       })
 
-      return (models?.updateCourse as Course) || []
+      return (models?.updateCourse as CourseAPI) || []
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
@@ -97,10 +96,6 @@ class CourseService {
         error
       )
     }
-
-    return GraphQLService.fetchQuery({
-      query: updateCourse
-    })
   }
 
   private courseNamesFilter = (courseNames: string[]) => courseNames.map(course => {

@@ -9,7 +9,7 @@ import {
   useColorModeValue
 } from '@chakra-ui/react'
 import { useState, useEffect, useContext } from 'react'
-import { AiOutlinePlus } from 'react-icons/ai'
+import { AiFillFolder, AiOutlinePlus } from 'react-icons/ai'
 import { LoadMoreButton } from '../../components/Buttons/LoadMoreButton'
 import { ContentLine } from '../../components/ContentLine/ContentLine'
 import { SectionHeader } from '../../components/Headers/SectionHeader'
@@ -18,23 +18,32 @@ import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPla
 import { Placeholder } from '../../components/Placeholders/Placeholder'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import CourseCRUDModal from '../../modals/CourseCRUDModal'
-import { Course } from '../../platform-models/Course'
 import CourseService from '../../services/CourseService'
 import DateTimeUtils, { TimeFormats } from '../../utils/DateTimeUtils'
 import { findAndUpdateContent } from '../../utils/GeneralUtils'
 import { translate } from '../../utils/LanguageUtils'
 import { CommonContentLineTitle } from '../media/CommonContentLineTitle'
 import { Course as CourseAPI } from '../../API'
+import { ViewCourseModal } from '../../modals/ViewCourseModal'
+import { useNavigate } from 'react-router-dom'
+import { ButtonSquare } from '../../components/Buttons/SquareButton'
+import { MdGroups } from 'react-icons/md'
+import { generateRandomId } from '../../utils/StringUtils'
+import { TooltipHelper } from '../../components/Tooltips/Tooltip'
+import { generateMediaByCourseRoute, generateStudentsByCourseRoute } from '../../utils/RouteUtils'
 
 export const AdminCourseList = () => {
-  const [courses, setCourses] = useState<Course[]>([])
-  const [courseModalVisibility, setCourseModalVisibility] =
+  const [courses, setCourses] = useState<CourseAPI[]>([])
+  const [courseCRUDModalVisibility, setCourseCRUDModalVisibility] =
     useState<boolean>(false)
-  const [selectedCourse, setSelectedCourse] = useState<Course>()
+  const [viewCourseModalVisibility, setViewCourseModalVisibility] = useState<boolean>(false)
+  const [selectedCourse, setSelectedCourse] = useState<CourseAPI>()
   const [nextPageResultToken, setNextPageResultToken] = useState<string | null>()
   const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(true)
 
   const { context, setApplicationContext } = useContext(UserDashboardContext)
+
+  const navigate = useNavigate()
 
   const fetchCourses = async () => {
     const courses = await CourseService.fetchCourses({
@@ -45,7 +54,7 @@ export const AdminCourseList = () => {
     setIsLoadingNewPage(false)
 
     setCourses((previousCourses) =>
-      previousCourses.concat((courses?.listCourses?.items as Course[]) || [])
+      previousCourses.concat((courses?.listCourses?.items as CourseAPI[]) || [])
     )
   }
 
@@ -53,12 +62,12 @@ export const AdminCourseList = () => {
     fetchCourses()
   }, [])
 
-  const onEdit = (course: Course) => {
+  const onEdit = (course: CourseAPI) => {
     setSelectedCourse(course)
-    setCourseModalVisibility(true)
+    setCourseCRUDModalVisibility(true)
   }
 
-  const onUpdate = (updatedCourse: Course) => {
+  const onUpdate = (updatedCourse: CourseAPI) => {
     const updatedCourses = findAndUpdateContent(updatedCourse, courses)
     setCourses(updatedCourses)
   }
@@ -70,12 +79,12 @@ export const AdminCourseList = () => {
 
   const color = useColorModeValue('gray.500', 'white')
 
-  const onClose = () => {
+  const onClose = (modal: 'ViewCourseModal' | 'CourseCRUDModal') => {
     setSelectedCourse(undefined)
-    setCourseModalVisibility(false)
+    modal === 'ViewCourseModal' ? setViewCourseModalVisibility(false) : setCourseCRUDModalVisibility(false)
   }
 
-  const onCreate = (newCourse: Course) => {
+  const onCreate = (newCourse: CourseAPI) => {
     setCourses([newCourse, ...courses])
     setApplicationContext({
       ...context,
@@ -85,10 +94,15 @@ export const AdminCourseList = () => {
 
   return (
     <>
+      <ViewCourseModal
+      isOpen={viewCourseModalVisibility}
+      onClose={() => onClose('ViewCourseModal')}
+      course={selectedCourse as CourseAPI}
+      />
       <CourseCRUDModal
         onCreate={onCreate}
-        isOpen={courseModalVisibility}
-        onClose={onClose}
+        isOpen={courseCRUDModalVisibility}
+        onClose={() => onClose('CourseCRUDModal')}
         courseToUpdate={selectedCourse}
         onUpdate={onUpdate}
       />
@@ -97,7 +111,7 @@ export const AdminCourseList = () => {
           <Center>
             <Button
               leftIcon={<AiOutlinePlus />}
-              onClick={() => setCourseModalVisibility(true)}
+              onClick={() => setCourseCRUDModalVisibility(true)}
               colorScheme="brand"
             >
               {translate('ADD_COURSE_BUTTON')}
@@ -107,7 +121,7 @@ export const AdminCourseList = () => {
         <Box>
           {courses.map((course) => {
             const days = DateTimeUtils.shortDays(
-              course.scheduleDates
+              course.scheduleDates as number[]
             )
             const startTime = DateTimeUtils.formateHour(
               course.scheduleStartTime,
@@ -118,12 +132,17 @@ export const AdminCourseList = () => {
               TimeFormats.TwentyFourHours
             )
 
+            const customButtons = [
+              <TooltipHelper key={generateRandomId()} label={translate('VIEW_STUDENTS')}><ButtonSquare onClick={() => navigate(generateStudentsByCourseRoute(course.externalId))} icon={<MdGroups />} /></TooltipHelper>,
+              <TooltipHelper key={generateRandomId()} label={translate('VIEW_MEDIAS')}><ButtonSquare onClick={() => navigate(generateMediaByCourseRoute(course.externalId))} icon={<AiFillFolder />} /></TooltipHelper>
+            ]
+
             return (
               <ContentLine
                 key={course.id}
                 leftIcon={<Avatar name={course.name} />}
-                onView={() => console.log()}
                 onEdit={() => onEdit(course)}
+                customButtons={customButtons}
               >
                 <CommonContentLineTitle title={course.name}>
                   <Text

@@ -73,7 +73,6 @@ const App = () => {
 
   useEffect(() => {
     if (authRoute === 'authenticated') {
-      console.log(user)
       fetchRoutes(user)
     }
   }, [authRoute])

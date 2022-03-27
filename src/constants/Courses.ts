@@ -1,8 +1,8 @@
 import { CourseWithMultiSelect } from '../interfaces/Course'
-import { Course } from '../platform-models/Course'
+import { CreateCourseInput } from '../API'
 
 const currentYear = new Date().getFullYear().toString()
-export const defaultCourse: Course | CourseWithMultiSelect = {
+export const defaultCourse: CreateCourseInput | CourseWithMultiSelect = {
   id: '',
   name: '',
   scheduleDates: [],

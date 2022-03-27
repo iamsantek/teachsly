@@ -11,7 +11,6 @@ import { translate } from '../utils/LanguageUtils'
 import { Input as CustomInput } from '../components/Inputs/Input'
 import { defaultCourse } from '../constants/Courses'
 import CourseService from '../services/CourseService'
-import { Course, Course as PlatformCourse } from '../platform-models/Course'
 import { FormProvider, useForm } from 'react-hook-form'
 import DateTimeUtils from '../utils/DateTimeUtils'
 import { ModalFooter } from '../components/Modals/ModalFooter'
@@ -19,13 +18,14 @@ import { Select } from '../components/Inputs/Select'
 import { CourseWithMultiSelect } from '../interfaces/Course'
 import { ToastNotification } from '../observables/ToastNotification'
 import { mapSingleValueToMultiSelectOption, renderMultiSelectOptions } from '../utils/SelectUtils'
+import { Course as CourseAPI, CreateCourseInput } from '../API'
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onCreate: (course: PlatformCourse) => void;
-  onUpdate: (course: PlatformCourse) => void;
-  courseToUpdate?: PlatformCourse;
+  onCreate: (course: CourseAPI) => void;
+  onUpdate: (course: CourseAPI) => void;
+  courseToUpdate?: CourseAPI;
 }
 
 const daysOfTheWeek = DateTimeUtils.daysOfTheWeek()
@@ -56,7 +56,7 @@ const CourseCRUDModal = ({
     if (courseToUpdate) {
       const course: CourseWithMultiSelect = {
         ...courseToUpdate,
-        scheduleDates: DateTimeUtils.dayIndexesToMultiSelectOption(courseToUpdate.scheduleDates),
+        scheduleDates: DateTimeUtils.dayIndexesToMultiSelectOption(courseToUpdate.scheduleDates as number[]),
         scheduleYear: mapSingleValueToMultiSelectOption(String(courseToUpdate.scheduleYear))
       }
 
@@ -73,7 +73,7 @@ const CourseCRUDModal = ({
   const createCourse = async (course: CourseWithMultiSelect) => {
     setIsLoading(true)
 
-    const updatedCourse: Course = {
+    const updatedCourse: CreateCourseInput = {
       ...course,
       scheduleDates: course.scheduleDates.map((date) => Number(date.value)) as number[],
       scheduleYear: Number(course.scheduleYear.value)
@@ -81,8 +81,8 @@ const CourseCRUDModal = ({
 
     const createdCourse = await CourseService.createCourse(updatedCourse)
 
-    if (createdCourse) {
-      onCreate(updatedCourse)
+    if (createdCourse?.createCourse) {
+      onCreate(createdCourse?.createCourse)
       onClose()
       setIsLoading(false)
 
@@ -93,7 +93,7 @@ const CourseCRUDModal = ({
     }
   }
 
-  const formatCourse = (course: CourseWithMultiSelect): Course => ({
+  const formatCourse = (course: CourseWithMultiSelect): CourseAPI | CreateCourseInput => ({
     ...course,
     scheduleDates: course.scheduleDates.map((day) => Number(day.value)) as number[],
     scheduleYear: Number(course.scheduleYear.value)
@@ -102,11 +102,11 @@ const CourseCRUDModal = ({
   const updateCourse = async (course: CourseWithMultiSelect) => {
     const updatedCourse = formatCourse(course)
     const courseSuccessfullyEdited = await CourseService.updateCourse(
-      updatedCourse as Course
+      updatedCourse as CourseAPI
     )
 
     if (courseSuccessfullyEdited) {
-      onUpdate(updatedCourse)
+      onUpdate(courseSuccessfullyEdited)
       onClose()
 
       ToastNotification({

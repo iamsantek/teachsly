@@ -89,7 +89,9 @@ export enum LanguageES {
   COURSE_YEAR = 'Año de cursada',
   GO_TO_VIRTUAL_CLASS = 'Ir a la clase virtual',
   GO_TO_STUDENTS_LIST = 'Ver lista de estudiantes',
-  LOADING='Cargando...'
+  LOADING='Cargando...',
+  VIEW_STUDENTS='Ver estudiantes',
+  VIEW_MEDIAS='Ver contenidos'
 }
 
 export enum LanguageEN {
@@ -178,5 +180,7 @@ export enum LanguageEN {
   COURSE_YEAR = 'Course year',
   GO_TO_VIRTUAL_CLASS = 'Go to virtual class',
   GO_TO_STUDENTS_LIST = 'See students list',
-  LOADING='Loading...'
+  LOADING='Loading...',
+  VIEW_STUDENTS='Students list',
+  VIEW_MEDIAS='Medias list'
 }

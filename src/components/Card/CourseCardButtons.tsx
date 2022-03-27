@@ -7,6 +7,7 @@ import { Course } from '../../API'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { isTeacher } from '../../utils/CognitoGroupsUtils'
 import { translate } from '../../utils/LanguageUtils'
+import { generateMediaByCourseRoute, generateStudentsByCourseRoute } from '../../utils/RouteUtils'
 import { TooltipHelper } from '../Tooltips/Tooltip'
 
 interface Props {
@@ -23,7 +24,7 @@ export const CourseCardButtons = ({ course: { externalId, virtualClassLink } }: 
       <TooltipHelper label={translate('SEE_CONTENT')}>
         <Box
           as={NavLink}
-          to={`/courses/${externalId.replace(/\s/g, '')}`}
+          to={generateMediaByCourseRoute(externalId)}
         >
           <IconButton
             icon={<AiFillFolder />}
@@ -55,7 +56,7 @@ export const CourseCardButtons = ({ course: { externalId, virtualClassLink } }: 
         <TooltipHelper label={translate('GO_TO_STUDENTS_LIST')}>
           <Box
           as={NavLink}
-          to={`/courses/${externalId}/students`}
+          to={generateStudentsByCourseRoute(externalId)}
           >
             <IconButton
               icon={<BsFillPeopleFill />}
