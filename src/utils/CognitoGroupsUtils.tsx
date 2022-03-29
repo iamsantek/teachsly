@@ -23,3 +23,5 @@ export const mapSelectedCognitoGroups = (
 export const isAdmin = (user?: User | null) => user?.groups.includes(UserTypes.ADMIN)
 
 export const isTeacher = (user?: User | null) => user?.groups.includes(UserTypes.TEACHER)
+
+export const isStudent = (user?: User | null) => user?.groups.includes(UserTypes.STUDENT)
