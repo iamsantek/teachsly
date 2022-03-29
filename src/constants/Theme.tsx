@@ -1,6 +1,6 @@
 
 export const defaultTheme = {
-  initialColorMode: 'dark',
+  initialColorMode: 'light',
   useSystemColorMode: false,
   colors: {
     brand: {

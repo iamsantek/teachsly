@@ -28,7 +28,7 @@ import { UserDashboardContext } from '../contexts/UserDashboardContext'
 import UserService from '../services/UserService'
 import { useNavigate } from 'react-router-dom'
 import { Footer } from '../components/Footers/Footer'
-import DarkModeSwitch from '../components/Switches/DarkModeSwitch'
+// import DarkModeSwitch from '../components/Switches/DarkModeSwitch'
 import { translate } from '../utils/LanguageUtils'
 import { useAuthenticator } from '@aws-amplify/ui-react'
 import { ApplicationRoute, CustomRouteObject } from '../interfaces/Routes'
@@ -115,7 +115,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         </NavItem>
       ))}
       <Spacer />
-      <DarkModeSwitch />
+      {/* <DarkModeSwitch /> */}
       <Footer />
     </Box>
   )
