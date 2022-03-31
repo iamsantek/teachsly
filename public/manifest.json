@@ -1,15 +1,26 @@
 {
-  "short_name": "The Office English",
+  "short_name": "The Office",
   "name": "The Office English Platform",
+  "description": "Plataforma de contenidos de The Office English Learning",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
+    },
+    {
+      "src": "logo-128.jpg",
+      "sizes": "128x128",
+      "type": "image/jpg"
+    },
+    {
+      "src": "logo-512.jpg",
+      "sizes": "512x512",
+      "type": "image/jpg"
     }
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#3394b3",
   "background_color": "#ffffff"
 }
