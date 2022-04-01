@@ -30,9 +30,8 @@ import { defaultMedia } from '../constants/Medias'
 import { ToastNotification } from '../observables/ToastNotification'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
 import { Course } from '../API'
-import { UserTypes } from '../enums/UserTypes'
 import { renderCourseList, transformGroups } from '../utils/CourseUtils'
-import { isAdmin } from '../utils/CognitoGroupsUtils'
+import { generalGroups, isAdmin } from '../utils/CognitoGroupsUtils'
 
 interface Props {
   isOpen: boolean;
@@ -41,8 +40,6 @@ interface Props {
   onUpdate: (media: Media) => void;
   mediaToUpdate?: Media;
 }
-
-const generalGroups = [UserTypes.STUDENT, UserTypes.TEACHER]
 
 const MediaCRUDModal = ({
   isOpen,

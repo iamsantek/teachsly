@@ -13,6 +13,7 @@ import { TeachersHomeScreen } from './views/homeScreen/TeachersHomeScreen'
 import { translate } from './utils/LanguageUtils'
 import { PaymentsScreen } from './views/payments/PaymentsScreen'
 import { FaMoneyCheckAlt } from 'react-icons/fa'
+import { MediaFolderScreen } from './views/media/folders/MediaFolderScreen'
 
 const adminHomeScreen: ApplicationRoute = {
   name: translate('MENU_HOME'),
@@ -72,6 +73,7 @@ const mediaContents: ApplicationRoute = {
 
 const mediaContentDetailRoute: ApplicationRoute = { path: '/courses/:id/medias', element: <MediaContentsScreen /> }
 const studentsByCourseRoute: ApplicationRoute = { path: '/courses/:id/students', element: <StudentsList /> }
+const mediaFolderRoute: ApplicationRoute = { path: '/medias/folder/new', element: <MediaFolderScreen />, name: translate('CREATE_FOLDER') }
 
 const adminRoutes: ApplicationRoute[] = [
   adminHomeScreen,
@@ -82,6 +84,7 @@ const adminRoutes: ApplicationRoute[] = [
   payments,
   mediaContentDetailRoute,
   studentsByCourseRoute,
+  mediaFolderRoute,
   { path: '*', element: <AdminHomeScreen /> }
 ]
 
@@ -98,7 +101,9 @@ const teachersRoutes: ApplicationRoute[] = [
   mediaContents,
   students,
   mediaContentDetailRoute,
-  studentsByCourseRoute
+  studentsByCourseRoute,
+  mediaFolderRoute,
+  { path: '*', element: <TeachersHomeScreen /> }
 ]
 
 export const disabledAccountRoutes: ApplicationRoute[] = [

@@ -91,7 +91,13 @@ export enum LanguageES {
   GO_TO_STUDENTS_LIST = 'Ver lista de estudiantes',
   LOADING='Cargando...',
   VIEW_STUDENTS='Ver estudiantes',
-  VIEW_MEDIAS='Ver contenidos'
+  VIEW_MEDIAS='Ver contenidos',
+  CREATE_FOLDER='Crear carpeta',
+  DRAG_AND_DROP_HELPER_TEXT='Arrastra y suelta los archivos aquí',
+  DRAG_AND_DROP_HELPER_TEXT_2='o clickea para seleccionar los archivos',
+  MEDIA_SIGNED_URL_ERROR='Hubo un error al generar el link del contenido. Por favor, intentar nuevamente.',
+  REVIEW_FILES='Revisar archivos',
+  DRAWER_NAME_INFORMATION_ALERT='Verificar que los archivos tengan el nombre correcto y sea descriptivo para que los alumnos lo puedan encontrar facilmente.',
 }
 
 export enum LanguageEN {
@@ -182,5 +188,11 @@ export enum LanguageEN {
   GO_TO_STUDENTS_LIST = 'See students list',
   LOADING='Loading...',
   VIEW_STUDENTS='Students list',
-  VIEW_MEDIAS='Medias list'
+  VIEW_MEDIAS='Medias list',
+  CREATE_FOLDER='Create Folder',
+  DRAG_AND_DROP_HELPER_TEXT='Drag and drop files here',
+  DRAG_AND_DROP_HELPER_TEXT_2='or click to select files',
+  MEDIA_SIGNED_URL_ERROR='An error has occurred when generating the link of the content. Please try again.',
+  REVIEW_FILES='Review files',
+  DRAWER_NAME_INFORMATION_ALERT='Verify that files are named correctly so that students can easily find them.'
 }

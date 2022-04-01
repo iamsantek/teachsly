@@ -16,3 +16,9 @@ export interface MediaWithMultiSelect extends Omit<Media, 'groups' | 'type'> {
   groups: MultiSelectOption[];
   type: MultiSelectOption;
 }
+
+export interface MediaWithFile {
+  id: string;
+  file: File
+  displayName: string;
+}
