@@ -59,7 +59,17 @@ export const MediaContentsList = () => {
   }
 
   const onDownload = async (key: string) => {
-    await MediaService.generateSignedUrl(key)
+    const signedURL = await MediaService.generateSignedUrl(key)
+
+    if (signedURL) {
+      window.open(signedURL.url, '_blank')
+      return
+    }
+
+    ToastNotification({
+      status: 'ERROR',
+      description: 'MEDIA_SIGNED_URL_ERROR'
+    })
   }
 
   const onView = (media: PlatformMedia) => {
