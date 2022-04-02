@@ -91,7 +91,8 @@ export enum LanguageES {
   GO_TO_STUDENTS_LIST = 'Ver lista de estudiantes',
   LOADING='Cargando...',
   VIEW_STUDENTS='Ver estudiantes',
-  VIEW_MEDIAS='Ver contenidos'
+  VIEW_MEDIAS='Ver contenidos',
+  MEDIA_SIGNED_URL_ERROR='Hubo un error al generar el link del contenido. Por favor, intentar nuevamente.',
 }
 
 export enum LanguageEN {
@@ -182,5 +183,6 @@ export enum LanguageEN {
   GO_TO_STUDENTS_LIST = 'See students list',
   LOADING='Loading...',
   VIEW_STUDENTS='Students list',
-  VIEW_MEDIAS='Medias list'
+  VIEW_MEDIAS='Medias list',
+  MEDIA_SIGNED_URL_ERROR='An error has occurred when generating the link of the content. Please try again.',
 }
