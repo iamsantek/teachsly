@@ -8,7 +8,8 @@ import {
   AdminCreateUserCommand,
   AttributeType,
   CreateGroupCommand,
-  AdminRemoveUserFromGroupCommand
+  AdminRemoveUserFromGroupCommand,
+  AdminSetUserPasswordCommand
 } from '@aws-sdk/client-cognito-identity-provider'
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers'
 import { UpdateUserInput } from '../../API'
@@ -305,6 +306,17 @@ class CognitoService {
     })
 
     return Promise.all(adminRemoveUserFromGroupCommandResponses)
+  }
+
+  public resetPassword = async (userId: string) => {
+    const command = new AdminSetUserPasswordCommand({
+      UserPoolId: awsmobile.aws_user_pools_id,
+      Username: userId,
+      Password: '12345678',
+      Permanent: false
+    })
+
+    return this.cognitoIdentityProviderClient.send(command)
   }
 }
 

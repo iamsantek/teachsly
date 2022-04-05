@@ -120,6 +120,10 @@ class UserService {
       )
     }
   }
+
+  public resetPassword(userId: string) {
+    return CognitoService.resetPassword(userId)
+  }
 }
 
 export default new UserService()
