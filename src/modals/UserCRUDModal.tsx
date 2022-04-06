@@ -20,6 +20,7 @@ import { defaultUser } from '../constants/User'
 import UserService from '../services/UserService'
 import { UserTypes } from '../enums/UserTypes'
 import { MdDangerous } from 'react-icons/md'
+import { GrPowerReset } from 'react-icons/gr'
 import { ConfirmationDialog } from '../components/AlertDialog/ConfirmationDialog'
 import { AiFillCheckCircle } from 'react-icons/ai'
 import { renderCourseList, transformGroups } from '../utils/CourseUtils'
@@ -171,6 +172,26 @@ const UserCRUDModal = ({
     updateUser(disabledUser as UpdateUserInput)
   }
 
+  const resetPassword = async () => {
+    const resetPasswordResponse = await UserService.resetPassword(userToUpdate?.cognitoId as string)
+    setIsLoading(true)
+
+    if (resetPasswordResponse.$metadata.httpStatusCode === 200) {
+      ToastNotification({
+        status: 'SUCCESS',
+        description: 'PASSWORD_RESET_SUCCESS'
+      })
+    } else {
+      ToastNotification({
+        status: 'ERROR',
+        description: 'PASSWORD_RESET_ERROR'
+      })
+    }
+
+    setIsLoading(false)
+    onClose()
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
@@ -231,13 +252,22 @@ const UserCRUDModal = ({
                 onClose={onClose}
               >
                 {userToUpdate && (
-                  <Button
-
-                    onClick={() => setShowDeleteUserConfirmation(true)}
-                    leftIcon={isDisabledUser ? <AiFillCheckCircle /> : <MdDangerous />}
-                  >
-                    {translate(isDisabledUser ? 'ACTIVE_USER_BUTTON' : 'DEACTIVATED_USER_BUTTON')}
-                  </Button>
+                  <>
+                    <Button
+                      isLoading={isLoading}
+                      onClick={() => setShowDeleteUserConfirmation(true)}
+                      leftIcon={isDisabledUser ? <AiFillCheckCircle /> : <MdDangerous />}
+                    >
+                      {translate(isDisabledUser ? 'ACTIVE_USER_BUTTON' : 'DEACTIVATED_USER_BUTTON')}
+                    </Button>
+                    <Button
+                      leftIcon={<GrPowerReset />}
+                      isLoading={isLoading}
+                      onClick={() => resetPassword()}
+                    >
+                      {translate('RESET_PASSWORD_BUTTON')}
+                    </Button>
+                  </>
                 )}
               </ModalFooter>
             </form>

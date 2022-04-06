@@ -121,7 +121,7 @@ class UserService {
     }
   }
 
-  public resetPassword(userId: string) {
+  public resetPassword (userId: string) {
     return CognitoService.resetPassword(userId)
   }
 }
