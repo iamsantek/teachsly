@@ -93,6 +93,9 @@ export enum LanguageES {
   VIEW_STUDENTS='Ver estudiantes',
   VIEW_MEDIAS='Ver contenidos',
   MEDIA_SIGNED_URL_ERROR='Hubo un error al generar el link del contenido. Por favor, intentar nuevamente.',
+  PASSWORD_RESET_SUCCESS='La contraseña se ha reseteado exitosamente.',
+  PASSWORD_RESET_ERROR='Hubo un error al resetear la contraseña. Por favor, intentar nuevamente.',
+  RESET_PASSWORD_BUTTON='Resetear contraseña',
 }
 
 export enum LanguageEN {
@@ -185,4 +188,7 @@ export enum LanguageEN {
   VIEW_STUDENTS='Students list',
   VIEW_MEDIAS='Medias list',
   MEDIA_SIGNED_URL_ERROR='An error has occurred when generating the link of the content. Please try again.',
+  PASSWORD_RESET_SUCCESS='The password has been reset successfully.',
+  PASSWORD_RESET_ERROR='An error has occurred when resetting the password. Please try again.',
+  RESET_PASSWORD_BUTTON='Reset password',
 }
