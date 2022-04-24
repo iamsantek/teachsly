@@ -1,16 +1,15 @@
 import { Box, Button, Heading, SimpleGrid } from '@chakra-ui/react'
 import { mediaTypeIcons } from '../../../constants/Medias'
-import { MediaWithFile } from '../../../interfaces/Media'
 import { translate } from '../../../utils/LanguageUtils'
 import { countFilesByType } from '../../../utils/MediaUtils'
 
 interface Props {
-    files: MediaWithFile[];
+    fileTypes: string[];
     onClick: () => void;
 }
 
-export const MediaFolderFilesCounter = ({ files, onClick }: Props) => {
-  const countByType = countFilesByType(files)
+export const MediaFolderFilesCounter = ({ fileTypes, onClick }: Props) => {
+  const countByType = countFilesByType(fileTypes)
 
   return (
         <Box
@@ -30,7 +29,7 @@ export const MediaFolderFilesCounter = ({ files, onClick }: Props) => {
                         </Box>
                   )
                 })}
-                <Button colorScheme='brand' onClick={onClick} isDisabled={files.length === 0}>{translate('REVIEW_FILES')}</Button>
+                <Button colorScheme='brand' onClick={onClick} isDisabled={fileTypes.length === 0}>{translate('REVIEW_FILES')}</Button>
             </SimpleGrid>
         </Box>
   )

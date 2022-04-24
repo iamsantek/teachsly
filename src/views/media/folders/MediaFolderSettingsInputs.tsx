@@ -21,8 +21,8 @@ export const MediaFolderSettingsInputs = () => {
             <Select
                 name="groups"
                 label="GROUP_MULTI_SELECT_TITLE"
+                placeholder={translate('COURSES')}
                 isRequired={true}
-                placeholder={translate('DESCRIPTION')}
                 options={renderCourseList(groups, generalGroups)}
                 isMultiSelect
                 closeMenuOnSelect={true}

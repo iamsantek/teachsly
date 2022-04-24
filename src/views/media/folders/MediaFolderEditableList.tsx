@@ -1,12 +1,12 @@
 import { List, ListItem } from '@chakra-ui/react'
 import { EditableInputComponent } from '../../../components/Inputs/EditableInput'
-import { MediaWithFile } from '../../../interfaces/Media'
+import { MediaDrawer } from '../../../interfaces/Media'
 import { getFileTypeIcon } from '../../../utils/MediaUtils'
 
 interface Props {
-    files: MediaWithFile[]
-    onUpdate: (id: string, displayName: string) => void
-    onDelete: (id: string) => void
+    files: MediaDrawer[]
+    onUpdate: (updatedFile: MediaDrawer) => void
+    onDelete: (deletedFile: MediaDrawer) => void
 }
 
 export const MediaFolderEditableList = ({ files, onUpdate, onDelete }: Props) => {
@@ -14,15 +14,20 @@ export const MediaFolderEditableList = ({ files, onUpdate, onDelete }: Props) =>
     return null
   }
 
+  const onComplete = (updatedFile: MediaDrawer, updatedTitle: string) => {
+    updatedFile.title = updatedTitle
+    onUpdate(updatedFile)
+  }
+
   return (
         <List spacing={3}>
-            {files.map((mediaWithFile) => (
-                <ListItem key={mediaWithFile.id} display='flex' gap={3} alignItems='flex-start'>
-                    {getFileTypeIcon(mediaWithFile.file.type)}
+            {files.map((media) => (
+                <ListItem key={media.id} display='flex' gap={3} alignItems='flex-start'>
+                    {getFileTypeIcon(media.type)}
                     <EditableInputComponent
-                    value={mediaWithFile.displayName}
-                    onComplete={(newValue) => onUpdate(mediaWithFile.id, newValue)}
-                    onDelete={() => onDelete(mediaWithFile.id)}
+                    value={media.title}
+                    onComplete={(newValue) => onComplete(media, newValue)}
+                    onDelete={() => onDelete(media)}
                     />
                 </ListItem>
             ))}
