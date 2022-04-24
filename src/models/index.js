@@ -12,10 +12,11 @@ const DisabledAccountReasons = {
   "PAYMENT_NOT_COMPLETED": "PAYMENT_NOT_COMPLETED"
 };
 
-const { Course, Media, User } = initSchema(schema);
+const { Course, MediaFolder, Media, User } = initSchema(schema);
 
 export {
   Course,
+  MediaFolder,
   Media,
   User,
   MediaType,

@@ -53,6 +53,42 @@ export const onDeleteCourse = /* GraphQL */ `
     }
   }
 `;
+export const onCreateMediaFolder = /* GraphQL */ `
+  subscription OnCreateMediaFolder($owner: String) {
+    onCreateMediaFolder(owner: $owner) {
+      id
+      name
+      groups
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateMediaFolder = /* GraphQL */ `
+  subscription OnUpdateMediaFolder($owner: String) {
+    onUpdateMediaFolder(owner: $owner) {
+      id
+      name
+      groups
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteMediaFolder = /* GraphQL */ `
+  subscription OnDeleteMediaFolder($owner: String) {
+    onDeleteMediaFolder(owner: $owner) {
+      id
+      name
+      groups
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
 export const onCreateMedia = /* GraphQL */ `
   subscription OnCreateMedia($owner: String) {
     onCreateMedia(owner: $owner) {
@@ -64,6 +100,8 @@ export const onCreateMedia = /* GraphQL */ `
       content
       groups
       uploadedBy
+      mimeType
+      folderId
       createdAt
       updatedAt
       owner
@@ -81,6 +119,8 @@ export const onUpdateMedia = /* GraphQL */ `
       content
       groups
       uploadedBy
+      mimeType
+      folderId
       createdAt
       updatedAt
       owner
@@ -98,6 +138,8 @@ export const onDeleteMedia = /* GraphQL */ `
       content
       groups
       uploadedBy
+      mimeType
+      folderId
       createdAt
       updatedAt
       owner

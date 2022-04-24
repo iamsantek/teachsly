@@ -1,12 +1,14 @@
 import { useContext } from 'react'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
-import { isAdmin } from '../utils/CognitoGroupsUtils'
+import { isAdmin, isTeacher } from '../utils/CognitoGroupsUtils'
 
 export const useUserGroups = () => {
   const { context: { user, courses: allCourses } } = useContext(UserDashboardContext)
-  const hasRoleAdmin = isAdmin(user)
+  const hasAdminRole = isAdmin(user)
+  const hasTeacherRole = isTeacher(user)
+  const hasEditPermission = hasTeacherRole || hasAdminRole
 
-  const groups = hasRoleAdmin ? allCourses : allCourses.filter(course => user?.groups.includes(course.externalId))
+  const groups = hasAdminRole ? allCourses : allCourses.filter(course => user?.groups.includes(course.externalId))
 
-  return { groups }
+  return { groups, hasAdminRole, hasTeacherRole, hasEditPermission }
 }

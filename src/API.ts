@@ -118,6 +118,40 @@ export type DeleteCourseInput = {
   id: string,
 };
 
+export type CreateMediaFolderInput = {
+  id?: string | null,
+  name: string,
+  groups: Array< string >,
+};
+
+export type ModelMediaFolderConditionInput = {
+  name?: ModelStringInput | null,
+  groups?: ModelStringInput | null,
+  and?: Array< ModelMediaFolderConditionInput | null > | null,
+  or?: Array< ModelMediaFolderConditionInput | null > | null,
+  not?: ModelMediaFolderConditionInput | null,
+};
+
+export type MediaFolder = {
+  __typename: "MediaFolder",
+  id: string,
+  name: string,
+  groups: Array< string >,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+};
+
+export type UpdateMediaFolderInput = {
+  id: string,
+  name?: string | null,
+  groups?: Array< string > | null,
+};
+
+export type DeleteMediaFolderInput = {
+  id: string,
+};
+
 export type CreateMediaInput = {
   id?: string | null,
   title: string,
@@ -125,8 +159,10 @@ export type CreateMediaInput = {
   description?: string | null,
   link: string,
   content?: string | null,
-  groups?: Array< string | null > | null,
+  groups: Array< string >,
   uploadedBy: string,
+  mimeType?: string | null,
+  folderId?: string | null,
 };
 
 export enum MediaType {
@@ -143,6 +179,8 @@ export type ModelMediaConditionInput = {
   content?: ModelStringInput | null,
   groups?: ModelStringInput | null,
   uploadedBy?: ModelStringInput | null,
+  mimeType?: ModelStringInput | null,
+  folderId?: ModelStringInput | null,
   and?: Array< ModelMediaConditionInput | null > | null,
   or?: Array< ModelMediaConditionInput | null > | null,
   not?: ModelMediaConditionInput | null,
@@ -161,8 +199,10 @@ export type Media = {
   description?: string | null,
   link: string,
   content?: string | null,
-  groups?: Array< string | null > | null,
+  groups: Array< string >,
   uploadedBy: string,
+  mimeType?: string | null,
+  folderId?: string | null,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -175,8 +215,10 @@ export type UpdateMediaInput = {
   description?: string | null,
   link?: string | null,
   content?: string | null,
-  groups?: Array< string | null > | null,
+  groups?: Array< string > | null,
   uploadedBy?: string | null,
+  mimeType?: string | null,
+  folderId?: string | null,
 };
 
 export type DeleteMediaInput = {
@@ -284,6 +326,21 @@ export type ModelCourseConnection = {
   nextToken?: string | null,
 };
 
+export type ModelMediaFolderFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  groups?: ModelStringInput | null,
+  and?: Array< ModelMediaFolderFilterInput | null > | null,
+  or?: Array< ModelMediaFolderFilterInput | null > | null,
+  not?: ModelMediaFolderFilterInput | null,
+};
+
+export type ModelMediaFolderConnection = {
+  __typename: "ModelMediaFolderConnection",
+  items:  Array<MediaFolder | null >,
+  nextToken?: string | null,
+};
+
 export type ModelMediaFilterInput = {
   id?: ModelIDInput | null,
   title?: ModelStringInput | null,
@@ -293,6 +350,8 @@ export type ModelMediaFilterInput = {
   content?: ModelStringInput | null,
   groups?: ModelStringInput | null,
   uploadedBy?: ModelStringInput | null,
+  mimeType?: ModelStringInput | null,
+  folderId?: ModelStringInput | null,
   and?: Array< ModelMediaFilterInput | null > | null,
   or?: Array< ModelMediaFilterInput | null > | null,
   not?: ModelMediaFilterInput | null,
@@ -390,6 +449,57 @@ export type DeleteCourseMutation = {
   } | null,
 };
 
+export type CreateMediaFolderMutationVariables = {
+  input: CreateMediaFolderInput,
+  condition?: ModelMediaFolderConditionInput | null,
+};
+
+export type CreateMediaFolderMutation = {
+  createMediaFolder?:  {
+    __typename: "MediaFolder",
+    id: string,
+    name: string,
+    groups: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateMediaFolderMutationVariables = {
+  input: UpdateMediaFolderInput,
+  condition?: ModelMediaFolderConditionInput | null,
+};
+
+export type UpdateMediaFolderMutation = {
+  updateMediaFolder?:  {
+    __typename: "MediaFolder",
+    id: string,
+    name: string,
+    groups: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteMediaFolderMutationVariables = {
+  input: DeleteMediaFolderInput,
+  condition?: ModelMediaFolderConditionInput | null,
+};
+
+export type DeleteMediaFolderMutation = {
+  deleteMediaFolder?:  {
+    __typename: "MediaFolder",
+    id: string,
+    name: string,
+    groups: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
 export type CreateMediaMutationVariables = {
   input: CreateMediaInput,
   condition?: ModelMediaConditionInput | null,
@@ -404,8 +514,10 @@ export type CreateMediaMutation = {
     description?: string | null,
     link: string,
     content?: string | null,
-    groups?: Array< string | null > | null,
+    groups: Array< string >,
     uploadedBy: string,
+    mimeType?: string | null,
+    folderId?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -426,8 +538,10 @@ export type UpdateMediaMutation = {
     description?: string | null,
     link: string,
     content?: string | null,
-    groups?: Array< string | null > | null,
+    groups: Array< string >,
     uploadedBy: string,
+    mimeType?: string | null,
+    folderId?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -448,8 +562,10 @@ export type DeleteMediaMutation = {
     description?: string | null,
     link: string,
     content?: string | null,
-    groups?: Array< string | null > | null,
+    groups: Array< string >,
     uploadedBy: string,
+    mimeType?: string | null,
+    folderId?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -567,6 +683,44 @@ export type ListCoursesQuery = {
   } | null,
 };
 
+export type GetMediaFolderQueryVariables = {
+  id: string,
+};
+
+export type GetMediaFolderQuery = {
+  getMediaFolder?:  {
+    __typename: "MediaFolder",
+    id: string,
+    name: string,
+    groups: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListMediaFoldersQueryVariables = {
+  filter?: ModelMediaFolderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListMediaFoldersQuery = {
+  listMediaFolders?:  {
+    __typename: "ModelMediaFolderConnection",
+    items:  Array< {
+      __typename: "MediaFolder",
+      id: string,
+      name: string,
+      groups: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetMediaQueryVariables = {
   id: string,
 };
@@ -580,8 +734,10 @@ export type GetMediaQuery = {
     description?: string | null,
     link: string,
     content?: string | null,
-    groups?: Array< string | null > | null,
+    groups: Array< string >,
     uploadedBy: string,
+    mimeType?: string | null,
+    folderId?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -605,8 +761,10 @@ export type ListMediaQuery = {
       description?: string | null,
       link: string,
       content?: string | null,
-      groups?: Array< string | null > | null,
+      groups: Array< string >,
       uploadedBy: string,
+      mimeType?: string | null,
+      folderId?: string | null,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -712,6 +870,54 @@ export type OnDeleteCourseSubscription = {
   } | null,
 };
 
+export type OnCreateMediaFolderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateMediaFolderSubscription = {
+  onCreateMediaFolder?:  {
+    __typename: "MediaFolder",
+    id: string,
+    name: string,
+    groups: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateMediaFolderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateMediaFolderSubscription = {
+  onUpdateMediaFolder?:  {
+    __typename: "MediaFolder",
+    id: string,
+    name: string,
+    groups: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteMediaFolderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteMediaFolderSubscription = {
+  onDeleteMediaFolder?:  {
+    __typename: "MediaFolder",
+    id: string,
+    name: string,
+    groups: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
 export type OnCreateMediaSubscriptionVariables = {
   owner?: string | null,
 };
@@ -725,8 +931,10 @@ export type OnCreateMediaSubscription = {
     description?: string | null,
     link: string,
     content?: string | null,
-    groups?: Array< string | null > | null,
+    groups: Array< string >,
     uploadedBy: string,
+    mimeType?: string | null,
+    folderId?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -746,8 +954,10 @@ export type OnUpdateMediaSubscription = {
     description?: string | null,
     link: string,
     content?: string | null,
-    groups?: Array< string | null > | null,
+    groups: Array< string >,
     uploadedBy: string,
+    mimeType?: string | null,
+    folderId?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -767,8 +977,10 @@ export type OnDeleteMediaSubscription = {
     description?: string | null,
     link: string,
     content?: string | null,
-    groups?: Array< string | null > | null,
+    groups: Array< string >,
     uploadedBy: string,
+    mimeType?: string | null,
+    folderId?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,

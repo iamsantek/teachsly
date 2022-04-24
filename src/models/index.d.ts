@@ -16,6 +16,10 @@ type CourseMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+type MediaFolderMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type MediaMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -40,6 +44,16 @@ export declare class Course {
   static copyOf(source: Course, mutator: (draft: MutableModel<Course, CourseMetaData>) => MutableModel<Course, CourseMetaData> | void): Course;
 }
 
+export declare class MediaFolder {
+  readonly id: string;
+  readonly name: string;
+  readonly groups: string[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<MediaFolder, MediaFolderMetaData>);
+  static copyOf(source: MediaFolder, mutator: (draft: MutableModel<MediaFolder, MediaFolderMetaData>) => MutableModel<MediaFolder, MediaFolderMetaData> | void): MediaFolder;
+}
+
 export declare class Media {
   readonly id: string;
   readonly title: string;
@@ -47,8 +61,10 @@ export declare class Media {
   readonly description?: string;
   readonly link: string;
   readonly content?: string;
-  readonly groups?: (string | null)[];
+  readonly groups: string[];
   readonly uploadedBy: string;
+  readonly mimeType?: string;
+  readonly folderId?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Media, MediaMetaData>);

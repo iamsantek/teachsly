@@ -43,6 +43,37 @@ export const listCourses = /* GraphQL */ `
     }
   }
 `;
+export const getMediaFolder = /* GraphQL */ `
+  query GetMediaFolder($id: ID!) {
+    getMediaFolder(id: $id) {
+      id
+      name
+      groups
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listMediaFolders = /* GraphQL */ `
+  query ListMediaFolders(
+    $filter: ModelMediaFolderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMediaFolders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        groups
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
 export const getMedia = /* GraphQL */ `
   query GetMedia($id: ID!) {
     getMedia(id: $id) {
@@ -54,6 +85,8 @@ export const getMedia = /* GraphQL */ `
       content
       groups
       uploadedBy
+      mimeType
+      folderId
       createdAt
       updatedAt
       owner
@@ -76,6 +109,8 @@ export const listMedia = /* GraphQL */ `
         content
         groups
         uploadedBy
+        mimeType
+        folderId
         createdAt
         updatedAt
         owner

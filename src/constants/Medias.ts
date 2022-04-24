@@ -2,7 +2,9 @@ import { MediaType } from '../models/index'
 import { Media, MediaWithMultiSelect } from '../interfaces/Media'
 import { IconType } from 'react-icons'
 import { AiFillFilePdf, AiOutlineLink } from 'react-icons/ai'
-import { IoIosMusicalNotes, IoIosVideocam, IoMdImage } from 'react-icons/io'
+import { IoIosLink, IoIosMusicalNotes, IoIosVideocam, IoMdImage } from 'react-icons/io'
+import { MultiSelectOption } from '../interfaces/MultiSelectOption'
+import { BsBox } from 'react-icons/bs'
 
 export const defaultMedia: Media | MediaWithMultiSelect = {
   title: '',
@@ -16,7 +18,7 @@ export const defaultMedia: Media | MediaWithMultiSelect = {
 
 export const defaultMediaFolder = {
   title: '',
-  groups: []
+  groups: [] as MultiSelectOption[]
 }
 
 export const mediaContentLineIcons: { [key in MediaType]: IconType } = {
@@ -28,5 +30,7 @@ export const mediaTypeIcons = {
   image: IoMdImage,
   video: IoIosVideocam,
   audio: IoIosMusicalNotes,
-  pdf: AiFillFilePdf
+  pdf: AiFillFilePdf,
+  link: IoIosLink,
+  others: BsBox
 }
