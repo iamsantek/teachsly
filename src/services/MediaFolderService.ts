@@ -1,4 +1,4 @@
-import { CreateMediaFolderInput, CreateMediaFolderMutation, MediaType, MediaFolder, ListMediaFoldersQuery, GetMediaFolderQuery, UpdateMediaFolderInput, UpdateMediaFolderMutation } from '../API'
+import { CreateMediaFolderInput, CreateMediaFolderMutation, MediaType, MediaFolder, ListMediaFoldersQuery, GetMediaFolderQuery, UpdateMediaFolderMutation } from '../API'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { FetchType } from '../enums/Media'
 import { createMediaFolder, updateMediaFolder } from '../graphql/mutations'
@@ -45,7 +45,7 @@ class MediaFolderService {
 
     if (mediaFolderId) {
       const mediasToFolderPromises = this.addMediasToFolder(files, mediaFolderId, uploadedBy, groups)
-      const mediasCreated = await Promise.all(mediasToFolderPromises)
+      await Promise.all(mediasToFolderPromises)
 
       return mediaFolderCreated as MediaFolder
     }
