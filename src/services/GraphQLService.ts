@@ -27,6 +27,7 @@ type QueryParameters = {
   nextToken?: string | null;
   filter?: Object | undefined;
   limit?: number | null;
+  id?: Object | undefined;
 }
 
 class GraphQLService {
@@ -51,7 +52,8 @@ class GraphQLService {
     input = undefined,
     limit = undefined,
     nextToken = undefined,
-    filter = undefined
+    filter = undefined,
+    id = undefined
   }: QueryParameters): Promise<T | undefined> => {
     try {
       const sanitizedInput = removeNotAllowedPropertiesFromModel(input)
@@ -61,8 +63,29 @@ class GraphQLService {
           input: sanitizedInput,
           filter,
           limit,
-          nextToken
+          nextToken,
+          id
         })
+      ) as GraphQLResult<T>
+
+      return models.data as T
+    } catch (e: any) {
+      Logger.log(
+        LogLevel.ERROR,
+        LogTypes.GraphQLService,
+        'Error when executing GraphQL Query',
+        e
+      )
+    }
+  }
+
+  public fetchById = async <T>(
+    query: string,
+    filter: Object
+  ) => {
+    try {
+      const models = await API.graphql(
+        graphqlOperation(query, filter)
       ) as GraphQLResult<T>
 
       return models.data as T
