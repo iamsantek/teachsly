@@ -6,7 +6,7 @@ import Logger from '../utils/Logger'
 import GraphQLService from './GraphQLService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import StorageService from './aws/StorageService'
-import { DeleteMediaMutation, ListMediaQuery, MediaType, UpdateMediaMutation } from '../API'
+import { DeleteMediaMutation, ListMediaQuery, MediaType, UpdateMediaMutation, UpdateMediaInput } from '../API'
 
 class MediaService {
   public fetchMedias = async (
@@ -16,20 +16,21 @@ class MediaService {
     return GraphQLService.fetchQuery<ListMediaQuery>({
       query: listMedia,
       filter: courseName
-        ? { groups: { contains: courseName } }
-        : undefined,
+        ? {
+            groups: { contains: courseName },
+            folderId: { attributeExists: false }
+          }
+        : { folderId: { attributeExists: false } },
       nextToken
     })
   }
 
-  public updateMedia = async (media: Media) => {
+  public updateMedia = async (media: UpdateMediaInput) => {
     try {
-      const models = await GraphQLService.fetchQuery<UpdateMediaMutation>({
+      return GraphQLService.fetchQuery<UpdateMediaMutation>({
         query: updateMedia,
         input: removeNotAllowedPropertiesFromModel(media)
       })
-
-      return (models?.updateMedia as Media) || []
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
@@ -80,6 +81,22 @@ class MediaService {
       filter: {
         name: { eq: courseName }
       }
+    })
+  }
+
+  public fetchMediaByFolderId = async (folderId: string | undefined, nextToken: string | null | undefined) => {
+    if (!folderId) {
+      return
+    }
+
+    console.log('Fetch media by folder id', folderId)
+
+    return GraphQLService.fetchQuery<ListMediaQuery>({
+      query: listMedia,
+      filter: {
+        folderId: { eq: folderId }
+      },
+      nextToken
     })
   }
 }
