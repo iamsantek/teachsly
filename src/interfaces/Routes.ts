@@ -5,6 +5,7 @@ import { UserTypes } from '../enums/UserTypes'
 export interface CustomRouteObject extends RouteObject {
   name: string;
   icon: string | IconType;
+  showInNavbar: boolean | undefined;
 }
 
 export type ApplicationRoute = CustomRouteObject | RouteObject;

@@ -1,7 +1,7 @@
-import { memo, useContext, useEffect, useState } from 'react'
+import { memo, useCallback, useContext, useEffect, useState } from 'react'
 import * as React from 'react'
 import { translate } from '../utils/LanguageUtils'
-import { Media, MediaWithMultiSelect } from '../interfaces/Media'
+import { MediaWithMultiSelect } from '../interfaces/Media'
 import StorageService from '../services/aws/StorageService'
 import MediaService from '../services/MediaService'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -29,16 +29,18 @@ import { ModalFooter } from '../components/Modals/ModalFooter'
 import { defaultMedia } from '../constants/Medias'
 import { ToastNotification } from '../observables/ToastNotification'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
-import { Course } from '../API'
+import { Course, CreateMediaInput, Media as MediaAPI, UpdateMediaInput } from '../API'
 import { renderCourseList, transformGroups } from '../utils/CourseUtils'
 import { generalGroups, isAdmin } from '../utils/CognitoGroupsUtils'
+import { useParams } from 'react-router-dom'
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onCreate: (media: Media) => void;
-  onUpdate: (media: Media) => void;
-  mediaToUpdate?: Media;
+  onCreate: (media: MediaAPI) => void;
+  onUpdate: (media: MediaAPI) => void;
+  mediaToUpdate?: MediaAPI;
+  folderGroups?: string[]
 }
 
 const MediaCRUDModal = ({
@@ -46,11 +48,13 @@ const MediaCRUDModal = ({
   onClose,
   onCreate,
   onUpdate,
-  mediaToUpdate
+  mediaToUpdate,
+  folderGroups
 }: Props) => {
   const [file, setFile] = useState<File>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [courses, setCourses] = useState<Course[]>([])
+  const { folderId } = useParams()
 
   const formControls = useForm({
     defaultValues: defaultMedia as MediaWithMultiSelect
@@ -63,11 +67,26 @@ const MediaCRUDModal = ({
     formState: { errors }
   } = formControls
 
-  const groupsSubscriber = watch('groups')
-  const mediaId = watch('id')
-  const { value: mediaType } = watch('type')
-
+  const { id: mediaId, groups: groupsSubscriber, type: { value: mediaType } } = watch()
   const { context: { user, courses: allCourses } } = useContext(UserDashboardContext)
+
+  const onCloseModal = () => {
+    reset(defaultMedia as MediaWithMultiSelect)
+    onClose()
+  }
+
+  const fetchFolder = useCallback(async () => {
+    if (!folderId) {
+      return
+    }
+
+    const updatedValues: MediaWithMultiSelect = {
+      ...watch(),
+      groups: transformGroups(courses, folderGroups as string[])
+    }
+
+    reset(updatedValues)
+  }, [reset, watch, courses, folderGroups, folderId])
 
   useEffect(() => {
     const filterCourses = async () => {
@@ -80,6 +99,10 @@ const MediaCRUDModal = ({
 
     filterCourses()
   }, [])
+
+  useEffect(() => {
+    fetchFolder()
+  }, [folderId, fetchFolder])
 
   useEffect(() => {
     if (!mediaToUpdate) {
@@ -97,22 +120,24 @@ const MediaCRUDModal = ({
     }
 
     reset(media)
-  }, [mediaToUpdate])
+  }, [mediaToUpdate, courses, reset])
 
   useEffect(() => {
     if (!isOpen) {
       reset(defaultMedia as MediaWithMultiSelect)
     }
-  }, [isOpen])
+  }, [isOpen, reset])
 
-  const formatMedia = (media: MediaWithMultiSelect): Media => {
+  const formatMedia = (media: MediaWithMultiSelect): CreateMediaInput | UpdateMediaInput => {
     const groupsArray = media.groups.map((group) => group.value)
     const type = media.type.value as MediaType
 
     return {
       ...media,
+      folderId,
       groups: groupsArray as string[],
       type,
+      mimeType: type === MediaType.LINK ? 'application/link' : file?.type,
       uploadedBy: user?.name || ''
     }
   }
@@ -120,51 +145,40 @@ const MediaCRUDModal = ({
   const createMedia = async (media: MediaWithMultiSelect) => {
     setIsLoading(true)
 
-    const formattedMedia = formatMedia(media)
+    const formattedMedia = formatMedia(media) as CreateMediaInput
     const uploadedMedia = await StorageService.persistMedia(
       formattedMedia,
       file
     )
 
-    if (uploadedMedia) {
-      onCreate(uploadedMedia)
+    if (uploadedMedia?.createMedia) {
+      onCreate(uploadedMedia.createMedia as MediaAPI)
     }
 
-    onClose()
+    onCloseModal()
     setIsLoading(false)
 
-    if (!uploadedMedia) {
-      ToastNotification({
-        description: 'MEDIA_CREATED_FAILED_MESSAGE',
-        status: 'ERROR'
-      })
-    }
-
     ToastNotification({
-      description: 'MEDIA_CREATED_MESSAGE',
-      status: 'SUCCESS'
+      description: uploadedMedia?.createMedia ? 'MEDIA_CREATED_MESSAGE' : 'MEDIA_CREATED_FAILED_MESSAGE',
+      status: uploadedMedia?.createMedia ? 'SUCCESS' : 'ERROR'
     })
   }
 
   const updateMedia = async (media: MediaWithMultiSelect) => {
     const mediaWithGroups = formatMedia(media)
-    const updatedMedia = await MediaService.updateMedia(mediaWithGroups)
+    const updatedMedia = await MediaService.updateMedia(mediaWithGroups as UpdateMediaInput)
 
-    if (updatedMedia) {
-      onUpdate(updatedMedia)
-      ToastNotification({
-        description: 'MEDIA_UPDATED_MESSAGE',
-        status: 'SUCCESS'
-      })
-    } else {
-      ToastNotification({
-        description: 'MEDIA_UPDATED_ERROR_MESSAGE',
-        status: 'ERROR'
-      })
+    if (updatedMedia?.updateMedia) {
+      onUpdate(updatedMedia.updateMedia as MediaAPI)
     }
 
+    ToastNotification({
+      description: updatedMedia?.updateMedia ? 'MEDIA_UPDATED_MESSAGE' : 'MEDIA_UPDATED_ERROR_MESSAGE',
+      status: updatedMedia?.updateMedia ? 'SUCCESS' : 'ERROR'
+    })
+
     setIsLoading(false)
-    onClose()
+    onCloseModal()
   }
 
   const onChangeFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -176,7 +190,6 @@ const MediaCRUDModal = ({
   }
 
   const onSubmit = (media: MediaWithMultiSelect) => {
-    console.log('On SUBMIT')
     setIsLoading(true)
     const hasErrors = Object.keys(errors).length !== 0
 
@@ -191,7 +204,7 @@ const MediaCRUDModal = ({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="4xl">
+    <Modal isOpen={isOpen} onClose={onCloseModal} size="4xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader textStyle={'paragraph'} color={useColorModeValue('black', 'white')}>
@@ -225,6 +238,7 @@ const MediaCRUDModal = ({
                     options={renderCourseList(courses, generalGroups)}
                     isMultiSelect
                     closeMenuOnSelect={true}
+                    isDisabled={!!folderId}
                   />
 
                   <Select
@@ -245,14 +259,14 @@ const MediaCRUDModal = ({
                       label="ATTACH_FILE"
                     />
                   )}
-                 <Box display={[MediaType.LINK].includes(mediaType as MediaType) ? 'inline-block' : 'none'} w='100%'>
-                  <CustomInput
-                    name="link"
-                    label="MEDIA_LINK_DESCRIPTION"
-                    isRequired={[MediaType.LINK].includes(mediaType as MediaType)}
-                    placeholder={translate('MEDIA_LINK_DESCRIPTION')}
-                  />
-                 </Box>
+                  <Box display={[MediaType.LINK].includes(mediaType as MediaType) ? 'inline-block' : 'none'} w='100%'>
+                    <CustomInput
+                      name="link"
+                      label="MEDIA_LINK_DESCRIPTION"
+                      isRequired={[MediaType.LINK].includes(mediaType as MediaType)}
+                      placeholder={translate('MEDIA_LINK_DESCRIPTION')}
+                    />
+                  </Box>
 
                   <TextArea
                     name="content"
@@ -272,7 +286,7 @@ const MediaCRUDModal = ({
                 sendButtonText={
                   mediaId ? 'UPDATE_MEDIA_BUTTON' : 'CREATE_MEDIA_BUTTON'
                 }
-                onClose={onClose}
+                onClose={onCloseModal}
               />
             </form>
           </FormProvider>

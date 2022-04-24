@@ -16,8 +16,6 @@ import { BadgeList } from '../components/Badges/BadgeList'
 import { User } from '../API'
 import { BsWhatsapp } from 'react-icons/bs'
 import { AiFillPhone } from 'react-icons/ai'
-import { useContext } from 'react'
-import { UserDashboardContext } from '../contexts/UserDashboardContext'
 
 interface Props {
   isOpen: boolean;
@@ -27,8 +25,6 @@ interface Props {
 
 export const ViewUserModal = ({ isOpen, onClose, user }: Props) => {
   const color = useColorModeValue('black', 'white')
-  const { context: { courses } } = useContext(UserDashboardContext)
-  const groups = courses.filter(course => user?.groups.includes(course.externalId)).map(course => course.name)
 
   return (
     <Modal size={'lg'} isOpen={isOpen} onClose={onClose}>
@@ -68,7 +64,7 @@ export const ViewUserModal = ({ isOpen, onClose, user }: Props) => {
             )}
 
             <Text textStyle={'title'}>{translate('COURSES')}</Text>
-            <BadgeList badges={groups} />
+            <BadgeList badges={user?.groups as string[]} />
           </Stack>
         </ModalBody>
       </ModalContent>

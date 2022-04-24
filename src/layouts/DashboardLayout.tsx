@@ -109,7 +109,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <Image w={[36, 40]} padding={[0, 4]} src={require('../assets/img/brand/logo.png')} />
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-      {routes?.map((link: any, index: number) => (
+      {routes?.filter((route: any) => route.showInNavbar).map((link: any, index: number) => (
         <NavItem key={index} icon={link.icon} path={link.path} onClose={onClose}>
           {link.name}
         </NavItem>

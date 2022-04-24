@@ -98,6 +98,15 @@ export enum LanguageES {
   MEDIA_SIGNED_URL_ERROR='Hubo un error al generar el link del contenido. Por favor, intentar nuevamente.',
   REVIEW_FILES='Revisar archivos',
   DRAWER_NAME_INFORMATION_ALERT='Verificar que los archivos tengan el nombre correcto y sea descriptivo para que los alumnos lo puedan encontrar facilmente.',
+  PASSWORD_RESET_SUCCESS='La contraseña se ha reseteado exitosamente.',
+  PASSWORD_RESET_ERROR='Hubo un error al resetear la contraseña. Por favor, intentar nuevamente.',
+  RESET_PASSWORD_BUTTON='Resetear contraseña',
+  FOLDER='Carpeta',
+  UPLOAD_FOLDER='Subir carpeta',
+  UPDATE_FOLDER='Actualizar carpeta',
+  UPDATE_MEDIA_FOLDER_SUCCESS='La carpeta se actualizó correctamente.',
+  UPDATE_MEDIA_FOLDER_FAILURE='Hubo un error al actualizar la carpeta. Por favor, intentar nuevamente.',
+  EDIT_FOLDER='Editar carpeta',
 }
 
 export enum LanguageEN {
@@ -194,5 +203,14 @@ export enum LanguageEN {
   DRAG_AND_DROP_HELPER_TEXT_2='or click to select files',
   MEDIA_SIGNED_URL_ERROR='An error has occurred when generating the link of the content. Please try again.',
   REVIEW_FILES='Review files',
-  DRAWER_NAME_INFORMATION_ALERT='Verify that files are named correctly so that students can easily find them.'
+  DRAWER_NAME_INFORMATION_ALERT='Verify that files are named correctly so that students can easily find them.',
+  PASSWORD_RESET_SUCCESS='The password has been reset successfully.',
+  PASSWORD_RESET_ERROR='An error has occurred when resetting the password. Please try again.',
+  RESET_PASSWORD_BUTTON='Reset password',
+  FOLDER='Folder',
+  UPLOAD_FOLDER='Upload folder',
+  UPDATE_FOLDER='Update folder',
+  UPDATE_MEDIA_FOLDER_SUCCESS='The folder has been successfully updated.',
+  UPDATE_MEDIA_FOLDER_FAILURE='An error has occurred when updating the folder. Please try again.',
+  EDIT_FOLDER='Edit folder',
 }

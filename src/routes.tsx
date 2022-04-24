@@ -14,66 +14,77 @@ import { translate } from './utils/LanguageUtils'
 import { PaymentsScreen } from './views/payments/PaymentsScreen'
 import { FaMoneyCheckAlt } from 'react-icons/fa'
 import { MediaFolderScreen } from './views/media/folders/MediaFolderScreen'
+import { FetchType } from './enums/Media'
 
 const adminHomeScreen: ApplicationRoute = {
   name: translate('MENU_HOME'),
   icon: AiFillHome,
   path: '/',
-  element: <AdminHomeScreen />
+  element: <AdminHomeScreen />,
+  showInNavbar: true
 }
 
 const payments: ApplicationRoute = {
   name: translate('MENU_PAYMENTS'),
   icon: FaMoneyCheckAlt,
   path: '/',
-  element: <PaymentsScreen />
+  element: <PaymentsScreen />,
+  showInNavbar: true
 }
 
 const adminCoursesScreen: ApplicationRoute = {
   name: translate('MENU_COURSES'),
   icon: BsFillCalendar2WeekFill,
   path: '/courses',
-  element: <AdminCourseList />
+  element: <AdminCourseList />,
+  showInNavbar: true
 }
 
 const students: ApplicationRoute = {
   path: '/students',
   name: translate('MENU_STUDENTS'),
   icon: BsFillPeopleFill,
-  element: <StudentsList />
+  element: <StudentsList />,
+  showInNavbar: true
 }
 
 const teachers: ApplicationRoute = {
   path: '/teachers',
   name: translate('MENU_TEACHERS'),
   icon: BsFillPeopleFill,
-  element: <UserList listType={UserTypes.TEACHER} />
+  element: <UserList listType={UserTypes.TEACHER} />,
+  showInNavbar: true
 }
 
 const studentHomeScreen: ApplicationRoute = {
   path: '/',
   name: translate('MENU_HOME'),
   icon: FiHome,
-  element: <StudentsHomeScreen />
+  element: <StudentsHomeScreen />,
+  showInNavbar: true
 }
 
 const teachersHomeScreen: ApplicationRoute = {
   path: '/',
   name: translate('MENU_HOME'),
   icon: FiHome,
-  element: <TeachersHomeScreen />
+  element: <TeachersHomeScreen />,
+  showInNavbar: true
 }
 
 const mediaContents: ApplicationRoute = {
   path: '/contents',
   name: translate('MENU_CONTENTS'),
   icon: AiFillFolder,
-  element: <MediaContentsScreen />
+  element: <MediaContentsScreen fetchType={FetchType.ALL} />,
+  showInNavbar: true
 }
 
-const mediaContentDetailRoute: ApplicationRoute = { path: '/courses/:id/medias', element: <MediaContentsScreen /> }
-const studentsByCourseRoute: ApplicationRoute = { path: '/courses/:id/students', element: <StudentsList /> }
-const mediaFolderRoute: ApplicationRoute = { path: '/medias/folder/new', element: <MediaFolderScreen />, name: translate('CREATE_FOLDER') }
+const studentsByCourseRoute: ApplicationRoute = { path: '/courses/:id/students', element: <StudentsList />, showInNavbar: true }
+const mediaFolderCreateRoute: ApplicationRoute = { path: '/medias/folder/new', element: <MediaFolderScreen />, name: translate('CREATE_FOLDER'), showInNavbar: false }
+const mediaContentDetailRoute: ApplicationRoute = { path: '/medias/:courseId', element: <MediaContentsScreen fetchType={FetchType.COURSE} />, showInNavbar: true }
+const mediaFolderDetailRoute: ApplicationRoute = { path: '/medias/folder/:folderId', element: <MediaContentsScreen fetchType={FetchType.FOLDER} />, showInNavbar: true }
+const mediaFolderEditRoute: ApplicationRoute = { path: '/medias/folder/:folderId/edit', element: <MediaFolderScreen />, showInNavbar: false }
 
 const adminRoutes: ApplicationRoute[] = [
   adminHomeScreen,
@@ -84,7 +95,9 @@ const adminRoutes: ApplicationRoute[] = [
   payments,
   mediaContentDetailRoute,
   studentsByCourseRoute,
-  mediaFolderRoute,
+  mediaFolderCreateRoute,
+  mediaFolderDetailRoute,
+  mediaFolderEditRoute,
   { path: '*', element: <AdminHomeScreen /> }
 ]
 
@@ -93,7 +106,8 @@ const studentRoutes: ApplicationRoute[] = [
   mediaContents,
   { path: '*', element: <StudentsHomeScreen /> },
   mediaContentDetailRoute,
-  studentsByCourseRoute
+  studentsByCourseRoute,
+  mediaFolderDetailRoute
 ]
 
 const teachersRoutes: ApplicationRoute[] = [
@@ -102,7 +116,8 @@ const teachersRoutes: ApplicationRoute[] = [
   students,
   mediaContentDetailRoute,
   studentsByCourseRoute,
-  mediaFolderRoute,
+  mediaFolderCreateRoute,
+  mediaFolderDetailRoute,
   { path: '*', element: <TeachersHomeScreen /> }
 ]
 

@@ -15,14 +15,9 @@ type Course @model
   scheduleYear: Int!
 }
 
-input AMPLIFY {
-  globalAuthRule: AuthRule = {allow: public}
-}
-
 enum MediaType {
   LINK,
   FILE,
-  AUDIO
 }
 
 type MediaFolder @model
@@ -35,7 +30,6 @@ type MediaFolder @model
   id: ID!
   name: String!
   groups: [String!]!
-  medias: [Media] @hasMany
 }
 
 type Media @model
@@ -53,7 +47,8 @@ type Media @model
   content: String
   groups: [String!]!
   uploadedBy: String!
-  belongsToFolder: Boolean
+  mimeType: String
+  folderId: String
 }
 
 enum DisabledAccountReasons {
