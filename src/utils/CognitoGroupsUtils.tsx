@@ -25,3 +25,5 @@ export const isAdmin = (user?: User | null) => user?.groups.includes(UserTypes.A
 export const isTeacher = (user?: User | null) => user?.groups.includes(UserTypes.TEACHER)
 
 export const generalGroups = [UserTypes.STUDENT, UserTypes.TEACHER]
+
+export const isStudent = (user?: User | null) => user?.groups.includes(UserTypes.STUDENT)

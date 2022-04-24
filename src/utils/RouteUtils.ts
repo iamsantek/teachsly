@@ -19,6 +19,6 @@ export function useGroupRoutes () {
   }
 }
 
-export const generateMediaByCourseRoute = (externalId: string) => `/courses/${externalId.replace(/\s/g, '')}/medias`
+export const generateMediaByCourseRoute = (externalId: string) => `/medias/${externalId.replace(/\s/g, '')}`
 
 export const generateStudentsByCourseRoute = (externalId: string) => `/courses/${externalId.replace(/\s/g, '')}/students`

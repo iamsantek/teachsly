@@ -1,9 +1,8 @@
 import { Storage } from '@aws-amplify/storage'
 import { v4 as uuidv4 } from 'uuid'
-import { CreateMediaMutation } from '../../API'
+import { CreateMediaInput, CreateMediaMutation } from '../../API'
 import { LogLevel, LogTypes } from '../../enums/LogTypes'
 import { createMedia } from '../../graphql/mutations'
-import { Media as PlatformMedia } from '../../interfaces/Media'
 import { Media } from '../../models'
 import Logger from '../../utils/Logger'
 import GraphQLService from '../GraphQLService'
@@ -56,29 +55,29 @@ class StorageService {
     }
   }
 
-  public persistMedia = async (media: PlatformMedia, file?: File) => {
+  public persistMedia = async (media: CreateMediaInput, file?: File) => {
     const fileUploaded = await this.uploadToS3(file)
-    const { title, description, type, groups, content, uploadedBy, link } = media
+    const { title, description, type, groups, content, uploadedBy, link, folderId, mimeType } = media as CreateMediaInput
 
     try {
       const filterGroups = (groups as string[]).filter((group) => group)
 
       const media = new Media({
         title,
-        description,
+        description: description || '',
         link: fileUploaded?.key || link,
         type,
-        content,
+        content: content as string,
         uploadedBy,
-        groups: filterGroups as string[]
+        groups: filterGroups as string[],
+        folderId: folderId as string | undefined,
+        mimeType: mimeType || file?.type
       })
 
-      const createdMedia = await GraphQLService.fetchQuery<CreateMediaMutation>({
+      return GraphQLService.fetchQuery<CreateMediaMutation>({
         query: createMedia,
         input: media
       })
-
-      return createdMedia?.createMedia as PlatformMedia
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
