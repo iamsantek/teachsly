@@ -1,62 +1,42 @@
 import { useState, useEffect, useContext } from 'react'
 import { Media as PlatformMedia } from '../../interfaces/Media'
-import { Box, Button, Center, Stack } from '@chakra-ui/react'
-import { ContentLine } from '../../components/ContentLine/ContentLine'
+import { Box, Divider, Stack } from '@chakra-ui/react'
 import MediaService from '../../services/MediaService'
-import {
-  mediaContentLineIcons as MediaIcon
-} from '../../constants/Medias'
-import { CommonContentLineTitle } from './CommonContentLineTitle'
 import { ViewMediaContentModal } from '../../modals/ViewMediaContentModal'
-import { translate } from '../../utils/LanguageUtils'
-import { MediaType } from '../../models'
 import MediaCRUDModal from '../../modals/MediaCRUDModal'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
-import { SectionHeader } from '../../components/Headers/SectionHeader'
-import { AiOutlinePlus } from 'react-icons/ai'
-import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
-import { Placeholder } from '../../components/Placeholders/Placeholder'
 import { ToastNotification } from '../../observables/ToastNotification'
-import { LoadMoreButton } from '../../components/Buttons/LoadMoreButton'
 import { isAdmin, isTeacher } from '../../utils/CognitoGroupsUtils'
-import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPlaceholder'
 import { ConfirmationDialog } from '../../components/AlertDialog/ConfirmationDialog'
+import { MediaFolderCardsList } from './folders/MediaFolderCardsList'
+import { MediaContentsLines } from './MediaContentsLines'
+import { Media as MediaAPI } from '../../API'
+import { FetchType } from '../../enums/Media'
 import { useParams } from 'react-router-dom'
 
-export const MediaContentsList = () => {
-  const [medias, setMedias] = useState<PlatformMedia[]>([])
+interface Props {
+  medias: MediaAPI[]
+  isLoading: boolean
+  showCRUDModal: boolean
+  onCRUDModalVisibilityChange: (value: boolean) => void
+  fetchType: FetchType
+  folderGroups?: string[]
+}
+
+export const MediaContentsList = ({ medias, isLoading, showCRUDModal, onCRUDModalVisibilityChange, fetchType, folderGroups }: Props) => {
+  const [renderMedias, setRenderMedias] = useState<MediaAPI[]>([])
   const [viewMediaContentModalVisibility, setViewMediaContentModalVisibility] =
     useState<boolean>(false)
-  const [selectedMedia, setSelectedMedia] = useState<PlatformMedia | undefined>(
+  const [selectedMedia, setSelectedMedia] = useState<MediaAPI | undefined>(
     undefined
   )
-  const [crudModalVisibility, setCrudModalVisibility] =
-    useState<boolean>(false)
-  const [nextPageResultToken, setNextPageResultToken] = useState<string | null>()
-  const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(true)
+
+  const { folderId } = useParams()
   const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] = useState<boolean>(false)
 
-  const { id: courseId } = useParams()
-
-  const fetchMedia = async (courseId: string | undefined = undefined) => {
-    const medias = await MediaService.fetchMedias(nextPageResultToken, courseId)
-
-    setNextPageResultToken(medias?.listMedia?.nextToken)
-    setIsLoadingNewPage(false)
-
-    setMedias((previousMedias) =>
-      previousMedias.concat((medias?.listMedia?.items as PlatformMedia[]) || [])
-    )
-  }
-
   useEffect(() => {
-    fetchMedia(courseId)
-  }, [courseId])
-
-  const loadMore = () => {
-    setIsLoadingNewPage(true)
-    fetchMedia()
-  }
+    setRenderMedias(medias)
+  }, [medias])
 
   const onDownload = async (key: string) => {
     const signedURL = await MediaService.generateSignedUrl(key)
@@ -72,23 +52,23 @@ export const MediaContentsList = () => {
     })
   }
 
-  const onView = (media: PlatformMedia) => {
+  const onView = (media: MediaAPI) => {
     setSelectedMedia(media)
     setViewMediaContentModalVisibility(true)
   }
 
-  const onEdit = (media: PlatformMedia) => {
+  const onEdit = (media: MediaAPI) => {
     setSelectedMedia(media)
-    setCrudModalVisibility(true)
+    onCRUDModalVisibilityChange(true)
   }
 
   const onClose = (modal: 'ViewMediaContentModal' | 'MediaCRUDModal') => {
     setSelectedMedia(undefined)
 
-    modal === 'MediaCRUDModal' ? setCrudModalVisibility(false) : setViewMediaContentModalVisibility(false)
+    modal === 'MediaCRUDModal' ? onCRUDModalVisibilityChange(false) : setViewMediaContentModalVisibility(false)
   }
 
-  const showDeleteContentDialog = (mediaToDelete: PlatformMedia) => {
+  const showDeleteContentDialog = (mediaToDelete: MediaAPI) => {
     setShowDeleteUserConfirmation(true)
     setSelectedMedia(mediaToDelete)
   }
@@ -99,7 +79,7 @@ export const MediaContentsList = () => {
     )
 
     if (isSuccessfullyDeleted) {
-      setMedias((medias) =>
+      setRenderMedias((medias) =>
         medias.filter((media) => media.id !== selectedMedia?.id)
       )
 
@@ -113,16 +93,16 @@ export const MediaContentsList = () => {
     }
   }
 
-  const onUpdate = (updatedMedia: PlatformMedia) => {
-    const updatedMedias = [...medias]
-    const index = medias.indexOf(
-      medias.find((media) => media.id === updatedMedia.id) as PlatformMedia
+  const onUpdate = (updatedMedia: MediaAPI) => {
+    const updatedMedias = [...renderMedias]
+    const index = renderMedias.indexOf(
+      renderMedias.find((media) => media.id === updatedMedia.id) as MediaAPI
     )
     updatedMedias[index] = updatedMedia
-    setMedias(updatedMedias)
+    setRenderMedias(updatedMedias)
   }
 
-  const { context: { user, externalUserId } } = useContext(UserDashboardContext)
+  const { context: { user } } = useContext(UserDashboardContext)
   const hasAdminRole = isAdmin(user)
   const hasTeacherRole = isTeacher(user)
 
@@ -145,58 +125,34 @@ export const MediaContentsList = () => {
 
       {(hasAdminRole || hasTeacherRole) && (
         <MediaCRUDModal
-          isOpen={crudModalVisibility}
+          isOpen={showCRUDModal}
           onUpdate={onUpdate}
           onClose={() => onClose('MediaCRUDModal')}
-          onCreate={(media) => setMedias([media, ...medias])}
+          onCreate={(media) => setRenderMedias([media, ...medias])}
           mediaToUpdate={selectedMedia}
+          folderGroups={folderGroups}
         />
       )}
-      <Stack spacing={4} flexDirection={'column'}>
-        <SectionHeader>
-          {(hasAdminRole || hasTeacherRole) && (
-            <Center>
-              <Button
-                leftIcon={<AiOutlinePlus />}
-                onClick={() => setCrudModalVisibility(true)}
-                colorScheme="brand"
-              >
-                {translate('MEDIA_UPLOAD_MODAL_TITLE')}
-              </Button>
-            </Center>
-          )}
-        </SectionHeader>
+      <Stack spacing={10} flexDirection={'column'}>
+        {!folderId && (
+          <>
+            <Box>
+              <MediaFolderCardsList fetchType={fetchType} />
+            </Box>
+            <Divider />
+          </>
+        )}
         <Box>
-          {medias.map((media) => {
-            const Icon = MediaIcon[media.type]
-            const isMediaOwner = externalUserId === (media as any).owner
-
-            return (
-              <ContentLine
-                key={media.id}
-                leftIcon={<Icon />}
-                onView={() => onView(media)}
-                onDownload={
-                  media.link && media.type === MediaType.FILE
-                    ? () => onDownload(media.link)
-                    : undefined
-                }
-                onEdit={(hasAdminRole || isMediaOwner) ? () => onEdit(media) : undefined}
-                onDelete={(hasAdminRole || isMediaOwner) ? () => showDeleteContentDialog(media) : undefined}
-              >
-                <CommonContentLineTitle title={media.title} badges={media.groups} />
-              </ContentLine>
-            )
-          })}
-          <Placeholder
-            show={isLoadingNewPage}
-            number={2}
-            placeholderElement={<ContentLinePlaceholder />}
+          <MediaContentsLines
+            medias={renderMedias}
+            onDownload={(media) => onDownload(media.link)}
+            isLoading={isLoading}
+            onView={(media) => onView(media)}
+            onEdit={(media) => onEdit(media)}
+            onDelete={(media) => showDeleteContentDialog(media)}
           />
-          <NoContentPlaceholder show={medias.length === 0 && !isLoadingNewPage} />
         </Box>
       </Stack>
-      <LoadMoreButton show={!!nextPageResultToken} isLoading={isLoadingNewPage} onClick={loadMore} />
     </>
   )
 }
