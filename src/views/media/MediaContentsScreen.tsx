@@ -124,6 +124,10 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
   }, [fetchSectionName])
 
   useEffect(() => {
+    return () => setMedias([])
+  }, [fetchType])
+
+  useEffect(() => {
     if (!isAllowedRoute) {
       navigate('/')
     }

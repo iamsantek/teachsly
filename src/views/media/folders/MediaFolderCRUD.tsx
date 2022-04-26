@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { DragAndDropZone } from '../../../components/DragAndDrop/DragAndDropZone'
 import { SectionHeader } from '../../../components/Headers/SectionHeader'
 import { MediaDrawer, MediaWithFile } from '../../../interfaces/Media'
@@ -215,14 +215,14 @@ export const MediaFolderCRUD = () => {
 
   const { title: drawerTitle } = watch()
   const sectionName = folderId ? `${translate('EDITING')} '${editingFolder?.name ?? translate('FOLDER')}'` : translate('CREATE_FOLDER')
-  const fileTypes = folderId ? [...folderMedias.map(media => media.mimeType) as string[], ...dragAndDropFiles.map(file => file.file.type)] : dragAndDropFiles.map(file => file.file.type)
-  const drawerMedia = folderId ? [...mediaToMediaDrawer(folderMedias), ...mediaWithFileToMediaDrawer(dragAndDropFiles)] : mediaWithFileToMediaDrawer(dragAndDropFiles)
+  const fileTypes = useMemo(() => folderId ? [...folderMedias.map(media => media.mimeType) as string[], ...dragAndDropFiles.map(file => file.file.type)] : dragAndDropFiles.map(file => file.file.type), [folderMedias, folderId, dragAndDropFiles])
+  const drawerMedia = useMemo(() => folderId ? [...mediaToMediaDrawer(folderMedias), ...mediaWithFileToMediaDrawer(dragAndDropFiles)] : mediaWithFileToMediaDrawer(dragAndDropFiles), [folderId, folderMedias, dragAndDropFiles])
   const isMediaFolderFilesModified = deletedIds.length > 0 || dragAndDropFiles.length > 0 || editedMedias.length > 0
   const isFolderInformationModified = isDirty || isMediaFolderFilesModified
 
   return (
     <>
-      <Skeleton isLoaded={!!editingFolder}>
+      <Skeleton isLoaded={folderId ? !!editingFolder : !editingFolder}>
         <SectionHeader sectionName={sectionName}>
           {isFolderInformationModified && (
             <Button
