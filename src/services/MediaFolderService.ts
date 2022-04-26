@@ -28,7 +28,6 @@ class MediaFolderService {
   }
 
   public createFolder = async (folderName : string, groups: string[], uploadedBy: string, files: MediaWithFile[]) => {
-    console.log('files', files)
     const mediaFolder: CreateMediaFolderInput = {
       name: folderName,
       groups: groups
@@ -41,13 +40,11 @@ class MediaFolderService {
 
     const mediaFolderId = mediaFolderCreated?.createMediaFolder?.id
 
-    console.log('mediaFolderId', mediaFolderId)
-
     if (mediaFolderId) {
       const mediasToFolderPromises = this.addMediasToFolder(files, mediaFolderId, uploadedBy, groups)
       await Promise.all(mediasToFolderPromises)
 
-      return mediaFolderCreated as MediaFolder
+      return mediaFolderCreated.createMediaFolder as MediaFolder
     }
   }
 

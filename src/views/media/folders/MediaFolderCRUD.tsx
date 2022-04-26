@@ -25,7 +25,7 @@ export const MediaFolderCRUD = () => {
   const [folderMedias, setFolderMedias] = useState<Media[]>([])
   const [deletedIds, setDeletedIds] = useState<string[]>([])
   const [editedMedias, setEditedMedias] = useState<MediaDrawer[]>([])
-  const [isUpdating, setIsUpdating] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
   const [nextPageToken, setNextPageToken] = useState<string | null | undefined>()
 
   const { context: { user, courses } } = useContext(UserDashboardContext)
@@ -128,13 +128,22 @@ export const MediaFolderCRUD = () => {
   }, [onDeleteAlreadyUploaded, onDeleteNotYetUploaded])
 
   const createFolder = useCallback(async (folderName: string, groups: string[], files: MediaWithFile[]) => {
-    return MediaFolderService.createFolder(
+    setIsProcessing(true)
+    const folder = await MediaFolderService.createFolder(
       folderName,
       groups,
       user?.name as string,
       files
     )
-  }, [user])
+
+    ToastNotification({
+      description: folder ? 'CREATE_MEDIA_FOLDER_SUCCESS' : 'CREATE_MEDIA_FOLDER_FAILURE',
+      status: folder ? 'SUCCESS' : 'ERROR'
+    })
+
+    setIsProcessing(false)
+    navigate(`/medias/folder/${folder?.id}`)
+  }, [user, navigate])
 
   const onUpdateMediaFolderInformation = useCallback(async () => {
     const { title, groups } = watch()
@@ -155,7 +164,7 @@ export const MediaFolderCRUD = () => {
   }, [deletedIds])
 
   const updateFolder = useCallback(async () => {
-    setIsUpdating(true)
+    setIsProcessing(true)
     const folderOperationsPromises = []
 
     // Edit Folder information
@@ -195,7 +204,7 @@ export const MediaFolderCRUD = () => {
     const folderOperationsPromisesResult = await Promise.all(folderOperationsPromises.flat(Infinity))
     const operationsSuccess = folderOperationsPromisesResult.every(operation => operation)
 
-    setIsUpdating(false)
+    setIsProcessing(false)
 
     ToastNotification({
       description: operationsSuccess ? 'UPDATE_MEDIA_FOLDER_SUCCESS' : 'UPDATE_MEDIA_FOLDER_FAILURE',
@@ -227,7 +236,7 @@ export const MediaFolderCRUD = () => {
           {isFolderInformationModified && (
             <Button
               colorScheme='brand'
-              isLoading={isUpdating}
+              isLoading={isProcessing}
               loadingText={translate('PROCESSING')}
               onClick={() => updateFolder()}>
               {translate('UPDATE_FOLDER')}
@@ -249,7 +258,7 @@ export const MediaFolderCRUD = () => {
             onUpdate={onUpdate}
             onDelete={onDelete}
             editMode={!!folderId}
-            isProcessing={isUpdating}
+            isProcessing={isProcessing}
             changesNotSaved={isMediaFolderFilesModified}
           />
         </form>

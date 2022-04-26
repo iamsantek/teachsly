@@ -107,6 +107,8 @@ export enum LanguageES {
   UPDATE_MEDIA_FOLDER_SUCCESS='La carpeta se actualizó correctamente.',
   UPDATE_MEDIA_FOLDER_FAILURE='Hubo un error al actualizar la carpeta. Por favor, intentar nuevamente.',
   EDIT_FOLDER='Editar carpeta',
+  CREATE_MEDIA_FOLDER_SUCCESS='La carpeta se creó correctamente.',
+  CREATE_MEDIA_FOLDER_FAILURE='Hubo un error al crear la carpeta. Por favor, intentar nuevamente.',
 }
 
 export enum LanguageEN {
@@ -213,4 +215,6 @@ export enum LanguageEN {
   UPDATE_MEDIA_FOLDER_SUCCESS='The folder has been successfully updated.',
   UPDATE_MEDIA_FOLDER_FAILURE='An error has occurred when updating the folder. Please try again.',
   EDIT_FOLDER='Edit folder',
+  CREATE_MEDIA_FOLDER_SUCCESS='The folder has been successfully created.',
+  CREATE_MEDIA_FOLDER_FAILURE='An error has occurred when creating the folder. Please try again.',
 }

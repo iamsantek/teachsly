@@ -89,8 +89,6 @@ class MediaService {
       return
     }
 
-    console.log('Fetch media by folder id', folderId)
-
     return GraphQLService.fetchQuery<ListMediaQuery>({
       query: listMedia,
       filter: {
