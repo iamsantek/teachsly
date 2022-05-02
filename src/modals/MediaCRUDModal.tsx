@@ -13,7 +13,8 @@ import {
   ModalOverlay,
   ModalHeader,
   useColorModeValue,
-  Box
+  Box,
+  Text
 } from '@chakra-ui/react'
 import { Input as CustomInput } from '../components/Inputs/Input'
 import { TextArea } from '../components/Inputs/TextArea'
@@ -98,7 +99,7 @@ const MediaCRUDModal = ({
     }
 
     filterCourses()
-  }, [])
+  }, [allCourses, user])
 
   useEffect(() => {
     fetchFolder()
@@ -240,6 +241,12 @@ const MediaCRUDModal = ({
                     closeMenuOnSelect={true}
                     isDisabled={!!folderId}
                   />
+
+                  {folderId && (
+                    <Text as='i' color='gray.500'>
+                      {translate('FOLDER_GROUPS_HELPER_TEXT')}
+                    </Text>
+                  )}
 
                   <Select
                     name="type"

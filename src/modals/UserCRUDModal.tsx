@@ -176,7 +176,7 @@ const UserCRUDModal = ({
     const resetPasswordResponse = await UserService.resetPassword(userToUpdate?.cognitoId as string)
     setIsLoading(true)
 
-    if (resetPasswordResponse.$metadata.httpStatusCode === 200) {
+    if (resetPasswordResponse?.$metadata.httpStatusCode === 200) {
       ToastNotification({
         status: 'SUCCESS',
         description: 'PASSWORD_RESET_SUCCESS'

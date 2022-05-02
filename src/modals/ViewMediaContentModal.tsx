@@ -46,8 +46,12 @@ export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
           <ModalCloseButton />
           <ModalBody marginBottom={3}>
             <Stack spacing={4}>
-              <Text textStyle={'title'}>{translate('DESCRIPTION')}</Text>
-              <Text textStyle={'paragraph'}>{media?.description}</Text>
+              {media?.description && (
+                <>
+                  <Text textStyle={'title'}>{translate('DESCRIPTION')}</Text>
+                  <Text textStyle={'paragraph'}>{media?.description}</Text>
+                </>
+              )}
               {media?.content && (
                 <>
                   <Text textStyle={'title'}>{translate('CONTENT')}</Text>

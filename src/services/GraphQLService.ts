@@ -1,6 +1,5 @@
 import {
   graphqlOperation,
-  GraphQLOptions,
   GraphQLResult
 } from '@aws-amplify/api-graphql'
 import { API } from 'aws-amplify'
@@ -31,22 +30,6 @@ type QueryParameters = {
 }
 
 class GraphQLService {
-  public graphQL = <T extends object>(
-    options: GraphQLOptions,
-    additionalHeaders?: {
-      [key: string]: string;
-    }
-  ): Promise<GraphQLResult<T>> | undefined => {
-    try {
-      const query = API.graphql(options, additionalHeaders) as Promise<
-        GraphQLResult<T>
-      >
-      return query
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
   public fetchQuery = async <T>({
     query,
     input = undefined,
