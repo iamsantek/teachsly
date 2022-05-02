@@ -56,20 +56,20 @@ export const MediaFolderScreen = () => {
   }, [folderId, nextPageToken])
 
   const getMediaFolder = useCallback(async () => {
-    // TODO: Check pagination
-    const mediaFolder = await MediaFolderService.fetchMediaFolders()
+    const mediaFolder = await MediaFolderService.fetchMediaFolderById(folderId)
 
-    if (folderId) {
-      const folder = mediaFolder?.listMediaFolders?.items.find(folder => folder?.id === folderId)
-      setEditingFolder(folder)
-
-      const groups = transformGroups(courses, folder?.groups as string[] || [])
-
-      reset({
-        title: folder?.name as string,
-        groups
-      })
+    if (!mediaFolder) {
+      return
     }
+
+    setEditingFolder(mediaFolder.getMediaFolder)
+
+    const groups = transformGroups(courses, mediaFolder?.getMediaFolder?.groups as string[] || [])
+
+    reset({
+      title: mediaFolder?.getMediaFolder?.name as string,
+      groups
+    })
   }, [folderId, courses, reset])
 
   useEffect(() => {
