@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useRoutes } from 'react-router-dom'
 import { defaultUserContext } from './constants/DashboardContext'
 import UserService from './services/UserService'
@@ -20,6 +20,7 @@ import { ApplicationContext, UserContext } from './interfaces/DashboardContext'
 import { UserDashboardContext } from './contexts/UserDashboardContext'
 import { Course, User } from './API'
 import { GRAPHQL_ENDPOINT } from './constants/Environment'
+import CognitoService from './services/aws/CognitoService'
 
 Amplify.configure({
   ...awsExports,
@@ -35,7 +36,11 @@ const App = () => {
 
   const { user, route: authRoute } = useAuthenticator((context) => [context.user])
 
-  const fetchCourses = async () => {
+  useEffect(() => {
+    CognitoService.createClient(user)
+  }, [user])
+
+  const fetchCourses = useCallback(async () => {
     if (!user) {
       return []
     }
@@ -45,9 +50,9 @@ const App = () => {
     })
 
     return courses?.listCourses?.items
-  }
+  }, [user])
 
-  const fetchRoutes = async (cognitoUser: CognitoUserAmplify) => {
+  const fetchRoutes = useCallback(async (cognitoUser: CognitoUserAmplify) => {
     const cognitoId = cognitoUser?.username
 
     const userResponse = UserService.fetchUserByCognitoId(cognitoId)
@@ -69,13 +74,13 @@ const App = () => {
       courses: courses as Course[],
       externalUserId: cognitoId as string
     })
-  }
+  }, [fetchCourses])
 
   useEffect(() => {
     if (authRoute === 'authenticated') {
       fetchRoutes(user)
     }
-  }, [authRoute])
+  }, [fetchRoutes, user, authRoute])
 
   const routeComponent = useRoutes(routes)
   const isContextLoaded = user && userSettings.routes.length > 0
@@ -86,14 +91,14 @@ const App = () => {
   }
 
   return (
-    <ChakraProvider theme={theme}>
-      <UserDashboardContext.Provider value={dashboardContext}>
-        {authRoute === 'authenticated'
-          ? isContextLoaded ? <DashboardLayout>{routeComponent}</DashboardLayout> : <SpinnerScreen />
-          : <LogInScreen />}
-      </UserDashboardContext.Provider>
-      <ToastWrapper />
-    </ChakraProvider>
+      <ChakraProvider theme={theme}>
+        <UserDashboardContext.Provider value={dashboardContext}>
+          {authRoute === 'authenticated'
+            ? isContextLoaded ? <DashboardLayout>{routeComponent}</DashboardLayout> : <SpinnerScreen />
+            : <LogInScreen />}
+        </UserDashboardContext.Provider>
+        <ToastWrapper />
+      </ChakraProvider>
   )
 }
 

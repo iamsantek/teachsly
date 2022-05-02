@@ -30,4 +30,5 @@ export interface MediaDrawer {
   title: string;
   type: string;
   isUploaded: boolean;
+  owner?: string | null | undefined;
 }

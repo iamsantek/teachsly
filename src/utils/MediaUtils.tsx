@@ -62,7 +62,8 @@ export const mediaToMediaDrawer = (medias: Media[]): MediaDrawer[] => {
     id: media.id,
     title: media.title,
     type: media.mimeType ?? '',
-    isUploaded: true
+    isUploaded: true,
+    owner: media.owner
   }))
 }
 

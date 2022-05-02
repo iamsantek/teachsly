@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { CreateMediaInput, CreateMediaMutation } from '../../API'
 import { LogLevel, LogTypes } from '../../enums/LogTypes'
 import { createMedia } from '../../graphql/mutations'
-import { Media } from '../../models'
 import Logger from '../../utils/Logger'
 import GraphQLService from '../GraphQLService'
 import CloudFrontService from './CloudFrontService'
@@ -62,7 +61,7 @@ class StorageService {
     try {
       const filterGroups = (groups as string[]).filter((group) => group)
 
-      const media = new Media({
+      const createMediaInput: CreateMediaInput = {
         title,
         description: description || '',
         link: fileUploaded?.key || link,
@@ -72,11 +71,11 @@ class StorageService {
         groups: filterGroups as string[],
         folderId: folderId as string | undefined,
         mimeType: mimeType || file?.type
-      })
+      }
 
       return GraphQLService.fetchQuery<CreateMediaMutation>({
         query: createMedia,
-        input: media
+        input: createMediaInput
       })
     } catch (error) {
       Logger.log(

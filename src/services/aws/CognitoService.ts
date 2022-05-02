@@ -17,26 +17,44 @@ import awsmobile from '../../aws-exports'
 import { LogLevel, LogTypes } from '../../enums/LogTypes'
 import { UserTypes } from '../../enums/UserTypes'
 import Logger from '../../utils/Logger'
+import { CognitoUserAmplify } from '@aws-amplify/ui'
 
 const logTag = LogTypes.AuthService
 
 class CognitoService {
-  private cognitoIdentityProviderClient: CognitoIdentityProviderClient
+  private cognitoIdentityProviderClient: CognitoIdentityProviderClient | undefined
 
-  constructor () {
-    this.cognitoIdentityProviderClient =
-      this.createCognitoIdentityProviderClient()
-  }
+  public createClient = async (user: CognitoUserAmplify) => {
+    if (this.cognitoIdentityProviderClient) {
+      return
+    }
 
-  private createCognitoIdentityProviderClient = () =>
-    new CognitoIdentityProviderClient({
-      region: awsmobile.aws_project_region,
-      credentials: fromCognitoIdentityPool({
-        clientConfig: { region: awsmobile.aws_project_region },
-        identityPoolId: awsmobile.aws_cognito_identity_pool_id,
-        logins: {}
-      })
+    user?.getSession((error: any, result: any) => {
+      if (result) {
+        const token: string = result.getIdToken().getJwtToken()
+
+        this.cognitoIdentityProviderClient = new CognitoIdentityProviderClient({
+          region: awsmobile.aws_project_region,
+          credentials: fromCognitoIdentityPool({
+            clientConfig: { region: awsmobile.aws_project_region },
+            identityPoolId: awsmobile.aws_cognito_identity_pool_id,
+            logins: {
+              [`cognito-idp.${awsmobile.aws_cognito_region}.amazonaws.com/${awsmobile.aws_user_pools_id}`]: token
+            }
+          })
+        })
+
+        console.log('Client created')
+      } else if (error) {
+        Logger.log(
+          LogLevel.ERROR,
+          logTag,
+          'Error when creating Cognito client',
+          error
+        )
+      }
     })
+  }
 
   private getListGroupsCommandConfig = () => ({
     UserPoolId: awsmobile.aws_user_pools_id
@@ -51,7 +69,7 @@ class CognitoService {
         const config = this.getGroupsConfiguration(groupName, userId)
         const adminAddUserToGroupCommand = new AdminAddUserToGroupCommand(config)
 
-        return this.cognitoIdentityProviderClient.send(
+        return this.cognitoIdentityProviderClient?.send(
           adminAddUserToGroupCommand
         )
       })
@@ -77,9 +95,9 @@ class CognitoService {
       })
 
       const listUsersInGroupCommandResponse =
-        await this.cognitoIdentityProviderClient.send(listUsersInGroupCommand)
+        await this.cognitoIdentityProviderClient?.send(listUsersInGroupCommand)
 
-      return listUsersInGroupCommandResponse.Users
+      return listUsersInGroupCommandResponse?.Users
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
@@ -115,9 +133,9 @@ class CognitoService {
 
       const listGroupsCommand = new ListGroupsCommand(listGroupsCommandConfig)
       const listGroupsCommandResponse =
-        await this.cognitoIdentityProviderClient.send(listGroupsCommand)
+        await this.cognitoIdentityProviderClient?.send(listGroupsCommand)
 
-      return listGroupsCommandResponse.Groups?.filter(Boolean)
+      return listGroupsCommandResponse?.Groups?.filter(Boolean)
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
@@ -137,7 +155,7 @@ class CognitoService {
         new AdminUpdateUserAttributesCommand(
           adminUpdateUserAttributesCommandConfig
         )
-      return await this.cognitoIdentityProviderClient.send(
+      return await this.cognitoIdentityProviderClient?.send(
         adminUpdateUserAttributesCommand
       )
     } catch (error) {
@@ -188,12 +206,13 @@ class CognitoService {
       adminCreateUserCommandConfig
     )
     const adminCreateUserCommandResponse =
-      await this.cognitoIdentityProviderClient.send(adminCreateUserCommand)
+      await this.cognitoIdentityProviderClient?.send(adminCreateUserCommand)
 
-    return adminCreateUserCommandResponse.User
+    return adminCreateUserCommandResponse?.User
   }
 
   public parseCognitoUser = (attributes: AttributeType[] | undefined) => {
+    console.log('parseCognitoUser')
     const userId = attributes?.find(
       (attribute) => attribute.Name === 'sub'
     )?.Value
@@ -212,7 +231,7 @@ class CognitoService {
       const listUsersCommandConfig = this.getListGroupsCommandConfig()
       const listUsersCommand = new ListUsersCommand(listUsersCommandConfig)
 
-      return await this.cognitoIdentityProviderClient.send(listUsersCommand)
+      return await this.cognitoIdentityProviderClient?.send(listUsersCommand)
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
@@ -241,7 +260,7 @@ class CognitoService {
         createGroupCommandInput
       )
 
-      return await this.cognitoIdentityProviderClient.send(createGroupCommand)
+      return await this.cognitoIdentityProviderClient?.send(createGroupCommand)
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
@@ -286,7 +305,7 @@ class CognitoService {
       const config = this.getAdminUpdateUserAttributesCommandConfig(user)
       const command = new AdminUpdateUserAttributesCommand(config)
 
-      return this.cognitoIdentityProviderClient.send(command)
+      return this.cognitoIdentityProviderClient?.send(command)
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
@@ -302,7 +321,7 @@ class CognitoService {
       const config = this.getGroupsConfiguration(groupToDelete, userId)
 
       const command = new AdminRemoveUserFromGroupCommand(config)
-      return this.cognitoIdentityProviderClient.send(command)
+      return this.cognitoIdentityProviderClient?.send(command)
     })
 
     return Promise.all(adminRemoveUserFromGroupCommandResponses)
@@ -316,7 +335,7 @@ class CognitoService {
       Permanent: false
     })
 
-    return this.cognitoIdentityProviderClient.send(command)
+    return this.cognitoIdentityProviderClient?.send(command)
   }
 }
 

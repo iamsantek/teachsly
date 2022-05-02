@@ -1,4 +1,4 @@
-import { CreateMediaFolderInput, CreateMediaFolderMutation, MediaType, MediaFolder, ListMediaFoldersQuery, GetMediaFolderQuery, UpdateMediaFolderMutation } from '../API'
+import { CreateMediaFolderInput, CreateMediaFolderMutation, MediaType, MediaFolder, ListMediaFoldersQuery, GetMediaFolderQuery, UpdateMediaFolderMutation, UpdateMediaFolderInput } from '../API'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { FetchType } from '../enums/Media'
 import { createMediaFolder, updateMediaFolder } from '../graphql/mutations'
@@ -50,7 +50,7 @@ class MediaFolderService {
 
   public fetchMediaFolders = async (fetchType: FetchType = FetchType.ALL, courseId?: string) => {
     const fetchFilter = {
-      [FetchType.ALL]: {},
+      [FetchType.ALL]: undefined,
       [FetchType.COURSE]: {
         groups: { contains: courseId }
       },
@@ -74,7 +74,7 @@ class MediaFolderService {
     })
   }
 
-  public updateFolder = async (folder: CreateMediaFolderInput) => {
+  public updateFolder = async (folder: UpdateMediaFolderInput) => {
     try {
       const models = await GraphQLService.fetchQuery<UpdateMediaFolderMutation>({
         query: updateMediaFolder,
