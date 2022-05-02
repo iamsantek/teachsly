@@ -109,7 +109,8 @@ export enum LanguageES {
   EDIT_FOLDER='Editar carpeta',
   CREATE_MEDIA_FOLDER_SUCCESS='La carpeta se creó correctamente.',
   CREATE_MEDIA_FOLDER_FAILURE='Hubo un error al crear la carpeta. Por favor, intentar nuevamente.',
-  FOLDER_GROUPS_HELPER_TEXT='Los permisos de este contenido serán los mismos que los de la carpeta que lo contiene. Para modificarlos, se debe modificar los permisos de la carpeta.'
+  FOLDER_GROUPS_HELPER_TEXT='Los permisos de este contenido serán los mismos que los de la carpeta que lo contiene. Para modificarlos, se debe modificar los permisos de la carpeta.',
+  NO_FOLDER_EDIT_PERMISSION_TITLE_MESSAGE='Solo puedes editar la información de las carpetas que hayas creado.'
 }
 
 export enum LanguageEN {
@@ -218,5 +219,6 @@ export enum LanguageEN {
   EDIT_FOLDER='Edit folder',
   CREATE_MEDIA_FOLDER_SUCCESS='The folder has been successfully created.',
   CREATE_MEDIA_FOLDER_FAILURE='An error has occurred when creating the folder. Please try again.',
-  FOLDER_GROUPS_HELPER_TEXT='The permissions of this content will be the same as those of the folder that contains it. If you want to modify them, you will have to modify the permissions of the folder.'
+  FOLDER_GROUPS_HELPER_TEXT='The permissions of this content will be the same as those of the folder that contains it. If you want to modify them, you will have to modify the permissions of the folder.',
+  NO_FOLDER_EDIT_PERMISSION_TITLE_MESSAGE='You can only edit folders that you created.'
 }

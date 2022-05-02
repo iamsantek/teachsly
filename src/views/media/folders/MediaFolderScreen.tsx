@@ -15,7 +15,7 @@ import { Media, MediaFolder, UpdateMediaFolderInput } from '../../../API'
 import { translate } from '../../../utils/LanguageUtils'
 import { transformGroups } from '../../../utils/CourseUtils'
 import MediaService from '../../../services/MediaService'
-import { Button, Skeleton, Stack } from '@chakra-ui/react'
+import { Alert, AlertIcon, Button, Flex, Skeleton, Stack, Text } from '@chakra-ui/react'
 import { ToastNotification } from '../../../observables/ToastNotification'
 import { useUserGroups } from '../../../hooks/useUserGroups'
 
@@ -235,18 +235,24 @@ export const MediaFolderScreen = () => {
   return (
     <Stack spacing={4}>
       <Skeleton isLoaded={folderId ? !!editingFolder : !editingFolder}>
-        <SectionHeader sectionName={sectionName}>
-          {isFolderInformationModified && (
-            <Button
-              colorScheme='brand'
-              isLoading={isProcessing}
-              loadingText={translate('PROCESSING')}
-              onClick={() => updateFolder()}>
-              {translate('UPDATE_FOLDER')}
-            </Button>
-          )}
-        </SectionHeader>
+          <SectionHeader sectionName={sectionName}>
+            {isFolderInformationModified && (
+              <Button
+                colorScheme='brand'
+                isLoading={isProcessing}
+                loadingText={translate('PROCESSING')}
+                onClick={() => updateFolder()}>
+                {translate('UPDATE_FOLDER')}
+              </Button>
+            )}
+          </SectionHeader>
       </Skeleton>
+      {!hasFolderEditPermissions && (
+            <Alert status='info' variant='left-accent' marginY={4}>
+              <AlertIcon />
+              <Text fontWeight='bold'>{translate('NO_FOLDER_EDIT_PERMISSION_TITLE_MESSAGE')}</Text>
+            </Alert>
+      )}
       <FormProvider {...formControls}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <MediaFolderSettingsInputs readOnly={!hasFolderEditPermissions} />
