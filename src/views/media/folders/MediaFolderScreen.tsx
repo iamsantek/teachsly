@@ -15,7 +15,7 @@ import { Media, MediaFolder, UpdateMediaFolderInput } from '../../../API'
 import { translate } from '../../../utils/LanguageUtils'
 import { transformGroups } from '../../../utils/CourseUtils'
 import MediaService from '../../../services/MediaService'
-import { Alert, AlertIcon, Button, Flex, Skeleton, Stack, Text } from '@chakra-ui/react'
+import { Alert, AlertIcon, Button, Skeleton, Stack, Text } from '@chakra-ui/react'
 import { ToastNotification } from '../../../observables/ToastNotification'
 import { useUserGroups } from '../../../hooks/useUserGroups'
 
