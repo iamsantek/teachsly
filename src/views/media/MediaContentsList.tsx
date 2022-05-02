@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { Media as PlatformMedia } from '../../interfaces/Media'
-import { Box, Divider, Stack } from '@chakra-ui/react'
+import { Box, Stack } from '@chakra-ui/react'
 import MediaService from '../../services/MediaService'
 import { ViewMediaContentModal } from '../../modals/ViewMediaContentModal'
 import MediaCRUDModal from '../../modals/MediaCRUDModal'
@@ -139,7 +139,6 @@ export const MediaContentsList = ({ medias, isLoading, showCRUDModal, onCRUDModa
             <Box>
               <MediaFolderCardsList fetchType={fetchType} />
             </Box>
-            <Divider />
           </>
         )}
         <Box>

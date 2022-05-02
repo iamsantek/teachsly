@@ -6,7 +6,11 @@ import { translate } from '../../../utils/LanguageUtils'
 import { Stack } from '@chakra-ui/react'
 import { useUserGroups } from '../../../hooks/useUserGroups'
 
-export const MediaFolderSettingsInputs = () => {
+interface Props {
+    readOnly: boolean
+}
+
+export const MediaFolderSettingsInputs = ({ readOnly }: Props) => {
   const { groups } = useUserGroups()
 
   return (
@@ -16,6 +20,7 @@ export const MediaFolderSettingsInputs = () => {
                 label="TITLE"
                 isRequired={true}
                 placeholder={translate('TITLE')}
+                isDisabled={readOnly}
             />
 
             <Select
@@ -26,6 +31,7 @@ export const MediaFolderSettingsInputs = () => {
                 options={renderCourseList(groups, generalGroups)}
                 isMultiSelect
                 closeMenuOnSelect={true}
+                isDisabled={readOnly}
             />
         </Stack >
   )

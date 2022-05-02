@@ -1,4 +1,4 @@
-import { Stack } from '@chakra-ui/react'
+import { Divider, Stack } from '@chakra-ui/react'
 import { useCallback, useEffect, useState } from 'react'
 import { MdFolder } from 'react-icons/md'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -8,6 +8,7 @@ import { FetchType } from '../../../enums/Media'
 import MediaFolderService from '../../../services/MediaFolderService'
 import { CommonContentLineTitle } from '../CommonContentLineTitle'
 import { useUserGroups } from '../../../hooks/useUserGroups'
+import { BadgeList } from '../../../components/Badges/BadgeList'
 
 interface Props {
   fetchType: FetchType
@@ -38,9 +39,12 @@ export const MediaFolderCardsList = ({ fetchType }: Props) => {
           onView={() => navigate(`/medias/folder/${folder.id}`)}
           onEdit={hasEditPermission ? () => navigate(`/medias/folder/${folder.id}/edit`) : undefined}
         >
-          <CommonContentLineTitle title={folder.name} />
+          <CommonContentLineTitle title={folder.name}>
+            <BadgeList badges={folder.groups} />
+          </CommonContentLineTitle>
         </ContentLine>
       ))}
+      {folders.length !== 0 && <Divider />}
     </Stack>
   )
 }

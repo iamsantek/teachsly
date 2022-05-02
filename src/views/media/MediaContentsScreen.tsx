@@ -67,8 +67,8 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
   const fetchMediaFolder = useCallback(async () => {
     const mediaFolder = await MediaFolderService.fetchMediaFolderById(folderId)
     const folderMedias = await MediaService.fetchMediaByFolderId(folderId, nextPageTokens.FOLDER)
-    setMediaFolder(mediaFolder?.getMediaFolder as MediaFolder)
-    setMedias(folderMedias?.listMedia?.items as Media[])
+    setMediaFolder(mediaFolder?.getMediaFolder as MediaFolder ?? [])
+    setMedias(folderMedias?.listMedia?.items as Media[] ?? [])
 
     if (folderMedias?.listMedia?.nextToken) {
       dispatch({ type: FetchType.FOLDER, payload: folderMedias?.listMedia?.nextToken })
@@ -79,7 +79,7 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
 
   const fetchCourseMedias = useCallback(async () => {
     const courseMedias = await MediaService.fetchMedias(nextPageTokens.COURSE, courseId)
-    setMedias(courseMedias?.listMedia?.items as Media[])
+    setMedias(courseMedias?.listMedia?.items as Media[] ?? [])
 
     if (courseMedias?.listMedia?.nextToken) {
       dispatch({ type: FetchType.COURSE, payload: courseMedias.listMedia.nextToken })
@@ -90,7 +90,7 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
 
   const fetchAllMedias = useCallback(async () => {
     const allMedias = await MediaService.fetchMedias(nextPageTokens.ALL)
-    setMedias(medias => medias.concat(allMedias?.listMedia?.items as Media[]))
+    setMedias(medias => medias.concat(allMedias?.listMedia?.items as Media[] ?? []))
 
     if (allMedias?.listMedia?.nextToken) {
       dispatch({ type: FetchType.ALL, payload: allMedias?.listMedia?.nextToken })

@@ -2,13 +2,19 @@ import { useEditableControls, ButtonGroup, IconButton, Flex, Editable, EditableP
 import { AiOutlineCheck, AiTwotoneDelete } from 'react-icons/ai'
 import { MdEdit, MdOutlineCancel } from 'react-icons/md'
 
+interface InputPermissions {
+  canEdit: boolean
+  canDelete: boolean
+}
+
 interface Props {
   value: string
   onComplete: (value: string) => void
   onDelete: () => void
+  permissions: InputPermissions
 }
 
-export const EditableInputComponent = ({ value, onComplete, onDelete }: Props) => {
+export const EditableInputComponent = ({ value, onComplete, onDelete, permissions: { canDelete, canEdit } }: Props) => {
   function EditableControls () {
     const {
       isEditing,
@@ -19,7 +25,7 @@ export const EditableInputComponent = ({ value, onComplete, onDelete }: Props) =
 
     return (
       <ButtonGroup justifyContent="center" size="sm">
-        {isEditing
+        {isEditing && canEdit
           ? (
             <>
               <IconButton aria-label='Confirm' icon={<AiOutlineCheck />} {...getSubmitButtonProps()} />
@@ -28,8 +34,8 @@ export const EditableInputComponent = ({ value, onComplete, onDelete }: Props) =
             )
           : (
             <>
-              <IconButton aria-label='Edit' size="sm" icon={<MdEdit />} {...getEditButtonProps()} />
-              <IconButton aria-label='Delete' size="sm" icon={<AiTwotoneDelete />} onClick={onDelete} />
+              {canEdit && <IconButton aria-label='Edit' size="sm" icon={<MdEdit />} {...getEditButtonProps()} />}
+              {canDelete && <IconButton aria-label='Delete' size="sm" icon={<AiTwotoneDelete />} onClick={onDelete} />}
             </>
             )}
       </ButtonGroup>
