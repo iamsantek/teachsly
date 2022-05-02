@@ -1,7 +1,7 @@
 type Course @model
 @auth(rules: [
+  {allow: private, operations: [read]},
   {allow: groups, groups: ["Admin"]},
-  {allow: groups, groups: ["Students","Teachers"], operations: [read] },
   ])
   {
   id: ID!
@@ -23,7 +23,7 @@ enum MediaType {
 type MediaFolder @model
 @auth(rules: [
   {allow: owner},
-  {allow: groups, groups: ["Admin"], operations: [create, read, update, delete] },
+  {allow: groups, groups: ["Admin"]},
   {allow: groups, groupsField: "groups", operations: [read] }
   ])
   {
@@ -35,7 +35,7 @@ type MediaFolder @model
 type Media @model
 @auth(rules: [
   {allow: owner},
-  {allow: groups, groups: ["Admin"], operations: [create, read, update, delete] },
+  {allow: groups, groups: ["Admin"]},
   {allow: groups, groupsField: "groups", operations: [read] }
   ])
   {
@@ -58,7 +58,7 @@ enum DisabledAccountReasons {
 
 type User @model
 @auth(rules: [
-  {allow: groups, groups: ["Admin"], operations: [create, read, update, delete] },
+  {allow: groups, groups: ["Admin"]},
   {allow: groups, groups: ["Students","Teachers"], operations: [read] },
   ])
   {
