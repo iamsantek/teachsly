@@ -1,0 +1,4 @@
+export enum DeleteFolderMethod {
+    DELETE_FOLDER_AND_MEDIA = 'DELETE_FOLDER_AND_MEDIA',
+    DELETE_FOLDER = 'DELETE_FOLDER',
+}

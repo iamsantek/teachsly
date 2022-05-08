@@ -1,12 +1,14 @@
-import { CreateMediaFolderInput, CreateMediaFolderMutation, MediaType, MediaFolder, ListMediaFoldersQuery, GetMediaFolderQuery, UpdateMediaFolderMutation, UpdateMediaFolderInput } from '../API'
+import { CreateMediaFolderInput, CreateMediaFolderMutation, MediaType, MediaFolder, ListMediaFoldersQuery, GetMediaFolderQuery, UpdateMediaFolderMutation, UpdateMediaFolderInput, DeleteMediaFolderMutation, UpdateMediaMutation } from '../API'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { FetchType } from '../enums/Media'
-import { createMediaFolder, updateMediaFolder } from '../graphql/mutations'
+import { DeleteFolderMethod } from '../enums/MediaFolder'
+import { createMediaFolder, deleteMediaFolder, updateMediaFolder } from '../graphql/mutations'
 import { listMediaFolders, getMediaFolder } from '../graphql/queries'
-import { MediaWithFile } from '../interfaces/Media'
+import { Media, MediaWithFile } from '../interfaces/Media'
 import Logger from '../utils/Logger'
 import StorageService from './aws/StorageService'
 import GraphQLService from './GraphQLService'
+import MediaService from './MediaService'
 
 class MediaFolderService {
   public addMediasToFolder = (medias: MediaWithFile[], folderId: string, uploadedBy: string, groups: string[]) => {
@@ -27,7 +29,7 @@ class MediaFolderService {
     })
   }
 
-  public createFolder = async (folderName : string, groups: string[], uploadedBy: string, files: MediaWithFile[]) => {
+  public createFolder = async (folderName: string, groups: string[], uploadedBy: string, files: MediaWithFile[]) => {
     const mediaFolder: CreateMediaFolderInput = {
       name: folderName,
       groups: groups
@@ -90,6 +92,44 @@ class MediaFolderService {
         error
       )
     }
+  }
+
+  public deleteMediaFolder = async (folderId: string, deleteMethod: DeleteFolderMethod) => {
+    const deleteMediaFolder = await this.deleteMediaFolderById(folderId)
+    let updatePromises: Promise<Media | UpdateMediaMutation | undefined>[] | undefined = []
+
+    if (!deleteMediaFolder?.deleteMediaFolder) {
+      return
+    }
+
+    const medias = await MediaService.fetchMediaByFolderId(folderId, undefined)
+
+    updatePromises = medias?.listMedia?.items.filter(Boolean).map(media => {
+      if (deleteMethod === DeleteFolderMethod.DELETE_FOLDER) {
+        // Update all medias to root folder
+        return MediaService.updateMedia({
+          ...media,
+          id: media?.id as string,
+          folderId: null
+        })
+      } else {
+        return MediaService.deleteMedia(media?.id as string)
+      }
+    })
+    if (updatePromises) {
+      const allPromisesCompleted = await Promise.all(updatePromises)
+
+      return allPromisesCompleted.every(Boolean)
+    }
+  }
+
+  public deleteMediaFolderById = async (folderId: string) => {
+    return GraphQLService.fetchQuery<DeleteMediaFolderMutation>({
+      query: deleteMediaFolder,
+      input: {
+        id: folderId
+      }
+    })
   }
 }
 

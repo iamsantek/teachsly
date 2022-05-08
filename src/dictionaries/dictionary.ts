@@ -110,7 +110,14 @@ export enum LanguageES {
   CREATE_MEDIA_FOLDER_SUCCESS='La carpeta se creó correctamente.',
   CREATE_MEDIA_FOLDER_FAILURE='Hubo un error al crear la carpeta. Por favor, intentar nuevamente.',
   FOLDER_GROUPS_HELPER_TEXT='Los permisos de este contenido serán los mismos que los de la carpeta que lo contiene. Para modificarlos, se debe modificar los permisos de la carpeta.',
-  NO_FOLDER_EDIT_PERMISSION_TITLE_MESSAGE='Solo puedes editar la información de las carpetas que hayas creado.'
+  NO_FOLDER_EDIT_PERMISSION_TITLE_MESSAGE='Solo puedes editar la información de las carpetas que hayas creado.',
+  DELETE_FOLDER='Eliminar carpeta',
+  DELETE_FOLDER_DESCRIPTION='Eliminar la carpeta y todos sus contenidos.',
+  DELETE_ONLY_FOLDER_DESCRIPTION='Eliminar la carpeta pero no sus contenidos.',
+  DELETE_ONLY_FOLDER_HELPER_TEXT='Si seleccionas esta opción, los contenidos de la carpeta seguirán disponibles en la plataforma.',
+  DELETE_FOLDER_PLACEHOLDER='Escribe el nombre de la carpeta para confirmar su eliminación',
+  FOLDER_DELETED='La carpeta se eliminó correctamente.',
+  FOLDER_DELETE_FAILED='Hubo un error al eliminar la carpeta. Por favor, intentar nuevamente.',
 }
 
 export enum LanguageEN {
@@ -220,5 +227,12 @@ export enum LanguageEN {
   CREATE_MEDIA_FOLDER_SUCCESS='The folder has been successfully created.',
   CREATE_MEDIA_FOLDER_FAILURE='An error has occurred when creating the folder. Please try again.',
   FOLDER_GROUPS_HELPER_TEXT='The permissions of this content will be the same as those of the folder that contains it. If you want to modify them, you will have to modify the permissions of the folder.',
-  NO_FOLDER_EDIT_PERMISSION_TITLE_MESSAGE='You can only edit folders that you created.'
+  NO_FOLDER_EDIT_PERMISSION_TITLE_MESSAGE='You can only edit folders that you created.',
+  DELETE_FOLDER='Delete folder',
+  DELETE_FOLDER_DESCRIPTION='Delete folder and all its contents',
+  DELETE_ONLY_FOLDER_DESCRIPTION='Delete folder but not its contents.',
+  DELETE_ONLY_FOLDER_HELPER_TEXT='If you choose this option, the folder will be deleted but its contents will be still available on the platform.',
+  DELETE_FOLDER_PLACEHOLDER='Please type the name of the folder to confirm its deletion.',
+  FOLDER_DELETED='The folder has been successfully deleted.',
+  FOLDER_DELETE_FAILED='An error has occurred when deleting the folder. Please try again.',
 }
