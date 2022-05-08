@@ -183,6 +183,7 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
         onCRUDModalVisibilityChange={setCrudModalVisibility}
         fetchType={fetchType}
         folderGroups={mediaFolder?.groups}
+        onDeleteFolderComplete={() => fetchAllMedias()}
       />
     </Stack>
   )

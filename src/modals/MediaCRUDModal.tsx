@@ -103,7 +103,7 @@ const MediaCRUDModal = ({
 
   useEffect(() => {
     fetchFolder()
-  }, [folderId, fetchFolder])
+  }, [folderId, fetchFolder, isOpen])
 
   useEffect(() => {
     if (!mediaToUpdate) {

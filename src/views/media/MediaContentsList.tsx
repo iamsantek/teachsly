@@ -21,9 +21,10 @@ interface Props {
   onCRUDModalVisibilityChange: (value: boolean) => void
   fetchType: FetchType
   folderGroups?: string[]
+  onDeleteFolderComplete: () => void
 }
 
-export const MediaContentsList = ({ medias, isLoading, showCRUDModal, onCRUDModalVisibilityChange, fetchType, folderGroups }: Props) => {
+export const MediaContentsList = ({ medias, isLoading, showCRUDModal, onCRUDModalVisibilityChange, fetchType, folderGroups, onDeleteFolderComplete }: Props) => {
   const [renderMedias, setRenderMedias] = useState<MediaAPI[]>([])
   const [viewMediaContentModalVisibility, setViewMediaContentModalVisibility] =
     useState<boolean>(false)
@@ -133,11 +134,14 @@ export const MediaContentsList = ({ medias, isLoading, showCRUDModal, onCRUDModa
           folderGroups={folderGroups}
         />
       )}
-      <Stack spacing={10} flexDirection={'column'}>
+      <Stack spacing={10} flexDirection='column'>
         {!folderId && (
           <>
             <Box>
-              <MediaFolderCardsList fetchType={fetchType} />
+              <MediaFolderCardsList
+              fetchType={fetchType}
+              onDeleteFolderComplete={onDeleteFolderComplete}
+              />
             </Box>
           </>
         )}
