@@ -236,7 +236,7 @@ export const MediaFolderScreen = () => {
     <Stack spacing={4}>
       <Skeleton isLoaded={folderId ? !!editingFolder : !editingFolder}>
           <SectionHeader sectionName={sectionName}>
-            {isFolderInformationModified && (
+            {folderId && isFolderInformationModified && (
               <Button
                 colorScheme='brand'
                 isLoading={isProcessing}
