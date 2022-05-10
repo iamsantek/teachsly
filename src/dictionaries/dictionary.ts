@@ -115,7 +115,7 @@ export enum LanguageES {
   DELETE_FOLDER_DESCRIPTION='Eliminar la carpeta y todos sus contenidos.',
   DELETE_ONLY_FOLDER_DESCRIPTION='Eliminar la carpeta pero no sus contenidos.',
   DELETE_ONLY_FOLDER_HELPER_TEXT='Si seleccionas esta opción, los contenidos de la carpeta seguirán disponibles en la plataforma.',
-  DELETE_FOLDER_PLACEHOLDER='Escribe el nombre de la carpeta para confirmar su eliminación',
+  DELETE_FOLDER_PLACEHOLDER='Escribe el nombre de la carpeta para confirmar su eliminación:',
   FOLDER_DELETED='La carpeta se eliminó correctamente.',
   FOLDER_DELETE_FAILED='Hubo un error al eliminar la carpeta. Por favor, intentar nuevamente.',
 }
