@@ -15,13 +15,15 @@ import { PaymentsScreen } from './views/payments/PaymentsScreen'
 import { FaMoneyCheckAlt } from 'react-icons/fa'
 import { MediaFolderScreen } from './views/media/folders/MediaFolderScreen'
 import { FetchType } from './enums/Media'
+import { ContentLayout } from './layouts/ContentLayout'
 
 const adminHomeScreen: ApplicationRoute = {
   name: translate('MENU_HOME'),
   icon: AiFillHome,
   path: '/',
   element: <AdminHomeScreen />,
-  showInNavbar: true
+  showInNavbar: true,
+  withDashboardLayout: true
 }
 
 const payments: ApplicationRoute = {
@@ -29,7 +31,8 @@ const payments: ApplicationRoute = {
   icon: FaMoneyCheckAlt,
   path: '/',
   element: <PaymentsScreen />,
-  showInNavbar: true
+  showInNavbar: true,
+  withDashboardLayout: true
 }
 
 const adminCoursesScreen: ApplicationRoute = {
@@ -37,7 +40,8 @@ const adminCoursesScreen: ApplicationRoute = {
   icon: BsFillCalendar2WeekFill,
   path: '/courses',
   element: <AdminCourseList />,
-  showInNavbar: true
+  showInNavbar: true,
+  withDashboardLayout: true
 }
 
 const students: ApplicationRoute = {
@@ -45,7 +49,8 @@ const students: ApplicationRoute = {
   name: translate('MENU_STUDENTS'),
   icon: BsFillPeopleFill,
   element: <StudentsList />,
-  showInNavbar: true
+  showInNavbar: true,
+  withDashboardLayout: true
 }
 
 const teachers: ApplicationRoute = {
@@ -53,7 +58,8 @@ const teachers: ApplicationRoute = {
   name: translate('MENU_TEACHERS'),
   icon: BsFillPeopleFill,
   element: <UserList listType={UserTypes.TEACHER} />,
-  showInNavbar: true
+  showInNavbar: true,
+  withDashboardLayout: true
 }
 
 const studentHomeScreen: ApplicationRoute = {
@@ -61,7 +67,8 @@ const studentHomeScreen: ApplicationRoute = {
   name: translate('MENU_HOME'),
   icon: FiHome,
   element: <StudentsHomeScreen />,
-  showInNavbar: true
+  showInNavbar: true,
+  withDashboardLayout: true
 }
 
 const teachersHomeScreen: ApplicationRoute = {
@@ -69,7 +76,8 @@ const teachersHomeScreen: ApplicationRoute = {
   name: translate('MENU_HOME'),
   icon: FiHome,
   element: <TeachersHomeScreen />,
-  showInNavbar: true
+  showInNavbar: true,
+  withDashboardLayout: true
 }
 
 const mediaContents: ApplicationRoute = {
@@ -77,14 +85,16 @@ const mediaContents: ApplicationRoute = {
   name: translate('MENU_CONTENTS'),
   icon: AiFillFolder,
   element: <MediaContentsScreen fetchType={FetchType.ALL} />,
-  showInNavbar: true
+  showInNavbar: true,
+  withDashboardLayout: true
 }
 
-const studentsByCourseRoute: ApplicationRoute = { path: '/courses/:id/students', element: <StudentsList />, showInNavbar: true }
-const mediaFolderCreateRoute: ApplicationRoute = { path: '/medias/folder/new', element: <MediaFolderScreen />, name: translate('CREATE_FOLDER'), showInNavbar: false }
-const mediaContentDetailRoute: ApplicationRoute = { path: '/medias/:courseId', element: <MediaContentsScreen fetchType={FetchType.COURSE} />, showInNavbar: true }
-const mediaFolderDetailRoute: ApplicationRoute = { path: '/medias/folder/:folderId', element: <MediaContentsScreen fetchType={FetchType.FOLDER} />, showInNavbar: true }
-const mediaFolderEditRoute: ApplicationRoute = { path: '/medias/folder/:folderId/edit', element: <MediaFolderScreen />, showInNavbar: false }
+const studentsByCourseRoute: ApplicationRoute = { path: '/courses/:id/students', element: <StudentsList />, showInNavbar: true, withDashboardLayout: true }
+const mediaFolderCreateRoute: ApplicationRoute = { path: '/medias/folder/new', element: <MediaFolderScreen />, name: translate('CREATE_FOLDER'), showInNavbar: false, withDashboardLayout: true }
+const mediaContentDetailRoute: ApplicationRoute = { path: '/medias/:courseId', element: <MediaContentsScreen fetchType={FetchType.COURSE} />, showInNavbar: true, withDashboardLayout: true }
+const mediaFolderDetailRoute: ApplicationRoute = { path: '/medias/folder/:folderId', element: <MediaContentsScreen fetchType={FetchType.FOLDER} />, showInNavbar: true, withDashboardLayout: true }
+const mediaFolderEditRoute: ApplicationRoute = { path: '/medias/folder/:folderId/edit', element: <MediaFolderScreen />, showInNavbar: false, withDashboardLayout: true }
+const videoPreviewRoute: ApplicationRoute = { path: '/play/:mediaId', element: <ContentLayout />, showInNavbar: false, withDashboardLayout: false }
 
 const adminRoutes: ApplicationRoute[] = [
   adminHomeScreen,
@@ -98,6 +108,7 @@ const adminRoutes: ApplicationRoute[] = [
   mediaFolderCreateRoute,
   mediaFolderDetailRoute,
   mediaFolderEditRoute,
+  videoPreviewRoute,
   { path: '*', element: <AdminHomeScreen /> }
 ]
 
@@ -107,6 +118,7 @@ const studentRoutes: ApplicationRoute[] = [
   mediaContentDetailRoute,
   studentsByCourseRoute,
   mediaFolderDetailRoute,
+  videoPreviewRoute,
   { path: '*', element: <StudentsHomeScreen /> }
 ]
 
@@ -119,6 +131,7 @@ const teachersRoutes: ApplicationRoute[] = [
   mediaFolderCreateRoute,
   mediaFolderDetailRoute,
   mediaFolderEditRoute,
+  videoPreviewRoute,
   { path: '*', element: <TeachersHomeScreen /> }
 ]
 
