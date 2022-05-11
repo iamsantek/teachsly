@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useRoutes } from 'react-router-dom'
+import { matchRoutes, useLocation, useRoutes } from 'react-router-dom'
 import { defaultUserContext } from './constants/DashboardContext'
 import UserService from './services/UserService'
 import Amplify from 'aws-amplify'
@@ -10,7 +10,7 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import DashboardLayout from './layouts/DashboardLayout'
 import { defaultTheme } from './constants/Theme'
 import { LogInScreen } from './layouts/LogInScreen'
-import { ApplicationRoute } from './interfaces/Routes'
+import { ApplicationRoute, CustomRouteObject } from './interfaces/Routes'
 import { useAuthenticator } from '@aws-amplify/ui-react'
 import { SpinnerScreen } from './views/others/SpinnerScreen'
 import { CognitoUserAmplify } from '@aws-amplify/ui'
@@ -90,11 +90,18 @@ const App = () => {
     setApplicationContext: setUserSettings
   }
 
+  const matchRoutesArray = matchRoutes(routes, useLocation().pathname)
+  const withDashboardLayout = (matchRoutesArray?.at(0)?.route as CustomRouteObject)?.withDashboardLayout
+
   return (
       <ChakraProvider theme={theme}>
         <UserDashboardContext.Provider value={dashboardContext}>
           {authRoute === 'authenticated'
-            ? isContextLoaded ? <DashboardLayout>{routeComponent}</DashboardLayout> : <SpinnerScreen />
+            ? isContextLoaded
+              ? (
+                  withDashboardLayout ? <DashboardLayout>{routeComponent}</DashboardLayout> : <>{routeComponent}</>
+                )
+              : <SpinnerScreen />
             : <LogInScreen />}
         </UserDashboardContext.Provider>
         <ToastWrapper />

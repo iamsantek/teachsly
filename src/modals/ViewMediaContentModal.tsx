@@ -30,7 +30,9 @@ export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
 
     const signedUrl = await MediaService.getMediaLink(link, media.type)
 
-    window.open(signedUrl, '_blank')
+    const isAudioOrVideo = media?.mimeType?.includes('audio') || media?.mimeType?.includes('video')
+
+    window.open(isAudioOrVideo ? `/play/${media.id as string}` : signedUrl, '_blank')
     setIsLoading(false)
   }
 

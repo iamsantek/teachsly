@@ -6,6 +6,7 @@ export interface CustomRouteObject extends RouteObject {
   name: string;
   icon: string | IconType;
   showInNavbar: boolean | undefined;
+  withDashboardLayout: boolean;
 }
 
 export type ApplicationRoute = CustomRouteObject | RouteObject;

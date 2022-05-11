@@ -1,12 +1,12 @@
 import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { deleteMedia, updateMedia } from '../graphql/mutations'
-import { listMedia } from '../graphql/queries'
+import { getMedia, listMedia } from '../graphql/queries'
 import { Media } from '../interfaces/Media'
 import Logger from '../utils/Logger'
 import GraphQLService from './GraphQLService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import StorageService from './aws/StorageService'
-import { DeleteMediaMutation, ListMediaQuery, MediaType, UpdateMediaMutation, UpdateMediaInput } from '../API'
+import { DeleteMediaMutation, ListMediaQuery, MediaType, UpdateMediaMutation, UpdateMediaInput, GetMediaQuery } from '../API'
 
 class MediaService {
   public fetchMedias = async (
@@ -95,6 +95,13 @@ class MediaService {
         folderId: { eq: folderId }
       },
       nextToken
+    })
+  }
+
+  public fetchMediaById = async (mediaId: string) => {
+    return GraphQLService.fetchQuery<GetMediaQuery>({
+      query: getMedia,
+      id: mediaId
     })
   }
 }
