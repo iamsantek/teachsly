@@ -7,11 +7,14 @@ import { GeneralInformation } from '../enums/GeneralInformation'
 import { useUserGroups } from '../hooks/useUserGroups'
 import MediaService from '../services/MediaService'
 import { useGroupRoutes } from '../utils/RouteUtils'
+import { SpinnerScreen } from '../views/others/SpinnerScreen'
 
 export const ContentLayout = () => {
-  const { mediaId } = useParams()
   const [media, setMedia] = useState<Media>()
   const [mediaUrl, setMediaUrl] = useState<string>()
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+
+  const { mediaId } = useParams()
   const { isAllowedRoute } = useGroupRoutes()
   const { hasAdminRole } = useUserGroups()
   const { context: { user } } = useContext(UserDashboardContext)
@@ -35,6 +38,7 @@ export const ContentLayout = () => {
 
       setMedia(media?.getMedia as Media)
       setMediaUrl(mediaUrl)
+      setIsLoading(false)
     }
 
     getMedia()
@@ -45,6 +49,10 @@ export const ContentLayout = () => {
       navigate('/')
     }
   }, [isAllowedRoute, navigate])
+
+  if (isLoading) {
+    return <SpinnerScreen />
+  }
 
   return (
         <Box w='100%' h='container.lg' bgGradient='linear(to-l, #43cdfb, #38a3c5)'>
