@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import {
   Box,
   Circle,
@@ -16,7 +16,8 @@ import { ButtonSquare } from '../Buttons/SquareButton'
 import { generateRandomId } from '../../utils/StringUtils'
 
 interface Props {
-  leftIcon: React.ReactNode;
+  // eslint-disable-next-line no-undef
+  leftIcon: JSX.Element;
   onView?: () => void;
   onDownload?: () => void;
   onEdit?: () => void;

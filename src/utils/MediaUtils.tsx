@@ -6,17 +6,17 @@ import { v4 as uuid } from 'uuid'
 import { Media } from '../API'
 import MediaService from '../services/MediaService'
 
-export const getFileTypeIcon = (fileType: string) => {
-  if (fileType.includes('image')) {
-    return <IoMdImage size={30} />
-  } else if (fileType.includes('video')) {
-    return <IoIosVideocam size={30} />
-  } else if (fileType.includes('audio')) {
-    return <IoIosMusicalNotes size={30} />
-  } else if (fileType.includes('link')) {
-    return <IoIosLink size={30} />
+export const getFileTypeIcon = (fileType: string, size: number = 30) => {
+  if (fileType?.includes('image')) {
+    return <IoMdImage size={size} />
+  } else if (fileType?.includes('video')) {
+    return <IoIosVideocam size={size} />
+  } else if (fileType?.includes('audio')) {
+    return <IoIosMusicalNotes size={size} />
+  } else if (fileType?.includes('link')) {
+    return <IoIosLink size={size} />
   } else {
-    return <BsFillFileTextFill size={30} />
+    return <BsFillFileTextFill size={size} />
   }
 }
 

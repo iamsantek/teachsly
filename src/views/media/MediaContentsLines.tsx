@@ -4,11 +4,11 @@ import { ContentLine } from '../../components/ContentLine/ContentLine'
 import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
 import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPlaceholder'
 import { CommonContentLineTitle } from './CommonContentLineTitle'
-import { mediaContentLineIcons as MediaIcon } from '../../constants/Medias'
 import { useContext } from 'react'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { isAdmin } from '../../utils/CognitoGroupsUtils'
 import { Placeholder } from '../../components/Placeholders/Placeholder'
+import { getFileTypeIcon } from '../../utils/MediaUtils'
 
 interface Props {
   medias: Media[]
@@ -28,13 +28,13 @@ export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelet
   return (
     <Box>
       {medias?.map((media) => {
-        const Icon = MediaIcon[media.type]
+        const Icon = getFileTypeIcon(media.mimeType as string, 20)
         const isMediaOwner = externalUserId === (media as any).owner
 
         return (
           <ContentLine
             key={media.id}
-            leftIcon={<Icon />}
+            leftIcon={Icon}
             onView={() => onView(media)}
             onDownload={
               media.link && media.type === MediaType.FILE
