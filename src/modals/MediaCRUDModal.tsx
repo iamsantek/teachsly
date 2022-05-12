@@ -1,4 +1,4 @@
-import { memo, useCallback, useContext, useEffect, useState } from 'react'
+import { memo, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import * as React from 'react'
 import { translate } from '../utils/LanguageUtils'
 import { MediaWithMultiSelect } from '../interfaces/Media'
@@ -34,6 +34,8 @@ import { Course, CreateMediaInput, Media as MediaAPI, UpdateMediaInput } from '.
 import { renderCourseList, transformGroups } from '../utils/CourseUtils'
 import { generalGroups, isAdmin } from '../utils/CognitoGroupsUtils'
 import { useParams } from 'react-router-dom'
+import { notRecommendedMediaTypes } from '../utils/MediaUtils'
+import { NotRecommendedMediaTypeWarning } from '../components/Alert/NotRecommendedMediaTypeWarning'
 
 interface Props {
   isOpen: boolean;
@@ -204,6 +206,8 @@ const MediaCRUDModal = ({
     mediaId ? updateMedia(media) : createMedia(media)
   }
 
+  const showNotRecommendedMediaTypeWarning = useMemo(() => notRecommendedMediaTypes.includes(file?.type as string), [file?.type])
+
   return (
     <Modal isOpen={isOpen} onClose={onCloseModal} size="4xl">
       <ModalOverlay />
@@ -266,6 +270,7 @@ const MediaCRUDModal = ({
                       label="ATTACH_FILE"
                     />
                   )}
+                  {showNotRecommendedMediaTypeWarning && mediaType === MediaType.FILE && <NotRecommendedMediaTypeWarning />}
                   <Box display={[MediaType.LINK].includes(mediaType as MediaType) ? 'inline-block' : 'none'} w='100%'>
                     <CustomInput
                       name="link"

@@ -118,6 +118,17 @@ export enum LanguageES {
   DELETE_FOLDER_PLACEHOLDER='Escribe el nombre de la carpeta para confirmar su eliminación:',
   FOLDER_DELETED='La carpeta se eliminó correctamente.',
   FOLDER_DELETE_FAILED='Hubo un error al eliminar la carpeta. Por favor, intentar nuevamente.',
+  NOT_RECOMMENDED_MEDIA_TYPES_WORDING='Para facilitar el uso y la descarga de contenidos recomendamos subir los contenidos en los siguientes formatos',
+  FILES_WITH_INFORMATION_TITLE='Archivos con información (documentos de word, diapositivas, hojas de calculo, etc.)',
+  FILES_WITH_INFORMATION_FORMAT='.PDF',
+  AUDIOS_TITLE='Audios de todo tipo',
+  AUDIOS_FORMAT='.MP3, .WAV o .OGG',
+  VIDEOS_TITLE='Videos de todo tipo',
+  VIDEOS_FORMAT='.MP4, .AVI o .MOV',
+  NOT_RECOMMENDED_MEDIA_TYPES_FINAL_WORDING='No recomendamos subir archivos comprimos .RAR o .ZIP ya que difucultan la descarga para los estudiantes. En caso de que se desee subir muchos archivos, se recomienda usar una carpeta.',
+  NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_1 = 'Contenido',
+  NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_2 = 'Formato recomendado'
+
 }
 
 export enum LanguageEN {
@@ -235,4 +246,14 @@ export enum LanguageEN {
   DELETE_FOLDER_PLACEHOLDER='Please type the name of the folder to confirm its deletion.',
   FOLDER_DELETED='The folder has been successfully deleted.',
   FOLDER_DELETE_FAILED='An error has occurred when deleting the folder. Please try again.',
+  NOT_RECOMMENDED_MEDIA_TYPES_WORDING='To facilitate the use and downloading of content, we recommend uploading content in the following formats',
+  FILES_WITH_INFORMATION_TITLE='Information files (Microsoft Word docs, Google Docs, Google Slides, Spreadsheets, etc.)',
+  FILES_WITH_INFORMATION_FORMAT='.PDF',
+  AUDIOS_TITLE='Audios of any kind',
+  AUDIOS_FORMAT='.MP3, .WAV or.OGG',
+  VIDEOS_TITLE='Videos of any kind',
+  VIDEOS_FORMAT='.MP4, .AVI or .MOV',
+  NOT_RECOMMENDED_MEDIA_TYPES_FINAL_WORDING='It is not recommended to upload compressed files (.RAR or .ZIP) because they diminish the download for students. If you want to upload many files, it is recommended to use a folder.',
+  NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_1 = 'Content',
+  NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_2 = 'Recommended media format'
 }
