@@ -2,6 +2,7 @@ import { Course, CreateCourseInput } from '../API'
 import { UserTypes } from '../enums/UserTypes'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import DateTimeUtils, { TimeFormats } from './DateTimeUtils'
+import { translate } from './LanguageUtils'
 
 export const generateExternalId = (course: CreateCourseInput | Course) => `${course.name.replace(/\s+/g, '')}${course.scheduleYear}`
 
@@ -12,7 +13,7 @@ export const renderCourseList = (courses: Course[], additionalGroups?: string[])
     const endTime = DateTimeUtils.formateHour(course.scheduleEndTime, TimeFormats.TwentyFourHours)
 
     return {
-      label: `${course.name} (${dates} ${startTime} - ${endTime})`,
+      label: `${course.name} (${dates} ${startTime} - ${endTime}) ${course.virtualClassLink ? ` - ${translate('VIRTUAL_COURSE')}` : ''}`,
       value: generateExternalId(course),
       colorScheme: 'brand'
     }
