@@ -34,7 +34,7 @@ import { Course, CreateMediaInput, Media as MediaAPI, UpdateMediaInput } from '.
 import { renderCourseList, transformGroups } from '../utils/CourseUtils'
 import { generalGroups, isAdmin } from '../utils/CognitoGroupsUtils'
 import { useParams } from 'react-router-dom'
-import { notRecommendedMediaTypes } from '../utils/MediaUtils'
+import { recommendedMediaTypes } from '../utils/MediaUtils'
 import { NotRecommendedMediaTypeWarning } from '../components/Alert/NotRecommendedMediaTypeWarning'
 
 interface Props {
@@ -75,6 +75,7 @@ const MediaCRUDModal = ({
 
   const onCloseModal = () => {
     reset(defaultMedia as MediaWithMultiSelect)
+    setFile(undefined)
     onClose()
   }
 
@@ -206,7 +207,7 @@ const MediaCRUDModal = ({
     mediaId ? updateMedia(media) : createMedia(media)
   }
 
-  const showNotRecommendedMediaTypeWarning = useMemo(() => notRecommendedMediaTypes.includes(file?.type as string), [file?.type])
+  const showNotRecommendedMediaTypeWarning = useMemo(() => file?.type && !recommendedMediaTypes.includes(file?.type as string), [file?.type])
 
   return (
     <Modal isOpen={isOpen} onClose={onCloseModal} size="4xl">

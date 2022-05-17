@@ -9,7 +9,7 @@ export const NotRecommendedMediaTypeWarning = () => {
                 <Text fontWeight={'bold'}>{translate('NOT_RECOMMENDED_MEDIA_TYPES_WORDING')}</Text>
             </Flex>
             <TableContainer>
-                <Table variant='simple' size={'sm'} wordBreak='break-word' overflowX={'hidden'}>
+                <Table variant='unstyled' size={'sm'} wordBreak='break-word' overflowX={'hidden'}>
                     <Thead>
                         <Tr>
                             <Th wordBreak='break-word'>{translate('NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_1')}</Th>
