@@ -56,8 +56,16 @@ class GraphQLService {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.GraphQLService,
-        'Error when executing GraphQL Query',
-        e
+        'Error when executing GraphQL fetch query',
+        e,
+        {
+          query,
+          input,
+          limit,
+          nextToken,
+          filter,
+          id
+        }
       )
     }
   }
@@ -76,8 +84,12 @@ class GraphQLService {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.GraphQLService,
-        'Error when executing GraphQL Query',
-        e
+        'Error when executing GraphQL fetchById Query',
+        e,
+        {
+          query,
+          filter
+        }
       )
     }
   }

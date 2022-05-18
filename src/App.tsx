@@ -21,6 +21,7 @@ import { UserDashboardContext } from './contexts/UserDashboardContext'
 import { Course, User } from './API'
 import { GRAPHQL_ENDPOINT } from './constants/Environment'
 import CognitoService from './services/aws/CognitoService'
+import LocalStorageService, { LocalStorageKeys } from './services/LocalStorageService'
 
 Amplify.configure({
   ...awsExports,
@@ -38,6 +39,11 @@ const App = () => {
 
   useEffect(() => {
     CognitoService.createClient(user)
+    LocalStorageService.saveItem(LocalStorageKeys.USER, user)
+
+    return () => {
+      LocalStorageService.cleanItem(LocalStorageKeys.USER)
+    }
   }, [user])
 
   const fetchCourses = useCallback(async () => {

@@ -5,4 +5,5 @@ export enum GeneralInformation {
   DEVELOPED_BY = 'https://go.santek.dev/me',
   FACEBOOK = 'https://www.facebook.com/theoffice.englishlearning',
   INSTAGRAM = 'https://www.instagram.com/theoffice.englishlearning/',
+  DOMAIN = 'theofficeenglishlearning.com'
 }

@@ -5,4 +5,5 @@ export interface AnalyticsEvent {
     type: LogTypes,
     level: LogLevel,
     payload: string
+    extraData?: Object;
 }
