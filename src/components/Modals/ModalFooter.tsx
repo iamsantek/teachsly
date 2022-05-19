@@ -1,9 +1,8 @@
 import React, { FC } from 'react'
 import {
   ModalFooter as ChakraModalFooter,
-  HStack,
-  Button
-} from '@chakra-ui/react'
+  Button,
+  Wrap} from '@chakra-ui/react'
 import { TranslationsDictionary } from '../../dictionaries/dictionary'
 import { translate } from '../../utils/LanguageUtils'
 
@@ -16,17 +15,18 @@ interface Props {
 
 export const ModalFooter: FC<Props> = ({ isLoading, onClose, sendButtonText, children }: Props) => (
   <ChakraModalFooter>
-    <HStack>
+    <Wrap gap={4}>
       {children}
-      <Button onClick={onClose}>{translate('CANCEL')}</Button>
-      <Button
-        colorScheme="brand"
-        isLoading={isLoading}
-        loadingText={translate('PROCESSING')}
-        type="submit"
-      >
-        {translate(sendButtonText)}
-      </Button>
-    </HStack>
+        <Button w={['100%', 'auto']} onClick={onClose}>{translate('CANCEL')}</Button>
+        <Button
+          colorScheme="brand"
+          w={['100%', 'auto']}
+          isLoading={isLoading}
+          loadingText={translate('PROCESSING')}
+          type="submit"
+        >
+          {translate(sendButtonText)}
+        </Button>
+    </Wrap>
   </ChakraModalFooter>
 )

@@ -8,7 +8,11 @@ import {
   ModalContent,
   ModalOverlay,
   ModalHeader,
-  Button
+  Button,
+  Divider,
+  VStack,
+  Text,
+  Flex
 } from '@chakra-ui/react'
 import { Input as CustomInput } from '../components/Inputs/Input'
 import { Select } from '../components/Inputs/Select'
@@ -245,30 +249,36 @@ const UserCRUDModal = ({
                   confirmButtonText={isDisabledUser ? 'ACTIVE_USER_BUTTON' : 'DEACTIVATED_USER_BUTTON'}
                   onAction={toggleAccountStatus}
                 />
+                {userToUpdate && (
+                  <Flex gap={4} direction='column' align='flex-start'>
+                    <Divider />
+                    <VStack spacing={3} align='flex-start'>
+                      <Text fontWeight='bold' fontSize='medium'>Acciones</Text>
+                      <Button
+                        isLoading={isLoading}
+                        w={['100%', 'auto']}
+                        onClick={() => setShowDeleteUserConfirmation(true)}
+                        leftIcon={isDisabledUser ? <AiFillCheckCircle /> : <MdDangerous />}
+                      >
+                        {translate(isDisabledUser ? 'ACTIVE_USER_BUTTON' : 'DEACTIVATED_USER_BUTTON')}
+                      </Button>
+                      <Button
+                        leftIcon={<GrPowerReset />}
+                        w={['100%', 'auto']}
+                        isLoading={isLoading}
+                        onClick={() => resetPassword()}
+                      >
+                        {translate('RESET_PASSWORD_BUTTON')}
+                      </Button>
+                    </VStack>
+                  </Flex>
+                )}
               </ModalBody>
               <ModalFooter
                 isLoading={isLoading}
                 sendButtonText={userToUpdate ? editUserButtonName : newUserButtonName}
                 onClose={onClose}
               >
-                {userToUpdate && (
-                  <>
-                    <Button
-                      isLoading={isLoading}
-                      onClick={() => setShowDeleteUserConfirmation(true)}
-                      leftIcon={isDisabledUser ? <AiFillCheckCircle /> : <MdDangerous />}
-                    >
-                      {translate(isDisabledUser ? 'ACTIVE_USER_BUTTON' : 'DEACTIVATED_USER_BUTTON')}
-                    </Button>
-                    <Button
-                      leftIcon={<GrPowerReset />}
-                      isLoading={isLoading}
-                      onClick={() => resetPassword()}
-                    >
-                      {translate('RESET_PASSWORD_BUTTON')}
-                    </Button>
-                  </>
-                )}
               </ModalFooter>
             </form>
           </FormProvider>
