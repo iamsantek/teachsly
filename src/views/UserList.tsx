@@ -37,29 +37,32 @@ const UserList = ({
 
   const { id: courseId } = useParams()
 
-  const fetchUsers = useCallback(async () => {
+  const fetchUsers = useCallback(async (nextPageResultToken: string | undefined | null = undefined) => {
     const filter = courseId || listType
     const usersResult = await UserService.fetchUsersByCourseOrType(filter, nextPageResultToken)
     const users = usersResult?.listUsers?.items as User[] || []
-    let filteredGroups = [...users]
+    let filteredUsers = [...users]
 
     const hasTeacherRole = isTeacher(loggedUser)
 
     if (hasTeacherRole) {
-      filteredGroups = users.filter(
-        user => user.groups.find(group => loggedUser?.groups.includes(group))
+      // Teachers only can see their own students
+      filteredUsers = users.filter(
+        user => user.groups.filter(group => loggedUser?.groups.includes(group))
       )
     }
 
     setNextPageResultToken(usersResult?.listUsers?.nextToken)
+
     setIsLoadingNewPage(false)
 
     setUsers((previousUsers) =>
-      previousUsers.concat(filteredGroups || [])
+      previousUsers.concat(filteredUsers || [])
     )
-  }, [])
+  }, [loggedUser, courseId, listType])
 
   useEffect(() => {
+    console.log(listType)
     fetchUsers()
   }, [listType, fetchUsers])
 
@@ -67,7 +70,7 @@ const UserList = ({
 
   const onLoadMore = () => {
     setIsLoadingNewPage(true)
-    fetchUsers()
+    fetchUsers(nextPageResultToken)
   }
 
   const onView = (user: User) => {
