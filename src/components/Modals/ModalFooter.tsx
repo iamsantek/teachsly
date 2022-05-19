@@ -2,7 +2,8 @@ import React, { FC } from 'react'
 import {
   ModalFooter as ChakraModalFooter,
   Button,
-  Wrap} from '@chakra-ui/react'
+  Wrap
+} from '@chakra-ui/react'
 import { TranslationsDictionary } from '../../dictionaries/dictionary'
 import { translate } from '../../utils/LanguageUtils'
 
