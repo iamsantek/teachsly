@@ -16,7 +16,7 @@ class AnalyticsService {
       }),
       headers: {
         'Content-Type': 'application/json',
-        env: BACKEND_ENV
+        env: 'demo'
       }
     })
 

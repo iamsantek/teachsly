@@ -1,7 +1,7 @@
-import { GeneralInformation } from '../enums/GeneralInformation'
+
 import { BackendEnvironments } from '../interfaces/BackendEnvironments'
 
-const API_ENDPOINT = `https://api-qa.${GeneralInformation.DOMAIN}/graphql`
+const API_ENDPOINT = 'https://demo-api-teachsly.santek.dev/graphql'
 
 export const GRAPHQL_ENDPOINT = process.env.REACT_APP_GRAPHQL_API_ENDPOINT || API_ENDPOINT
 

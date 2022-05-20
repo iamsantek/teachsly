@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 export enum GeneralInformation {
-  PROJECT_NAME = 'The Office English Learning',
-  WEBSITE = 'https://www.theofficeenglishlearning.com',
+PROJECT_NAME = 'Teachsly - e-learning platform',
+  WEBSITE = 'https://teachsly.santek.dev',
   DEVELOPED_BY = 'https://go.santek.dev/me',
-  FACEBOOK = 'https://www.facebook.com/theoffice.englishlearning',
-  INSTAGRAM = 'https://www.instagram.com/theoffice.englishlearning/',
-  DOMAIN = 'theofficeenglishlearning.com'
+  FACEBOOK = '#',
+  INSTAGRAM = '#',
+  DOMAIN = 'teachsly.santek.dev'
 }

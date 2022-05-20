@@ -1,3 +1,1 @@
-import { GeneralInformation } from '../enums/GeneralInformation'
-
-export const ANALYTICS_URL = `https://analytics.${GeneralInformation.DOMAIN}`
+export const ANALYTICS_URL = process.env.REACT_ANALYTICS_URL || 'https://analytics-teachsly.santek.dev'
