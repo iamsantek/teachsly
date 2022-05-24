@@ -545,5 +545,5 @@ export const graphQLMockResponses = {
   [updateUser]: updateUserMock,
   [listMediaFolders]: listMediaFolderMock,
   [createMediaFolder]: createMediaFolderMock,
-  [updateMediaFolder]: updateMediaFolderMock,
+  [updateMediaFolder]: updateMediaFolderMock
 }
