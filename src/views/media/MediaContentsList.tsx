@@ -39,18 +39,8 @@ export const MediaContentsList = ({ medias, isLoading, showCRUDModal, onCRUDModa
     setRenderMedias(medias)
   }, [medias])
 
-  const onDownload = async (key: string) => {
-    const signedURL = await MediaService.generateSignedUrl(key)
-
-    if (signedURL) {
-      window.open(signedURL.url, '_blank')
-      return
-    }
-
-    ToastNotification({
-      status: 'ERROR',
-      description: 'MEDIA_SIGNED_URL_ERROR'
-    })
+  const onDownload = async (media: MediaAPI) => {
+    await MediaService.redirectToMediaUrl(media)
   }
 
   const onView = (media: MediaAPI) => {
@@ -148,11 +138,11 @@ export const MediaContentsList = ({ medias, isLoading, showCRUDModal, onCRUDModa
         <Box>
           <MediaContentsLines
             medias={renderMedias}
-            onDownload={(media) => onDownload(media.link)}
+            onDownload={onDownload}
             isLoading={isLoading}
-            onView={(media) => onView(media)}
-            onEdit={(media) => onEdit(media)}
-            onDelete={(media) => showDeleteContentDialog(media)}
+            onView={onView}
+            onEdit={onEdit}
+            onDelete={showDeleteContentDialog}
           />
         </Box>
       </Stack>

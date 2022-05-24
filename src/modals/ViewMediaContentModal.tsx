@@ -25,14 +25,9 @@ interface Props {
 export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const onClick = async (link: string) => {
+  const onClick = async () => {
     setIsLoading(true)
-
-    const signedUrl = await MediaService.getMediaLink(link, media.type)
-
-    const isAudioOrVideo = media?.mimeType?.includes('audio') || media?.mimeType?.includes('video')
-
-    window.open(isAudioOrVideo ? `/play/${media.id as string}` : signedUrl, '_blank')
+    await MediaService.redirectToMediaUrl(media)
     setIsLoading(false)
   }
 
@@ -71,7 +66,7 @@ export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
               <Button
                 layerStyle={'base'}
                 rightIcon={<BiLinkExternal />}
-                onClick={() => onClick(media?.link)}
+                onClick={onClick}
                 isLoading={isLoading}
                 loadingText={translate('PROCESSING')}
               >

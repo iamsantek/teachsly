@@ -247,7 +247,7 @@ export const MediaFolderScreen = () => {
             )}
           </SectionHeader>
       </Skeleton>
-      {!hasFolderEditPermissions && (
+      {!!folderId && !hasFolderEditPermissions && (
             <Alert status='info' variant='left-accent' marginY={4}>
               <AlertIcon />
               <Text fontWeight='bold'>{translate('NO_FOLDER_EDIT_PERMISSION_TITLE_MESSAGE')}</Text>
@@ -255,7 +255,7 @@ export const MediaFolderScreen = () => {
       )}
       <FormProvider {...formControls}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <MediaFolderSettingsInputs readOnly={!hasFolderEditPermissions} />
+          <MediaFolderSettingsInputs readOnly={!!folderId && !hasFolderEditPermissions} />
           <DragAndDropZone onDropSuccess={onDropSuccess} />
           <MediaFolderFilesCounter fileTypes={fileTypes} onClick={() => setIsDrawerOpen(true)} />
           <MediaFolderEditableListDrawer

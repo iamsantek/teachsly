@@ -2,11 +2,11 @@ import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { deleteMedia, updateMedia } from '../graphql/mutations'
 import { getMedia, listMedia } from '../graphql/queries'
 import { Media } from '../interfaces/Media'
+import { Media as MediaAPI, DeleteMediaMutation, ListMediaQuery, MediaType, UpdateMediaMutation, UpdateMediaInput, GetMediaQuery } from '../API'
 import Logger from '../utils/Logger'
 import GraphQLService from './GraphQLService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import StorageService from './aws/StorageService'
-import { DeleteMediaMutation, ListMediaQuery, MediaType, UpdateMediaMutation, UpdateMediaInput, GetMediaQuery } from '../API'
 
 class MediaService {
   public fetchMedias = async (
@@ -103,6 +103,19 @@ class MediaService {
       query: getMedia,
       id: mediaId
     })
+  }
+
+  public redirectToMediaUrl = async (media: MediaAPI | Media) => {
+    if (media?.type === MediaType.LINK) {
+      window.open(media.link, '_blank')
+      return
+    }
+
+    const signedUrl = await this.getMediaLink(media.link, media.type)
+
+    const isAudioOrVideo = media?.mimeType?.includes('audio') || media?.mimeType?.includes('video')
+
+    window.open(isAudioOrVideo ? `/play/${media.id as string}` : signedUrl, '_blank')
   }
 }
 
