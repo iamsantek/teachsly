@@ -66,7 +66,6 @@ class MediaFolderService {
   }
 
   public fetchMediaFolderById = async (folderId?: string) => {
-    
     if (!folderId) {
       return
     }

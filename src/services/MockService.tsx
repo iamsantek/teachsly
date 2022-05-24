@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker'
 class MockService {
   private generateRandomMock = (mock: Object) => {
     const randomNumber = Math.floor(Math.random() * 15) + 5
-    return Array.from({ length: randomNumber }).map((_, index) => mock)
+    return Array.from({ length: randomNumber }).map(() => mock)
   }
 
   public generateMediaMock = () => {

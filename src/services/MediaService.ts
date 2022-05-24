@@ -92,15 +92,17 @@ class MediaService {
       return
     }
 
-    const mockup: ListMediaQuery = {
-      listMedia: {
-        __typename: 'ModelMediaConnection',
-        items: MockService.generateMediaMock() as any,
-        nextToken: null
+    if (this.mockupData) {
+      const mockup: ListMediaQuery = {
+        listMedia: {
+          __typename: 'ModelMediaConnection',
+          items: MockService.generateMediaMock() as any,
+          nextToken: null
+        }
       }
-    }
 
-    return mockup
+      return mockup
+    }
 
     return GraphQLService.fetchQuery<ListMediaQuery>({
       query: listMedia,
