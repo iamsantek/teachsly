@@ -120,6 +120,7 @@
     "workbox-webpack-plugin": "^6.4.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^6.3.1",
     "@types/chart.js": "^2.9.35",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
