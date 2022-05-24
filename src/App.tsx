@@ -39,7 +39,6 @@ const App = () => {
 
   useEffect(() => {
     CognitoService.createClient(user)
-    LocalStorageService.saveItem(LocalStorageKeys.USER, user)
 
     return () => {
       LocalStorageService.cleanItem(LocalStorageKeys.USER)
@@ -65,6 +64,7 @@ const App = () => {
     const courseResponse = fetchCourses()
 
     const [user, courses] = await Promise.all([userResponse, courseResponse])
+    LocalStorageService.saveItem(LocalStorageKeys.USER, user)
 
     const userType = UserService.getUserType(user)
     let routes: ApplicationRoute[] = []
