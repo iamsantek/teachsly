@@ -55,7 +55,8 @@ class UserService {
     return GraphQLService.fetchQuery<ListUsersQuery>({
       query: listUsers,
       filter: filter,
-      nextToken
+      nextToken,
+      isMockData: false
     })
   }
 

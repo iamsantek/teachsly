@@ -4,6 +4,7 @@ import {
 } from '@aws-amplify/api-graphql'
 import { API } from 'aws-amplify'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
+import { graphQLMockResponses } from '../mocks/mocks'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import Logger from '../utils/Logger'
 interface SingleResult<T> {
@@ -27,18 +28,28 @@ type QueryParameters = {
   filter?: Object | undefined;
   limit?: number | null;
   id?: Object | undefined;
+  isMockData?: boolean;
 }
 
 class GraphQLService {
+  mockupData: boolean = true
+
   public fetchQuery = async <T>({
     query,
     input = undefined,
     limit = undefined,
     nextToken = undefined,
     filter = undefined,
-    id = undefined
+    id = undefined,
+    isMockData = true
   }: QueryParameters): Promise<T | undefined> => {
     try {
+      if (isMockData) {
+        console.log({ query })
+        console.log((graphQLMockResponses as any)[query])
+        return (graphQLMockResponses as any)[query]
+      }
+
       const sanitizedInput = removeNotAllowedPropertiesFromModel(input)
 
       const models = await API.graphql(

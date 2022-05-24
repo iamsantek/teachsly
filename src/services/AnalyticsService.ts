@@ -1,5 +1,4 @@
 import { ANALYTICS_URL } from '../constants/Analytics'
-import { BACKEND_ENV } from '../constants/Environment'
 import { AnalyticsEvent } from '../enums/Analytics'
 import LocalStorageService, { LocalStorageKeys } from './LocalStorageService'
 

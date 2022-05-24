@@ -97,7 +97,7 @@ const MediaCRUDModal = ({
       const hasRoleAdmin = isAdmin(user)
 
       setCourses(
-        hasRoleAdmin ? allCourses : allCourses.filter(course => user?.groups.includes(course.externalId))
+        hasRoleAdmin && allCourses ? allCourses : allCourses.filter(course => user?.groups.includes(course.externalId))
       )
     }
 
