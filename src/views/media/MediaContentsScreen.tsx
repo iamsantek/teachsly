@@ -79,7 +79,7 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
 
   const fetchCourseMedias = useCallback(async () => {
     const courseMedias = await MediaService.fetchMedias(nextPageTokens.COURSE, courseId)
-    setMedias(courseMedias?.listMedia?.items as Media[] ?? [])
+    setMedias(medias => medias.concat(courseMedias?.listMedia?.items as Media[]) ?? [])
 
     if (courseMedias?.listMedia?.nextToken) {
       dispatch({ type: FetchType.COURSE, payload: courseMedias.listMedia.nextToken })
