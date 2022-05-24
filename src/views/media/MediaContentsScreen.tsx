@@ -68,7 +68,7 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
     const mediaFolder = await MediaFolderService.fetchMediaFolderById(folderId)
     const folderMedias = await MediaService.fetchMediaByFolderId(folderId, nextPageTokens.FOLDER)
     setMediaFolder(mediaFolder?.getMediaFolder as MediaFolder ?? [])
-    setMedias(folderMedias?.listMedia?.items as Media[] ?? [])
+    setMedias(medias => medias.concat(folderMedias?.listMedia?.items as Media[]) ?? [])
 
     if (folderMedias?.listMedia?.nextToken) {
       dispatch({ type: FetchType.FOLDER, payload: folderMedias?.listMedia?.nextToken })
