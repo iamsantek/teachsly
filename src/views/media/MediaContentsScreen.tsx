@@ -104,7 +104,7 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
     if (folderId) {
       fetchMediaFolder()
     }
-  }, [folderId, fetchMediaFolder])
+  }, [fetchType, folderId, fetchMediaFolder])
 
   useEffect(() => {
     if (courseId) {
@@ -117,14 +117,19 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
       setIsLoadingNewPage(true)
       fetchAllMedias()
     }
-  }, [fetchAllMedias, courseId, folderId])
+  }, [fetchType, fetchAllMedias, courseId, folderId])
 
   useEffect(() => {
     fetchSectionName()
   }, [fetchSectionName])
 
   useEffect(() => {
-    return () => setMedias([])
+    return () => {
+      setMedias([])
+      dispatch({ type: FetchType.ALL, payload: undefined })
+      dispatch({ type: FetchType.COURSE, payload: undefined })
+      dispatch({ type: FetchType.FOLDER, payload: undefined })
+    }
   }, [fetchType])
 
   useEffect(() => {
