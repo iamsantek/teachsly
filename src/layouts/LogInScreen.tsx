@@ -10,7 +10,6 @@ import {
 import SignIn from '../components/SignIn'
 import { GeneralInformation } from '../enums/GeneralInformation'
 import { SocialButtons } from '../components/Buttons/SocialButtons'
-import { version } from '../version'
 
 export const LogInScreen = () => {
   return (
@@ -32,7 +31,7 @@ export const LogInScreen = () => {
         <Stack spacing={4}>
           <Center flexDirection={'column'}>
             <Text textStyle={'paragraph'} fontWeight='bold' fontSize={'xs'} marginY={4}>
-              {GeneralInformation.PROJECT_NAME} {new Date().getFullYear()} v{version}
+              {GeneralInformation.PROJECT_NAME} {new Date().getFullYear()}
             </Text>
             <SocialButtons />
           </Center>

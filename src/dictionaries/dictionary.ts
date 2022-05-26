@@ -118,14 +118,14 @@ export enum LanguageES {
   DELETE_FOLDER_PLACEHOLDER='Escribe el nombre de la carpeta para confirmar su eliminación:',
   FOLDER_DELETED='La carpeta se eliminó correctamente.',
   FOLDER_DELETE_FAILED='Hubo un error al eliminar la carpeta. Por favor, intentar nuevamente.',
-  NOT_RECOMMENDED_MEDIA_TYPES_WORDING='Para facilitar el uso y la descarga de contenidos recomendamos subir los contenidos en los siguientes formatos',
+  NOT_RECOMMENDED_MEDIA_TYPES_WORDING='Para facilitar el uso y la descarga de contenidos los arhivos deberán subirse en los siguientes formatos',
   FILES_WITH_INFORMATION_TITLE='Archivos con información (documentos de Word, diapositivas, hojas de cálculo, etc.)',
   FILES_WITH_INFORMATION_FORMAT='.PDF',
   AUDIOS_TITLE='Audios de todo tipo',
   AUDIOS_FORMAT='.MP3; .WAV; ó .OGG',
   VIDEOS_TITLE='Videos de todo tipo',
-  VIDEOS_FORMAT='.MP4; .AVI ó .MOV',
-  NOT_RECOMMENDED_MEDIA_TYPES_FINAL_WORDING='No recomendamos subir archivos comprimidos .RAR o .ZIP ya que dificultan la descarga para los estudiantes. En caso de que desee subir varios archivos, se recomienda crear una nueva carpeta.',
+  VIDEOS_FORMAT='.MP4 ó .MOV',
+  NOT_RECOMMENDED_MEDIA_TYPES_FINAL_WORDING='No se deberán subir archivos comprimidos .RAR o .ZIP ya que dificultan la descarga para los estudiantes. En caso de que desee subir varios archivos, se recomienda crear una nueva carpeta.',
   NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_1 = 'Contenido',
   NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_2 = 'Formato recomendado'
 

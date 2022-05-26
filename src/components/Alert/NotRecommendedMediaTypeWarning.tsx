@@ -3,7 +3,7 @@ import { translate } from '../../utils/LanguageUtils'
 
 export const NotRecommendedMediaTypeWarning = () => {
   return (
-        <Alert status='warning' flexDirection='column' gap={4}>
+        <Alert status='error' flexDirection='column' gap={4}>
             <Flex flexDirection='row'>
                 <AlertIcon />
                 <Text fontWeight={'bold'}>{translate('NOT_RECOMMENDED_MEDIA_TYPES_WORDING')}</Text>

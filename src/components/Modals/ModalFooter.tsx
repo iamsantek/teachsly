@@ -8,13 +8,14 @@ import { TranslationsDictionary } from '../../dictionaries/dictionary'
 import { translate } from '../../utils/LanguageUtils'
 
 interface Props {
-  isLoading: boolean;
+  isLoading: boolean
   onClose: () => void;
   sendButtonText: TranslationsDictionary;
   children?: React.ReactNode;
+  isDisabled?: boolean
 }
 
-export const ModalFooter: FC<Props> = ({ isLoading, onClose, sendButtonText, children }: Props) => (
+export const ModalFooter: FC<Props> = ({ isLoading, onClose, sendButtonText, children, isDisabled }: Props) => (
   <ChakraModalFooter>
     <Wrap gap={4}>
       {children}
@@ -23,6 +24,7 @@ export const ModalFooter: FC<Props> = ({ isLoading, onClose, sendButtonText, chi
           colorScheme="brand"
           w={['100%', 'auto']}
           isLoading={isLoading}
+          isDisabled={isDisabled}
           loadingText={translate('PROCESSING')}
           type="submit"
         >

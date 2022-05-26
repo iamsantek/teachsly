@@ -1,4 +1,4 @@
-import { memo, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useContext, useEffect, useState } from 'react'
 import * as React from 'react'
 import { translate } from '../utils/LanguageUtils'
 import { MediaWithMultiSelect } from '../interfaces/Media'
@@ -58,6 +58,7 @@ const MediaCRUDModal = ({
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [courses, setCourses] = useState<Course[]>([])
   const { folderId } = useParams()
+  const [invalidFileType, setInvalidFileType] = useState<boolean>(false)
 
   const formControls = useForm({
     defaultValues: defaultMedia as MediaWithMultiSelect
@@ -132,6 +133,11 @@ const MediaCRUDModal = ({
     }
   }, [isOpen, reset])
 
+  useEffect(() => {
+    setFile(undefined)
+    setInvalidFileType(false)
+  }, [mediaType])
+
   const formatMedia = (media: MediaWithMultiSelect): CreateMediaInput | UpdateMediaInput => {
     const groupsArray = media.groups.map((group) => group.value)
     const type = media.type.value as MediaType
@@ -190,7 +196,16 @@ const MediaCRUDModal = ({
       return
     }
 
-    setFile(event.target.files[0])
+    const file = event.target.files[0]
+
+    if (!recommendedMediaTypes.includes(file.type)) {
+      setFile(undefined)
+      setInvalidFileType(true)
+      return
+    }
+
+    setInvalidFileType(false)
+    setFile(file)
   }
 
   const onSubmit = (media: MediaWithMultiSelect) => {
@@ -206,8 +221,6 @@ const MediaCRUDModal = ({
 
     mediaId ? updateMedia(media) : createMedia(media)
   }
-
-  const showNotRecommendedMediaTypeWarning = useMemo(() => file?.type && !recommendedMediaTypes.includes(file?.type as string), [file?.type])
 
   return (
     <Modal isOpen={isOpen} onClose={onCloseModal} size="4xl">
@@ -271,7 +284,7 @@ const MediaCRUDModal = ({
                       label="ATTACH_FILE"
                     />
                   )}
-                  {showNotRecommendedMediaTypeWarning && mediaType === MediaType.FILE && <NotRecommendedMediaTypeWarning />}
+                  {invalidFileType && mediaType === MediaType.FILE && <NotRecommendedMediaTypeWarning />}
                   <Box display={[MediaType.LINK].includes(mediaType as MediaType) ? 'inline-block' : 'none'} w='100%'>
                     <CustomInput
                       name="link"
@@ -296,6 +309,7 @@ const MediaCRUDModal = ({
               </ModalBody>
               <ModalFooter
                 isLoading={isLoading}
+                isDisabled={invalidFileType}
                 sendButtonText={
                   mediaId ? 'UPDATE_MEDIA_BUTTON' : 'CREATE_MEDIA_BUTTON'
                 }
