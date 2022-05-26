@@ -98,7 +98,6 @@ export const recommendedMediaTypes = [
   'image/jpeg',
   'image/png',
   'image/gif',
-  'video/avi',
   'video/mp4',
   'video/webm',
   'video/ogg',
