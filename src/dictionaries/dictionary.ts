@@ -118,7 +118,7 @@ export enum LanguageES {
   DELETE_FOLDER_PLACEHOLDER='Escribe el nombre de la carpeta para confirmar su eliminación:',
   FOLDER_DELETED='La carpeta se eliminó correctamente.',
   FOLDER_DELETE_FAILED='Hubo un error al eliminar la carpeta. Por favor, intentar nuevamente.',
-  NOT_RECOMMENDED_MEDIA_TYPES_WORDING='Para facilitar el uso y la descarga de contenidos los arhivos deberán subirse en los siguientes formatos',
+  NOT_RECOMMENDED_MEDIA_TYPES_WORDING='Para facilitar el uso y la descarga de contenidos los archivos deberán subirse en los siguientes formatos',
   FILES_WITH_INFORMATION_TITLE='Archivos con información (documentos de Word, diapositivas, hojas de cálculo, etc.)',
   FILES_WITH_INFORMATION_FORMAT='.PDF',
   AUDIOS_TITLE='Audios de todo tipo',
