@@ -1,1 +1,1 @@
-export const IS_MOCK_DATA = true;
+export const IS_MOCK_DATA = true
