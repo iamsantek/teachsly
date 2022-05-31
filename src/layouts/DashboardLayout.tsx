@@ -106,7 +106,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         justifyContent="space-between"
         marginBottom={[10, 5]}
       >
-        <Image w={[36, 40]} padding={[0, 4]} src={require('../assets/img/brand/logo.png')} />
+        <Image w={[36, 40]} padding={[0, 4]} src={'/logo.png'} />
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {routes?.filter((route: any) => route.showInNavbar).map((link: any, index: number) => (

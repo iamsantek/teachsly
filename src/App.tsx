@@ -66,7 +66,7 @@ const App = () => {
 
     const [user, courses] = await Promise.all([userResponse, courseResponse])
 
-    const userType = UserService.getUserType(user)
+    const userType = UserService.getUserType(user as User)
     let routes: ApplicationRoute[] = []
 
     if (userType) {

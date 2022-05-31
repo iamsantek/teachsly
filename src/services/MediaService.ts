@@ -7,7 +7,6 @@ import GraphQLService from './GraphQLService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import StorageService from './aws/StorageService'
 import { DeleteMediaMutation, ListMediaQuery, MediaType, UpdateMediaMutation, UpdateMediaInput, GetMediaQuery } from '../API'
-import MockService from './MockService'
 
 class MediaService {
   mockupData: boolean = true
@@ -90,18 +89,6 @@ class MediaService {
   public fetchMediaByFolderId = async (folderId: string | undefined, nextToken: string | null | undefined) => {
     if (!folderId) {
       return
-    }
-
-    if (this.mockupData) {
-      const mockup: ListMediaQuery = {
-        listMedia: {
-          __typename: 'ModelMediaConnection',
-          items: MockService.generateMediaMock() as any,
-          nextToken: null
-        }
-      }
-
-      return mockup
     }
 
     return GraphQLService.fetchQuery<ListMediaQuery>({

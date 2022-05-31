@@ -1,5 +1,5 @@
 import { createMedia, createMediaFolder, createUser, deleteMedia, updateCourse, updateMedia, updateMediaFolder, updateUser } from '../graphql/mutations'
-import { listCourses, listMedia, listMediaFolders } from '../graphql/queries'
+import { listCourses, listMedia, listMediaFolders, listUsers } from '../graphql/queries'
 
 const createMediaMock = {
   createMedia: {
@@ -44,68 +44,6 @@ export const updateMediaMock = {
 export const listMediaMock = {
   listMedia: {
     items: [
-      {
-        id: 'f99c3abf-8442-4448-a738-7495af9b2148',
-        title: 'Cómo subir carpetas y contenidos a las mismas',
-        type: 'FILE',
-        description: 'Breve video explicativo sobre cómo usar la nueva estructura de carpetas',
-        link: '658ab098-8877-4a2e-bdab-322100992fb5.mov',
-        content: '',
-        groups: [
-          'Teachers'
-        ],
-        uploadedBy: 'Teachsly Admin',
-        mimeType: 'video/quicktime',
-        folderId: null,
-        createdAt: '2022-05-19T16:25:19.765Z',
-        updatedAt: '2022-05-19T16:25:19.765Z',
-        owner: null
-      },
-      {
-        id: '2b692247-1e2b-413a-bbbd-7d91f6160188',
-        title: 'General Differences Between British and American English',
-        type: 'FILE',
-        description: 'General Differences Between British and American English',
-        link: 'a2706698-0f5f-49ef-9295-77461ad903f1.pdf',
-        content: '',
-        groups: [
-          'Students',
-          'Teachers'
-        ],
-        uploadedBy: 'Teachsly Admin',
-        mimeType: 'application/pdf',
-        folderId: null,
-        createdAt: '2022-03-24T14:14:44.337Z',
-        updatedAt: '2022-03-24T15:15:35.504Z',
-        owner: null
-      },
-      {
-        id: '90ff32b1-dfe0-4721-a43b-99fb72ade22f',
-        title: 'Quasimodo - Workpack',
-        type: 'FILE',
-        description: 'Material de trabajo de Quasimodo',
-        link: '369e6772-6ba7-4707-b260-afe7b60ebc9c.pdf',
-        content: '',
-        groups: [
-          'TeensI2022',
-          'ElementaryI2022',
-          'ElementaryII2022',
-          'ElementaryIV2022',
-          'ElementaryIII2022',
-          'Pre-IntermediateI2022',
-          'IntermediateI2022',
-          'IntermediateIII2022',
-          'IntermediateII2022',
-          'StarterI2022',
-          'Teachers'
-        ],
-        uploadedBy: 'Teachsly Admin',
-        mimeType: 'application/pdf',
-        folderId: null,
-        createdAt: '2022-05-09T12:36:18.950Z',
-        updatedAt: '2022-05-09T12:36:18.950Z',
-        owner: null
-      },
       {
         id: '4ee23724-7f1f-4fb1-99cc-f871d2f6f677',
         title: 'HYPHEN',
@@ -534,6 +472,58 @@ const updateMediaFolderMock = {
   }
 }
 
+export const listUsersMock = {
+  listUsers: {
+    items: [
+      {
+        id: 'a0d80bda-5e0a-4974-a37b-9355351689d7',
+        name: 'Teachsly Admin',
+        email: 'admin.teachsly@santek.dev',
+        phone: '123456789',
+        cognitoId: '60e9c047-b1e3-4521-b5d4-1499b6124546',
+        groups: [
+          'Admin'
+        ],
+        isDisabledUser: false,
+        disabledReason: null,
+        createdAt: '2022-03-15T02:32:24.566Z',
+        updatedAt: '2022-03-15T02:32:24.566Z'
+      },
+      {
+        id: 'a0d80bda-5e0a-4974-a37b-9355351689d7',
+        name: 'Teachsly Student',
+        email: 'student.teachsly@santek.dev',
+        phone: '123456789',
+        cognitoId: '37e391f4-c8a0-4b11-95d4-11de1f5e6f8a',
+        groups: [
+          'Students',
+          'SpeakingII2022'
+        ],
+        isDisabledUser: false,
+        disabledReason: null,
+        createdAt: '2022-03-15T02:32:24.566Z',
+        updatedAt: '2022-03-15T02:32:24.566Z'
+      },
+      {
+        id: 'a0d80bda-5e0a-4974-a37b-9355351689d7',
+        name: 'Teachsly Teacher',
+        email: 'teacher.teachsly@santek.dev',
+        phone: '123456789',
+        cognitoId: '3f0dd665-0e00-4b82-8e7b-9b8a0136eb55',
+        groups: [
+          'Teachers',
+          'SpeakingII2022'
+        ],
+        isDisabledUser: false,
+        disabledReason: null,
+        createdAt: '2022-03-15T02:32:24.566Z',
+        updatedAt: '2022-03-15T02:32:24.566Z'
+      }
+    ],
+    nextToken: null
+  }
+}
+
 export const graphQLMockResponses = {
   [createMedia]: createMediaMock,
   [listMedia]: listMediaMock,
@@ -545,5 +535,6 @@ export const graphQLMockResponses = {
   [updateUser]: updateUserMock,
   [listMediaFolders]: listMediaFolderMock,
   [createMediaFolder]: createMediaFolderMock,
-  [updateMediaFolder]: updateMediaFolderMock
+  [updateMediaFolder]: updateMediaFolderMock,
+  [listUsers]: listUsersMock
 }

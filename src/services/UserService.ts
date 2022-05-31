@@ -7,6 +7,8 @@ import Logger from '../utils/Logger'
 import AuthService from './AuthService'
 import GraphQLService from './GraphQLService'
 import CognitoService from './aws/CognitoService'
+import { IS_MOCK_DATA } from '../constants/Flags'
+import { listUsersMock } from '../mocks/mocks'
 
 class UserService {
   public async createUser (user: CreateUserInput, type: UserTypes) {
@@ -41,6 +43,10 @@ class UserService {
       return
     }
 
+    if (IS_MOCK_DATA) {
+      return listUsersMock.listUsers.items.find(user => user.cognitoId === cognitoId)
+    }
+
     const filter = this.cognitoIdFilter(cognitoId)
     const users = await this.fetchUsers(filter)
 
@@ -63,6 +69,16 @@ class UserService {
   public fetchUsersByCourseOrType = async (courseOrType: string | UserTypes | undefined = undefined, nextToken: string | null = null) => {
     if (!courseOrType) {
       return
+    }
+
+    if (IS_MOCK_DATA) {
+      return {
+        ...listUsersMock,
+        listUsers: {
+          items: listUsersMock.listUsers.items.filter(user => user.groups.includes(courseOrType as UserTypes)),
+          nextToken
+        }
+      }
     }
 
     const usersByCourseFilter: ModelUserFilterInput = {

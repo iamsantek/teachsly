@@ -26,7 +26,7 @@ export const CourseList = () => {
     }
 
     fetchCourses()
-  }, [user?.groups])
+  }, [user?.groups, courses])
 
   return (
     <>

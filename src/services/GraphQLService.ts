@@ -3,7 +3,9 @@ import {
   GraphQLResult
 } from '@aws-amplify/api-graphql'
 import { API } from 'aws-amplify'
+import { IS_MOCK_DATA } from '../constants/Flags'
 import { LogLevel, LogTypes } from '../enums/LogTypes'
+import { listCourses } from '../graphql/queries'
 import { graphQLMockResponses } from '../mocks/mocks'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
 import Logger from '../utils/Logger'
@@ -40,13 +42,10 @@ class GraphQLService {
     limit = undefined,
     nextToken = undefined,
     filter = undefined,
-    id = undefined,
-    isMockData = true
+    id = undefined
   }: QueryParameters): Promise<T | undefined> => {
     try {
-      if (isMockData) {
-        console.log({ query })
-        console.log((graphQLMockResponses as any)[query])
+      if (IS_MOCK_DATA) {
         return (graphQLMockResponses as any)[query]
       }
 
