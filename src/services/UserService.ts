@@ -36,15 +36,21 @@ class UserService {
 
   private cognitoIdFilter = (cognitoId: string): ModelUserFilterInput => ({ cognitoId: { eq: cognitoId } })
 
-  public fetchUserByCognitoId = async (cognitoId: string | undefined) => {
+  public fetchUserByCognitoId = async (cognitoId: string | undefined, nextToken: string | undefined = undefined): Promise<any> => {
     if (!cognitoId) {
       return
     }
 
     const filter = this.cognitoIdFilter(cognitoId)
-    const users = await this.fetchUsers(filter)
+    const users = await this.fetchUsers(filter, nextToken)
 
-    return users?.listUsers?.items[0]
+    if (users?.listUsers?.items?.length === 1) {
+      return users?.listUsers?.items[0]
+    }
+
+    if (users?.listUsers?.nextToken) {
+      return await this.fetchUserByCognitoId(cognitoId, users.listUsers.nextToken)
+    }
   }
 
   public getUserType = (user: UserAPI | undefined | null) => {
