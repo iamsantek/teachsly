@@ -127,8 +127,16 @@ export enum LanguageES {
   VIDEOS_FORMAT='.MP4 ó .MOV',
   NOT_RECOMMENDED_MEDIA_TYPES_FINAL_WORDING='No se deberán subir archivos comprimidos .RAR o .ZIP ya que dificultan la descarga para los estudiantes. En caso de que desee subir varios archivos, se recomienda crear una nueva carpeta.',
   NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_1 = 'Contenido',
-  NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_2 = 'Formato recomendado'
-
+  NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_2 = 'Formato recomendado',
+  EXAMS = 'Exámenes',
+  QUESTION='Pregunta',
+  OPTION='Opción',
+  ADD_OPTION_BUTTON='Agregar opción a la pregunta #',
+  ADD_QUESTION_BUTTON='Agregar nueva pregunta',
+  ADD_QUESTION_POOL='Agregar pool de preguntas',
+  DELETE_QUESTIONS_POOL_TITLE='Eliminar pool de preguntas',
+  DELETE_QUESTIONS_POOL_DESCRIPTION='Confirmar la eliminación del pool de preguntas.',
+  DELETE_LAST_QUESTIONS_POOL_ERROR='No puedes eliminar el último pool de preguntas.',
 }
 
 export enum LanguageEN {
@@ -255,5 +263,14 @@ export enum LanguageEN {
   VIDEOS_FORMAT='.MP4; .AVI or .MOV',
   NOT_RECOMMENDED_MEDIA_TYPES_FINAL_WORDING='We do not recommend the upload of .RAR or .ZIP compressed files for they complicate the download process for our students. In the case of uploading multiple files, please, create a new folder.',
   NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_1 = 'Content',
-  NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_2 = 'Recommended media format'
+  NOT_RECOMMENDED_MEDIA_TYPES_TABLE_TITLE_2 = 'Recommended media format',
+  EXAMS = 'Exams',
+  QUESTION='Question',
+  OPTION='Option',
+  ADD_OPTION_BUTTON='Add option to question #',
+  ADD_QUESTION_BUTTON='Add new question',
+  ADD_QUESTION_POOL='Add question pool',
+  DELETE_QUESTIONS_POOL_TITLE='Delete Question Pool',
+  DELETE_QUESTIONS_POOL_DESCRIPTION='Delete question pool and all its contents',
+  DELETE_LAST_QUESTIONS_POOL_ERROR='You can not delete the last question pool.',
 }

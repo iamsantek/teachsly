@@ -16,6 +16,7 @@ import { FaMoneyCheckAlt } from 'react-icons/fa'
 import { MediaFolderScreen } from './views/media/folders/MediaFolderScreen'
 import { FetchType } from './enums/Media'
 import { ContentLayout } from './layouts/ContentLayout'
+import { CreateExamScreen } from './views/exams/CreateExamScreen'
 
 const adminHomeScreen: ApplicationRoute = {
   name: translate('MENU_HOME'),
@@ -89,6 +90,15 @@ const mediaContents: ApplicationRoute = {
   withDashboardLayout: true
 }
 
+const createExamScreen: ApplicationRoute = {
+  path: '/exams/new',
+  name: translate('EXAMS'),
+  icon: AiFillFolder,
+  element: <CreateExamScreen />,
+  showInNavbar: true,
+  withDashboardLayout: true
+}
+
 const studentsByCourseRoute: ApplicationRoute = { path: '/courses/:id/students', element: <StudentsList />, showInNavbar: true, withDashboardLayout: true }
 const mediaFolderCreateRoute: ApplicationRoute = { path: '/medias/folder/new', element: <MediaFolderScreen />, name: translate('CREATE_FOLDER'), showInNavbar: false, withDashboardLayout: true }
 const mediaContentDetailRoute: ApplicationRoute = { path: '/medias/:courseId', element: <MediaContentsScreen fetchType={FetchType.COURSE} />, showInNavbar: true, withDashboardLayout: true }
@@ -109,6 +119,7 @@ const adminRoutes: ApplicationRoute[] = [
   mediaFolderDetailRoute,
   mediaFolderEditRoute,
   videoPreviewRoute,
+  createExamScreen,
   { path: '*', element: <AdminHomeScreen /> }
 ]
 
@@ -132,6 +143,7 @@ const teachersRoutes: ApplicationRoute[] = [
   mediaFolderDetailRoute,
   mediaFolderEditRoute,
   videoPreviewRoute,
+  createExamScreen,
   { path: '*', element: <TeachersHomeScreen /> }
 ]
 
