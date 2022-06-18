@@ -21,7 +21,7 @@ export const CreateExamForm = () => {
   const formControls = useForm<ExamForm>(defaultExamForm)
   const { handleSubmit, control } = formControls
 
-  const onSubmit = (values: any) => {
+  const createExam = (values: ExamForm) => {
     console.log(values)
   }
 
@@ -52,10 +52,11 @@ export const CreateExamForm = () => {
     append(defaultQuestionPool)
   }
 
+
   return (
     <>
       <FormProvider {...formControls}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(createExam)}>
           <Stack spacing={4}>
             <Input
               name="title"
@@ -110,7 +111,7 @@ export const CreateExamForm = () => {
                 )
               })}
             </Accordion>
-            <Container centerContent maxW='100%'>
+            <Container centerContent maxW='100%' display='flex' flexDirection='row' gap={5} justifyContent='center'>
               <Button
                 leftIcon={<AiOutlinePlus />}
                 marginTop={5}
@@ -118,6 +119,15 @@ export const CreateExamForm = () => {
                 colorScheme='brand'
                 variant='solid'>
                 {translate('ADD_QUESTION_POOL')}
+              </Button>
+              <Button
+                leftIcon={<AiOutlinePlus />}
+                marginTop={5}
+                colorScheme='brand'
+                variant='solid'
+                type='submit'
+                >
+                {translate('CREATE_EXAM')}
               </Button>
             </Container>
           </Stack>

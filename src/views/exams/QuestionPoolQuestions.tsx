@@ -140,7 +140,7 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
                             </HStack>
                         </Stack>
                     ))}
-                    <Box paddingLeft={10} display='flex' flexDir='column' maxW={['100%', '30%']} justifyContent='flex-end' maxWidth='100%'>
+                    <Box paddingLeft={10} display='flex' flexDir='column' justifyContent='flex-end' maxWidth='100%'>
                         <Button size='sm' leftIcon={<BsListCheck />} colorScheme="brand" onClick={() => addOption(questionIndex, questionPoolIndex)}>
                             {`${translate('ADD_OPTION_BUTTON')}${questionIndex + 1}`}
                         </Button>

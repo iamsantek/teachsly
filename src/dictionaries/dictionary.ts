@@ -137,6 +137,7 @@ export enum LanguageES {
   DELETE_QUESTIONS_POOL_TITLE='Eliminar pool de preguntas',
   DELETE_QUESTIONS_POOL_DESCRIPTION='Confirmar la eliminación del pool de preguntas.',
   DELETE_LAST_QUESTIONS_POOL_ERROR='No puedes eliminar el último pool de preguntas.',
+  CREATE_EXAM='Crear examen',
 }
 
 export enum LanguageEN {
@@ -273,4 +274,5 @@ export enum LanguageEN {
   DELETE_QUESTIONS_POOL_TITLE='Delete Question Pool',
   DELETE_QUESTIONS_POOL_DESCRIPTION='Delete question pool and all its contents',
   DELETE_LAST_QUESTIONS_POOL_ERROR='You can not delete the last question pool.',
+  CREATE_EXAM='Create exam',
 }
