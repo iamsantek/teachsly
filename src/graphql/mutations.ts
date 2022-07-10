@@ -230,3 +230,144 @@ export const deleteUser = /* GraphQL */ `
     }
   }
 `;
+export const createExam = /* GraphQL */ `
+  mutation CreateExam(
+    $input: CreateExamInput!
+    $condition: ModelExamConditionInput
+  ) {
+    createExam(input: $input, condition: $condition) {
+      id
+      groups
+      title
+      questionPools
+      timer {
+        type
+        timeInSeconds
+      }
+      deadline
+      startDate
+      attachments {
+        name
+        path
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateExam = /* GraphQL */ `
+  mutation UpdateExam(
+    $input: UpdateExamInput!
+    $condition: ModelExamConditionInput
+  ) {
+    updateExam(input: $input, condition: $condition) {
+      id
+      groups
+      title
+      questionPools
+      timer {
+        type
+        timeInSeconds
+      }
+      deadline
+      startDate
+      attachments {
+        name
+        path
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteExam = /* GraphQL */ `
+  mutation DeleteExam(
+    $input: DeleteExamInput!
+    $condition: ModelExamConditionInput
+  ) {
+    deleteExam(input: $input, condition: $condition) {
+      id
+      groups
+      title
+      questionPools
+      timer {
+        type
+        timeInSeconds
+      }
+      deadline
+      startDate
+      attachments {
+        name
+        path
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const createExamAttempt = /* GraphQL */ `
+  mutation CreateExamAttempt(
+    $input: CreateExamAttemptInput!
+    $condition: ModelExamAttemptConditionInput
+  ) {
+    createExamAttempt(input: $input, condition: $condition) {
+      id
+      examId
+      examName
+      userId
+      score
+      isCompleted
+      correctAnswers
+      correctedBy
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateExamAttempt = /* GraphQL */ `
+  mutation UpdateExamAttempt(
+    $input: UpdateExamAttemptInput!
+    $condition: ModelExamAttemptConditionInput
+  ) {
+    updateExamAttempt(input: $input, condition: $condition) {
+      id
+      examId
+      examName
+      userId
+      score
+      isCompleted
+      correctAnswers
+      correctedBy
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteExamAttempt = /* GraphQL */ `
+  mutation DeleteExamAttempt(
+    $input: DeleteExamAttemptInput!
+    $condition: ModelExamAttemptConditionInput
+  ) {
+    deleteExamAttempt(input: $input, condition: $condition) {
+      id
+      examId
+      examName
+      userId
+      score
+      isCompleted
+      correctAnswers
+      correctedBy
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;

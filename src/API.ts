@@ -305,6 +305,138 @@ export type DeleteUserInput = {
   id: string,
 };
 
+export type CreateExamInput = {
+  id?: string | null,
+  groups: Array< string >,
+  title: string,
+  questionPools: string,
+  timer: TimerInput,
+  deadline: string,
+  startDate: string,
+  attachments: Array< AttachmentInput | null >,
+};
+
+export type TimerInput = {
+  type: string,
+  timeInSeconds: number,
+};
+
+export type AttachmentInput = {
+  name: string,
+  path: string,
+};
+
+export type ModelExamConditionInput = {
+  groups?: ModelStringInput | null,
+  title?: ModelStringInput | null,
+  questionPools?: ModelStringInput | null,
+  deadline?: ModelStringInput | null,
+  startDate?: ModelStringInput | null,
+  and?: Array< ModelExamConditionInput | null > | null,
+  or?: Array< ModelExamConditionInput | null > | null,
+  not?: ModelExamConditionInput | null,
+};
+
+export type Exam = {
+  __typename: "Exam",
+  id: string,
+  groups: Array< string >,
+  title: string,
+  questionPools: string,
+  timer: Timer,
+  deadline: string,
+  startDate: string,
+  attachments:  Array<Attachment | null >,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+};
+
+export type Timer = {
+  __typename: "Timer",
+  type: string,
+  timeInSeconds: number,
+};
+
+export type Attachment = {
+  __typename: "Attachment",
+  name: string,
+  path: string,
+};
+
+export type UpdateExamInput = {
+  id: string,
+  groups?: Array< string > | null,
+  title?: string | null,
+  questionPools?: string | null,
+  timer?: TimerInput | null,
+  deadline?: string | null,
+  startDate?: string | null,
+  attachments?: Array< AttachmentInput | null > | null,
+};
+
+export type DeleteExamInput = {
+  id: string,
+};
+
+export type CreateExamAttemptInput = {
+  id?: string | null,
+  examId: string,
+  examName: string,
+  userId: string,
+  score?: number | null,
+  isCompleted?: boolean | null,
+  correctAnswers?: number | null,
+  correctedBy?: string | null,
+  externalId: string,
+};
+
+export type ModelExamAttemptConditionInput = {
+  examId?: ModelIDInput | null,
+  examName?: ModelStringInput | null,
+  userId?: ModelIDInput | null,
+  score?: ModelIntInput | null,
+  isCompleted?: ModelBooleanInput | null,
+  correctAnswers?: ModelIntInput | null,
+  correctedBy?: ModelStringInput | null,
+  externalId?: ModelIDInput | null,
+  and?: Array< ModelExamAttemptConditionInput | null > | null,
+  or?: Array< ModelExamAttemptConditionInput | null > | null,
+  not?: ModelExamAttemptConditionInput | null,
+};
+
+export type ExamAttempt = {
+  __typename: "ExamAttempt",
+  id: string,
+  examId: string,
+  examName: string,
+  userId: string,
+  score?: number | null,
+  isCompleted?: boolean | null,
+  correctAnswers?: number | null,
+  correctedBy?: string | null,
+  externalId: string,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+};
+
+export type UpdateExamAttemptInput = {
+  id: string,
+  examId?: string | null,
+  examName?: string | null,
+  userId?: string | null,
+  score?: number | null,
+  isCompleted?: boolean | null,
+  correctAnswers?: number | null,
+  correctedBy?: string | null,
+  externalId?: string | null,
+};
+
+export type DeleteExamAttemptInput = {
+  id: string,
+};
+
 export type ModelCourseFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -380,6 +512,45 @@ export type ModelUserFilterInput = {
 export type ModelUserConnection = {
   __typename: "ModelUserConnection",
   items:  Array<User | null >,
+  nextToken?: string | null,
+};
+
+export type ModelExamFilterInput = {
+  id?: ModelIDInput | null,
+  groups?: ModelStringInput | null,
+  title?: ModelStringInput | null,
+  questionPools?: ModelStringInput | null,
+  deadline?: ModelStringInput | null,
+  startDate?: ModelStringInput | null,
+  and?: Array< ModelExamFilterInput | null > | null,
+  or?: Array< ModelExamFilterInput | null > | null,
+  not?: ModelExamFilterInput | null,
+};
+
+export type ModelExamConnection = {
+  __typename: "ModelExamConnection",
+  items:  Array<Exam | null >,
+  nextToken?: string | null,
+};
+
+export type ModelExamAttemptFilterInput = {
+  id?: ModelIDInput | null,
+  examId?: ModelIDInput | null,
+  examName?: ModelStringInput | null,
+  userId?: ModelIDInput | null,
+  score?: ModelIntInput | null,
+  isCompleted?: ModelBooleanInput | null,
+  correctAnswers?: ModelIntInput | null,
+  correctedBy?: ModelStringInput | null,
+  externalId?: ModelIDInput | null,
+  and?: Array< ModelExamAttemptFilterInput | null > | null,
+  or?: Array< ModelExamAttemptFilterInput | null > | null,
+  not?: ModelExamAttemptFilterInput | null,
+};
+
+export type ModelExamAttemptConnection = {
+  __typename: "ModelExamAttemptConnection",
+  items:  Array<ExamAttempt | null >,
   nextToken?: string | null,
 };
 
@@ -635,6 +806,165 @@ export type DeleteUserMutation = {
   } | null,
 };
 
+export type CreateExamMutationVariables = {
+  input: CreateExamInput,
+  condition?: ModelExamConditionInput | null,
+};
+
+export type CreateExamMutation = {
+  createExam?:  {
+    __typename: "Exam",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    questionPools: string,
+    timer:  {
+      __typename: "Timer",
+      type: string,
+      timeInSeconds: number,
+    },
+    deadline: string,
+    startDate: string,
+    attachments:  Array< {
+      __typename: "Attachment",
+      name: string,
+      path: string,
+    } | null >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateExamMutationVariables = {
+  input: UpdateExamInput,
+  condition?: ModelExamConditionInput | null,
+};
+
+export type UpdateExamMutation = {
+  updateExam?:  {
+    __typename: "Exam",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    questionPools: string,
+    timer:  {
+      __typename: "Timer",
+      type: string,
+      timeInSeconds: number,
+    },
+    deadline: string,
+    startDate: string,
+    attachments:  Array< {
+      __typename: "Attachment",
+      name: string,
+      path: string,
+    } | null >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteExamMutationVariables = {
+  input: DeleteExamInput,
+  condition?: ModelExamConditionInput | null,
+};
+
+export type DeleteExamMutation = {
+  deleteExam?:  {
+    __typename: "Exam",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    questionPools: string,
+    timer:  {
+      __typename: "Timer",
+      type: string,
+      timeInSeconds: number,
+    },
+    deadline: string,
+    startDate: string,
+    attachments:  Array< {
+      __typename: "Attachment",
+      name: string,
+      path: string,
+    } | null >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type CreateExamAttemptMutationVariables = {
+  input: CreateExamAttemptInput,
+  condition?: ModelExamAttemptConditionInput | null,
+};
+
+export type CreateExamAttemptMutation = {
+  createExamAttempt?:  {
+    __typename: "ExamAttempt",
+    id: string,
+    examId: string,
+    examName: string,
+    userId: string,
+    score?: number | null,
+    isCompleted?: boolean | null,
+    correctAnswers?: number | null,
+    correctedBy?: string | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateExamAttemptMutationVariables = {
+  input: UpdateExamAttemptInput,
+  condition?: ModelExamAttemptConditionInput | null,
+};
+
+export type UpdateExamAttemptMutation = {
+  updateExamAttempt?:  {
+    __typename: "ExamAttempt",
+    id: string,
+    examId: string,
+    examName: string,
+    userId: string,
+    score?: number | null,
+    isCompleted?: boolean | null,
+    correctAnswers?: number | null,
+    correctedBy?: string | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteExamAttemptMutationVariables = {
+  input: DeleteExamAttemptInput,
+  condition?: ModelExamAttemptConditionInput | null,
+};
+
+export type DeleteExamAttemptMutation = {
+  deleteExamAttempt?:  {
+    __typename: "ExamAttempt",
+    id: string,
+    examId: string,
+    examName: string,
+    userId: string,
+    score?: number | null,
+    isCompleted?: boolean | null,
+    correctAnswers?: number | null,
+    correctedBy?: string | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
 export type GetCourseQueryVariables = {
   id: string,
 };
@@ -814,6 +1144,110 @@ export type ListUsersQuery = {
       disabledReason?: DisabledAccountReasons | null,
       createdAt: string,
       updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetExamQueryVariables = {
+  id: string,
+};
+
+export type GetExamQuery = {
+  getExam?:  {
+    __typename: "Exam",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    questionPools: string,
+    timer:  {
+      __typename: "Timer",
+      type: string,
+      timeInSeconds: number,
+    },
+    deadline: string,
+    startDate: string,
+    attachments:  Array< {
+      __typename: "Attachment",
+      name: string,
+      path: string,
+    } | null >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListExamsQueryVariables = {
+  filter?: ModelExamFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListExamsQuery = {
+  listExams?:  {
+    __typename: "ModelExamConnection",
+    items:  Array< {
+      __typename: "Exam",
+      id: string,
+      groups: Array< string >,
+      title: string,
+      questionPools: string,
+      deadline: string,
+      startDate: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetExamAttemptQueryVariables = {
+  id: string,
+};
+
+export type GetExamAttemptQuery = {
+  getExamAttempt?:  {
+    __typename: "ExamAttempt",
+    id: string,
+    examId: string,
+    examName: string,
+    userId: string,
+    score?: number | null,
+    isCompleted?: boolean | null,
+    correctAnswers?: number | null,
+    correctedBy?: string | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListExamAttemptsQueryVariables = {
+  filter?: ModelExamAttemptFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListExamAttemptsQuery = {
+  listExamAttempts?:  {
+    __typename: "ModelExamAttemptConnection",
+    items:  Array< {
+      __typename: "ExamAttempt",
+      id: string,
+      examId: string,
+      examName: string,
+      userId: string,
+      score?: number | null,
+      isCompleted?: boolean | null,
+      correctAnswers?: number | null,
+      correctedBy?: string | null,
+      externalId: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1032,5 +1466,158 @@ export type OnDeleteUserSubscription = {
     disabledReason?: DisabledAccountReasons | null,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type OnCreateExamSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateExamSubscription = {
+  onCreateExam?:  {
+    __typename: "Exam",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    questionPools: string,
+    timer:  {
+      __typename: "Timer",
+      type: string,
+      timeInSeconds: number,
+    },
+    deadline: string,
+    startDate: string,
+    attachments:  Array< {
+      __typename: "Attachment",
+      name: string,
+      path: string,
+    } | null >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateExamSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateExamSubscription = {
+  onUpdateExam?:  {
+    __typename: "Exam",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    questionPools: string,
+    timer:  {
+      __typename: "Timer",
+      type: string,
+      timeInSeconds: number,
+    },
+    deadline: string,
+    startDate: string,
+    attachments:  Array< {
+      __typename: "Attachment",
+      name: string,
+      path: string,
+    } | null >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteExamSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteExamSubscription = {
+  onDeleteExam?:  {
+    __typename: "Exam",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    questionPools: string,
+    timer:  {
+      __typename: "Timer",
+      type: string,
+      timeInSeconds: number,
+    },
+    deadline: string,
+    startDate: string,
+    attachments:  Array< {
+      __typename: "Attachment",
+      name: string,
+      path: string,
+    } | null >,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnCreateExamAttemptSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateExamAttemptSubscription = {
+  onCreateExamAttempt?:  {
+    __typename: "ExamAttempt",
+    id: string,
+    examId: string,
+    examName: string,
+    userId: string,
+    score?: number | null,
+    isCompleted?: boolean | null,
+    correctAnswers?: number | null,
+    correctedBy?: string | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateExamAttemptSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateExamAttemptSubscription = {
+  onUpdateExamAttempt?:  {
+    __typename: "ExamAttempt",
+    id: string,
+    examId: string,
+    examName: string,
+    userId: string,
+    score?: number | null,
+    isCompleted?: boolean | null,
+    correctAnswers?: number | null,
+    correctedBy?: string | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteExamAttemptSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteExamAttemptSubscription = {
+  onDeleteExamAttempt?:  {
+    __typename: "ExamAttempt",
+    id: string,
+    examId: string,
+    examName: string,
+    userId: string,
+    score?: number | null,
+    isCompleted?: boolean | null,
+    correctAnswers?: number | null,
+    correctedBy?: string | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
   } | null,
 };

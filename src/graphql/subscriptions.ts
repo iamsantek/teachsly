@@ -194,3 +194,126 @@ export const onDeleteUser = /* GraphQL */ `
     }
   }
 `;
+export const onCreateExam = /* GraphQL */ `
+  subscription OnCreateExam($owner: String) {
+    onCreateExam(owner: $owner) {
+      id
+      groups
+      title
+      questionPools
+      timer {
+        type
+        timeInSeconds
+      }
+      deadline
+      startDate
+      attachments {
+        name
+        path
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateExam = /* GraphQL */ `
+  subscription OnUpdateExam($owner: String) {
+    onUpdateExam(owner: $owner) {
+      id
+      groups
+      title
+      questionPools
+      timer {
+        type
+        timeInSeconds
+      }
+      deadline
+      startDate
+      attachments {
+        name
+        path
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteExam = /* GraphQL */ `
+  subscription OnDeleteExam($owner: String) {
+    onDeleteExam(owner: $owner) {
+      id
+      groups
+      title
+      questionPools
+      timer {
+        type
+        timeInSeconds
+      }
+      deadline
+      startDate
+      attachments {
+        name
+        path
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onCreateExamAttempt = /* GraphQL */ `
+  subscription OnCreateExamAttempt($owner: String) {
+    onCreateExamAttempt(owner: $owner) {
+      id
+      examId
+      examName
+      userId
+      score
+      isCompleted
+      correctAnswers
+      correctedBy
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateExamAttempt = /* GraphQL */ `
+  subscription OnUpdateExamAttempt($owner: String) {
+    onUpdateExamAttempt(owner: $owner) {
+      id
+      examId
+      examName
+      userId
+      score
+      isCompleted
+      correctAnswers
+      correctedBy
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteExamAttempt = /* GraphQL */ `
+  subscription OnDeleteExamAttempt($owner: String) {
+    onDeleteExamAttempt(owner: $owner) {
+      id
+      examId
+      examName
+      userId
+      score
+      isCompleted
+      correctAnswers
+      correctedBy
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;

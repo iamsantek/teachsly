@@ -158,3 +158,91 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
+export const getExam = /* GraphQL */ `
+  query GetExam($id: ID!) {
+    getExam(id: $id) {
+      id
+      groups
+      title
+      questionPools
+      timer {
+        type
+        timeInSeconds
+      }
+      deadline
+      startDate
+      attachments {
+        name
+        path
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listExams = /* GraphQL */ `
+  query ListExams(
+    $filter: ModelExamFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listExams(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        groups
+        title
+        questionPools
+        deadline
+        startDate
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getExamAttempt = /* GraphQL */ `
+  query GetExamAttempt($id: ID!) {
+    getExamAttempt(id: $id) {
+      id
+      examId
+      examName
+      userId
+      score
+      isCompleted
+      correctAnswers
+      correctedBy
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listExamAttempts = /* GraphQL */ `
+  query ListExamAttempts(
+    $filter: ModelExamAttemptFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listExamAttempts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        examId
+        examName
+        userId
+        score
+        isCompleted
+        correctAnswers
+        correctedBy
+        externalId
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
