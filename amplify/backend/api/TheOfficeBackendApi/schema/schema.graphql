@@ -71,3 +71,54 @@ type User @model
   isDisabledUser: Boolean @default(value: "false")
   disabledReason: DisabledAccountReasons
 } 
+
+type Options {
+    id: String!
+    label: String!
+    isCorrectOption: Boolean
+  }
+
+type Timer {
+    type: String!
+    timeInSeconds: Int!
+}
+
+type Attachment {
+    name: String!
+    path: String!
+}
+
+type Exam @model
+@auth(rules: [
+  {allow: owner},
+  {allow: groups, groups: ["Admin"]},
+  {allow: groups, groups: ["Students","Teachers"], operations: [read] },
+  ])
+{
+  id: ID!
+  groups: [String!]!
+  title: String!
+  questionPools: AWSJSON!
+  timer: Timer!
+  deadline: AWSDateTime!
+  startDate: AWSDateTime!
+  attachments: [Attachment]!
+}
+
+type ExamAttempt @model
+@auth(rules: [
+  {allow: owner},
+  {allow: groups, groups: ["Admin"]},
+  {allow: groups, groups: ["Students","Teachers"], operations: [read] },
+  ])
+{
+  id: ID!
+  examId: ID!
+  examName: String!
+  userId: ID!
+  score: Int
+  isCompleted: Boolean @default(value: "false")
+  correctAnswers: Int
+  correctedBy: String
+  externalId: ID!
+}

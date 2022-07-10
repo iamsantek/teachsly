@@ -8,10 +8,10 @@ import { CourseList } from '../courses/CourseList'
 export const StudentsHomeScreen = () => {
   const { context: { user } } = useContext(UserDashboardContext)
   return (
-        <Stack>
-            {user?.isDisabledUser && <DisabledAccountWarning />}
-            <SectionHeader />
-            <CourseList />
-        </Stack>
+      <Stack>
+        {user?.isDisabledUser && <DisabledAccountWarning />}
+        <SectionHeader />
+        <CourseList />
+      </Stack>
   )
 }

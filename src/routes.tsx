@@ -17,6 +17,9 @@ import { MediaFolderScreen } from './views/media/folders/MediaFolderScreen'
 import { FetchType } from './enums/Media'
 import { ContentLayout } from './layouts/ContentLayout'
 import { CreateExamScreen } from './views/exams/CreateExamScreen'
+import { ExamsHomeScreen } from './views/exams/ExamsHomeScreen'
+import DashboardLayout from './layouts/DashboardLayout'
+import { ExamIntroductionScreen } from './views/exams/ExamIntroductionScreen'
 
 const adminHomeScreen: ApplicationRoute = {
   name: translate('MENU_HOME'),
@@ -95,9 +98,22 @@ const createExamScreen: ApplicationRoute = {
   name: translate('EXAMS'),
   icon: AiFillFolder,
   element: <CreateExamScreen />,
-  showInNavbar: true,
+  showInNavbar: false,
   withDashboardLayout: true
 }
+
+const examsHomeScreen: ApplicationRoute = {
+  path: '/exams',
+  name: translate('EXAMS'),
+  icon: AiFillFolder,
+  element: <ExamsHomeScreen />,
+  showInNavbar: true,
+  withDashboardLayout: true
+
+}
+
+const examDetailRoute: ApplicationRoute = { path: '/exams/:examId', element: <CreateExamScreen />, showInNavbar: false, withDashboardLayout: true }
+const examIntroductionRoute: ApplicationRoute = { path: '/exams/:examId/intro', element: <ExamIntroductionScreen />, showInNavbar: false, withDashboardLayout: false }
 
 const studentsByCourseRoute: ApplicationRoute = { path: '/courses/:id/students', element: <StudentsList />, showInNavbar: true, withDashboardLayout: true }
 const mediaFolderCreateRoute: ApplicationRoute = { path: '/medias/folder/new', element: <MediaFolderScreen />, name: translate('CREATE_FOLDER'), showInNavbar: false, withDashboardLayout: true }
@@ -120,7 +136,9 @@ const adminRoutes: ApplicationRoute[] = [
   mediaFolderEditRoute,
   videoPreviewRoute,
   createExamScreen,
-  { path: '*', element: <AdminHomeScreen /> }
+  examsHomeScreen,
+  examDetailRoute,
+  { path: '*', element: <DashboardLayout><AdminHomeScreen /></DashboardLayout> }
 ]
 
 const studentRoutes: ApplicationRoute[] = [
@@ -130,7 +148,9 @@ const studentRoutes: ApplicationRoute[] = [
   studentsByCourseRoute,
   mediaFolderDetailRoute,
   videoPreviewRoute,
-  { path: '*', element: <StudentsHomeScreen /> }
+  examsHomeScreen,
+  examIntroductionRoute,
+  { path: '*', element: <DashboardLayout><StudentsHomeScreen /></DashboardLayout> }
 ]
 
 const teachersRoutes: ApplicationRoute[] = [
@@ -144,7 +164,7 @@ const teachersRoutes: ApplicationRoute[] = [
   mediaFolderEditRoute,
   videoPreviewRoute,
   createExamScreen,
-  { path: '*', element: <TeachersHomeScreen /> }
+  { path: '*', element: <DashboardLayout><TeachersHomeScreen /></DashboardLayout>  }
 ]
 
 export const disabledAccountRoutes: ApplicationRoute[] = [

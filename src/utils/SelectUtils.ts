@@ -6,7 +6,8 @@ export const renderMultiSelectOptions = (
   return values.map((value) => {
     return {
       label: value,
-      value: value
+      value: value,
+      colorScheme: 'brand'
     }
   })
 }
