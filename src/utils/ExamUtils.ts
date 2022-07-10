@@ -25,7 +25,7 @@ export const existEmptyFields = (examForm: ExamForm): boolean => {
 export const formatExamForm = (exam: ExamForm) => ({
   ...exam,
   groups: (exam.groups as MultiSelectOption[]).map(group => group.value) as string[],
-  startDate: new Date(exam.deadline).toISOString(),
+  startDate: new Date(exam.startDate).toISOString(),
   deadline: new Date(exam.deadline).toISOString(),
   questionPools: JSON.stringify(exam.questionPools),
   timer: {

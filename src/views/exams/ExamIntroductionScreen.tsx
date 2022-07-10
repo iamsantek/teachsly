@@ -85,6 +85,8 @@ export const ExamIntroductionScreen = () => {
     return <SpinnerScreen />
   }
 
+  const hasStarted = dayjs().isAfter(exam?.startDate)
+
   return (
       <Container centerContent marginY={10}>
         <Stack spacing={6}>
@@ -118,7 +120,7 @@ export const ExamIntroductionScreen = () => {
               colorScheme='brand'
               _hover={{ transform: 'scale(1.05)' }}
               onClick={() => onStart()}
-              isDisabled={isTimerFinished}
+              isDisabled={isTimerFinished || !hasStarted}
               isLoading={isProcessing}
             >
               Comenzar
