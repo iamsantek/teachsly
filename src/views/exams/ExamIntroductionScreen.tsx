@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, Heading, Image, Stack, Text, useOutsideClick } from '@chakra-ui/react'
+import { Box, Button, Container, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ExamForm } from '../../interfaces/Exams'
