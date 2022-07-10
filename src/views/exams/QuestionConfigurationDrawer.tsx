@@ -1,6 +1,6 @@
-import { Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Input, DrawerFooter, Button, Radio, RadioGroup, Stack, Text } from '@chakra-ui/react'
+import { Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, Button, Radio, RadioGroup, Stack, Text } from '@chakra-ui/react'
 import { useState } from 'react'
-import { AnswerType, QuestionType } from '../../interfaces/Exams';
+import { AnswerType, QuestionType } from '../../interfaces/Exams'
 
 interface Props {
     isOpen: boolean;
