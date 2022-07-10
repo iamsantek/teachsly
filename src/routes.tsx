@@ -164,7 +164,7 @@ const teachersRoutes: ApplicationRoute[] = [
   mediaFolderEditRoute,
   videoPreviewRoute,
   createExamScreen,
-  { path: '*', element: <DashboardLayout><TeachersHomeScreen /></DashboardLayout>  }
+  { path: '*', element: <DashboardLayout><TeachersHomeScreen /></DashboardLayout> }
 ]
 
 export const disabledAccountRoutes: ApplicationRoute[] = [
