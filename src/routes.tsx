@@ -148,7 +148,6 @@ const studentRoutes: ApplicationRoute[] = [
   studentsByCourseRoute,
   mediaFolderDetailRoute,
   videoPreviewRoute,
-  examsHomeScreen,
   examIntroductionRoute,
   { path: '*', element: <DashboardLayout><StudentsHomeScreen /></DashboardLayout> }
 ]
