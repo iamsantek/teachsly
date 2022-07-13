@@ -80,5 +80,4 @@ export interface ExamForm {
     startDate: string
     deadline: string
     timer: Timer
-    // attachments: Attachment[]
   }

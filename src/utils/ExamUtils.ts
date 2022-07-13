@@ -14,8 +14,6 @@ export const existEmptyFields = (examForm: ExamForm): boolean => {
         return true
       }
 
-      console.log(question)
-
       return question.options?.some(option => option.label === '')
     })
     return isEmpty
