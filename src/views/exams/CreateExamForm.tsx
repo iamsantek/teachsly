@@ -1,7 +1,7 @@
-import { Button, Text, Stack, Accordion, AccordionItem, AccordionButton, AccordionIcon, Box, AccordionPanel, Container, Flex, HStack, Input as ChakraInput, Select as ChakraSelect } from '@chakra-ui/react'
+import { Button, Text, Stack, Accordion, AccordionItem, AccordionButton, AccordionIcon, Box, AccordionPanel, Container, Flex, HStack, Input as ChakraInput, Select as ChakraSelect, List, ListItem, ListIcon } from '@chakra-ui/react'
 import { ChangeEvent, useCallback, useContext, useEffect, useState } from 'react'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
-import { AiFillDelete, AiOutlinePlus } from 'react-icons/ai'
+import { AiFillDelete, AiOutlinePlus, AiFillFile } from 'react-icons/ai'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ConfirmationDialog } from '../../components/AlertDialog/ConfirmationDialog'
 import { Input } from '../../components/Inputs/Input'
@@ -34,7 +34,7 @@ export const CreateExamForm = () => {
   const navigate = useNavigate()
 
   const { examId } = useParams()
-  const { attachments, timer } = watch()
+  const { timer } = watch()
 
   const fetchExamById = useCallback(async () => {
     if (!examId) {
@@ -115,38 +115,50 @@ export const CreateExamForm = () => {
     append(defaultQuestionPool)
   }
 
-  const onChangeFile = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) {
+  const onChangeFile = async (questionPoolIndex: number, e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) {
       return
     }
 
-    const uploadFile = await StorageService.uploadToS3(e.target.files[0])
+    const uploadFile = await StorageService.uploadToS3(file)
 
-    setValue('attachments', [
-      ...attachments,
-      {
-        name: removeExtension(e.target.files[0].name),
-        path: uploadFile?.key as string
+    if (uploadFile?.key) {
+      update(questionPoolIndex, {
+        ...questionPools[questionPoolIndex],
+        attachments: [...questionPools[questionPoolIndex].attachments, {
+          name: removeExtension(file.name),
+          path: uploadFile.key
+        }]
       }
-    ])
+      )
+    }
   }
 
-  const onDeleteAttachment = (attachmentIndex: number) => {
-    const newAttachments = attachments.filter((attachment, index) => index !== attachmentIndex)
-    setValue('attachments', newAttachments)
+  const onDeleteAttachment = (questionPoolIndex: number, attachmentIndex: number) => {
+    const newAttachments = questionPools[questionPoolIndex].attachments.filter((attachment, index) => index !== attachmentIndex)
+
+    update(questionPoolIndex, {
+      ...questionPools[questionPoolIndex],
+      attachments: newAttachments
+    })
   }
 
-  const updateAttachment = (attachmentIndex: number, newValue: string) => {
-    const attachment = attachments.find((attachment, index) => index === attachmentIndex)
+  const updateAttachment = (questionPoolIndex: number, attachmentIndex: number, newValue: string) => {
+    const updatedAttachments = [...questionPools[questionPoolIndex].attachments]
+    const attachment = questionPools[questionPoolIndex].attachments.find((attachment, index) => index === attachmentIndex)
 
     if (!attachment) {
       return
     }
 
     attachment.name = newValue
-    attachments[attachmentIndex] = attachment
+    updatedAttachments[attachmentIndex] = attachment
 
-    setValue('attachments', [...attachments])
+    update(questionPoolIndex, {
+      ...questionPools[questionPoolIndex],
+      attachments: updatedAttachments
+    })
   }
 
   const onChangeTime = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -227,33 +239,13 @@ export const CreateExamForm = () => {
               onAction={deleteQuestionPool}
             />
 
-            <FileUploader
-              name="file"
-              onChange={onChangeFile}
-              label="ATTACH_FILE"
-            />
-
-            {attachments.map((attachment, index) => (
-              <div key={index}>
-                <EditableInputComponent
-                  value={attachment.name}
-                  onComplete={(newValue) => updateAttachment(index, newValue)}
-                  onDelete={() => onDeleteAttachment(index)}
-                  permissions={{
-                    canEdit: true,
-                    canDelete: true
-                  }}
-                />
-              </div>
-            ))}
-
             <Accordion allowMultiple>
               {questionPools?.map((questionPool, questionPoolIndex) => {
                 return (
                   <AccordionItem boxShadow='md' key={questionPoolIndex} marginY={5}>
                     <h2>
                       <AccordionButton display='flex' justifyContent="space-between" flexDir='row'>
-                        <Text fontWeight='bold'>Pool de preguntas #{questionPoolIndex + 1}</Text>
+                        <Text fontWeight='bold'>{translate('EXERCISE')} #{questionPoolIndex + 1}</Text>
                         <Box display='flex' alignItems='center' gap={3}>
                           <Button
                             onClick={() => onDeleteQuestionPool(questionPoolIndex)}
@@ -264,7 +256,49 @@ export const CreateExamForm = () => {
                         </Box>
                       </AccordionButton>
                     </h2>
-                    <AccordionPanel pb={4}>
+                    <AccordionPanel paddingY={4}>
+                      <Stack spacing={4}>
+                        <Input
+                          name={`questionPools.${questionPoolIndex}.exerciseExplanation`}
+                          label="EXERCISE_EXPLANATION"
+                          isRequired={true}
+                        />
+                        <Input
+                          name={`questionPools.${questionPoolIndex}.exerciseDescription`}
+                          label="EXERCISE_DESCRIPTION"
+                          isRequired={false}
+                        />
+
+                        <FileUploader
+                          name="file"
+                          onChange={(e) => onChangeFile(questionPoolIndex, e)}
+                          label="ATTACH_FILE"
+                        />
+
+                        {questionPool.attachments.length > 0 && (
+                          <>
+                            <Text fontWeight='bold'>{translate('MEANINGFUL_FILE_NAMES')}</Text>
+                            <List spacing={3}>
+                              {questionPool.attachments.map((attachment, attachmentIndex) => (
+                                <ListItem key={attachmentIndex}>
+                                  <Flex gap={1} alignItems='center'>
+                                  <ListIcon as={AiFillFile} />
+                                  <EditableInputComponent
+                                    value={attachment.name}
+                                    onComplete={(newValue) => updateAttachment(questionPoolIndex, attachmentIndex, newValue)}
+                                    onDelete={() => onDeleteAttachment(questionPoolIndex, attachmentIndex)}
+                                    permissions={{
+                                      canEdit: true,
+                                      canDelete: true
+                                    }}
+                                  />
+                                  </Flex>
+                                </ListItem>
+                              ))}
+                            </List>
+                          </>
+                        )}
+                      </Stack>
                       <QuestionPoolQuestions
                         questionPoolIndex={questionPoolIndex}
                         questionPool={questionPool}

@@ -133,7 +133,7 @@ export enum LanguageES {
   OPTION='Opción',
   ADD_OPTION_BUTTON='Agregar opción a la pregunta #',
   ADD_QUESTION_BUTTON='Agregar nueva pregunta',
-  ADD_QUESTION_POOL='Agregar pool de preguntas',
+  ADD_QUESTION_POOL='Agregar ejercicio',
   DELETE_QUESTIONS_POOL_TITLE='Eliminar pool de preguntas',
   DELETE_QUESTIONS_POOL_DESCRIPTION='Confirmar la eliminación del pool de preguntas.',
   DELETE_LAST_QUESTIONS_POOL_ERROR='No puedes eliminar el último pool de preguntas.',
@@ -155,6 +155,10 @@ export enum LanguageES {
   EXAM_INTRO_WORDING_2='Una vez comenzado el exámen, no podrás cancelarlo. Si lo abandonas, no podrás volver a recuperarlo y se corregirá como desaprobado.',
   EXAM_DURATION='Duración del examen',
   AUDIO_FILE='Archivo de audio',
+  EXERCISE_EXPLANATION='Explicación del ejercicio',
+  EXERCISE_DESCRIPTION='Descripción del ejercicio',
+  EXERCISE='Ejercicio',
+  MEANINGFUL_FILE_NAMES="Nombrar a los archivos de una forma intuitiva para su debida identificación. Ex: 'Reading Exercise 1'",
 }
 
 export enum LanguageEN {
@@ -287,7 +291,7 @@ export enum LanguageEN {
   OPTION='Option',
   ADD_OPTION_BUTTON='Add option to question #',
   ADD_QUESTION_BUTTON='Add new question',
-  ADD_QUESTION_POOL='Add question pool',
+  ADD_QUESTION_POOL='Add exercise',
   DELETE_QUESTIONS_POOL_TITLE='Delete Question Pool',
   DELETE_QUESTIONS_POOL_DESCRIPTION='Delete question pool and all its contents',
   DELETE_LAST_QUESTIONS_POOL_ERROR='You can not delete the last question pool.',
@@ -309,4 +313,8 @@ export enum LanguageEN {
   EXAM_INTRO_WORDING_2='',
   EXAM_DURATION='Exam duration',
   AUDIO_FILE='Audio file',
+  EXERCISE_EXPLANATION='Exercise explanation',
+  EXERCISE_DESCRIPTION='Exercise description',
+  EXERCISE='Exercise',
+  MEANINGFUL_FILE_NAMES='Please provide meaningful file names',
 }

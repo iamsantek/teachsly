@@ -48,7 +48,10 @@ export interface VideoQuestion extends Question {
 
 export interface QuestionPool {
     id: string
+    exerciseExplanation: string
+    exerciseDescription: string;
     questions: Question[]
+    attachments: Attachment[]
   }
 
 export type TimerType = 'question' | 'global'
@@ -77,5 +80,5 @@ export interface ExamForm {
     startDate: string
     deadline: string
     timer: Timer
-    attachments: Attachment[]
+    // attachments: Attachment[]
   }

@@ -313,17 +313,11 @@ export type CreateExamInput = {
   timer: TimerInput,
   deadline: string,
   startDate: string,
-  attachments: Array< AttachmentInput | null >,
 };
 
 export type TimerInput = {
   type: string,
   timeInSeconds: number,
-};
-
-export type AttachmentInput = {
-  name: string,
-  path: string,
 };
 
 export type ModelExamConditionInput = {
@@ -346,7 +340,6 @@ export type Exam = {
   timer: Timer,
   deadline: string,
   startDate: string,
-  attachments:  Array<Attachment | null >,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -358,12 +351,6 @@ export type Timer = {
   timeInSeconds: number,
 };
 
-export type Attachment = {
-  __typename: "Attachment",
-  name: string,
-  path: string,
-};
-
 export type UpdateExamInput = {
   id: string,
   groups?: Array< string > | null,
@@ -372,7 +359,6 @@ export type UpdateExamInput = {
   timer?: TimerInput | null,
   deadline?: string | null,
   startDate?: string | null,
-  attachments?: Array< AttachmentInput | null > | null,
 };
 
 export type DeleteExamInput = {
@@ -389,6 +375,7 @@ export type CreateExamAttemptInput = {
   correctAnswers?: number | null,
   correctedBy?: string | null,
   externalId: string,
+  answers?: string | null,
 };
 
 export type ModelExamAttemptConditionInput = {
@@ -400,6 +387,7 @@ export type ModelExamAttemptConditionInput = {
   correctAnswers?: ModelIntInput | null,
   correctedBy?: ModelStringInput | null,
   externalId?: ModelIDInput | null,
+  answers?: ModelStringInput | null,
   and?: Array< ModelExamAttemptConditionInput | null > | null,
   or?: Array< ModelExamAttemptConditionInput | null > | null,
   not?: ModelExamAttemptConditionInput | null,
@@ -416,6 +404,7 @@ export type ExamAttempt = {
   correctAnswers?: number | null,
   correctedBy?: string | null,
   externalId: string,
+  answers?: string | null,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -431,6 +420,7 @@ export type UpdateExamAttemptInput = {
   correctAnswers?: number | null,
   correctedBy?: string | null,
   externalId?: string | null,
+  answers?: string | null,
 };
 
 export type DeleteExamAttemptInput = {
@@ -543,6 +533,7 @@ export type ModelExamAttemptFilterInput = {
   correctAnswers?: ModelIntInput | null,
   correctedBy?: ModelStringInput | null,
   externalId?: ModelIDInput | null,
+  answers?: ModelStringInput | null,
   and?: Array< ModelExamAttemptFilterInput | null > | null,
   or?: Array< ModelExamAttemptFilterInput | null > | null,
   not?: ModelExamAttemptFilterInput | null,
@@ -825,11 +816,6 @@ export type CreateExamMutation = {
     },
     deadline: string,
     startDate: string,
-    attachments:  Array< {
-      __typename: "Attachment",
-      name: string,
-      path: string,
-    } | null >,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -855,11 +841,6 @@ export type UpdateExamMutation = {
     },
     deadline: string,
     startDate: string,
-    attachments:  Array< {
-      __typename: "Attachment",
-      name: string,
-      path: string,
-    } | null >,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -885,11 +866,6 @@ export type DeleteExamMutation = {
     },
     deadline: string,
     startDate: string,
-    attachments:  Array< {
-      __typename: "Attachment",
-      name: string,
-      path: string,
-    } | null >,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -913,6 +889,7 @@ export type CreateExamAttemptMutation = {
     correctAnswers?: number | null,
     correctedBy?: string | null,
     externalId: string,
+    answers?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -936,6 +913,7 @@ export type UpdateExamAttemptMutation = {
     correctAnswers?: number | null,
     correctedBy?: string | null,
     externalId: string,
+    answers?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -959,6 +937,7 @@ export type DeleteExamAttemptMutation = {
     correctAnswers?: number | null,
     correctedBy?: string | null,
     externalId: string,
+    answers?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1167,11 +1146,6 @@ export type GetExamQuery = {
     },
     deadline: string,
     startDate: string,
-    attachments:  Array< {
-      __typename: "Attachment",
-      name: string,
-      path: string,
-    } | null >,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1219,6 +1193,7 @@ export type GetExamAttemptQuery = {
     correctAnswers?: number | null,
     correctedBy?: string | null,
     externalId: string,
+    answers?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1245,6 +1220,7 @@ export type ListExamAttemptsQuery = {
       correctAnswers?: number | null,
       correctedBy?: string | null,
       externalId: string,
+      answers?: string | null,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1487,11 +1463,6 @@ export type OnCreateExamSubscription = {
     },
     deadline: string,
     startDate: string,
-    attachments:  Array< {
-      __typename: "Attachment",
-      name: string,
-      path: string,
-    } | null >,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1516,11 +1487,6 @@ export type OnUpdateExamSubscription = {
     },
     deadline: string,
     startDate: string,
-    attachments:  Array< {
-      __typename: "Attachment",
-      name: string,
-      path: string,
-    } | null >,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1545,11 +1511,6 @@ export type OnDeleteExamSubscription = {
     },
     deadline: string,
     startDate: string,
-    attachments:  Array< {
-      __typename: "Attachment",
-      name: string,
-      path: string,
-    } | null >,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1572,6 +1533,7 @@ export type OnCreateExamAttemptSubscription = {
     correctAnswers?: number | null,
     correctedBy?: string | null,
     externalId: string,
+    answers?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1594,6 +1556,7 @@ export type OnUpdateExamAttemptSubscription = {
     correctAnswers?: number | null,
     correctedBy?: string | null,
     externalId: string,
+    answers?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1616,6 +1579,7 @@ export type OnDeleteExamAttemptSubscription = {
     correctAnswers?: number | null,
     correctedBy?: string | null,
     externalId: string,
+    answers?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,

@@ -246,10 +246,6 @@ export const createExam = /* GraphQL */ `
       }
       deadline
       startDate
-      attachments {
-        name
-        path
-      }
       createdAt
       updatedAt
       owner
@@ -272,10 +268,6 @@ export const updateExam = /* GraphQL */ `
       }
       deadline
       startDate
-      attachments {
-        name
-        path
-      }
       createdAt
       updatedAt
       owner
@@ -298,10 +290,6 @@ export const deleteExam = /* GraphQL */ `
       }
       deadline
       startDate
-      attachments {
-        name
-        path
-      }
       createdAt
       updatedAt
       owner
@@ -323,6 +311,7 @@ export const createExamAttempt = /* GraphQL */ `
       correctAnswers
       correctedBy
       externalId
+      answers
       createdAt
       updatedAt
       owner
@@ -344,6 +333,7 @@ export const updateExamAttempt = /* GraphQL */ `
       correctAnswers
       correctedBy
       externalId
+      answers
       createdAt
       updatedAt
       owner
@@ -365,6 +355,7 @@ export const deleteExamAttempt = /* GraphQL */ `
       correctAnswers
       correctedBy
       externalId
+      answers
       createdAt
       updatedAt
       owner

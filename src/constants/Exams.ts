@@ -3,6 +3,9 @@ import { translate } from '../utils/LanguageUtils'
 
 export const defaultQuestionPool: QuestionPool = {
   id: '1',
+  exerciseExplanation: '',
+  exerciseDescription: '',
+  attachments: [],
   questions: [{
     id: '1',
     question: '',
@@ -33,8 +36,7 @@ export const defaultExamForm: ExamForm = {
     timeInSeconds: 120
   },
   deadline: '',
-  startDate: '',
-  attachments: []
+  startDate: ''
 }
 
 export const defaultExamTimerOptions = [

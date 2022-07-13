@@ -24,9 +24,6 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
   const addQuestion = (questionPoolIndex: number, questionType = QuestionType.TEXT, answerType = AnswerType.MultipleChoice) => {
-    console.log('addQuestion', questionPoolIndex, questionType, answerType)
-    console.log('questionType', questionType)
-    console.log('answerType', answerType)
     update(questionPoolIndex, {
       ...watch('questionPools')[questionPoolIndex],
       questions: [
@@ -110,12 +107,8 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
     const questionToUpdate: Question = questionPool.questions[Number(question)]
     const index = questionToUpdate.options?.findIndex((_option: Options, index: number) => alphabet[index] === option)
 
-    console.log('index', index)
-
     if (index !== undefined && !!questionToUpdate?.options && questionToUpdate?.options[index]) {
-      console.log(questionToUpdate.options[index].isCorrectOption)
       questionToUpdate.options[index].isCorrectOption = !questionToUpdate.options[index].isCorrectOption
-      console.log('post update', questionToUpdate.options[index].isCorrectOption)
     }
 
     questionPool.questions[Number(question)] = questionToUpdate
@@ -142,9 +135,7 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
   }
 
   const viewFile = async (key: string) => {
-    console.log('uploadFile', key)
     const file = await CloudFrontService.getCDNUrl(key)
-    console.log(file)
     window.open(file.url, '_blank')
   }
 
@@ -181,7 +172,6 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
     </>
   )
 
-  console.log(watch())
   return (
     <>
       {questionPool.questions.map((question, questionIndex) => (
@@ -215,34 +205,34 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
           {question.questionType === QuestionType.AUDIO && (
             !question.source
               ? (
-              <>
-                <FileUploader
-                  name="file"
-                  onChange={(e) => onChangeFile(e, questionIndex, ExamAttachmentType.AUDIO)}
-                  label="AUDIO_FILE"
-                />
-                {question.source && <audio controls src={question.source} />}
-              </>
+                <>
+                  <FileUploader
+                    name="file"
+                    onChange={(e) => onChangeFile(e, questionIndex, ExamAttachmentType.AUDIO)}
+                    label="AUDIO_FILE"
+                  />
+                  {question.source && <audio controls src={question.source} />}
+                </>
                 )
               : (
-              <>
-                {renderFileButtons(questionIndex, question.source as string, ExamAttachmentType.AUDIO)}
-              </>
+                <>
+                  {renderFileButtons(questionIndex, question.source as string, ExamAttachmentType.AUDIO)}
+                </>
                 )
           )}
           {question.questionType === QuestionType.TEXT && (
             question.attachedFile
               ? (
-              <>
-                {renderFileButtons(questionIndex, question.attachedFile, ExamAttachmentType.EXTRA_ATTACHMENT)}
-              </>
+                <>
+                  {renderFileButtons(questionIndex, question.attachedFile, ExamAttachmentType.EXTRA_ATTACHMENT)}
+                </>
                 )
               : (
-              <FileUploader
-                name="file"
-                onChange={(e) => onChangeFile(e, questionIndex, ExamAttachmentType.EXTRA_ATTACHMENT)}
-                label="ATTACH_FILE"
-              />
+                <FileUploader
+                  name="file"
+                  onChange={(e) => onChangeFile(e, questionIndex, ExamAttachmentType.EXTRA_ATTACHMENT)}
+                  label="ATTACH_FILE"
+                />
                 )
           )}
 

@@ -171,10 +171,6 @@ export const getExam = /* GraphQL */ `
       }
       deadline
       startDate
-      attachments {
-        name
-        path
-      }
       createdAt
       updatedAt
       owner
@@ -215,6 +211,7 @@ export const getExamAttempt = /* GraphQL */ `
       correctAnswers
       correctedBy
       externalId
+      answers
       createdAt
       updatedAt
       owner
@@ -238,6 +235,7 @@ export const listExamAttempts = /* GraphQL */ `
         correctAnswers
         correctedBy
         externalId
+        answers
         createdAt
         updatedAt
         owner

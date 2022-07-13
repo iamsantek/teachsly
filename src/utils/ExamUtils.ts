@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { Course, GetExamQuery } from '../API'
 import { defaultExamTimerOptions } from '../constants/Exams'
-import { Attachment, ExamForm, TimerType } from '../interfaces/Exams'
+import { ExamForm, TimerType } from '../interfaces/Exams'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import { transformGroups } from './CourseUtils'
 
@@ -53,8 +53,7 @@ export const formatAPIResponse = (exam: GetExamQuery | undefined, courses: Cours
     timer: {
       type: renderExamType(exam?.getExam?.timer?.type as TimerType),
       timeInSeconds: exam?.getExam?.timer?.timeInSeconds as number
-    },
-    attachments: exam?.getExam?.attachments as Attachment[]
+    }
   })
 }
 
