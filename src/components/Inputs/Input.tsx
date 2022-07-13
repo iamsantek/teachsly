@@ -42,7 +42,7 @@ export const Input = ({
         size="md"
         type={type}
         isDisabled={isDisabled}
-        {...register(name, { required: isRequired, maxLength: 80 })}
+        {...register(name, { required: isRequired })}
       />
 
       {bottomNote && (
