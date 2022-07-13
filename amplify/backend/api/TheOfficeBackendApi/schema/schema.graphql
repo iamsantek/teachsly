@@ -83,11 +83,6 @@ type Timer {
     timeInSeconds: Int!
 }
 
-type Attachment {
-    name: String!
-    path: String!
-}
-
 type Exam @model
 @auth(rules: [
   {allow: owner},
@@ -102,7 +97,6 @@ type Exam @model
   timer: Timer!
   deadline: AWSDateTime!
   startDate: AWSDateTime!
-  attachments: [Attachment]!
 }
 
 type ExamAttempt @model
@@ -121,4 +115,5 @@ type ExamAttempt @model
   correctAnswers: Int
   correctedBy: String
   externalId: ID!
+  answers: AWSJSON
 }
