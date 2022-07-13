@@ -57,15 +57,15 @@ export const CreateExamForm = () => {
   }, [examId, fetchExamById])
 
   const saveExam = async (exam: ExamForm) => {
-    const isEmptyFields = existEmptyFields(exam)
+    // const isEmptyFields =  existEmptyFields(exam)
 
-    if (isEmptyFields) {
-      ToastNotification({
-        description: 'EXAM_EMPTY_FIELD_WARNING',
-        status: 'INFO'
-      })
-      return
-    }
+    // if (isEmptyFields) {
+    //   ToastNotification({
+    //     description: 'EXAM_EMPTY_FIELD_WARNING',
+    //     status: 'INFO'
+    //   })
+    //   return
+    // }
 
     setIsLoading(true)
 
