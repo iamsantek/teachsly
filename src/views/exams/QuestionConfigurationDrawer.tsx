@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const QuestionConfigurationDrawer = ({ isOpen, onClose, onSave }: Props) => {
-  const [questionType, setQuestionType] = useState<QuestionType>(QuestionType.AUDIO)
+  const [questionType, setQuestionType] = useState<QuestionType>(QuestionType.TEXT)
   const [answersType, setAnswersType] = useState<AnswerType>(AnswerType.TextArea)
 
   const save = () => {
