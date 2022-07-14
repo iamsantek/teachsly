@@ -182,7 +182,7 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
           <Flex gap={2}>
             <ChakraInput
               placeholder={`${translate('QUESTION')} #${questionIndex + 1}`}
-              {...register(`questionPools.${questionPoolIndex}.questions.${questionIndex}.question`, { required: false, maxLength: 80 })}
+              {...register(`questionPools.${questionPoolIndex}.questions.${questionIndex}.question`, { required: false })}
             />
 
             <Button
