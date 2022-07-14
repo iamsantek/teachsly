@@ -199,7 +199,7 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
 
           <ChakraInput
             placeholder={`${translate('DESCRIPTION')} #${questionIndex + 1}`}
-            {...register(`questionPools.${questionPoolIndex}.questions.${questionIndex}.description`, { required: false, maxLength: 80 })}
+            {...register(`questionPools.${questionPoolIndex}.questions.${questionIndex}.description`, { required: false })}
           />
 
           {question.questionType === QuestionType.AUDIO && (
