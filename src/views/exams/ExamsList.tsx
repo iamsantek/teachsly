@@ -12,7 +12,7 @@ import { useUserGroups } from '../../hooks/useUserGroups'
 
 export const ExamsList = () => {
   const [exams, setExams] = useState<ExamForm[]>([])
-  const { hasEditPermission } = useUserGroups()
+  const { hasEditPermission, groups } = useUserGroups()
   const navigate = useNavigate()
 
   const fetchExams = async () => {
@@ -29,7 +29,9 @@ export const ExamsList = () => {
       return exams
     }
 
-    return exams.filter(exam => !dayjs().isAfter(dayjs(exam.deadline)))
+    const userGroups = groups.map(group => group.externalId)
+    const formattedExams = exams.filter(exam => !dayjs().isAfter(dayjs(exam.deadline)))
+    return formattedExams.filter(exam => (exam.groups as string[]).filter(group => userGroups.includes(group)).length > 0)
   }
 
   return (

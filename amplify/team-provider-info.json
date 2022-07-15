@@ -16,7 +16,7 @@
       "function": {
         "TheOfficeAuthApiCustomMessage": {
           "deploymentBucketName": "amplify-theofficeenglishlear-prod-174021-deployment",
-          "s3Key": "amplify-builds/TheOfficeAuthApiCustomMessage-7a4a5268344677777470-build.zip"
+          "s3Key": "amplify-builds/TheOfficeAuthApiCustomMessage-7a756556612b69746539-build.zip"
         }
       },
       "auth": {
