@@ -126,7 +126,7 @@ export const ExamIntroductionScreen = () => {
             {days}d:{hours}h:{minutes}m:{seconds}s
           </Text>
           <Text fontWeight='bold'>{translate('EXAM_DEADLINE')} {dayjs(exam?.deadline).format('DD/MM hh:mm')}hs</Text>
-          <Text>{translate('EXAM_DURATION')}: {calculateExamDurationInMinutes(exam as ExamForm)} mins.</Text>
+          {/* <Text>{translate('EXAM_DURATION')}: {calculateExamDurationInMinutes(exam as ExamForm)} mins.</Text> */}
         </Flex>
         <Box display='flex' alignContent='center' justifyContent='center' alignItems='center'>
           <Button
