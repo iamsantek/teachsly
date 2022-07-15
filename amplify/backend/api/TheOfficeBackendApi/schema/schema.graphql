@@ -114,6 +114,6 @@ type ExamAttempt @model
   isCompleted: Boolean @default(value: "false")
   correctAnswers: Int
   correctedBy: String
-  externalId: ID!
+  externalId: ID! @index(name: "byExternalId", queryField: "examAttemptByExternalId")
   answers: AWSJSON
 }
