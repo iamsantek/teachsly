@@ -545,6 +545,12 @@ export type ModelExamAttemptConnection = {
   nextToken?: string | null,
 };
 
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type CreateCourseMutationVariables = {
   input: CreateCourseInput,
   condition?: ModelCourseConditionInput | null,
@@ -1208,6 +1214,37 @@ export type ListExamAttemptsQueryVariables = {
 
 export type ListExamAttemptsQuery = {
   listExamAttempts?:  {
+    __typename: "ModelExamAttemptConnection",
+    items:  Array< {
+      __typename: "ExamAttempt",
+      id: string,
+      examId: string,
+      examName: string,
+      userId: string,
+      score?: number | null,
+      isCompleted?: boolean | null,
+      correctAnswers?: number | null,
+      correctedBy?: string | null,
+      externalId: string,
+      answers?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ExamAttemptByExternalIdQueryVariables = {
+  externalId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelExamAttemptFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ExamAttemptByExternalIdQuery = {
+  examAttemptByExternalId?:  {
     __typename: "ModelExamAttemptConnection",
     items:  Array< {
       __typename: "ExamAttempt",

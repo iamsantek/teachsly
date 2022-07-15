@@ -244,3 +244,37 @@ export const listExamAttempts = /* GraphQL */ `
     }
   }
 `;
+export const examAttemptByExternalId = /* GraphQL */ `
+  query ExamAttemptByExternalId(
+    $externalId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelExamAttemptFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    examAttemptByExternalId(
+      externalId: $externalId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        examId
+        examName
+        userId
+        score
+        isCompleted
+        correctAnswers
+        correctedBy
+        externalId
+        answers
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
