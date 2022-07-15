@@ -282,7 +282,10 @@ export const CreateExamForm = () => {
                               {questionPool.attachments.map((attachment, attachmentIndex) => (
                                 <ListItem key={attachmentIndex}>
                                   <Flex gap={1} alignItems='center'>
-                                  <ListIcon as={AiFillFile} />
+                                  <ListIcon as={AiFillFile} cursor='pointer' onClick={async () => {
+                                    const url = await StorageService.getSignedUrl(attachment.path)
+                                    window.open(url?.url, '_blank')
+                                  }} />
                                   <EditableInputComponent
                                     value={attachment.name}
                                     onComplete={(newValue) => updateAttachment(questionPoolIndex, attachmentIndex, newValue)}

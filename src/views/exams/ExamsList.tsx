@@ -17,7 +17,6 @@ export const ExamsList = () => {
 
   const fetchExams = async () => {
     const exams = await ExamService.getExams()
-    console.log(exams)
     setExams(exams?.listExams?.items as any[] || [])
   }
 
@@ -25,9 +24,17 @@ export const ExamsList = () => {
     fetchExams()
   }, [])
 
+  const examsFilter = () => {
+    if (hasEditPermission) {
+      return exams
+    }
+
+    return exams.filter(exam => !dayjs().isAfter(dayjs(exam.deadline)))
+  }
+
   return (
     <>
-      {exams.filter(exam => !dayjs().isAfter(dayjs(exam.deadline))).map(exam => (
+      {examsFilter().map(exam => (
         <ContentLine
           key={exam.id}
           leftIcon={<IoNewspaper />}

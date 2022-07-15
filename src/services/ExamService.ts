@@ -1,6 +1,6 @@
-import { CreateExamAttemptInput, CreateExamAttemptMutation, CreateExamMutation, GetExamQuery, ListExamsQuery, UpdateExamMutation } from '../API'
+import { CreateExamAttemptInput, CreateExamAttemptMutation, CreateExamMutation, GetExamQuery, ListExamAttemptsQuery, ListExamsQuery, UpdateExamMutation } from '../API'
 import { createExam, createExamAttempt, updateExam } from '../graphql/mutations'
-import { getExam, listExams } from '../graphql/queries'
+import { getExam, listExamAttempts, listExams } from '../graphql/queries'
 import { ExamForm } from '../interfaces/Exams'
 import { formatExamForm } from '../utils/ExamUtils'
 import GraphQLService from './GraphQLService'
@@ -41,6 +41,16 @@ class ExamService {
     return GraphQLService.fetchQuery<CreateExamAttemptMutation>({
       query: createExamAttempt,
       input: examAttempt
+    })
+  }
+
+  public async getExamAttemptByExternalId (examId: string, userId: string) {
+    return GraphQLService.fetchQuery<ListExamAttemptsQuery>({
+      query: listExamAttempts,
+      filter: {
+        userId: { eq: userId },
+        examId: { eq: examId }
+      }
     })
   }
 }
