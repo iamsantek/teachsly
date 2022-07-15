@@ -87,7 +87,8 @@ type Exam @model
 @auth(rules: [
   {allow: owner},
   {allow: groups, groups: ["Admin"]},
-  {allow: groups, groups: ["Students","Teachers"], operations: [read] },
+  {allow: groups, groups: ["Teachers"], operations: [read] },
+  {allow: groups, groupsField: "groups", operations: [read] }
   ])
 {
   id: ID!
