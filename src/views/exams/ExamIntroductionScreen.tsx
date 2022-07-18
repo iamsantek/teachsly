@@ -36,7 +36,7 @@ export const ExamIntroductionScreen = () => {
 
   const fetchExam = useCallback(async (examId: string) => {
     const examPromise = ExamService.getExamById(examId)
-    const examAttemptPromise = ExamService.getExamAttemptByExternalId(examId, user?.id as string)
+    const examAttemptPromise = ExamService.getExamAttemptByExternalId(examId, user?.cognitoId as string)
 
     const [exam, examAttempt] = await Promise.all([examPromise, examAttemptPromise])
 
