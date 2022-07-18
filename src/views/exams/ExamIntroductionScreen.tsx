@@ -71,7 +71,7 @@ export const ExamIntroductionScreen = () => {
 
     const examAttempt = await ExamService.createExamAttempt({
       examId: examId as string,
-      userId: user?.id as string,
+      userId: user?.cognitoId as string,
       examName: exam?.title,
       externalId: uuid()
     })

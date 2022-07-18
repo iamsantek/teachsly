@@ -47,9 +47,12 @@ class ExamService {
   public async getExamAttemptByExternalId (examId: string, userId: string) {
     return GraphQLService.fetchQuery<ListExamAttemptsQuery>({
       query: listExamAttempts,
-      filter: {
-        userId: { eq: userId },
-        examId: { eq: examId }
+      filter:
+      {
+        and: [
+          { userId: { eq: userId } },
+          { examId: { eq: examId } }
+        ]
       }
     })
   }
