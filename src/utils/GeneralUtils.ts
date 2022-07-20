@@ -1,4 +1,4 @@
-import { UserTypes } from "../enums/UserTypes"
+import { UserTypes } from '../enums/UserTypes'
 
 export const findAndUpdateContent = <T extends { id: string }>(
   singleContent: T,
