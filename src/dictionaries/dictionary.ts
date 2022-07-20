@@ -159,6 +159,8 @@ export enum LanguageES {
   EXERCISE_DESCRIPTION='Descripción del ejercicio',
   EXERCISE='Ejercicio',
   MEANINGFUL_FILE_NAMES="Nombrar a los archivos de una forma intuitiva para su debida identificación. Ex: 'Reading Exercise 1'",
+  EXAM_ATTEMPTS='Exámenes realizados',
+  NOT_FINISHED='No finalizado',
 }
 
 export enum LanguageEN {
@@ -317,4 +319,6 @@ export enum LanguageEN {
   EXERCISE_DESCRIPTION='Exercise description',
   EXERCISE='Exercise',
   MEANINGFUL_FILE_NAMES='Please provide meaningful file names',
+  EXAM_ATTEMPTS='Exam Attempts',
+  NOT_FINISHED='Not finished',
 }
