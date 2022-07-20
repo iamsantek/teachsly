@@ -35,7 +35,7 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
     const matchedFolder = findMatch(folders?.listMediaFolders?.items as MediaFolder[], groups.map(group => group.externalId))
 
     setFolders(matchedFolder || [])
-  }, [fetchType, courseId, groups])
+  }, [fetchType, courseId])
 
   useEffect(() => {
     fetchFolders()
