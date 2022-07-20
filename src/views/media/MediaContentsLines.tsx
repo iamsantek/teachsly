@@ -24,10 +24,13 @@ interface Props {
 
 export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelete, isLoading }: Props) => {
   const { context: { user, externalUserId } } = useContext(UserDashboardContext)
-  const { groups } = useUserGroups()
+  const { groups, userType } = useUserGroups()
   const hasAdminRole = isAdmin(user)
   const placeholderNumber = Math.floor(Math.random() * 10) + 1
-  const filterMedias = findMatch(medias, groups.map(group => group.externalId))
+  const filterMedias = findMatch(medias, groups.map(group => group.externalId), userType)
+
+  console.log({ medias })
+  console.log({ groups })
 
   return (
     <Box>

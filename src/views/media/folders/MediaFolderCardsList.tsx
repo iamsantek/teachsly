@@ -26,13 +26,13 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
   const [showDeleteFolderMessage, setShowDeleteFolderMessage] = useState<boolean>(false)
   const [deletingFolder, setDeletingFolder] = useState<DeletingFolder | undefined>(undefined)
   const { courseId } = useParams()
-  const { hasEditPermission, hasAdminRole, groups } = useUserGroups()
+  const { hasEditPermission, hasAdminRole, groups, userType } = useUserGroups()
   const navigate = useNavigate()
 
   const fetchFolders = useCallback(async () => {
     const folders = await MediaFolderService.fetchMediaFolders(fetchType, courseId)
 
-    const matchedFolder = findMatch(folders?.listMediaFolders?.items as MediaFolder[], groups.map(group => group.externalId))
+    const matchedFolder = findMatch(folders?.listMediaFolders?.items as MediaFolder[], groups.map(group => group.externalId), userType)
 
     setFolders(matchedFolder || [])
   }, [fetchType, courseId])

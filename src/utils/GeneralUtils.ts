@@ -1,3 +1,5 @@
+import { UserTypes } from "../enums/UserTypes"
+
 export const findAndUpdateContent = <T extends { id: string }>(
   singleContent: T,
   contents: T[]
@@ -10,6 +12,7 @@ export const findAndUpdateContent = <T extends { id: string }>(
   return contents
 }
 
-export const findMatch = <T extends { groups?: string[]}>(models: T[] | undefined | null, userGroups: string[]) => {
-  return models?.filter(model => (model.groups as string[]).filter(group => userGroups.includes(group)).length > 0)
+export const findMatch = <T extends { groups?: string[]}>(models: T[] | undefined | null, userGroups: string[], userType: UserTypes) => {
+  const userGroupsWithType = [...userGroups, userType]
+  return models?.filter(model => (model.groups as string[]).filter(group => userGroupsWithType.includes(group)).length > 0)
 }
