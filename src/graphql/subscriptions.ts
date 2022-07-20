@@ -258,6 +258,7 @@ export const onCreateExamAttempt = /* GraphQL */ `
       examId
       examName
       userId
+      userName
       score
       isCompleted
       correctAnswers
@@ -277,6 +278,7 @@ export const onUpdateExamAttempt = /* GraphQL */ `
       examId
       examName
       userId
+      userName
       score
       isCompleted
       correctAnswers
@@ -296,6 +298,7 @@ export const onDeleteExamAttempt = /* GraphQL */ `
       examId
       examName
       userId
+      userName
       score
       isCompleted
       correctAnswers
