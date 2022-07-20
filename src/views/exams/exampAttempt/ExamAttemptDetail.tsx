@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom'
 import { Exam, ExamAttempt } from '../../../API'
 import { SectionHeader } from '../../../components/Headers/SectionHeader'
 import ExamService from '../../../services/ExamService'
-import { SpinnerScreen } from '../../others/SpinnerScreen'
 
 export const ExamAttemptDetail = () => {
   const [examAttempt, setExamAttempt] = useState<ExamAttempt>()
