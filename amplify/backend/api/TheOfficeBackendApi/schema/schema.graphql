@@ -117,5 +117,5 @@ type ExamAttempt @model
   correctAnswers: Int
   correctedBy: String
   externalId: ID! @index(name: "byExternalId", queryField: "examAttemptByExternalId")
-  answers: AWSJSON
+  results: AWSJSON
 }
