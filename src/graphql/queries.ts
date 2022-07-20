@@ -212,7 +212,7 @@ export const getExamAttempt = /* GraphQL */ `
       correctAnswers
       correctedBy
       externalId
-      answers
+      results
       createdAt
       updatedAt
       owner
@@ -237,7 +237,7 @@ export const listExamAttempts = /* GraphQL */ `
         correctAnswers
         correctedBy
         externalId
-        answers
+        results
         createdAt
         updatedAt
         owner
@@ -272,7 +272,7 @@ export const examAttemptByExternalId = /* GraphQL */ `
         correctAnswers
         correctedBy
         externalId
-        answers
+        results
         createdAt
         updatedAt
         owner
