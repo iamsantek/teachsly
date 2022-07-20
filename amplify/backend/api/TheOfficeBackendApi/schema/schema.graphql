@@ -111,6 +111,7 @@ type ExamAttempt @model
   examId: ID!
   examName: String!
   userId: ID!
+  userName: String @default(value: "")
   score: Int
   isCompleted: Boolean @default(value: "false")
   correctAnswers: Int

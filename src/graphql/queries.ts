@@ -206,6 +206,7 @@ export const getExamAttempt = /* GraphQL */ `
       examId
       examName
       userId
+      userName
       score
       isCompleted
       correctAnswers
@@ -230,6 +231,7 @@ export const listExamAttempts = /* GraphQL */ `
         examId
         examName
         userId
+        userName
         score
         isCompleted
         correctAnswers
@@ -264,6 +266,7 @@ export const examAttemptByExternalId = /* GraphQL */ `
         examId
         examName
         userId
+        userName
         score
         isCompleted
         correctAnswers

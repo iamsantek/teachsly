@@ -306,6 +306,7 @@ export const createExamAttempt = /* GraphQL */ `
       examId
       examName
       userId
+      userName
       score
       isCompleted
       correctAnswers
@@ -328,6 +329,7 @@ export const updateExamAttempt = /* GraphQL */ `
       examId
       examName
       userId
+      userName
       score
       isCompleted
       correctAnswers
@@ -350,6 +352,7 @@ export const deleteExamAttempt = /* GraphQL */ `
       examId
       examName
       userId
+      userName
       score
       isCompleted
       correctAnswers

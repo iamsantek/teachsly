@@ -73,7 +73,8 @@ export const ExamIntroductionScreen = () => {
       examId: examId as string,
       userId: user?.cognitoId as string,
       examName: exam?.title,
-      externalId: uuid()
+      externalId: uuid(),
+      userName: user?.name as string
     })
 
     if (!examAttempt) {
