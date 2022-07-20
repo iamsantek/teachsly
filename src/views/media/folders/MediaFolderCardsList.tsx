@@ -13,6 +13,7 @@ import { DeleteFolderConfirmation } from '../../../components/AlertDialog/Delete
 import { DeletingFolder } from '../../../interfaces/MediaFolder'
 import { DeleteFolderMethod } from '../../../enums/MediaFolder'
 import { ToastNotification } from '../../../observables/ToastNotification'
+import { findMatch } from '../../../utils/GeneralUtils'
 
 interface Props {
   fetchType: FetchType
@@ -25,14 +26,16 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
   const [showDeleteFolderMessage, setShowDeleteFolderMessage] = useState<boolean>(false)
   const [deletingFolder, setDeletingFolder] = useState<DeletingFolder | undefined>(undefined)
   const { courseId } = useParams()
-  const { hasEditPermission, hasAdminRole } = useUserGroups()
+  const { hasEditPermission, hasAdminRole, groups } = useUserGroups()
   const navigate = useNavigate()
 
   const fetchFolders = useCallback(async () => {
     const folders = await MediaFolderService.fetchMediaFolders(fetchType, courseId)
 
-    setFolders(folders?.listMediaFolders?.items as MediaFolder[] || [])
-  }, [fetchType, courseId])
+    const matchedFolder = findMatch(folders?.listMediaFolders?.items as MediaFolder[], groups.map(group => group.externalId))
+
+    setFolders(matchedFolder || [])
+  }, [fetchType, courseId, groups])
 
   useEffect(() => {
     fetchFolders()

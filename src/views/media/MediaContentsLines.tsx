@@ -9,6 +9,8 @@ import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { isAdmin } from '../../utils/CognitoGroupsUtils'
 import { Placeholder } from '../../components/Placeholders/Placeholder'
 import { getFileTypeIcon } from '../../utils/MediaUtils'
+import { findMatch } from '../../utils/GeneralUtils'
+import { useUserGroups } from '../../hooks/useUserGroups'
 
 interface Props {
   medias: Media[]
@@ -22,12 +24,14 @@ interface Props {
 
 export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelete, isLoading }: Props) => {
   const { context: { user, externalUserId } } = useContext(UserDashboardContext)
+  const { groups } = useUserGroups()
   const hasAdminRole = isAdmin(user)
   const placeholderNumber = Math.floor(Math.random() * 10) + 1
+  const filterMedias = findMatch(medias, groups.map(group => group.externalId))
 
   return (
     <Box>
-      {medias?.map((media) => {
+      {filterMedias?.map((media) => {
         const Icon = getFileTypeIcon(media.mimeType as string, 20)
         const isMediaOwner = externalUserId === (media as any).owner
 
