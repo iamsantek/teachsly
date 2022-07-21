@@ -171,6 +171,13 @@ export enum LanguageES {
   NO='No',
   CORRECT_ANSWER='Respuesta correcta?',
   NUMBER_OF_CORRECT_ANSWERS='Número de respuestas correctas auto-coregidas',
+  ALL='Todos',
+  FINISHED_EXAMS='Exámenes finalizados',
+  NOT_FINISHED_EXAMS='Exámenes no completados',
+  EXAM_ATTEMPT_DELETED_OK='El intento de examen se eliminó correctamente. El alumno puede volver a realizarlo.',
+  EXAM_ATTEMPT_DELETED_ERROR='Hubo un error al eliminar el intento de examen. Por favor, intentar nuevamente.',
+  DELETE_EXAM_ATTEMPT_CONFIRMATION_TITLE='Eliminar intento de examen',
+  DELETE_EXAM_ATTEMPT_CONFIRMATION_DESCRIPTION='Al eliminar el intento de examen, el alumno podrá volver a realizarlo.',
 }
 
 export enum LanguageEN {
@@ -341,4 +348,11 @@ export enum LanguageEN {
   NO='No',
   CORRECT_ANSWER='Is correct answer?',
   NUMBER_OF_CORRECT_ANSWERS='Number of correct answers',
+  ALL='All',
+  NOT_FINISHED_EXAMS='Not finished exams',
+  FINISHED_EXAMS='Finished exams',
+  EXAM_ATTEMPT_DELETED_OK='The exam attempt has been successfully deleted.',
+  EXAM_ATTEMPT_DELETED_ERROR='An error has occurred when deleting the exam attempt. Please try again.',
+  DELETE_EXAM_ATTEMPT_CONFIRMATION_TITLE='Delete exam attempt',
+  DELETE_EXAM_ATTEMPT_CONFIRMATION_DESCRIPTION='Delete exam attempt, the user will  be able to retake the exam.',
 }

@@ -35,7 +35,11 @@ export const transformGroups = (courses: Course[], selectedGroups: string[]) => 
   return renderCourseList(selectedCourses, userRoles)
 }
 
-export const groupsToString = (courses: Course[], groups: string[], shouldIncludeUserTypes: boolean = true) => {
+export const groupsToString = (courses: Course[], groups: string[] | undefined, shouldIncludeUserTypes: boolean = true) => {
+  if (!courses || !groups) {
+    return []
+  }
+
   const groupNames = courses.filter(course => groups.includes(course.externalId)).map(course2 => course2.name)
 
   if (shouldIncludeUserTypes) {

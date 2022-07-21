@@ -84,7 +84,6 @@ export const formatExamFormForAPI = (exam: ExamForm): ExamForm => {
 }
 
 export const sumNumberOfCorrectAnswers = (questionPools: QuestionPool[], attempt: ExamAttempt) => {
-  console.log(questionPools, attempt)
   const answers = (JSON.parse(attempt.results as string) as ExamAnswers).answers as ExamKeys
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'
   let totalQuestions = 0

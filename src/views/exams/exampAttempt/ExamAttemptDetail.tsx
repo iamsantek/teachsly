@@ -1,9 +1,16 @@
-import { Stack, Text } from '@chakra-ui/react'
+import { Badge, HStack, Stack, Text } from '@chakra-ui/react'
+import dayjs from 'dayjs'
 import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Exam, ExamAttempt } from '../../../API'
 import { SectionHeader } from '../../../components/Headers/SectionHeader'
+import { ContentLinePlaceholder } from '../../../components/Placeholders/ContentLinePlaceholder'
+import { Placeholder } from '../../../components/Placeholders/Placeholder'
+import { QuestionPool } from '../../../interfaces/Exams'
 import ExamService from '../../../services/ExamService'
+import { translate } from '../../../utils/LanguageUtils'
+import { ExamAttemptAnswers } from './ExamAttemptAnswers'
+import { ExamAttemptCounters } from './ExamAttemptCounters'
 
 export const ExamAttemptDetail = () => {
   const [examAttempt, setExamAttempt] = useState<ExamAttempt>()
@@ -26,16 +33,31 @@ export const ExamAttemptDetail = () => {
   , [fetchExamInformation])
 
   if (isLoading) {
-    return null
+    const randomNumber = Math.floor(Math.random() * (10 - 4 + 1)) + 4
+    return (
+      <Placeholder
+        show={isLoading}
+        number={randomNumber}
+        placeholderElement={<ContentLinePlaceholder />}
+      />
+    )
   }
 
-  console.log({ examAttempt })
-  console.log({ exam })
+  const questionPools: QuestionPool[] = JSON.parse(exam?.questionPools as string)
 
   return (
-        <Stack>
-        <SectionHeader sectionName='Exam Attempt' />
-        <Text>{attemptId}</Text>
-        </Stack>
+    <Stack>
+      <SectionHeader sectionName={examAttempt?.userName as string} />
+      <Stack>
+        <Text fontWeight='bold'>{exam?.title}</Text>
+        <Text></Text>
+        <Text>{translate('FINISHED_DATE')} {dayjs(examAttempt?.updatedAt).format('DD/MM/YYYY HH:MM')}hs</Text>
+        <HStack gap={1}>
+          <Text>{translate('STATUS')}</Text> <Badge textAlign={'center'} alignContent='center' alignItems='center' justifyContent='center' colorScheme={examAttempt?.isCompleted ? 'green' : 'red'}>{translate(examAttempt?.isCompleted ? 'FINISHED' : 'NOT_FINISHED')}</Badge>
+        </HStack>
+      </Stack>
+      <ExamAttemptAnswers questionPools={questionPools} attempt={examAttempt as ExamAttempt} />
+      <ExamAttemptCounters questionPools={questionPools} attempt={examAttempt as ExamAttempt} />
+    </Stack>
   )
 }

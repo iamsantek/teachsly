@@ -2,6 +2,7 @@ import { Text, Accordion, AccordionItem, AccordionButton, Box, AccordionIcon, Ac
 import { ExamAttempt } from '../../../API'
 import { ExamAnswers, QuestionPool } from '../../../interfaces/Exams'
 import { translate } from '../../../utils/LanguageUtils'
+import { generateRandomId } from '../../../utils/StringUtils'
 import { ExamAttemptQuestionPoolAnswers } from './ExamAttemptQuestionPoolAnswers'
 
 interface Props {
@@ -13,9 +14,10 @@ export const ExamAttemptAnswers = ({ questionPools, attempt }: Props) => {
   return (
         <Accordion allowMultiple>
             {questionPools.map((questionPool, index) => {
+              const id = generateRandomId()
               const questionPoolAnswers = (JSON.parse(attempt.results as string) as ExamAnswers | undefined)?.answers
               return (
-                <AccordionItem key={questionPool.id} boxShadow='md' marginY={5}>
+                <AccordionItem key={id} boxShadow='md' marginY={5}>
                     <h2>
                         <AccordionButton>
                             <Box flex='1' textAlign='left'>

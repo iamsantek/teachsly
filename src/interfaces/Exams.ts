@@ -89,3 +89,9 @@ export interface ExamAnswers {
 export interface ExamKeys {
   [key: number]: string
 }
+
+export enum ExamAttemptFilter {
+  ALL = 'all',
+  COMPLETED = 'completed',
+  NOT_COMPLETED = 'notCompleted'
+}
