@@ -1,6 +1,6 @@
 import { Text, Accordion, AccordionItem, AccordionButton, Box, AccordionIcon, AccordionPanel } from '@chakra-ui/react'
 import { ExamAttempt } from '../../../API'
-import { QuestionPool } from '../../../interfaces/Exams'
+import { ExamAnswers, QuestionPool } from '../../../interfaces/Exams'
 import { translate } from '../../../utils/LanguageUtils'
 import { ExamAttemptQuestionPoolAnswers } from './ExamAttemptQuestionPoolAnswers'
 
@@ -13,7 +13,7 @@ export const ExamAttemptAnswers = ({ questionPools, attempt }: Props) => {
   return (
         <Accordion allowMultiple>
             {questionPools.map((questionPool, index) => {
-              const questionPoolAnswers = (JSON.parse(attempt.results as string) as EamAnswers | undefined)?.answers
+              const questionPoolAnswers = (JSON.parse(attempt.results as string) as ExamAnswers | undefined)?.answers
               return (
                 <AccordionItem key={questionPool.id} boxShadow='md' marginY={5}>
                     <h2>

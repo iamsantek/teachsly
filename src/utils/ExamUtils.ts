@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
-import { Course, GetExamQuery } from '../API'
+import { Course, ExamAttempt, GetExamQuery } from '../API'
 import { defaultExamTimerOptions } from '../constants/Exams'
-import { ExamForm, TimerType } from '../interfaces/Exams'
+import { AnswerType, ExamAnswers, ExamForm, ExamKeys, QuestionPool, TimerType } from '../interfaces/Exams'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import { transformGroups } from './CourseUtils'
 
@@ -80,5 +80,26 @@ export const formatExamFormForAPI = (exam: ExamForm): ExamForm => {
   return {
     ...exam,
     questionPools: [newQuestionPools[randomIndex]]
+  }
+}
+
+export const sumNumberOfCorrectAnswers = (questionPools: QuestionPool[], attempt: ExamAttempt) => {
+  console.log(questionPools, attempt)
+  const answers = (JSON.parse(attempt.results as string) as ExamAnswers).answers as ExamKeys
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz'
+  let totalQuestions = 0
+
+  const correctAnswers = questionPools.map((pool, questionPoolIndex) => {
+    return pool.questions.filter(question => question.answerType === AnswerType.MultipleChoice && question.options?.some(option => option.isCorrectOption)).map((question, questionIndex) => {
+      const answer = answers[questionPoolIndex][questionIndex]
+      totalQuestions++
+      const correctAnswer = question.options?.some((option, optionIndex) => option.isCorrectOption && alphabet[optionIndex] === answer)
+      return correctAnswer ? 1 : 0
+    }).reduce((acc: number, curr: number) => acc + curr, 0)
+  }).reduce((acc: number, curr: number) => acc + curr, 0)
+
+  return {
+    totalQuestions,
+    correctAnswers
   }
 }

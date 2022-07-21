@@ -264,7 +264,7 @@ export const onCreateExamAttempt = /* GraphQL */ `
       correctAnswers
       correctedBy
       externalId
-      answers
+      results
       createdAt
       updatedAt
       owner
@@ -284,7 +284,7 @@ export const onUpdateExamAttempt = /* GraphQL */ `
       correctAnswers
       correctedBy
       externalId
-      answers
+      results
       createdAt
       updatedAt
       owner
@@ -304,7 +304,7 @@ export const onDeleteExamAttempt = /* GraphQL */ `
       correctAnswers
       correctedBy
       externalId
-      answers
+      results
       createdAt
       updatedAt
       owner

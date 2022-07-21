@@ -11,3 +11,7 @@ export const removeWhiteSpaces = (value: string) => value.replace(/\s+/g, '')
 export const generateRandomId = () => Math.random().toString(36).slice(2)
 
 export const removeExtension = (fileName: string) => fileName.replace(/\.[^/.]+$/, '')
+
+export const countWords = (text: string) => {
+  return text.split(/\s+/).length
+}

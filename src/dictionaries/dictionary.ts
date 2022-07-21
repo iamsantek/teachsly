@@ -161,6 +161,16 @@ export enum LanguageES {
   MEANINGFUL_FILE_NAMES="Nombrar a los archivos de una forma intuitiva para su debida identificación. Ex: 'Reading Exercise 1'",
   EXAM_ATTEMPTS='Exámenes realizados',
   NOT_FINISHED='No finalizado',
+  FINISHED_DATE='Fecha de finalización',
+  STATUS='Estado',
+  FINISHED='Completado',
+  WITH_SELF_CORRECTION='Corrección automática',
+  WITH_OUT_SELF_CORRECTION='Sin corrección automática',
+  WORDS_COUNT='Número de palabras',
+  YES='Sí',
+  NO='No',
+  CORRECT_ANSWER='Respuesta correcta?',
+  NUMBER_OF_CORRECT_ANSWERS='Número de respuestas correctas auto-coregidas',
 }
 
 export enum LanguageEN {
@@ -321,4 +331,14 @@ export enum LanguageEN {
   MEANINGFUL_FILE_NAMES='Please provide meaningful file names',
   EXAM_ATTEMPTS='Exam Attempts',
   NOT_FINISHED='Not finished',
+  FINISHED_DATE='Finished date',
+  STATUS='Status',
+  FINISHED='Finished',
+  WITH_SELF_CORRECTION='With self correction',
+  WITH_OUT_SELF_CORRECTION='Without self correction',
+  WORDS_COUNT='Words count',
+  YES='Yes',
+  NO='No',
+  CORRECT_ANSWER='Is correct answer?',
+  NUMBER_OF_CORRECT_ANSWERS='Number of correct answers',
 }
