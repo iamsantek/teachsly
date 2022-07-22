@@ -14,6 +14,7 @@ import ExamService from '../../../services/ExamService'
 import { translate } from '../../../utils/LanguageUtils'
 import { ExamAttemptAnswers } from './ExamAttemptAnswers'
 import { ExamAttemptCounters } from './ExamAttemptCounters'
+import { ExamCompleteResult } from './results/ExamCompleteResult'
 
 export const ExamAttemptDetail = () => {
   const [examAttempt, setExamAttempt] = useState<ExamAttempt>()
@@ -97,6 +98,13 @@ export const ExamAttemptDetail = () => {
   }
 
   const questionPools = watch('questionPools')
+  const answers = examAttempt?.results ? JSON.parse(examAttempt?.results as string) : []
+
+  console.log(answers)
+  console.log(!!examAttempt?.correctedBy)
+  if (examAttempt?.correctedBy) {
+    return <ExamCompleteResult questionPools={questionPools} studentAnswers={answers} examAttempt={examAttempt} />
+  }
 
   return (
     <Stack marginBottom={10}>
@@ -115,9 +123,7 @@ export const ExamAttemptDetail = () => {
               attempt={examAttempt as ExamAttempt}
               updateFn={update}
             />
-            {examAttempt?.correctedBy
-              ? <></>
-              : <ExamAttemptCounters questionPools={questionPools} attempt={examAttempt as ExamAttempt} />}
+            <ExamAttemptCounters questionPools={questionPools} attempt={examAttempt as ExamAttempt} />
 
             <FormLabel>{translate('EXAM_TEACHER_COMMENTS')}</FormLabel>
             <Textarea

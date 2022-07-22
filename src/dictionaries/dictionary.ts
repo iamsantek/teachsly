@@ -194,6 +194,7 @@ export enum LanguageES {
   CORRECTED_BY = 'Corregido por',
   NOT_COMPLETED= 'No completado',
   COMPLETED = 'Entregado',
+  REALIZED_BY= 'Realizado por',
 }
 
 export enum LanguageEN {
@@ -387,4 +388,5 @@ export enum LanguageEN {
   CORRECTED_BY = 'Corrected by',
   NOT_COMPLETED= 'Not completed',
   COMPLETED = 'Completed',
+  REALIZED_BY = 'Realized by',
 }

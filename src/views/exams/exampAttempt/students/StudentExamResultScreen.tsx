@@ -1,4 +1,3 @@
-import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ExamAttempt } from '../../../../API'
@@ -7,8 +6,7 @@ import { NoContentPlaceholder } from '../../../../components/Placeholders/NoCont
 import { Placeholder } from '../../../../components/Placeholders/Placeholder'
 import { ExamAnswers, QuestionPool } from '../../../../interfaces/Exams'
 import ExamService from '../../../../services/ExamService'
-import { translate } from '../../../../utils/LanguageUtils'
-import { StudentExamResultDetail } from './StudentExamResultDetail'
+import { ExamCompleteResult } from '../results/ExamCompleteResult'
 
 export const StudentExamResultScreen = () => {
   const [examAttempt, setExamAttempt] = useState<ExamAttempt>()
@@ -29,10 +27,10 @@ export const StudentExamResultScreen = () => {
   if (isLoading) {
     return (
       <Placeholder
-      show={isLoading}
-      number={10}
-      placeholderElement={<ContentLinePlaceholder />}
-    />
+        show={isLoading}
+        number={10}
+        placeholderElement={<ContentLinePlaceholder />}
+      />
     )
   }
 
@@ -51,30 +49,10 @@ export const StudentExamResultScreen = () => {
   }
 
   return (
-    <Stack marginBottom={10} marginTop={5}>
-      <Box rounded='lg' boxShadow='md' p={7}>
-        <HStack spacing={5}>
-          <Stack justifyContent='center' alignItems='center'>
-            <Text fontWeight='bold' fontSize={'5xl'}>{examAttempt?.score}</Text>
-            <Text color='gray.700'>{translate('FINAL_MARK')}</Text>
-          </Stack>
-          <Box>
-            <Heading fontSize={'2xl'}>{examAttempt?.examName}</Heading>
-            <Text>{translate('CORRECTED_BY')} {examAttempt?.correctedBy}</Text>
-            <Text>{translate('CORRECT_ANSWERS')} {examAttempt?.correctAnswers} / {examAttempt?.totalQuestions}</Text>
-            {examAttempt?.teacherComments && (
-              <Box marginY={5}>
-                <Text>{translate('EXAM_TEACHER_COMMENTS')}</Text>
-                <Text>{examAttempt?.teacherComments}</Text>
-              </Box>
-            )}
-          </Box>
-        </HStack>
-      </Box>
-      <StudentExamResultDetail
-        questionPools={questionPools}
-        studentAnswers={studentAnswers}
-      />
-    </Stack>
+    <ExamCompleteResult
+      questionPools={questionPools}
+      studentAnswers={studentAnswers}
+      examAttempt={examAttempt}
+    />
   )
 }
