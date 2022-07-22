@@ -15,3 +15,8 @@ export const removeExtension = (fileName: string) => fileName.replace(/\.[^/.]+$
 export const countWords = (text: string) => {
   return text.split(/\s+/).length
 }
+
+// Delete accents and diacritics from a string
+export const removeDiacritics = (text: string) => {
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+}

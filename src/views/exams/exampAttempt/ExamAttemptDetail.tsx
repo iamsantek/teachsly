@@ -105,7 +105,7 @@ export const ExamAttemptDetail = () => {
         <Text fontWeight='bold'>{exam?.title}</Text>
         <Text>{translate('FINISHED_DATE')} {dayjs(examAttempt?.updatedAt).format('DD/MM/YYYY HH:MM')}hs</Text>
         <HStack gap={1}>
-          <Text>{translate('STATUS')}</Text> <Badge textAlign={'center'} alignContent='center' alignItems='center' justifyContent='center' colorScheme={examAttempt?.isCompleted || examAttempt?.correctedBy ? 'green' : 'red'}>{translate(examAttempt?.isCompleted ? examAttempt.correctedBy ? 'CORRECTED' : 'NOT_CORRECTED' : 'NOT_FINISHED')}</Badge>
+          <Text>{translate('STATUS')}</Text> <Badge textAlign={'center'} alignContent='center' alignItems='center' justifyContent='center' colorScheme={examAttempt?.correctedBy ? 'green' : examAttempt?.isCompleted ? 'orange' : 'red'}>{translate(examAttempt?.isCompleted ? examAttempt.correctedBy ? 'CORRECTED' : 'NOT_CORRECTED' : 'NOT_FINISHED')}</Badge>
         </HStack>
       </Stack>
       <FormProvider {...formControls}>
@@ -116,7 +116,7 @@ export const ExamAttemptDetail = () => {
               updateFn={update}
             />
             {examAttempt?.correctedBy
-              ? <>Hola</>
+              ? <></>
               : <ExamAttemptCounters questionPools={questionPools} attempt={examAttempt as ExamAttempt} />}
 
             <FormLabel>{translate('EXAM_TEACHER_COMMENTS')}</FormLabel>

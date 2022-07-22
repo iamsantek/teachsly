@@ -1,11 +1,12 @@
 import dayjs from 'dayjs'
-import { Course, ExamAttempt, GetExamQuery } from '../API'
+import { Course, Exam, ExamAttempt, GetExamQuery } from '../API'
 import { defaultExamTimerOptions } from '../constants/Exams'
 import { TranslationsDictionary } from '../dictionaries/dictionary'
 import { AnswerType, ExamAnswers, ExamAttemptFilter, ExamForm, ExamKeys, Options, Question, QuestionPool, TimerType } from '../interfaces/Exams'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import { BadgeColors } from '../views/exams/exampAttempt/CorrectionBadge'
 import { transformGroups } from './CourseUtils'
+import { removeDiacritics } from './StringUtils'
 
 export const alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -196,7 +197,8 @@ export const applyStatusFilter = (examAttempts: ExamAttempt[], status: ExamAttem
 }
 
 export const applyStudentFilter = (examAttempts: ExamAttempt[], studentFilter: string) => {
-  return examAttempts.filter(examAttempt => examAttempt.userName?.toLowerCase().trim().includes(studentFilter.toLowerCase().trim()))
+  const normalizedStudentFilter = removeDiacritics(studentFilter.toLowerCase().trim())
+  return examAttempts.filter(examAttempt => removeDiacritics(examAttempt.userName?.toLowerCase().trim() as string).includes(normalizedStudentFilter))
 }
 
 export const isPendingCorrectionInQuestionPool = (questionPool: QuestionPool) => {
@@ -227,4 +229,31 @@ export const isPendingCorrectionInQuestionPool = (questionPool: QuestionPool) =>
   }
 
   return { isAllAutomaticCorrection, isPendingCorrectionInQuestionPool, color, text }
+}
+
+export const getExamStatus = (exam: Exam, examAttempts: ExamAttempt[]) => {
+  const examAttempt = examAttempts.find(examAttempt => examAttempt.examId === exam.id)
+  const isCompleted = examAttempt?.isCompleted
+  const isCorrected = !!examAttempt?.correctedBy
+
+  return { isCompleted, isCorrected, examAttempt }
+}
+
+export const getExamLink = (exam: Exam, examAttempts: ExamAttempt[], isAdmin: boolean | undefined) => {
+  const { isCompleted, isCorrected, examAttempt } = getExamStatus(exam, examAttempts)
+
+  console.log('isCompleted', isCompleted)
+  console.log('isCorrected', isCorrected)
+
+  if (isAdmin) {
+    return `/exams/${exam.id}`
+  }
+
+  if (isCompleted && !isCorrected) {
+    return '#'
+  } else if (isCorrected) {
+    return `/exams/results/${examAttempt?.id}`
+  } else {
+    return `/exams/${exam.id}/intro`
+  }
 }

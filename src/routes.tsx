@@ -22,6 +22,7 @@ import DashboardLayout from './layouts/DashboardLayout'
 import { ExamIntroductionScreen } from './views/exams/ExamIntroductionScreen'
 import { ExamAttemptScreen } from './views/exams/exampAttempt/ExamAttemptScreen'
 import { ExamAttemptDetail } from './views/exams/exampAttempt/ExamAttemptDetail'
+import { StudentExamResultScreen } from './views/exams/exampAttempt/students/StudentExamResultScreen'
 
 const adminHomeScreen: ApplicationRoute = {
   name: translate('MENU_HOME'),
@@ -127,6 +128,8 @@ const videoPreviewRoute: ApplicationRoute = { path: '/play/:mediaId', element: <
 const examAttemptScreenRoute: ApplicationRoute = { path: '/exams/attempts', name: translate('EXAM_ATTEMPTS'), element: <ExamAttemptScreen />, showInNavbar: false, withDashboardLayout: true }
 const examAttemptDetailRoute: ApplicationRoute = { path: '/exams/attempt/:attemptId', element: <ExamAttemptDetail />, showInNavbar: false, withDashboardLayout: true }
 
+const examResultsRoute: ApplicationRoute = { path: '/exams/results/:attemptId', element: <StudentExamResultScreen />, showInNavbar: false, withDashboardLayout: true }
+
 const adminRoutes: ApplicationRoute[] = [
   adminHomeScreen,
   mediaContents,
@@ -159,6 +162,7 @@ const studentRoutes: ApplicationRoute[] = [
   examsHomeScreen,
   examAttemptScreenRoute,
   examAttemptDetailRoute,
+  examResultsRoute,
   { path: '*', element: <DashboardLayout><StudentsHomeScreen /></DashboardLayout> }
 ]
 

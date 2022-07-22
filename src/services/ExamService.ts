@@ -57,6 +57,13 @@ class ExamService {
     })
   }
 
+  public async getExamAttemptsByCognitoId (cognitoId: string) {
+    return GraphQLService.fetchQuery<ListExamAttemptsQuery>({
+      query: listExamAttempts,
+      filter: { userId: { eq: cognitoId } }
+    })
+  }
+
   public async fetchExamAttempts (nextToken?: string | null) {
     return GraphQLService.fetchQuery<ListExamAttemptsQuery>({
       query: listExamAttempts,

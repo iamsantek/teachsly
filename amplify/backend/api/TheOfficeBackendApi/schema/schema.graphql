@@ -112,10 +112,13 @@ type ExamAttempt @model
   examName: String!
   userId: ID!
   userName: String @default(value: "")
-  score: Int
+  score: String
   isCompleted: Boolean @default(value: "false")
   correctAnswers: Int
+  totalQuestions: Int
   correctedBy: String
   externalId: ID! @index(name: "byExternalId", queryField: "examAttemptByExternalId")
   results: AWSJSON
+  keys: AWSJSON
+  teacherComments: String
 }
