@@ -179,6 +179,17 @@ export enum LanguageES {
   DELETE_EXAM_ATTEMPT_CONFIRMATION_TITLE='Eliminar intento de examen',
   DELETE_EXAM_ATTEMPT_CONFIRMATION_DESCRIPTION='Al eliminar el intento de examen, el alumno podrá volver a realizarlo.',
   MANUAL_CORRECTION='Corrección manual realizada',
+  SEARCH_BY_STUDENT_NAME='Buscar por nombre de alumno',
+  EXAMS_NOT_CORRECTED='Exámenes no corregidos',
+  EXAM_TEACHER_COMMENTS='Comentarios del docente',
+  COMMENTS='Comentarios o aclaraciones...',
+  FINISH_CORRECTION='Finalizar corrección',
+  FINAL_MARK='Nota final',
+  PENDING_CORRECTION_WARNING='La nota recomendada se calculará cuando no haya preguntas pendientes por corregir.',
+  CORRECTION_SUCCESS='La corrección se realizó correctamente.',
+  CORRECTION_ERROR='Hubo un error al realizar la corrección. Por favor, intentar nuevamente.',
+  CORRECTED='Corregido',
+  NOT_CORRECTED='No corregido',
 }
 
 export enum LanguageEN {
@@ -357,4 +368,15 @@ export enum LanguageEN {
   DELETE_EXAM_ATTEMPT_CONFIRMATION_TITLE='Delete exam attempt',
   DELETE_EXAM_ATTEMPT_CONFIRMATION_DESCRIPTION='Delete exam attempt, the user will  be able to retake the exam.',
   MANUAL_CORRECTION='Manual correction',
+  SEARCH_BY_STUDENT_NAME='Search by student name',
+  EXAMS_NOT_CORRECTED='Exams not corrected',
+  EXAM_TEACHER_COMMENTS='Exam teacher comments',
+  COMMENTS='Comments...',
+  FINISH_CORRECTION='Finish correction',
+  FINAL_MARK='Final mark',
+  PENDING_CORRECTION_WARNING='The exam is pending correction.',
+  CORRECTION_SUCCESS='The exam has been successfully corrected.',
+  CORRECTION_ERROR='An error has occurred when correcting the exam. Please try again.',
+  CORRECTED='Corrected',
+  NOT_CORRECTED='Not corrected',
 }

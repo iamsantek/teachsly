@@ -210,9 +210,12 @@ export const getExamAttempt = /* GraphQL */ `
       score
       isCompleted
       correctAnswers
+      totalQuestions
       correctedBy
       externalId
       results
+      keys
+      teacherComments
       createdAt
       updatedAt
       owner
@@ -235,9 +238,12 @@ export const listExamAttempts = /* GraphQL */ `
         score
         isCompleted
         correctAnswers
+        totalQuestions
         correctedBy
         externalId
         results
+        keys
+        teacherComments
         createdAt
         updatedAt
         owner
@@ -270,9 +276,12 @@ export const examAttemptByExternalId = /* GraphQL */ `
         score
         isCompleted
         correctAnswers
+        totalQuestions
         correctedBy
         externalId
         results
+        keys
+        teacherComments
         createdAt
         updatedAt
         owner

@@ -1,13 +1,15 @@
-import { Badge, Button, HStack, Stack, Text } from '@chakra-ui/react'
+import { Badge, Button, FormLabel, HStack, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Stack, Text, Textarea } from '@chakra-ui/react'
 import dayjs from 'dayjs'
-import { useCallback, useEffect, useState } from 'react'
-import { FormProvider, useForm, useFieldArray } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
-import { Exam, ExamAttempt } from '../../../API'
+import { useCallback, useContext, useEffect, useState } from 'react'
+import { FormProvider, useForm, useFieldArray, Controller } from 'react-hook-form'
+import { useNavigate, useParams } from 'react-router-dom'
+import { Exam, ExamAttempt, UpdateExamAttemptInput } from '../../../API'
 import { SectionHeader } from '../../../components/Headers/SectionHeader'
 import { ContentLinePlaceholder } from '../../../components/Placeholders/ContentLinePlaceholder'
 import { Placeholder } from '../../../components/Placeholders/Placeholder'
+import { UserDashboardContext } from '../../../contexts/UserDashboardContext'
 import { ExamCorrection, QuestionPool } from '../../../interfaces/Exams'
+import { ToastNotification } from '../../../observables/ToastNotification'
 import ExamService from '../../../services/ExamService'
 import { translate } from '../../../utils/LanguageUtils'
 import { ExamAttemptAnswers } from './ExamAttemptAnswers'
@@ -18,9 +20,12 @@ export const ExamAttemptDetail = () => {
   const [exam, setExam] = useState<Exam>()
   const { attemptId } = useParams()
   const [isLoading, setIsLoading] = useState(true)
+  const [isSendingResults, setIsSendingResults] = useState(false)
 
+  const navigate = useNavigate()
   const formControls = useForm<ExamCorrection>()
-  const { handleSubmit, control, reset, watch, setValue } = formControls
+  const { context: { user } } = useContext(UserDashboardContext)
+  const { handleSubmit, control, reset, watch, register } = formControls
   const { update } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: 'questionPools' // unique name for your Field Array
@@ -32,7 +37,11 @@ export const ExamAttemptDetail = () => {
     const questionPools: QuestionPool[] = JSON.parse(examResponse?.getExam?.questionPools as string)
 
     reset({
-      questionPools: questionPools
+      questionPools: questionPools,
+      correctAnswers: examAttemptResponse?.getExamAttempt?.correctAnswers || 0,
+      totalQuestions: examAttemptResponse?.getExamAttempt?.totalQuestions || 0,
+      score: parseInt(examAttemptResponse?.getExamAttempt?.score as string) || 0,
+      teacherComment: examAttemptResponse?.getExamAttempt?.teacherComments || ''
     })
 
     setExam(examResponse?.getExam as Exam)
@@ -56,36 +65,95 @@ export const ExamAttemptDetail = () => {
     )
   }
 
+  const sendCorrection = async (values: ExamCorrection) => {
+    setIsSendingResults(true)
+    const { score, correctAnswers, questionPools, totalQuestions, teacherComment: teacherComments } = values
+    const results: UpdateExamAttemptInput = {
+      ...examAttempt,
+      id: examAttempt?.id as string,
+      score: score.toString(),
+      correctedBy: user?.name,
+      correctAnswers,
+      totalQuestions,
+      teacherComments,
+      keys: JSON.stringify(questionPools)
+    }
+    const examAttemptResponse = await ExamService.updateExamAttempt(results)
+
+    ToastNotification({
+      description: examAttemptResponse ? 'CORRECTION_SUCCESS' : 'CORRECTION_ERROR',
+      status: examAttemptResponse ? 'SUCCESS' : 'ERROR'
+    })
+
+    setIsSendingResults(false)
+
+    if (examAttemptResponse) {
+      navigate('/exams/attempts')
+    }
+  }
+
   const saveResults = (values: ExamCorrection) => {
-    console.log(values)
+    sendCorrection(values)
   }
 
   const questionPools = watch('questionPools')
 
   return (
-    <Stack>
+    <Stack marginBottom={10}>
       <SectionHeader sectionName={examAttempt?.userName as string} />
       <Stack>
         <Text fontWeight='bold'>{exam?.title}</Text>
-        <Text></Text>
         <Text>{translate('FINISHED_DATE')} {dayjs(examAttempt?.updatedAt).format('DD/MM/YYYY HH:MM')}hs</Text>
         <HStack gap={1}>
-          <Text>{translate('STATUS')}</Text> <Badge textAlign={'center'} alignContent='center' alignItems='center' justifyContent='center' colorScheme={examAttempt?.isCompleted ? 'green' : 'red'}>{translate(examAttempt?.isCompleted ? 'FINISHED' : 'NOT_FINISHED')}</Badge>
+          <Text>{translate('STATUS')}</Text> <Badge textAlign={'center'} alignContent='center' alignItems='center' justifyContent='center' colorScheme={examAttempt?.isCompleted || examAttempt?.correctedBy ? 'green' : 'red'}>{translate(examAttempt?.isCompleted ? examAttempt.correctedBy ? 'CORRECTED' : 'NOT_CORRECTED' : 'NOT_FINISHED')}</Badge>
         </HStack>
       </Stack>
       <FormProvider {...formControls}>
         <form onSubmit={handleSubmit(saveResults)}>
-          <ExamAttemptAnswers
-          attempt={examAttempt as ExamAttempt}
-          updateFn={update}
-          />
-          <ExamAttemptCounters questionPools={questionPools} attempt={examAttempt as ExamAttempt} />
-          <Button
-            type='submit'
-            colorScheme='brand'
-          >
-            Enviar Nota
-          </Button>
+          <Stack spacing={5}>
+            <ExamAttemptAnswers
+              attempt={examAttempt as ExamAttempt}
+              updateFn={update}
+            />
+            {examAttempt?.correctedBy
+              ? <>Hola</>
+              : <ExamAttemptCounters questionPools={questionPools} attempt={examAttempt as ExamAttempt} />}
+
+            <FormLabel>{translate('EXAM_TEACHER_COMMENTS')}</FormLabel>
+            <Textarea
+              placeholder={translate('COMMENTS')}
+              readOnly={!!examAttempt?.correctedBy}
+              rows={5}
+              {...register('teacherComment')}
+            />
+
+            <FormLabel>{translate('FINAL_MARK')}</FormLabel>
+            <Controller
+              render={({ field: { onChange, value, ref } }) => (
+                <NumberInput isReadOnly={!!examAttempt?.correctedBy} ref={ref} onChange={onChange} value={value} maxWidth={['100%', '25%']} defaultValue={7} min={0} max={10} precision={2} step={0.25} size='lg'>
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              )}
+              control={control}
+              name='score'
+              rules={{
+                required: true
+              }}
+            />
+
+            <Button
+              type='submit'
+              colorScheme='brand'
+              isLoading={isSendingResults}
+              disabled={watch('pendingAnswers') > 0 || !!examAttempt?.correctedBy}
+            >
+              {translate('FINISH_CORRECTION')}
+            </Button>
+          </Stack>
         </form>
       </FormProvider>
     </Stack>

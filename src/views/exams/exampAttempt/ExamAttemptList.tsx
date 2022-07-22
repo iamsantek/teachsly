@@ -13,17 +13,21 @@ import { ExamAttemptFilter } from './filters/ExamAttemptFilter'
 import { ToastNotification } from '../../../observables/ToastNotification'
 import { ConfirmationDialog } from '../../../components/AlertDialog/ConfirmationDialog'
 import { NoContentPlaceholder } from '../../../components/Placeholders/NoContentPlaceholder'
-import { applyNameFilter, applyStatusFilter } from '../../../utils/ExamUtils'
+import { applyNameFilter, applyStatusFilter, applyStudentFilter } from '../../../utils/ExamUtils'
 
 export const ExamAttemptList = () => {
   const [examAttempts, setExamAttempts] = useState<ExamAttempt[]>([])
   const [examAttemptsDisplayed, setExamAttemptsDisplayed] = useState<ExamAttempt[]>([])
-  const [statusActiveFilter, setStatusActiveFilter] = useState<IExamAttemptFilter>(IExamAttemptFilter.ALL)
-  const [activeNameFilter, setActiveNameFilter] = useState<string>('')
   const [nextPageToken, setNextPageToken] = useState<string | undefined>()
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
   const [deleteExamAttemptId, setDeleteExamAttemptId] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState(true)
+
+  // Filters
+  const [statusActiveFilter, setStatusActiveFilter] = useState<IExamAttemptFilter>(IExamAttemptFilter.ALL)
+  const [activeNameFilter, setActiveNameFilter] = useState<string>('')
+  const [activeStudentNameFilter, setActiveStudentNameFilter] = useState<string>('')
+
   const navigator = useNavigate()
 
   const fetchExamAttempts = useCallback(async () => {
@@ -45,6 +49,16 @@ export const ExamAttemptList = () => {
 
     setExamAttemptsDisplayed(applyNameFilter(updatedExamAttempts, activeNameFilter))
   }, [examAttempts, activeNameFilter])
+
+  const onChangeStudentNameFilter = useCallback((studentName: string) => {
+    setActiveStudentNameFilter(studentName)
+    const updatedExamAttempts = applyStudentFilter(examAttempts, studentName)
+
+    setExamAttemptsDisplayed(updatedExamAttempts)
+    setStatusActiveFilter(IExamAttemptFilter.ALL)
+    setActiveNameFilter('')
+  }
+  , [examAttempts])
 
   const onChangeExamNameFilter = useCallback((examName: string) => {
     setActiveNameFilter(examName)
@@ -91,8 +105,12 @@ export const ExamAttemptList = () => {
           examAttempts={examAttempts}
           activeStatusFilter={statusActiveFilter}
           activeNameFilter={activeNameFilter}
+          studentNameFilter={activeStudentNameFilter}
           onChangeStatusFilter={onChangeStatusFilter}
-          onChangeExamNameFilter={onChangeExamNameFilter} />
+          onChangeExamNameFilter={onChangeExamNameFilter}
+          onChangeStudentNameFilter={onChangeStudentNameFilter}
+
+          />
         <Box>
           <NoContentPlaceholder show={examAttemptsDisplayed.length === 0 && !isLoading} />
           {examAttemptsDisplayed.map(examAttempt => {
@@ -105,6 +123,7 @@ export const ExamAttemptList = () => {
               >
                 <CommonContentLineTitle title={`${examAttempt.userName} - ${examAttempt.examName}`}>
                   {!examAttempt.isCompleted && <Badge colorScheme='red'>{translate('NOT_FINISHED')} {dayjs(examAttempt.createdAt).format('DD/MM/YYYY HH:MM')}hs</Badge>}
+                  {examAttempt.isCompleted && examAttempt.correctedBy && '✅'}
                 </CommonContentLineTitle>
               </ContentLine>
             )

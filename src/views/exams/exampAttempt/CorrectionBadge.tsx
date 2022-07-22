@@ -6,7 +6,7 @@ interface Props {
   question: Question;
 }
 
-enum BadgeColors {
+export enum BadgeColors {
   ORANGE = 'orange',
   GREEN = 'green',
   RED = 'red',

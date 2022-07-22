@@ -2,7 +2,7 @@ import { Box, HStack, Stack, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import { UseFieldArrayUpdate } from 'react-hook-form'
 import { AnswerType, ExamCorrection, ExamKeys, QuestionPool } from '../../../interfaces/Exams'
-import { manualMultipleChoiceCorrection, manualTextCorrection } from '../../../utils/ExamUtils'
+import { alphabet, manualMultipleChoiceCorrection, manualTextCorrection } from '../../../utils/ExamUtils'
 import { generateRandomId } from '../../../utils/StringUtils'
 import { CorrectionBadge } from './CorrectionBadge'
 import { IsCorrectAnswerRadio } from './IsCorrectAnswerRadio'
@@ -14,8 +14,6 @@ interface Props {
   questionPoolIndex: number;
   updateFn: UseFieldArrayUpdate<ExamCorrection, 'questionPools'>
 }
-
-const alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
 export const ExamAttemptQuestionPoolAnswers = ({ questionPoolIndex, questionPool, answers, updateFn }: Props) => {
   const [value, setValue] = useState<number | undefined>(undefined)
@@ -55,15 +53,13 @@ export const ExamAttemptQuestionPoolAnswers = ({ questionPoolIndex, questionPool
             {answerType === AnswerType.MultipleChoice && (
               <>
                 {question.options?.map((option, optionIndex) => (
-                  <>
-                    <Box key={option.id}>
-                      <Text fontWeight={option.isCorrectOption ? 'bold' : 'normal'}>
-                        {alphabet[optionIndex]}.{option.label}
-                        {option.isCorrectOption && alphabet[optionIndex] === answer ? ' ✅' : ''}
-                        {isSomeCorrectAnswer && !option.isCorrectOption && alphabet[optionIndex].toLocaleLowerCase() === answer && ' ❌'}
-                      </Text>
-                    </Box>
-                  </>
+                  <Box key={option.id}>
+                    <Text fontWeight={option.isCorrectOption ? 'bold' : 'normal'}>
+                      {alphabet[optionIndex]}.{option.label}
+                      {option.isCorrectOption && alphabet[optionIndex] === answer ? ' ✅' : ''}
+                      {isSomeCorrectAnswer && !option.isCorrectOption && alphabet[optionIndex].toLocaleLowerCase() === answer && ' ❌'}
+                    </Text>
+                  </Box>
                 ))}
                 {(!isSomeCorrectAnswer || question.correction) && (
                   <>

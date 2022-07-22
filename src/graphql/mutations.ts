@@ -310,9 +310,12 @@ export const createExamAttempt = /* GraphQL */ `
       score
       isCompleted
       correctAnswers
+      totalQuestions
       correctedBy
       externalId
       results
+      keys
+      teacherComments
       createdAt
       updatedAt
       owner
@@ -333,9 +336,12 @@ export const updateExamAttempt = /* GraphQL */ `
       score
       isCompleted
       correctAnswers
+      totalQuestions
       correctedBy
       externalId
       results
+      keys
+      teacherComments
       createdAt
       updatedAt
       owner
@@ -356,9 +362,12 @@ export const deleteExamAttempt = /* GraphQL */ `
       score
       isCompleted
       correctAnswers
+      totalQuestions
       correctedBy
       externalId
       results
+      keys
+      teacherComments
       createdAt
       updatedAt
       owner

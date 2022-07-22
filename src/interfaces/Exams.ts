@@ -62,6 +62,12 @@ export interface QuestionPool {
 
 export interface ExamCorrection {
   questionPools: QuestionPool[]
+  teacherComment: string
+  correctAnswers: number
+  pendingAnswers: number
+  totalQuestions: number
+  correctedBy: string
+  score: number
 }
 
 export type TimerType = 'question' | 'global'
@@ -103,5 +109,6 @@ export interface ExamKeys {
 export enum ExamAttemptFilter {
   ALL = 'all',
   COMPLETED = 'completed',
-  NOT_COMPLETED = 'notCompleted'
+  NOT_COMPLETED = 'notCompleted',
+  NOT_CORRECTED = 'notCorrected'
 }

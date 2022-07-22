@@ -1,9 +1,13 @@
 import dayjs from 'dayjs'
 import { Course, ExamAttempt, GetExamQuery } from '../API'
 import { defaultExamTimerOptions } from '../constants/Exams'
+import { TranslationsDictionary } from '../dictionaries/dictionary'
 import { AnswerType, ExamAnswers, ExamAttemptFilter, ExamForm, ExamKeys, Options, Question, QuestionPool, TimerType } from '../interfaces/Exams'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
+import { BadgeColors } from '../views/exams/exampAttempt/CorrectionBadge'
 import { transformGroups } from './CourseUtils'
+
+export const alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
 // Check that any of questions and options inside the questions pools in Exam Form are empty
 export const existEmptyFields = (examForm: ExamForm): boolean => {
@@ -98,7 +102,6 @@ export const calculateNumberOfCorrectAnswers = (questionPools: QuestionPool[], a
       totalQuestions++
 
       if (question.answerType === AnswerType.MultipleChoice) {
-        const alphabet = 'abcdefghijklmnopqrstuvwxyz'
         const correctAnswer = question.options?.some((option, optionIndex) => option.isCorrectOption && alphabet[optionIndex] === answer)
         if (correctAnswer) {
           correctAnswers++
@@ -117,8 +120,6 @@ export const calculateNumberOfCorrectAnswers = (questionPools: QuestionPool[], a
 
   return { totalQuestions, correctAnswers, totalPendingQuestions }
 }
-
-export const alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
 export const manualTextCorrection = (questionPool: QuestionPool, questionIndex: number, isCorrectAnswer: boolean) => {
   // Deep clone the question pool
@@ -171,7 +172,8 @@ export const groupExamAttemptsByName = (examAttempts: ExamAttempt[]) => {
 }
 
 export const applyNameFilter = (examAttempts: ExamAttempt[], nameFilter: string) => {
-  if (nameFilter === ExamAttemptFilter.ALL) {
+  console.log('applyNameFilter', nameFilter)
+  if (nameFilter === ExamAttemptFilter.ALL || nameFilter === '') {
     return examAttempts
   }
 
@@ -185,8 +187,44 @@ export const applyStatusFilter = (examAttempts: ExamAttempt[], status: ExamAttem
         return examAttempt.isCompleted
       case ExamAttemptFilter.NOT_COMPLETED:
         return !examAttempt.isCompleted
+      case ExamAttemptFilter.NOT_CORRECTED:
+        return !examAttempt.correctedBy && examAttempt.isCompleted
       default:
         return true
     }
   })
+}
+
+export const applyStudentFilter = (examAttempts: ExamAttempt[], studentFilter: string) => {
+  return examAttempts.filter(examAttempt => examAttempt.userName?.toLowerCase().trim().includes(studentFilter.toLowerCase().trim()))
+}
+
+export const isPendingCorrectionInQuestionPool = (questionPool: QuestionPool) => {
+  let color: BadgeColors | undefined
+  let text: TranslationsDictionary
+
+  const isAllAutomaticCorrection = questionPool.questions.every(question => {
+    return question.options?.some(option => option.isCorrectOption)
+  })
+
+  const isPendingCorrectionInQuestionPool = questionPool.questions.some(question => {
+    if (question.answerType === AnswerType.MultipleChoice) {
+      return !question.options?.some(option => option.isCorrectOption)
+    } else {
+      return !question.correction?.manualCorrection
+    }
+  })
+
+  if (isAllAutomaticCorrection) {
+    color = BadgeColors.GREEN
+    text = 'WITH_SELF_CORRECTION'
+  } else if (isPendingCorrectionInQuestionPool) {
+    color = BadgeColors.RED
+    text = 'WITH_OUT_SELF_CORRECTION'
+  } else {
+    text = 'MANUAL_CORRECTION'
+    color = BadgeColors.ORANGE
+  }
+
+  return { isAllAutomaticCorrection, isPendingCorrectionInQuestionPool, color, text }
 }
