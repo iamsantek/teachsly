@@ -1,12 +1,13 @@
-import { Badge, HStack, Stack, Text } from '@chakra-ui/react'
+import { Badge, Button, HStack, Stack, Text } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { useCallback, useEffect, useState } from 'react'
+import { FormProvider, useForm, useFieldArray } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { Exam, ExamAttempt } from '../../../API'
 import { SectionHeader } from '../../../components/Headers/SectionHeader'
 import { ContentLinePlaceholder } from '../../../components/Placeholders/ContentLinePlaceholder'
 import { Placeholder } from '../../../components/Placeholders/Placeholder'
-import { QuestionPool } from '../../../interfaces/Exams'
+import { ExamCorrection, QuestionPool } from '../../../interfaces/Exams'
 import ExamService from '../../../services/ExamService'
 import { translate } from '../../../utils/LanguageUtils'
 import { ExamAttemptAnswers } from './ExamAttemptAnswers'
@@ -18,14 +19,26 @@ export const ExamAttemptDetail = () => {
   const { attemptId } = useParams()
   const [isLoading, setIsLoading] = useState(true)
 
+  const formControls = useForm<ExamCorrection>()
+  const { handleSubmit, control, reset, watch, setValue } = formControls
+  const { update } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormContext)
+    name: 'questionPools' // unique name for your Field Array
+  })
+
   const fetchExamInformation = useCallback(async () => {
     const examAttemptResponse = await ExamService.fetchExamAttemptsByAId(attemptId as string)
     const examResponse = await ExamService.getExamById(examAttemptResponse?.getExamAttempt?.examId as string)
+    const questionPools: QuestionPool[] = JSON.parse(examResponse?.getExam?.questionPools as string)
+
+    reset({
+      questionPools: questionPools
+    })
 
     setExam(examResponse?.getExam as Exam)
     setExamAttempt(examAttemptResponse?.getExamAttempt as ExamAttempt)
     setIsLoading(false)
-  }, [attemptId])
+  }, [attemptId, reset])
 
   useEffect(() => {
     fetchExamInformation()
@@ -43,7 +56,11 @@ export const ExamAttemptDetail = () => {
     )
   }
 
-  const questionPools: QuestionPool[] = JSON.parse(exam?.questionPools as string)
+  const saveResults = (values: ExamCorrection) => {
+    console.log(values)
+  }
+
+  const questionPools = watch('questionPools')
 
   return (
     <Stack>
@@ -56,8 +73,21 @@ export const ExamAttemptDetail = () => {
           <Text>{translate('STATUS')}</Text> <Badge textAlign={'center'} alignContent='center' alignItems='center' justifyContent='center' colorScheme={examAttempt?.isCompleted ? 'green' : 'red'}>{translate(examAttempt?.isCompleted ? 'FINISHED' : 'NOT_FINISHED')}</Badge>
         </HStack>
       </Stack>
-      <ExamAttemptAnswers questionPools={questionPools} attempt={examAttempt as ExamAttempt} />
-      <ExamAttemptCounters questionPools={questionPools} attempt={examAttempt as ExamAttempt} />
+      <FormProvider {...formControls}>
+        <form onSubmit={handleSubmit(saveResults)}>
+          <ExamAttemptAnswers
+          attempt={examAttempt as ExamAttempt}
+          updateFn={update}
+          />
+          <ExamAttemptCounters questionPools={questionPools} attempt={examAttempt as ExamAttempt} />
+          <Button
+            type='submit'
+            colorScheme='brand'
+          >
+            Enviar Nota
+          </Button>
+        </form>
+      </FormProvider>
     </Stack>
   )
 }

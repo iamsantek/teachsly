@@ -165,7 +165,7 @@ export enum LanguageES {
   STATUS='Estado',
   FINISHED='Completado',
   WITH_SELF_CORRECTION='Corrección automática',
-  WITH_OUT_SELF_CORRECTION='Sin corrección automática',
+  WITH_OUT_SELF_CORRECTION='Corrección manual pendiente',
   WORDS_COUNT='Número de palabras',
   YES='Sí',
   NO='No',
@@ -178,6 +178,7 @@ export enum LanguageES {
   EXAM_ATTEMPT_DELETED_ERROR='Hubo un error al eliminar el intento de examen. Por favor, intentar nuevamente.',
   DELETE_EXAM_ATTEMPT_CONFIRMATION_TITLE='Eliminar intento de examen',
   DELETE_EXAM_ATTEMPT_CONFIRMATION_DESCRIPTION='Al eliminar el intento de examen, el alumno podrá volver a realizarlo.',
+  MANUAL_CORRECTION='Corrección manual realizada',
 }
 
 export enum LanguageEN {
@@ -355,4 +356,5 @@ export enum LanguageEN {
   EXAM_ATTEMPT_DELETED_ERROR='An error has occurred when deleting the exam attempt. Please try again.',
   DELETE_EXAM_ATTEMPT_CONFIRMATION_TITLE='Delete exam attempt',
   DELETE_EXAM_ATTEMPT_CONFIRMATION_DESCRIPTION='Delete exam attempt, the user will  be able to retake the exam.',
+  MANUAL_CORRECTION='Manual correction',
 }

@@ -1,8 +1,7 @@
 import { Stack, Text } from '@chakra-ui/react'
 import { ExamAttempt } from '../../../API'
 import { QuestionPool } from '../../../interfaces/Exams'
-import { sumNumberOfCorrectAnswers } from '../../../utils/ExamUtils'
-import { translate } from '../../../utils/LanguageUtils'
+import { calculateNumberOfCorrectAnswers } from '../../../utils/ExamUtils'
 
 interface Props {
   questionPools: QuestionPool[];
@@ -10,10 +9,17 @@ interface Props {
 }
 
 export const ExamAttemptCounters = ({ questionPools, attempt }: Props) => {
-  const { correctAnswers, totalQuestions } = sumNumberOfCorrectAnswers(questionPools, attempt as ExamAttempt)
+  const { totalPendingQuestions, totalQuestions, correctAnswers } = calculateNumberOfCorrectAnswers(questionPools, attempt)
+
+  const percentage = ((correctAnswers / totalQuestions) * 100).toFixed(2)
+
   return (
     <Stack>
-      <Text>{translate('NUMBER_OF_CORRECT_ANSWERS')} {correctAnswers}/{totalQuestions}</Text>
+      <Text>Numero de respuestas correctas: {correctAnswers}</Text>
+      <Text>Numero de preguntas sin corregir: {totalPendingQuestions}</Text>
+      <Text>Numero total de preguntas: {totalQuestions}</Text>
+      <Text>% de preguntas correctas: {percentage}%</Text>
+
     </Stack>
   )
 }

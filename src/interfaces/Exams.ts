@@ -16,6 +16,11 @@ export enum QuestionType {
   AUDIO
 }
 
+export interface QuestionCorrection {
+  manualCorrection: boolean | undefined
+  isCorrectAnswer?: boolean | undefined
+}
+
 export interface Question {
   id: string
   question: string
@@ -25,6 +30,7 @@ export interface Question {
   answerType: AnswerType
   attachedFile?: string
   source?: string
+  correction?: QuestionCorrection
 }
 
 export enum ExamAttachmentType {
@@ -52,6 +58,10 @@ export interface QuestionPool {
   exerciseDescription: string;
   questions: Question[]
   attachments: Attachment[]
+}
+
+export interface ExamCorrection {
+  questionPools: QuestionPool[]
 }
 
 export type TimerType = 'question' | 'global'

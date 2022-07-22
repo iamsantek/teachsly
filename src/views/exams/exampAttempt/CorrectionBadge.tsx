@@ -1,21 +1,35 @@
 import { Badge } from '@chakra-ui/react'
-import { AnswerType, Question } from '../../../interfaces/Exams'
+import { Question } from '../../../interfaces/Exams'
 import { translate } from '../../../utils/LanguageUtils'
 
 interface Props {
-    question: Question;
+  question: Question;
+}
+
+enum BadgeColors {
+  ORANGE = 'orange',
+  GREEN = 'green',
+  RED = 'red',
 }
 
 export const CorrectionBadge = ({ question }: Props) => {
-  if (question.answerType !== AnswerType.MultipleChoice) {
-    return null
-  }
-
   const withSelfCorrection = question.options?.some(option => option.isCorrectOption)
 
+  const badgeColor = () => {
+    if (question.correction?.manualCorrection) {
+      return BadgeColors.ORANGE
+    }
+
+    if (withSelfCorrection) {
+      return BadgeColors.GREEN
+    }
+
+    return BadgeColors.RED
+  }
+
   return (
-        <Badge p={1} colorScheme={withSelfCorrection ? 'green' : 'red'} textAlign='center' alignContent='center' alignItems='center' justifyContent='center'>
-            {translate(withSelfCorrection ? 'WITH_SELF_CORRECTION' : 'WITH_OUT_SELF_CORRECTION')}
-        </Badge>
+    <Badge p={1} colorScheme={badgeColor()} textAlign='center' alignContent='center' alignItems='center' justifyContent='center'>
+      {translate(question.correction?.manualCorrection ? 'MANUAL_CORRECTION' : withSelfCorrection ? 'WITH_SELF_CORRECTION' : 'WITH_OUT_SELF_CORRECTION')}
+    </Badge>
   )
 }

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { Course, ExamAttempt, GetExamQuery } from '../API'
 import { defaultExamTimerOptions } from '../constants/Exams'
-import { AnswerType, ExamAnswers, ExamForm, ExamKeys, QuestionPool, TimerType } from '../interfaces/Exams'
+import { AnswerType, ExamAnswers, ExamAttemptFilter, ExamForm, ExamKeys, Options, Question, QuestionPool, TimerType } from '../interfaces/Exams'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import { transformGroups } from './CourseUtils'
 
@@ -83,22 +83,110 @@ export const formatExamFormForAPI = (exam: ExamForm): ExamForm => {
   }
 }
 
-export const sumNumberOfCorrectAnswers = (questionPools: QuestionPool[], attempt: ExamAttempt) => {
-  const answers = (JSON.parse(attempt.results as string) as ExamAnswers).answers as ExamKeys
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz'
-  let totalQuestions = 0
+// Calculate number of correct answers in the exam, counting Multiple Choice and TextArea questions
+export const calculateNumberOfCorrectAnswers = (questionPools: QuestionPool[], attempt: ExamAttempt) => {
+  let correctAnswers: number = 0
+  let totalQuestions: number = 0
+  let totalPendingQuestions: number = 0
 
-  const correctAnswers = questionPools.map((pool, questionPoolIndex) => {
-    return pool.questions.filter(question => question.answerType === AnswerType.MultipleChoice && question.options?.some(option => option.isCorrectOption)).map((question, questionIndex) => {
+  questionPools.forEach((questionPool, questionPoolIndex) => {
+    const totalQuestionPoolPendingQuestions = questionPool.questions.filter(question => question.answerType === AnswerType.MultipleChoice && !question.options?.some(option => option.isCorrectOption)).length
+    totalPendingQuestions = totalPendingQuestions + totalQuestionPoolPendingQuestions
+    questionPool.questions.forEach((question, questionIndex) => {
+      const answers = (JSON.parse(attempt.results as string) as ExamAnswers).answers as ExamKeys
       const answer = answers[questionPoolIndex][questionIndex]
       totalQuestions++
-      const correctAnswer = question.options?.some((option, optionIndex) => option.isCorrectOption && alphabet[optionIndex] === answer)
-      return correctAnswer ? 1 : 0
-    }).reduce((acc: number, curr: number) => acc + curr, 0)
-  }).reduce((acc: number, curr: number) => acc + curr, 0)
 
-  return {
-    totalQuestions,
-    correctAnswers
+      if (question.answerType === AnswerType.MultipleChoice) {
+        const alphabet = 'abcdefghijklmnopqrstuvwxyz'
+        const correctAnswer = question.options?.some((option, optionIndex) => option.isCorrectOption && alphabet[optionIndex] === answer)
+        if (correctAnswer) {
+          correctAnswers++
+        }
+      } else if (question.answerType === AnswerType.TextArea) {
+        if (question.correction?.isCorrectAnswer) {
+          correctAnswers++
+        } else if (!question.correction?.manualCorrection) {
+          console.log('PENDING TEXTAREA')
+          totalPendingQuestions++
+        }
+      }
+    }
+    )
+  })
+
+  return { totalQuestions, correctAnswers, totalPendingQuestions }
+}
+
+export const alphabet = 'abcdefghijklmnopqrstuvwxyz'
+
+export const manualTextCorrection = (questionPool: QuestionPool, questionIndex: number, isCorrectAnswer: boolean) => {
+  // Deep clone the question pool
+  const updatedQuestionPool: QuestionPool = JSON.parse(JSON.stringify(questionPool))
+  updatedQuestionPool.questions[questionIndex].correction = {
+    isCorrectAnswer,
+    manualCorrection: true
   }
+
+  return updatedQuestionPool
+}
+
+export const manualMultipleChoiceCorrection = (questionPool: QuestionPool, questionIndex: number, optionIndex: number) => ({
+  ...questionPool,
+  questions: questionPool.questions.map((question: Question, _questionIndex: number) => {
+    if (_questionIndex === questionIndex) {
+      return {
+        ...question,
+        options: question?.options?.map((option: Options, _optionIndex: number) => {
+          return ({
+            ...option,
+            isCorrectOption: _optionIndex === optionIndex
+          })
+        }),
+
+        correction: {
+          ...question.correction,
+          manualCorrection: true
+        }
+      }
+    }
+
+    return question
+  })
+})
+
+export const groupExamAttemptsByName = (examAttempts: ExamAttempt[]) => {
+  const sortedByName = examAttempts.sort((a, b) => a.examName.localeCompare(b.examName))
+  const examAttemptsByName: { [key: string]: ExamAttempt[] } = {}
+  sortedByName.forEach(attempt => {
+    const { examName } = attempt
+    if (!examAttemptsByName[examName]) {
+      examAttemptsByName[examName] = []
+    }
+
+    examAttemptsByName[examName].push(attempt)
+  })
+
+  return examAttemptsByName
+}
+
+export const applyNameFilter = (examAttempts: ExamAttempt[], nameFilter: string) => {
+  if (nameFilter === ExamAttemptFilter.ALL) {
+    return examAttempts
+  }
+
+  return examAttempts.filter(examAttempt => examAttempt.examName === nameFilter)
+}
+
+export const applyStatusFilter = (examAttempts: ExamAttempt[], status: ExamAttemptFilter) => {
+  return examAttempts.filter(examAttempt => {
+    switch (status) {
+      case ExamAttemptFilter.COMPLETED:
+        return examAttempt.isCompleted
+      case ExamAttemptFilter.NOT_COMPLETED:
+        return !examAttempt.isCompleted
+      default:
+        return true
+    }
+  })
 }
