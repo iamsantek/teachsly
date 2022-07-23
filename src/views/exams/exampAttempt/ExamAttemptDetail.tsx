@@ -100,8 +100,6 @@ export const ExamAttemptDetail = () => {
   const questionPools = watch('questionPools')
   const answers = examAttempt?.results ? JSON.parse(examAttempt?.results as string) : []
 
-  console.log(answers)
-  console.log(!!examAttempt?.correctedBy)
   if (examAttempt?.correctedBy) {
     return <ExamCompleteResult questionPools={questionPools} studentAnswers={answers} examAttempt={examAttempt} />
   }

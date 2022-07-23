@@ -62,7 +62,6 @@ const UserList = ({
   }, [loggedUser, courseId, listType])
 
   useEffect(() => {
-    console.log(listType)
     fetchUsers()
   }, [listType, fetchUsers])
 

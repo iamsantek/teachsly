@@ -197,6 +197,9 @@ export enum LanguageES {
   REALIZED_BY= 'Realizado por',
   OUTDATED = 'Pasados',
   PENDING= 'Pendientes',
+  LEVEL= 'Nivel',
+  NOT_DEFINED= 'No definido',
+  ALL_COURSES= 'Todos los cursos',
 }
 
 export enum LanguageEN {
@@ -393,4 +396,7 @@ export enum LanguageEN {
   REALIZED_BY = 'Realized by',
   OUTDATED= 'Outdated',
   PENDING= 'Pending',
+  LEVEL= 'Level',
+  NOT_DEFINED= 'Not defined',
+  ALL_COURSES = 'All courses',
 }

@@ -14,6 +14,7 @@ export const getCourse = /* GraphQL */ `
       isActive
       externalId
       scheduleYear
+      englishLevel
       createdAt
       updatedAt
     }
@@ -36,6 +37,7 @@ export const listCourses = /* GraphQL */ `
         isActive
         externalId
         scheduleYear
+        englishLevel
         createdAt
         updatedAt
       }
@@ -130,6 +132,7 @@ export const getUser = /* GraphQL */ `
       groups
       isDisabledUser
       disabledReason
+      englishLevel
       createdAt
       updatedAt
     }
@@ -151,6 +154,7 @@ export const listUsers = /* GraphQL */ `
         groups
         isDisabledUser
         disabledReason
+        englishLevel
         createdAt
         updatedAt
       }
@@ -171,6 +175,7 @@ export const getExam = /* GraphQL */ `
       }
       deadline
       startDate
+      type
       createdAt
       updatedAt
       owner
@@ -191,6 +196,7 @@ export const listExams = /* GraphQL */ `
         questionPools
         deadline
         startDate
+        type
         createdAt
         updatedAt
         owner
@@ -216,6 +222,7 @@ export const getExamAttempt = /* GraphQL */ `
       results
       keys
       teacherComments
+      type
       createdAt
       updatedAt
       owner
@@ -244,6 +251,7 @@ export const listExamAttempts = /* GraphQL */ `
         results
         keys
         teacherComments
+        type
         createdAt
         updatedAt
         owner
@@ -282,6 +290,7 @@ export const examAttemptByExternalId = /* GraphQL */ `
         results
         keys
         teacherComments
+        type
         createdAt
         updatedAt
         owner

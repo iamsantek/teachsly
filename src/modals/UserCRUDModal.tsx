@@ -29,6 +29,8 @@ import { ConfirmationDialog } from '../components/AlertDialog/ConfirmationDialog
 import { AiFillCheckCircle } from 'react-icons/ai'
 import { renderCourseList, transformGroups } from '../utils/CourseUtils'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
+import { mapSingleValueToMultiSelectOption, renderEnglishLevelOptions } from '../utils/SelectUtils'
+import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 
 interface Props {
   isOpen: boolean;
@@ -41,12 +43,16 @@ interface Props {
 
 function formatUser (user: UserWithMultiSelect) {
   const groupsArray = user?.groups?.map((group) => group.value)
+  const englishLevel = (user.englishLevel as MultiSelectOption).value
 
   return {
     ...user,
-    groups: groupsArray as string[]
+    groups: groupsArray as string[],
+    englishLevel
   } as CreateUserInput | UpdateUserInput
 }
+
+const englishLevels = renderEnglishLevelOptions()
 
 const UserCRUDModal = ({
   isOpen,
@@ -85,11 +91,15 @@ const UserCRUDModal = ({
     }
 
     const mappedValues = transformGroups(courses, userToUpdate.groups)
+    const englishLevel = mapSingleValueToMultiSelectOption(userToUpdate.englishLevel || '')
 
     const user: UserWithMultiSelect = {
       ...userToUpdate,
-      groups: mappedValues
+      groups: mappedValues,
+      englishLevel
     }
+
+    console.log({ user })
 
     reset(user)
   }, [userToUpdate])
@@ -102,6 +112,7 @@ const UserCRUDModal = ({
 
   const createUser = async (user: UserWithMultiSelect) => {
     const formattedUser = formatUser(user) as CreateUserInput
+
     const createdUser = await UserService.createUser(formattedUser, userType)
 
     if (createdUser) {
@@ -127,8 +138,10 @@ const UserCRUDModal = ({
       return
     }
 
-    const shouldUpdateGroups = Object.keys(dirtyFields).includes('groups')
-    const updateUserResponse = await UserService.updateUser(user, shouldUpdateGroups, userToUpdate?.groups as string[])
+    // Check if dirtyField contains the property groups or englishLevel to update Cognito Groups
+    const shouldUpdateGroups = updatedFields.some(field => field === 'groups' || field === 'englishLevel')
+    const currentGroups = [...userToUpdate?.groups as string[], userToUpdate?.englishLevel as string]
+    const updateUserResponse = await UserService.updateUser(user, shouldUpdateGroups, currentGroups)
 
     if (updateUserResponse) {
       onUpdate(updateUserResponse.updateUser as User)
@@ -229,6 +242,16 @@ const UserCRUDModal = ({
                     type='tel'
                     placeholder={translate('PHONE_NUMBER')}
                     bottomNote={translate('PHONE_NUMBER_HELPER_TEXT')}
+                  />
+
+                  <Select
+                    name="englishLevel"
+                    label="LEVEL"
+                    isRequired={true}
+                    placeholder={translate('LEVEL')}
+                    options={englishLevels}
+                    isMultiSelect={false}
+                    closeMenuOnSelect={true}
                   />
 
                   <Select

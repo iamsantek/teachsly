@@ -81,7 +81,7 @@ class UserService {
   }
 
   private updateUserGroups = async (email: string, updatedGroups: string[], previousGroups: string[]) => {
-    const deletedGroups = previousGroups.filter(x => !updatedGroups.includes(x))
+    const deletedGroups = previousGroups.filter(x => !updatedGroups.includes(x)).filter(x => x)
 
     const deleteUserFromGroups = CognitoService.deleteUserFromGroups(
       email,
@@ -101,7 +101,7 @@ class UserService {
       if (shouldUpdateGroups) {
         const updateUserGroups = await this.updateUserGroups(
           user.email as string,
-          user.groups as string[],
+          [...user.groups as string[], user.englishLevel as string],
           previousGroups
         )
 

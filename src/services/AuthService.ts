@@ -39,10 +39,12 @@ class AuthService {
         updatedUser,
         userId
       )
+
+      const groups = updatedUser.englishLevel ? [...updatedUser.groups, updatedUser.englishLevel] : updatedUser.groups
       const assignUserToCognitoGroupResponse =
         await CognitoService.assignUserToCognitoGroup(
           userId || '',
-          updatedUser.groups as string[]
+          groups
         )
 
       if (!assignUserToCognitoGroupResponse || !createDynamoDBUserResponse) {

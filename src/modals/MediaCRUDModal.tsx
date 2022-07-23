@@ -254,7 +254,7 @@ const MediaCRUDModal = ({
                     label="GROUP_MULTI_SELECT_TITLE"
                     isRequired={true}
                     placeholder={translate('DESCRIPTION')}
-                    options={renderCourseList(courses, generalGroups)}
+                    options={renderCourseList(courses, generalGroups, true)}
                     isMultiSelect
                     closeMenuOnSelect={true}
                     isDisabled={!!folderId}

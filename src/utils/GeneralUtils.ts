@@ -1,3 +1,4 @@
+import { EnglishLevel } from '../API'
 import { UserTypes } from '../enums/UserTypes'
 
 export const findAndUpdateContent = <T extends { id: string }>(
@@ -12,7 +13,7 @@ export const findAndUpdateContent = <T extends { id: string }>(
   return contents
 }
 
-export const findMatch = <T extends { groups?: string[]}>(models: T[] | undefined | null, userGroups: string[], userType: UserTypes) => {
-  const userGroupsWithType = [...userGroups, userType]
+export const findMatch = <T extends { groups?: string[]}>(models: T[] | undefined | null, userGroups: string[], userType: UserTypes, englishLevel: EnglishLevel | undefined) => {
+  const userGroupsWithType = [...userGroups, userType, englishLevel]
   return models?.filter(model => (model.groups as string[]).filter(group => userGroupsWithType.includes(group)).length > 0)
 }

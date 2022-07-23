@@ -43,8 +43,6 @@ class CognitoService {
             }
           })
         })
-
-        console.log('Client created')
       } else if (error) {
         Logger.log(
           LogLevel.ERROR,
@@ -212,7 +210,6 @@ class CognitoService {
   }
 
   public parseCognitoUser = (attributes: AttributeType[] | undefined) => {
-    console.log('parseCognitoUser')
     const userId = attributes?.find(
       (attribute) => attribute.Name === 'sub'
     )?.Value

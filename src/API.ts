@@ -12,7 +12,18 @@ export type CreateCourseInput = {
   isActive?: boolean | null,
   externalId: string,
   scheduleYear: number,
+  englishLevel?: EnglishLevel | null,
 };
+
+export enum EnglishLevel {
+  STARTER = "STARTER",
+  ELEMENTARY = "ELEMENTARY",
+  PRE_INTERMEDIATE = "PRE_INTERMEDIATE",
+  INTERMEDIATE = "INTERMEDIATE",
+  UPPER_INTERMEDIATE = "UPPER_INTERMEDIATE",
+  ADVANCED = "ADVANCED",
+}
+
 
 export type ModelCourseConditionInput = {
   name?: ModelStringInput | null,
@@ -23,6 +34,7 @@ export type ModelCourseConditionInput = {
   isActive?: ModelBooleanInput | null,
   externalId?: ModelStringInput | null,
   scheduleYear?: ModelIntInput | null,
+  englishLevel?: ModelEnglishLevelInput | null,
   and?: Array< ModelCourseConditionInput | null > | null,
   or?: Array< ModelCourseConditionInput | null > | null,
   not?: ModelCourseConditionInput | null,
@@ -87,6 +99,11 @@ export type ModelBooleanInput = {
   attributeType?: ModelAttributeTypes | null,
 };
 
+export type ModelEnglishLevelInput = {
+  eq?: EnglishLevel | null,
+  ne?: EnglishLevel | null,
+};
+
 export type Course = {
   __typename: "Course",
   id: string,
@@ -98,6 +115,7 @@ export type Course = {
   isActive?: boolean | null,
   externalId: string,
   scheduleYear: number,
+  englishLevel?: EnglishLevel | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -112,6 +130,7 @@ export type UpdateCourseInput = {
   isActive?: boolean | null,
   externalId?: string | null,
   scheduleYear?: number | null,
+  englishLevel?: EnglishLevel | null,
 };
 
 export type DeleteCourseInput = {
@@ -234,6 +253,7 @@ export type CreateUserInput = {
   groups: Array< string >,
   isDisabledUser?: boolean | null,
   disabledReason?: DisabledAccountReasons | null,
+  englishLevel?: EnglishLevel | null,
 };
 
 export enum DisabledAccountReasons {
@@ -250,6 +270,7 @@ export type ModelUserConditionInput = {
   groups?: ModelStringInput | null,
   isDisabledUser?: ModelBooleanInput | null,
   disabledReason?: ModelDisabledAccountReasonsInput | null,
+  englishLevel?: ModelEnglishLevelInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
@@ -286,6 +307,7 @@ export type User = {
   groups: Array< string >,
   isDisabledUser?: boolean | null,
   disabledReason?: DisabledAccountReasons | null,
+  englishLevel?: EnglishLevel | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -299,6 +321,7 @@ export type UpdateUserInput = {
   groups?: Array< string > | null,
   isDisabledUser?: boolean | null,
   disabledReason?: DisabledAccountReasons | null,
+  englishLevel?: EnglishLevel | null,
 };
 
 export type DeleteUserInput = {
@@ -313,6 +336,7 @@ export type CreateExamInput = {
   timer: TimerInput,
   deadline: string,
   startDate: string,
+  type?: ExamType | null,
 };
 
 export type TimerInput = {
@@ -320,15 +344,27 @@ export type TimerInput = {
   timeInSeconds: number,
 };
 
+export enum ExamType {
+  EXAM = "EXAM",
+  HOMEWORK = "HOMEWORK",
+}
+
+
 export type ModelExamConditionInput = {
   groups?: ModelStringInput | null,
   title?: ModelStringInput | null,
   questionPools?: ModelStringInput | null,
   deadline?: ModelStringInput | null,
   startDate?: ModelStringInput | null,
+  type?: ModelExamTypeInput | null,
   and?: Array< ModelExamConditionInput | null > | null,
   or?: Array< ModelExamConditionInput | null > | null,
   not?: ModelExamConditionInput | null,
+};
+
+export type ModelExamTypeInput = {
+  eq?: ExamType | null,
+  ne?: ExamType | null,
 };
 
 export type Exam = {
@@ -340,6 +376,7 @@ export type Exam = {
   timer: Timer,
   deadline: string,
   startDate: string,
+  type?: ExamType | null,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -359,6 +396,7 @@ export type UpdateExamInput = {
   timer?: TimerInput | null,
   deadline?: string | null,
   startDate?: string | null,
+  type?: ExamType | null,
 };
 
 export type DeleteExamInput = {
@@ -380,6 +418,7 @@ export type CreateExamAttemptInput = {
   results?: string | null,
   keys?: string | null,
   teacherComments?: string | null,
+  type?: ExamType | null,
 };
 
 export type ModelExamAttemptConditionInput = {
@@ -396,6 +435,7 @@ export type ModelExamAttemptConditionInput = {
   results?: ModelStringInput | null,
   keys?: ModelStringInput | null,
   teacherComments?: ModelStringInput | null,
+  type?: ModelExamTypeInput | null,
   and?: Array< ModelExamAttemptConditionInput | null > | null,
   or?: Array< ModelExamAttemptConditionInput | null > | null,
   not?: ModelExamAttemptConditionInput | null,
@@ -417,6 +457,7 @@ export type ExamAttempt = {
   results?: string | null,
   keys?: string | null,
   teacherComments?: string | null,
+  type?: ExamType | null,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -437,6 +478,7 @@ export type UpdateExamAttemptInput = {
   results?: string | null,
   keys?: string | null,
   teacherComments?: string | null,
+  type?: ExamType | null,
 };
 
 export type DeleteExamAttemptInput = {
@@ -453,6 +495,7 @@ export type ModelCourseFilterInput = {
   isActive?: ModelBooleanInput | null,
   externalId?: ModelStringInput | null,
   scheduleYear?: ModelIntInput | null,
+  englishLevel?: ModelEnglishLevelInput | null,
   and?: Array< ModelCourseFilterInput | null > | null,
   or?: Array< ModelCourseFilterInput | null > | null,
   not?: ModelCourseFilterInput | null,
@@ -510,6 +553,7 @@ export type ModelUserFilterInput = {
   groups?: ModelStringInput | null,
   isDisabledUser?: ModelBooleanInput | null,
   disabledReason?: ModelDisabledAccountReasonsInput | null,
+  englishLevel?: ModelEnglishLevelInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
@@ -528,6 +572,7 @@ export type ModelExamFilterInput = {
   questionPools?: ModelStringInput | null,
   deadline?: ModelStringInput | null,
   startDate?: ModelStringInput | null,
+  type?: ModelExamTypeInput | null,
   and?: Array< ModelExamFilterInput | null > | null,
   or?: Array< ModelExamFilterInput | null > | null,
   not?: ModelExamFilterInput | null,
@@ -554,6 +599,7 @@ export type ModelExamAttemptFilterInput = {
   results?: ModelStringInput | null,
   keys?: ModelStringInput | null,
   teacherComments?: ModelStringInput | null,
+  type?: ModelExamTypeInput | null,
   and?: Array< ModelExamAttemptFilterInput | null > | null,
   or?: Array< ModelExamAttemptFilterInput | null > | null,
   not?: ModelExamAttemptFilterInput | null,
@@ -588,6 +634,7 @@ export type CreateCourseMutation = {
     isActive?: boolean | null,
     externalId: string,
     scheduleYear: number,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -610,6 +657,7 @@ export type UpdateCourseMutation = {
     isActive?: boolean | null,
     externalId: string,
     scheduleYear: number,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -632,6 +680,7 @@ export type DeleteCourseMutation = {
     isActive?: boolean | null,
     externalId: string,
     scheduleYear: number,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -776,6 +825,7 @@ export type CreateUserMutation = {
     groups: Array< string >,
     isDisabledUser?: boolean | null,
     disabledReason?: DisabledAccountReasons | null,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -797,6 +847,7 @@ export type UpdateUserMutation = {
     groups: Array< string >,
     isDisabledUser?: boolean | null,
     disabledReason?: DisabledAccountReasons | null,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -818,6 +869,7 @@ export type DeleteUserMutation = {
     groups: Array< string >,
     isDisabledUser?: boolean | null,
     disabledReason?: DisabledAccountReasons | null,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -842,6 +894,7 @@ export type CreateExamMutation = {
     },
     deadline: string,
     startDate: string,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -867,6 +920,7 @@ export type UpdateExamMutation = {
     },
     deadline: string,
     startDate: string,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -892,6 +946,7 @@ export type DeleteExamMutation = {
     },
     deadline: string,
     startDate: string,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -920,6 +975,7 @@ export type CreateExamAttemptMutation = {
     results?: string | null,
     keys?: string | null,
     teacherComments?: string | null,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -948,6 +1004,7 @@ export type UpdateExamAttemptMutation = {
     results?: string | null,
     keys?: string | null,
     teacherComments?: string | null,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -976,6 +1033,7 @@ export type DeleteExamAttemptMutation = {
     results?: string | null,
     keys?: string | null,
     teacherComments?: string | null,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -998,6 +1056,7 @@ export type GetCourseQuery = {
     isActive?: boolean | null,
     externalId: string,
     scheduleYear: number,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1023,6 +1082,7 @@ export type ListCoursesQuery = {
       isActive?: boolean | null,
       externalId: string,
       scheduleYear: number,
+      englishLevel?: EnglishLevel | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -1135,6 +1195,7 @@ export type GetUserQuery = {
     groups: Array< string >,
     isDisabledUser?: boolean | null,
     disabledReason?: DisabledAccountReasons | null,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1159,6 +1220,7 @@ export type ListUsersQuery = {
       groups: Array< string >,
       isDisabledUser?: boolean | null,
       disabledReason?: DisabledAccountReasons | null,
+      englishLevel?: EnglishLevel | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -1184,6 +1246,7 @@ export type GetExamQuery = {
     },
     deadline: string,
     startDate: string,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1207,6 +1270,7 @@ export type ListExamsQuery = {
       questionPools: string,
       deadline: string,
       startDate: string,
+      type?: ExamType | null,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1236,6 +1300,7 @@ export type GetExamAttemptQuery = {
     results?: string | null,
     keys?: string | null,
     teacherComments?: string | null,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1267,6 +1332,7 @@ export type ListExamAttemptsQuery = {
       results?: string | null,
       keys?: string | null,
       teacherComments?: string | null,
+      type?: ExamType | null,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1302,6 +1368,7 @@ export type ExamAttemptByExternalIdQuery = {
       results?: string | null,
       keys?: string | null,
       teacherComments?: string | null,
+      type?: ExamType | null,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1322,6 +1389,7 @@ export type OnCreateCourseSubscription = {
     isActive?: boolean | null,
     externalId: string,
     scheduleYear: number,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1339,6 +1407,7 @@ export type OnUpdateCourseSubscription = {
     isActive?: boolean | null,
     externalId: string,
     scheduleYear: number,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1356,6 +1425,7 @@ export type OnDeleteCourseSubscription = {
     isActive?: boolean | null,
     externalId: string,
     scheduleYear: number,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1489,6 +1559,7 @@ export type OnCreateUserSubscription = {
     groups: Array< string >,
     isDisabledUser?: boolean | null,
     disabledReason?: DisabledAccountReasons | null,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1505,6 +1576,7 @@ export type OnUpdateUserSubscription = {
     groups: Array< string >,
     isDisabledUser?: boolean | null,
     disabledReason?: DisabledAccountReasons | null,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1521,6 +1593,7 @@ export type OnDeleteUserSubscription = {
     groups: Array< string >,
     isDisabledUser?: boolean | null,
     disabledReason?: DisabledAccountReasons | null,
+    englishLevel?: EnglishLevel | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1544,6 +1617,7 @@ export type OnCreateExamSubscription = {
     },
     deadline: string,
     startDate: string,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1568,6 +1642,7 @@ export type OnUpdateExamSubscription = {
     },
     deadline: string,
     startDate: string,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1592,6 +1667,7 @@ export type OnDeleteExamSubscription = {
     },
     deadline: string,
     startDate: string,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1619,6 +1695,7 @@ export type OnCreateExamAttemptSubscription = {
     results?: string | null,
     keys?: string | null,
     teacherComments?: string | null,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1646,6 +1723,7 @@ export type OnUpdateExamAttemptSubscription = {
     results?: string | null,
     keys?: string | null,
     teacherComments?: string | null,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1673,6 +1751,7 @@ export type OnDeleteExamAttemptSubscription = {
     results?: string | null,
     keys?: string | null,
     teacherComments?: string | null,
+    type?: ExamType | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,

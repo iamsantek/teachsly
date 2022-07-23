@@ -1,12 +1,13 @@
-import { Course, CreateCourseInput } from '../API'
+import { Course, CreateCourseInput, EnglishLevel } from '../API'
 import { UserTypes } from '../enums/UserTypes'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import DateTimeUtils, { TimeFormats } from './DateTimeUtils'
 import { translate } from './LanguageUtils'
+import { capitalize } from './StringUtils'
 
 export const generateExternalId = (course: CreateCourseInput | Course) => `${course.name.replace(/\s+/g, '')}${course.scheduleYear}`
 
-export const renderCourseList = (courses: Course[], additionalGroups?: string[]): MultiSelectOption[] => {
+export const renderCourseList = (courses: Course[], additionalGroups?: string[], includeEnglishLevels = false): MultiSelectOption[] => {
   const groupList = courses.map(course => {
     const dates = DateTimeUtils.shortDays(course.scheduleDates as number[])
     const startTime = DateTimeUtils.formateHour(course.scheduleStartTime, TimeFormats.TwentyFourHours)
@@ -25,7 +26,18 @@ export const renderCourseList = (courses: Course[], additionalGroups?: string[])
     colorScheme: 'brand'
   }))
 
-  return [...groupList, ...additionalGroupsAdded || []]
+  const englishLevels: MultiSelectOption[] = []
+  if (includeEnglishLevels) {
+    Object.values(EnglishLevel).forEach((level) => {
+      englishLevels.push({
+        label: `${capitalize(level)} (${translate('ALL_COURSES')}) `,
+        value: level,
+        colorScheme: 'red'
+      })
+    })
+  }
+
+  return [...groupList, ...additionalGroupsAdded || [], ...englishLevels]
 }
 
 export const transformGroups = (courses: Course[], selectedGroups: string[]) => {
@@ -40,12 +52,13 @@ export const groupsToString = (courses: Course[], groups: string[] | undefined, 
     return []
   }
 
+  let userTypes: UserTypes[] = []
+  const englishLevels = Object.values(EnglishLevel).filter(group => groups.includes(group)).map(level => capitalize(level))
   const groupNames = courses.filter(course => groups.includes(course.externalId)).map(course2 => course2.name)
 
   if (shouldIncludeUserTypes) {
-    const userTypes = Object.values(UserTypes).filter(userType => groups.includes(userType))
-    return groupNames.concat(userTypes)
+    userTypes = Object.values(UserTypes).filter(userType => groups.includes(userType))
   }
 
-  return groupNames
+  return [...groupNames, ...userTypes, ...englishLevels]
 }

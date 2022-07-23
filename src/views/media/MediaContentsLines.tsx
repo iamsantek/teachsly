@@ -1,12 +1,11 @@
 import { Box } from '@chakra-ui/react'
-import { Media, MediaType } from '../../API'
+import { EnglishLevel, Media, MediaType } from '../../API'
 import { ContentLine } from '../../components/ContentLine/ContentLine'
 import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
 import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPlaceholder'
 import { CommonContentLineTitle } from './CommonContentLineTitle'
 import { useContext } from 'react'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
-import { isAdmin } from '../../utils/CognitoGroupsUtils'
 import { Placeholder } from '../../components/Placeholders/Placeholder'
 import { getFileTypeIcon } from '../../utils/MediaUtils'
 import { findMatch } from '../../utils/GeneralUtils'
@@ -23,11 +22,10 @@ interface Props {
 }
 
 export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelete, isLoading }: Props) => {
-  const { context: { user, externalUserId } } = useContext(UserDashboardContext)
-  const { groups, userType } = useUserGroups()
-  const hasAdminRole = isAdmin(user)
+  const { context: { externalUserId, user } } = useContext(UserDashboardContext)
+  const { groups, userType, hasAdminRole } = useUserGroups()
   const placeholderNumber = Math.floor(Math.random() * 10) + 1
-  const filterMedias = findMatch(medias, groups.map(group => group.externalId), userType)
+  const filterMedias = hasAdminRole ? medias : findMatch(medias, groups.map(group => group.externalId), userType, user?.englishLevel as EnglishLevel)
 
   return (
     <Box>

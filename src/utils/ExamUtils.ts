@@ -111,7 +111,6 @@ export const calculateNumberOfCorrectAnswers = (questionPools: QuestionPool[], a
         if (question.correction?.isCorrectAnswer) {
           correctAnswers++
         } else if (!question.correction?.manualCorrection) {
-          console.log('PENDING TEXTAREA')
           totalPendingQuestions++
         }
       }
@@ -173,7 +172,6 @@ export const groupExamAttemptsByName = (examAttempts: ExamAttempt[]) => {
 }
 
 export const applyNameFilter = (examAttempts: ExamAttempt[], nameFilter: string) => {
-  console.log('applyNameFilter', nameFilter)
   if (nameFilter === ExamAttemptFilter.ALL || nameFilter === '') {
     return examAttempts
   }
@@ -197,9 +195,6 @@ export const applyExamAttemptStatusFilter = (examAttempts: ExamAttempt[], status
 }
 
 export const applyExamStatusFilter = (exams: Exam[], examAttempts: ExamAttempt[], status: ExamFilter) => {
-  console.log('applyExamStatusFilter', status)
-  console.log(exams)
-  console.log(examAttempts)
   return exams.filter(exam => {
     switch (status) {
       case ExamFilter.OUTDATED:
@@ -209,7 +204,6 @@ export const applyExamStatusFilter = (exams: Exam[], examAttempts: ExamAttempt[]
       case ExamFilter.PENDING_CORRECTION:
         return examAttempts.some(attempt => attempt.examId === exam.id && !attempt.correctedBy)
       case ExamFilter.PENDING:
-        console.log(examAttempts.some(attempt => attempt.examId === exam.id && !attempt.isCompleted))
         return examAttempts.find(attempt => attempt.examId === exam.id) === undefined || examAttempts.some(attempt => attempt.examId === exam.id && !attempt.isCompleted)
       default:
         return true

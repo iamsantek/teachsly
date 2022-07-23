@@ -17,6 +17,7 @@ export const createCourse = /* GraphQL */ `
       isActive
       externalId
       scheduleYear
+      englishLevel
       createdAt
       updatedAt
     }
@@ -37,6 +38,7 @@ export const updateCourse = /* GraphQL */ `
       isActive
       externalId
       scheduleYear
+      englishLevel
       createdAt
       updatedAt
     }
@@ -57,6 +59,7 @@ export const deleteCourse = /* GraphQL */ `
       isActive
       externalId
       scheduleYear
+      englishLevel
       createdAt
       updatedAt
     }
@@ -187,6 +190,7 @@ export const createUser = /* GraphQL */ `
       groups
       isDisabledUser
       disabledReason
+      englishLevel
       createdAt
       updatedAt
     }
@@ -206,6 +210,7 @@ export const updateUser = /* GraphQL */ `
       groups
       isDisabledUser
       disabledReason
+      englishLevel
       createdAt
       updatedAt
     }
@@ -225,6 +230,7 @@ export const deleteUser = /* GraphQL */ `
       groups
       isDisabledUser
       disabledReason
+      englishLevel
       createdAt
       updatedAt
     }
@@ -246,6 +252,7 @@ export const createExam = /* GraphQL */ `
       }
       deadline
       startDate
+      type
       createdAt
       updatedAt
       owner
@@ -268,6 +275,7 @@ export const updateExam = /* GraphQL */ `
       }
       deadline
       startDate
+      type
       createdAt
       updatedAt
       owner
@@ -290,6 +298,7 @@ export const deleteExam = /* GraphQL */ `
       }
       deadline
       startDate
+      type
       createdAt
       updatedAt
       owner
@@ -316,6 +325,7 @@ export const createExamAttempt = /* GraphQL */ `
       results
       keys
       teacherComments
+      type
       createdAt
       updatedAt
       owner
@@ -342,6 +352,7 @@ export const updateExamAttempt = /* GraphQL */ `
       results
       keys
       teacherComments
+      type
       createdAt
       updatedAt
       owner
@@ -368,6 +379,7 @@ export const deleteExamAttempt = /* GraphQL */ `
       results
       keys
       teacherComments
+      type
       createdAt
       updatedAt
       owner

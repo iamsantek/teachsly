@@ -20,3 +20,10 @@ export const countWords = (text: string) => {
 export const removeDiacritics = (text: string) => {
   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
+
+// Capitalize first letter of each word and replace underscores with one space
+export const capitalize = (text: string) => {
+  return text.replace(/_/g, ' ').replace(/\w\S*/g, (txt) => {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+  })
+}
