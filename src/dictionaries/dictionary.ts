@@ -193,8 +193,10 @@ export enum LanguageES {
   CORRECT_ANSWERS = 'Respuestas correctas',
   CORRECTED_BY = 'Corregido por',
   NOT_COMPLETED= 'No completado',
-  COMPLETED = 'Entregado',
+  COMPLETED = 'Pendiente de corrección',
   REALIZED_BY= 'Realizado por',
+  OUTDATED = 'Pasados',
+  PENDING= 'Pendientes',
 }
 
 export enum LanguageEN {
@@ -389,4 +391,6 @@ export enum LanguageEN {
   NOT_COMPLETED= 'Not completed',
   COMPLETED = 'Completed',
   REALIZED_BY = 'Realized by',
+  OUTDATED= 'Outdated',
+  PENDING= 'Pending',
 }

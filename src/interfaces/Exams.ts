@@ -112,3 +112,11 @@ export enum ExamAttemptFilter {
   NOT_COMPLETED = 'notCompleted',
   NOT_CORRECTED = 'notCorrected'
 }
+
+export enum ExamFilter {
+  ALL = 'all',
+  OUTDATED = 'outdated',
+  PENDING_CORRECTION = 'pendingCorrection',
+  CORRECTED = 'corrected',
+  PENDING= 'pending'
+}

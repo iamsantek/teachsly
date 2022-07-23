@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import { Course, Exam, ExamAttempt, GetExamQuery } from '../API'
 import { defaultExamTimerOptions } from '../constants/Exams'
 import { TranslationsDictionary } from '../dictionaries/dictionary'
-import { AnswerType, ExamAnswers, ExamAttemptFilter, ExamForm, ExamKeys, Options, Question, QuestionPool, TimerType } from '../interfaces/Exams'
+import { AnswerType, ExamAnswers, ExamAttemptFilter, ExamFilter, ExamForm, ExamKeys, Options, Question, QuestionPool, TimerType } from '../interfaces/Exams'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import { BadgeColors } from '../views/exams/exampAttempt/CorrectionBadge'
 import { transformGroups } from './CourseUtils'
@@ -181,7 +181,7 @@ export const applyNameFilter = (examAttempts: ExamAttempt[], nameFilter: string)
   return examAttempts.filter(examAttempt => examAttempt.examName === nameFilter)
 }
 
-export const applyStatusFilter = (examAttempts: ExamAttempt[], status: ExamAttemptFilter) => {
+export const applyExamAttemptStatusFilter = (examAttempts: ExamAttempt[], status: ExamAttemptFilter) => {
   return examAttempts.filter(examAttempt => {
     switch (status) {
       case ExamAttemptFilter.COMPLETED:
@@ -194,6 +194,35 @@ export const applyStatusFilter = (examAttempts: ExamAttempt[], status: ExamAttem
         return true
     }
   })
+}
+
+export const applyExamStatusFilter = (exams: Exam[], examAttempts: ExamAttempt[], status: ExamFilter) => {
+  console.log('applyExamStatusFilter', status)
+  console.log(exams)
+  console.log(examAttempts)
+  return exams.filter(exam => {
+    switch (status) {
+      case ExamFilter.OUTDATED:
+        return dayjs().isAfter(dayjs(exam.deadline))
+      case ExamFilter.CORRECTED:
+        return examAttempts.some(attempt => attempt.examId === exam.id && attempt.correctedBy)
+      case ExamFilter.PENDING_CORRECTION:
+        return examAttempts.some(attempt => attempt.examId === exam.id && !attempt.correctedBy)
+      case ExamFilter.PENDING:
+        console.log(examAttempts.some(attempt => attempt.examId === exam.id && !attempt.isCompleted))
+        return examAttempts.find(attempt => attempt.examId === exam.id) === undefined || examAttempts.some(attempt => attempt.examId === exam.id && !attempt.isCompleted)
+      default:
+        return true
+    }
+  })
+}
+
+export const applyCourseFilter = (exams: Exam[], courseFilter: string) => {
+  if (courseFilter === ExamFilter.ALL || courseFilter === '') {
+    return exams
+  }
+
+  return exams.filter(exam => exam.groups.includes(courseFilter))
 }
 
 export const applyStudentFilter = (examAttempts: ExamAttempt[], studentFilter: string) => {
@@ -241,9 +270,6 @@ export const getExamStatus = (exam: Exam, examAttempts: ExamAttempt[]) => {
 
 export const getExamLink = (exam: Exam, examAttempts: ExamAttempt[], isAdmin: boolean | undefined) => {
   const { isCompleted, isCorrected, examAttempt } = getExamStatus(exam, examAttempts)
-
-  console.log('isCompleted', isCompleted)
-  console.log('isCorrected', isCorrected)
 
   if (isAdmin) {
     return `/exams/${exam.id}`

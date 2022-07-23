@@ -28,7 +28,6 @@ export const ExamAttemptFilter = ({ studentNameFilter, activeStatusFilter, activ
         <option value={IExamAttemptFilter.NOT_COMPLETED}>{translate('NOT_FINISHED_EXAMS')}</option>
         <option value={IExamAttemptFilter.NOT_CORRECTED}>{translate('EXAMS_NOT_CORRECTED')}</option>
       </Select>
-      {/* TODO: Add course or level to Exam attempt to allow filtering */}
       <MdLibraryBooks size={70} />
       <Select value={activeNameFilter} onChange={(e) => onChangeExamNameFilter(e.target.value)}>
         <option value={IExamAttemptFilter.ALL}>{translate('ALL')}</option>
