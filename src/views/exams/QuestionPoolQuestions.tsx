@@ -9,6 +9,7 @@ import { translate } from '../../utils/LanguageUtils'
 import { QuestionConfigurationDrawer } from './QuestionConfigurationDrawer'
 import StorageService from '../../services/aws/StorageService'
 import CloudFrontService from '../../services/aws/CloudFrontService'
+import { alphabet } from '../../utils/ExamUtils'
 
 interface Props {
   questionPool: QuestionPool;
@@ -20,8 +21,6 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
   const { register, watch } = useFormContext()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [files, setFiles] = useState<{ [key: string]: ExamAttachments }>()
-
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
   const addQuestion = (questionPoolIndex: number, questionType = QuestionType.TEXT, answerType = AnswerType.MultipleChoice) => {
     update(questionPoolIndex, {

@@ -29,9 +29,6 @@ export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelet
   const placeholderNumber = Math.floor(Math.random() * 10) + 1
   const filterMedias = findMatch(medias, groups.map(group => group.externalId), userType)
 
-  console.log({ medias })
-  console.log({ groups })
-
   return (
     <Box>
       {filterMedias?.map((media) => {

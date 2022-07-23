@@ -1,9 +1,14 @@
 import dayjs from 'dayjs'
-import { Course, GetExamQuery } from '../API'
+import { Course, Exam, ExamAttempt, GetExamQuery } from '../API'
 import { defaultExamTimerOptions } from '../constants/Exams'
-import { ExamForm, TimerType } from '../interfaces/Exams'
+import { TranslationsDictionary } from '../dictionaries/dictionary'
+import { AnswerType, ExamAnswers, ExamAttemptFilter, ExamFilter, ExamForm, ExamKeys, Options, Question, QuestionPool, TimerType } from '../interfaces/Exams'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
+import { BadgeColors } from '../views/exams/exampAttempt/CorrectionBadge'
 import { transformGroups } from './CourseUtils'
+import { removeDiacritics } from './StringUtils'
+
+export const alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
 // Check that any of questions and options inside the questions pools in Exam Form are empty
 export const existEmptyFields = (examForm: ExamForm): boolean => {
@@ -80,5 +85,201 @@ export const formatExamFormForAPI = (exam: ExamForm): ExamForm => {
   return {
     ...exam,
     questionPools: [newQuestionPools[randomIndex]]
+  }
+}
+
+// Calculate number of correct answers in the exam, counting Multiple Choice and TextArea questions
+export const calculateNumberOfCorrectAnswers = (questionPools: QuestionPool[], attempt: ExamAttempt) => {
+  let correctAnswers: number = 0
+  let totalQuestions: number = 0
+  let totalPendingQuestions: number = 0
+
+  questionPools.forEach((questionPool, questionPoolIndex) => {
+    const totalQuestionPoolPendingQuestions = questionPool.questions.filter(question => question.answerType === AnswerType.MultipleChoice && !question.options?.some(option => option.isCorrectOption)).length
+    totalPendingQuestions = totalPendingQuestions + totalQuestionPoolPendingQuestions
+    questionPool.questions.forEach((question, questionIndex) => {
+      const answers = (JSON.parse(attempt.results as string) as ExamAnswers).answers as ExamKeys
+      const answer = answers[questionPoolIndex][questionIndex]
+      totalQuestions++
+
+      if (question.answerType === AnswerType.MultipleChoice) {
+        const correctAnswer = question.options?.some((option, optionIndex) => option.isCorrectOption && alphabet[optionIndex] === answer)
+        if (correctAnswer) {
+          correctAnswers++
+        }
+      } else if (question.answerType === AnswerType.TextArea) {
+        if (question.correction?.isCorrectAnswer) {
+          correctAnswers++
+        } else if (!question.correction?.manualCorrection) {
+          console.log('PENDING TEXTAREA')
+          totalPendingQuestions++
+        }
+      }
+    }
+    )
+  })
+
+  return { totalQuestions, correctAnswers, totalPendingQuestions }
+}
+
+export const manualTextCorrection = (questionPool: QuestionPool, questionIndex: number, isCorrectAnswer: boolean) => {
+  // Deep clone the question pool
+  const updatedQuestionPool: QuestionPool = JSON.parse(JSON.stringify(questionPool))
+  updatedQuestionPool.questions[questionIndex].correction = {
+    isCorrectAnswer,
+    manualCorrection: true
+  }
+
+  return updatedQuestionPool
+}
+
+export const manualMultipleChoiceCorrection = (questionPool: QuestionPool, questionIndex: number, optionIndex: number) => ({
+  ...questionPool,
+  questions: questionPool.questions.map((question: Question, _questionIndex: number) => {
+    if (_questionIndex === questionIndex) {
+      return {
+        ...question,
+        options: question?.options?.map((option: Options, _optionIndex: number) => {
+          return ({
+            ...option,
+            isCorrectOption: _optionIndex === optionIndex
+          })
+        }),
+
+        correction: {
+          ...question.correction,
+          manualCorrection: true
+        }
+      }
+    }
+
+    return question
+  })
+})
+
+export const groupExamAttemptsByName = (examAttempts: ExamAttempt[]) => {
+  const sortedByName = examAttempts.sort((a, b) => a.examName.localeCompare(b.examName))
+  const examAttemptsByName: { [key: string]: ExamAttempt[] } = {}
+  sortedByName.forEach(attempt => {
+    const { examName } = attempt
+    if (!examAttemptsByName[examName]) {
+      examAttemptsByName[examName] = []
+    }
+
+    examAttemptsByName[examName].push(attempt)
+  })
+
+  return examAttemptsByName
+}
+
+export const applyNameFilter = (examAttempts: ExamAttempt[], nameFilter: string) => {
+  console.log('applyNameFilter', nameFilter)
+  if (nameFilter === ExamAttemptFilter.ALL || nameFilter === '') {
+    return examAttempts
+  }
+
+  return examAttempts.filter(examAttempt => examAttempt.examName === nameFilter)
+}
+
+export const applyExamAttemptStatusFilter = (examAttempts: ExamAttempt[], status: ExamAttemptFilter) => {
+  return examAttempts.filter(examAttempt => {
+    switch (status) {
+      case ExamAttemptFilter.COMPLETED:
+        return examAttempt.isCompleted
+      case ExamAttemptFilter.NOT_COMPLETED:
+        return !examAttempt.isCompleted
+      case ExamAttemptFilter.NOT_CORRECTED:
+        return !examAttempt.correctedBy && examAttempt.isCompleted
+      default:
+        return true
+    }
+  })
+}
+
+export const applyExamStatusFilter = (exams: Exam[], examAttempts: ExamAttempt[], status: ExamFilter) => {
+  console.log('applyExamStatusFilter', status)
+  console.log(exams)
+  console.log(examAttempts)
+  return exams.filter(exam => {
+    switch (status) {
+      case ExamFilter.OUTDATED:
+        return dayjs().isAfter(dayjs(exam.deadline))
+      case ExamFilter.CORRECTED:
+        return examAttempts.some(attempt => attempt.examId === exam.id && attempt.correctedBy)
+      case ExamFilter.PENDING_CORRECTION:
+        return examAttempts.some(attempt => attempt.examId === exam.id && !attempt.correctedBy)
+      case ExamFilter.PENDING:
+        console.log(examAttempts.some(attempt => attempt.examId === exam.id && !attempt.isCompleted))
+        return examAttempts.find(attempt => attempt.examId === exam.id) === undefined || examAttempts.some(attempt => attempt.examId === exam.id && !attempt.isCompleted)
+      default:
+        return true
+    }
+  })
+}
+
+export const applyCourseFilter = (exams: Exam[], courseFilter: string) => {
+  if (courseFilter === ExamFilter.ALL || courseFilter === '') {
+    return exams
+  }
+
+  return exams.filter(exam => exam.groups.includes(courseFilter))
+}
+
+export const applyStudentFilter = (examAttempts: ExamAttempt[], studentFilter: string) => {
+  const normalizedStudentFilter = removeDiacritics(studentFilter.toLowerCase().trim())
+  return examAttempts.filter(examAttempt => removeDiacritics(examAttempt.userName?.toLowerCase().trim() as string).includes(normalizedStudentFilter))
+}
+
+export const isPendingCorrectionInQuestionPool = (questionPool: QuestionPool) => {
+  let color: BadgeColors | undefined
+  let text: TranslationsDictionary
+
+  const isAllAutomaticCorrection = questionPool.questions.every(question => {
+    return question.options?.some(option => option.isCorrectOption)
+  })
+
+  const isPendingCorrectionInQuestionPool = questionPool.questions.some(question => {
+    if (question.answerType === AnswerType.MultipleChoice) {
+      return !question.options?.some(option => option.isCorrectOption)
+    } else {
+      return !question.correction?.manualCorrection
+    }
+  })
+
+  if (isAllAutomaticCorrection) {
+    color = BadgeColors.GREEN
+    text = 'WITH_SELF_CORRECTION'
+  } else if (isPendingCorrectionInQuestionPool) {
+    color = BadgeColors.RED
+    text = 'WITH_OUT_SELF_CORRECTION'
+  } else {
+    text = 'MANUAL_CORRECTION'
+    color = BadgeColors.ORANGE
+  }
+
+  return { isAllAutomaticCorrection, isPendingCorrectionInQuestionPool, color, text }
+}
+
+export const getExamStatus = (exam: Exam, examAttempts: ExamAttempt[]) => {
+  const examAttempt = examAttempts.find(examAttempt => examAttempt.examId === exam.id)
+  const isCompleted = examAttempt?.isCompleted
+  const isCorrected = !!examAttempt?.correctedBy
+
+  return { isCompleted, isCorrected, examAttempt }
+}
+
+export const getExamLink = (exam: Exam, examAttempts: ExamAttempt[], isAdmin: boolean | undefined) => {
+  const { isCompleted, isCorrected, examAttempt } = getExamStatus(exam, examAttempts)
+
+  if (isAdmin) {
+    return `/exams/${exam.id}`
+  }
+
+  if (isCompleted && !isCorrected) {
+    return '#'
+  } else if (isCorrected) {
+    return `/exams/results/${examAttempt?.id}`
+  } else {
+    return `/exams/${exam.id}/intro`
   }
 }
