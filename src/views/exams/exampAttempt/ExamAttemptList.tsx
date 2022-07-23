@@ -13,7 +13,9 @@ import { ExamAttemptFilter } from './filters/ExamAttemptFilter'
 import { ToastNotification } from '../../../observables/ToastNotification'
 import { ConfirmationDialog } from '../../../components/AlertDialog/ConfirmationDialog'
 import { NoContentPlaceholder } from '../../../components/Placeholders/NoContentPlaceholder'
-import { applyNameFilter, applyStatusFilter, applyStudentFilter } from '../../../utils/ExamUtils'
+import { applyNameFilter, applyExamAttemptStatusFilter, applyStudentFilter } from '../../../utils/ExamUtils'
+import { Placeholder } from '../../../components/Placeholders/Placeholder'
+import { ContentLinePlaceholder } from '../../../components/Placeholders/ContentLinePlaceholder'
 
 export const ExamAttemptList = () => {
   const [examAttempts, setExamAttempts] = useState<ExamAttempt[]>([])
@@ -45,7 +47,7 @@ export const ExamAttemptList = () => {
 
   const onChangeStatusFilter = useCallback((filter: IExamAttemptFilter) => {
     setStatusActiveFilter(filter)
-    const updatedExamAttempts = applyStatusFilter(examAttempts, filter)
+    const updatedExamAttempts = applyExamAttemptStatusFilter(examAttempts, filter)
 
     setExamAttemptsDisplayed(applyNameFilter(updatedExamAttempts, activeNameFilter))
   }, [examAttempts, activeNameFilter])
@@ -64,7 +66,7 @@ export const ExamAttemptList = () => {
     setActiveNameFilter(examName)
     const updatedExamAttempts = applyNameFilter(examAttempts, examName)
 
-    setExamAttemptsDisplayed(applyStatusFilter(updatedExamAttempts, statusActiveFilter))
+    setExamAttemptsDisplayed(applyExamAttemptStatusFilter(updatedExamAttempts, statusActiveFilter))
   }, [examAttempts, statusActiveFilter])
 
   const onDeleteExamAttempt = useCallback(async () => {
@@ -87,6 +89,16 @@ export const ExamAttemptList = () => {
   const onDeleteClick = (examAttemptId: string) => {
     setDeleteExamAttemptId(examAttemptId)
     setShowDeleteConfirmation(true)
+  }
+
+  if (isLoading) {
+    return (
+      <Placeholder
+        show={isLoading}
+        number={10}
+        placeholderElement={<ContentLinePlaceholder />}
+      />
+    )
   }
 
   return (
@@ -123,7 +135,7 @@ export const ExamAttemptList = () => {
               >
                 <CommonContentLineTitle title={`${examAttempt.userName} - ${examAttempt.examName}`}>
                   {!examAttempt.isCompleted && <Badge colorScheme='red'>{translate('NOT_FINISHED')} {dayjs(examAttempt.createdAt).format('DD/MM/YYYY HH:MM')}hs</Badge>}
-                  {examAttempt.isCompleted && examAttempt.correctedBy && '✅'}
+                  {examAttempt.isCompleted && examAttempt.correctedBy && <Badge colorScheme={'green'}>{translate('CORRECTED')} ({examAttempt?.correctedBy})</Badge>}
                 </CommonContentLineTitle>
               </ContentLine>
             )
