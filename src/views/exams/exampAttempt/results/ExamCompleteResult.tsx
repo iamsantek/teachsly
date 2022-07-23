@@ -1,5 +1,4 @@
 import { Text, Box, Heading, HStack, Stack } from '@chakra-ui/react'
-import { useContext } from 'react'
 import { ExamAttempt } from '../../../../API'
 import { useUserGroups } from '../../../../hooks/useUserGroups'
 import { ExamAnswers, QuestionPool } from '../../../../interfaces/Exams'
