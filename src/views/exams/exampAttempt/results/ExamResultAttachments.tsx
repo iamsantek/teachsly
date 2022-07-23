@@ -1,4 +1,4 @@
-import { Text, Box, ListItem, Flex, ListIcon, List } from '@chakra-ui/react'
+import { Text, ListItem, Flex, ListIcon, List } from '@chakra-ui/react'
 import { AiFillFile } from 'react-icons/ai'
 import { BiLinkExternal } from 'react-icons/bi'
 import { Attachment } from '../../../../interfaces/Exams'
