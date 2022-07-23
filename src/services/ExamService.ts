@@ -1,6 +1,6 @@
-import { CreateExamAttemptInput, CreateExamAttemptMutation, CreateExamMutation, GetExamQuery, ListExamAttemptsQuery, ListExamsQuery, UpdateExamMutation } from '../API'
-import { createExam, createExamAttempt, updateExam } from '../graphql/mutations'
-import { getExam, listExamAttempts, listExams } from '../graphql/queries'
+import { CreateExamAttemptInput, CreateExamAttemptMutation, CreateExamMutation, DeleteExamAttemptMutation, GetExamAttemptQuery, GetExamQuery, ListExamAttemptsQuery, ListExamsQuery, UpdateExamAttemptInput, UpdateExamAttemptMutation, UpdateExamMutation } from '../API'
+import { createExam, createExamAttempt, deleteExamAttempt, updateExam, updateExamAttempt } from '../graphql/mutations'
+import { getExam, getExamAttempt, listExamAttempts, listExams } from '../graphql/queries'
 import { ExamForm } from '../interfaces/Exams'
 import { formatExamForm } from '../utils/ExamUtils'
 import GraphQLService from './GraphQLService'
@@ -54,6 +54,43 @@ class ExamService {
           { examId: { eq: examId } }
         ]
       }
+    })
+  }
+
+  public async getExamAttemptsByCognitoId (cognitoId: string) {
+    return GraphQLService.fetchQuery<ListExamAttemptsQuery>({
+      query: listExamAttempts,
+      filter: { userId: { eq: cognitoId } }
+    })
+  }
+
+  public async fetchExamAttempts (nextToken?: string | null) {
+    return GraphQLService.fetchQuery<ListExamAttemptsQuery>({
+      query: listExamAttempts,
+      nextToken
+    })
+  }
+
+  public async fetchExamAttemptsByAId (id: string) {
+    return GraphQLService.fetchQuery<GetExamAttemptQuery>({
+      query: getExamAttempt,
+      id
+    })
+  }
+
+  public async deleteExamAttempt (id: string) {
+    return GraphQLService.fetchQuery<DeleteExamAttemptMutation>({
+      query: deleteExamAttempt,
+      input: {
+        id
+      }
+    })
+  }
+
+  public updateExamAttempt (examAttempt: UpdateExamAttemptInput) {
+    return GraphQLService.fetchQuery<UpdateExamAttemptMutation>({
+      query: updateExamAttempt,
+      input: examAttempt
     })
   }
 }
