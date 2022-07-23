@@ -96,9 +96,11 @@ export const ExamsList = () => {
                   {translate('EXAM_DEADLINE')} {dayjs(exam.deadline).format('DD/MM HH:mm')}hs
                 </Text>
               )}
+              {!hasEditPermission && (
               <Badge colorScheme={badgeColor} marginX={5}>
                 {badgeText}
               </Badge>
+              )}
             </CommonContentLineTitle>
           </ContentLine>
         )

@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const ExamFilter = ({ onChangeStatusFilter, onChangeCourseFilter, currentCourseFilter, currentStatusFilter }: Props) => {
-  const { groups } = useUserGroups()
+  const { groups, hasEditPermission } = useUserGroups()
   const groupList = renderCourseList(groups)
 
   return (
@@ -23,10 +23,14 @@ export const ExamFilter = ({ onChangeStatusFilter, onChangeCourseFilter, current
             <AiFillFilter size={70} />
             <Select value={currentStatusFilter} onChange={(e) => onChangeStatusFilter(e.target.value as IExamFilter)}>
                 <option value={IExamFilter.ALL}>{translate('ALL')}</option>
-                <option value={IExamFilter.CORRECTED}>{translate('CORRECTED')}</option>
                 <option value={IExamFilter.OUTDATED}>{translate('OUTDATED')}</option>
-                <option value={IExamFilter.PENDING_CORRECTION}>{translate('NOT_CORRECTED')}</option>
-                <option value={IExamFilter.PENDING}>{translate('PENDING')}</option>
+                {!hasEditPermission && (
+                    <>
+                        <option value={IExamFilter.PENDING}>{translate('PENDING')}</option>
+                        <option value={IExamFilter.CORRECTED}>{translate('CORRECTED')}</option>
+                        <option value={IExamFilter.PENDING_CORRECTION}>{translate('NOT_CORRECTED')}</option>
+                    </>
+                )}
             </Select>
             <MdLibraryBooks size={70} />
             <Select value={currentCourseFilter} onChange={(e) => onChangeCourseFilter(e.target.value)}>
