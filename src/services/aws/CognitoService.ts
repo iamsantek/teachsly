@@ -9,7 +9,8 @@ import {
   AttributeType,
   CreateGroupCommand,
   AdminRemoveUserFromGroupCommand,
-  AdminSetUserPasswordCommand
+  AdminSetUserPasswordCommand,
+  AdminDeleteUserCommand
 } from '@aws-sdk/client-cognito-identity-provider'
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers'
 import { UpdateUserInput } from '../../API'
@@ -330,6 +331,15 @@ class CognitoService {
       Username: userId,
       Password: '12345678',
       Permanent: false
+    })
+
+    return this.cognitoIdentityProviderClient?.send(command)
+  }
+
+  public deleteCognitoUser = async (userId: string) => {
+    const command = new AdminDeleteUserCommand({
+      UserPoolId: awsmobile.aws_user_pools_id,
+      Username: userId
     })
 
     return this.cognitoIdentityProviderClient?.send(command)

@@ -26,20 +26,20 @@ export const ExamAttemptCounters = ({ questionPools, attempt }: Props) => {
 
   return (
     <Stack spacing={5}>
-      <Heading size='lg'>Correcion</Heading>
+      <Heading size='lg'>{translate('CORRECTION')}</Heading>
       <StatGroup>
         <Stat>
-          <StatLabel fontWeight='bold'>Correctas</StatLabel>
+          <StatLabel fontWeight='bold'>{translate('RIGHT_ANSWERS')}</StatLabel>
           <StatNumber fontSize='5xl'>{correctAnswers}/{totalQuestions}</StatNumber>
         </Stat>
 
         <Stat>
-          <StatLabel fontWeight='bold'>Sin corregir</StatLabel>
+          <StatLabel fontWeight='bold'>{translate('WITH_OUT_CORRECTION')}</StatLabel>
           <StatNumber fontSize='5xl' color={totalPendingQuestions === 0 ? 'green.500' : 'orange.500'}>{totalPendingQuestions}</StatNumber>
         </Stat>
 
         <Stat>
-          <StatLabel fontWeight='bold'>Nota recomendada</StatLabel>
+          <StatLabel fontWeight='bold'>{translate('RECOMMENDED_MARK')}</StatLabel>
           <StatNumber fontSize='5xl'>{totalPendingQuestions === 0 ? percentage : '??'}</StatNumber>
           {totalPendingQuestions !== 0 && <StatHelpText>{translate('PENDING_CORRECTION_WARNING')}</StatHelpText>}
         </Stat>

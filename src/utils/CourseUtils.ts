@@ -7,14 +7,20 @@ import { capitalize } from './StringUtils'
 
 export const generateExternalId = (course: CreateCourseInput | Course) => `${course.name.replace(/\s+/g, '')}${course.scheduleYear}`
 
+export const formatCourseName = (course: Course) => {
+  const dates = DateTimeUtils.shortDays(course.scheduleDates as number[])
+  const startTime = DateTimeUtils.formateHour(course.scheduleStartTime, TimeFormats.TwentyFourHours)
+  const endTime = DateTimeUtils.formateHour(course.scheduleEndTime, TimeFormats.TwentyFourHours)
+
+  return `${course.name} (${dates} ${startTime} - ${endTime}) ${course.virtualClassLink ? ` - ${translate('VIRTUAL_COURSE')}` : ''}`
+}
+
 export const renderCourseList = (courses: Course[], additionalGroups?: string[], includeEnglishLevels = false): MultiSelectOption[] => {
   const groupList = courses.map(course => {
-    const dates = DateTimeUtils.shortDays(course.scheduleDates as number[])
-    const startTime = DateTimeUtils.formateHour(course.scheduleStartTime, TimeFormats.TwentyFourHours)
-    const endTime = DateTimeUtils.formateHour(course.scheduleEndTime, TimeFormats.TwentyFourHours)
+    const courseName = formatCourseName(course)
 
     return {
-      label: `${course.name} (${dates} ${startTime} - ${endTime}) ${course.virtualClassLink ? ` - ${translate('VIRTUAL_COURSE')}` : ''}`,
+      label: courseName,
       value: generateExternalId(course),
       colorScheme: 'brand'
     }

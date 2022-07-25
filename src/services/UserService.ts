@@ -1,8 +1,8 @@
 import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { UserTypes } from '../enums/UserTypes'
 import { listUsers } from '../graphql/queries'
-import { updateUser as updateUserMutation } from '../graphql/mutations'
-import { User as UserAPI, ListUsersQuery, ModelUserFilterInput, UpdateUserInput, UpdateUserMutation, CreateUserInput } from '../API'
+import { deleteUser, updateUser as updateUserMutation } from '../graphql/mutations'
+import { User as UserAPI, ListUsersQuery, ModelUserFilterInput, UpdateUserInput, UpdateUserMutation, CreateUserInput, DeleteUserMutation } from '../API'
 import Logger from '../utils/Logger'
 import AuthService from './AuthService'
 import GraphQLService from './GraphQLService'
@@ -129,6 +129,31 @@ class UserService {
 
   public resetPassword (userId: string) {
     return CognitoService.resetPassword(userId)
+  }
+
+  public deleteUser = async (userId: string, cognitoId: string) => {
+    try {
+      const deleteUserResponse = await GraphQLService.fetchQuery<DeleteUserMutation>({
+        query: deleteUser,
+        input: {
+          id: userId
+        }
+      })
+
+      if (!deleteUserResponse) {
+        console.log('Error deleting  the Cognito user')
+        return
+      }
+
+      return CognitoService.deleteCognitoUser(cognitoId)
+    } catch (error) {
+      Logger.log(
+        LogLevel.ERROR,
+        LogTypes.UserService,
+        'Error when deleting user',
+        error
+      )
+    }
   }
 }
 

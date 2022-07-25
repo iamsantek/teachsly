@@ -200,6 +200,15 @@ export enum LanguageES {
   LEVEL= 'Nivel',
   NOT_DEFINED= 'No definido',
   ALL_COURSES= 'Todos los cursos',
+  CORRECTION= 'Corrección',
+  RIGHT_ANSWERS= 'Respuestas correctas',
+  WITH_OUT_CORRECTION= 'Sin corrección',
+  RECOMMENDED_MARK= 'Nota recomendada',
+  DELETE_ACCOUNT= 'Eliminar cuenta',
+  USER_DELETED_MESSAGE= 'El usuario se eliminó correctamente.',
+  USER_DELETED_ERROR= 'Hubo un error al eliminar el usuario. Por favor, intentar nuevamente.',
+  DELETE_ACCOUNT_BUTTON= 'Eliminar cuenta',
+  DELETE_ACCOUNT_WARNING= 'Al eliminar la cuenta, se eliminarán todos los datos relacionados con ella. No podrás recuperarla.',
 }
 
 export enum LanguageEN {
@@ -399,4 +408,13 @@ export enum LanguageEN {
   LEVEL= 'Level',
   NOT_DEFINED= 'Not defined',
   ALL_COURSES = 'All courses',
+  CORRECTION= 'Correction',
+  RIGHT_ANSWERS= 'Right answers',
+  WITH_OUT_CORRECTION= 'Without correction',
+  RECOMMENDED_MARK= 'Recommended mark',
+  DELETE_ACCOUNT= 'Delete account',
+  USER_DELETED_MESSAGE = 'The user has been successfully deleted.',
+  USER_DELETED_ERROR = 'An error has occurred when deleting the user. Please try again.',
+  DELETE_ACCOUNT_WARNING = 'Are you sure you want to delete your account?',
+  DELETE_ACCOUNT_BUTTON = 'Delete account',
 }
