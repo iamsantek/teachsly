@@ -1,8 +1,7 @@
-import { Avatar, Badge, Box, Button, Center, Stack } from '@chakra-ui/react'
+import { Avatar, Badge, Button, Center, Flex, Select, Stack } from '@chakra-ui/react'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { useParams } from 'react-router-dom'
-import { LoadMoreButton } from '../components/Buttons/LoadMoreButton'
 import { ContentLine } from '../components/ContentLine/ContentLine'
 import { SectionHeader } from '../components/Headers/SectionHeader'
 import { ContentLinePlaceholder } from '../components/Placeholders/ContentLinePlaceholder'
@@ -18,6 +17,10 @@ import { isAdmin, isTeacher } from '../utils/CognitoGroupsUtils'
 import { findAndUpdateContent } from '../utils/GeneralUtils'
 import { translate } from '../utils/LanguageUtils'
 import { CommonContentLineTitle } from './media/CommonContentLineTitle'
+import { MdLibraryBooks } from 'react-icons/md'
+import { formatCourseName } from '../utils/CourseUtils'
+import { ExamFilter } from '../interfaces/Exams'
+import { sortUsersByLastName } from '../utils/UserUtils'
 
 interface Props {
   listType: UserTypes
@@ -27,17 +30,20 @@ const UserList = ({
   listType
 }: Props) => {
   const [users, setUsers] = useState<User[]>([])
+  const [usersDisplayed, setUsersDisplayed] = useState<User[]>([])
   const [selectedUser, setSelectedUser] = useState<User>()
   const [nextPageResultToken, setNextPageResultToken] = useState<string | null>()
   const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(true)
   const [crudModalVisibility, setCrudModalVisibility] = useState<boolean>(false)
   const [viewModalVisibility, setViewModalVisibility] = useState<boolean>(false)
+  const [currentCourseFilter, setCurrentCourseFilter] = useState<string>('')
 
-  const { context: { user: loggedUser } } = useContext(UserDashboardContext)
+  const { context: { user: loggedUser, courses } } = useContext(UserDashboardContext)
 
   const { id: courseId } = useParams()
 
-  const fetchUsers = useCallback(async (nextPageResultToken: string | undefined | null = undefined) => {
+  const fetchUsers = useCallback(async () => {
+    setIsLoadingNewPage(true)
     const filter = courseId || listType
     const usersResult = await UserService.fetchUsersByCourseOrType(filter, nextPageResultToken)
     const users = usersResult?.listUsers?.items as User[] || []
@@ -52,25 +58,25 @@ const UserList = ({
       )
     }
 
-    setNextPageResultToken(usersResult?.listUsers?.nextToken)
+    if (usersResult?.listUsers?.nextToken) {
+      setNextPageResultToken(usersResult?.listUsers?.nextToken)
+    }
 
     setIsLoadingNewPage(false)
 
     setUsers((previousUsers) =>
-      previousUsers.concat(filteredUsers || [])
+      sortUsersByLastName(previousUsers.concat(filteredUsers || []))
     )
-  }, [loggedUser, courseId, listType])
+    setUsersDisplayed((previousUsers) =>
+      sortUsersByLastName(previousUsers.concat(filteredUsers || []))
+    )
+  }, [loggedUser, courseId, listType, nextPageResultToken])
 
   useEffect(() => {
     fetchUsers()
-  }, [listType, fetchUsers])
+  }, [listType, fetchUsers, nextPageResultToken])
 
   const newUserButtonName = translate(listType === UserTypes.STUDENT ? 'CREATE_STUDENT_MODAL_TITLE' : 'CREATE_TEACHER_MODAL_TITLE')
-
-  const onLoadMore = () => {
-    setIsLoadingNewPage(true)
-    fetchUsers(nextPageResultToken)
-  }
 
   const onView = (user: User) => {
     setSelectedUser(user)
@@ -95,6 +101,21 @@ const UserList = ({
 
   const hasAdminRole = isAdmin(loggedUser)
 
+  const onChangeCourseFilter = (courseFilter: string) => {
+    setCurrentCourseFilter(courseFilter)
+    if (courseFilter === ExamFilter.ALL) {
+      setUsersDisplayed(users)
+      return
+    }
+
+    const filterUsers = users.filter(user => user.groups.includes(courseFilter))
+    setUsersDisplayed(sortUsersByLastName(filterUsers))
+  }
+
+  const onDeleteSuccess = (user: User) => {
+    setUsersDisplayed(usersDisplayed.filter(u => u.id !== user.id))
+  }
+
   return (
     <>
       {hasAdminRole && (
@@ -105,6 +126,7 @@ const UserList = ({
           onUpdate={onUpdate}
           userType={listType}
           userToUpdate={selectedUser}
+          onDelete={onDeleteSuccess}
         />
       )}
 
@@ -128,8 +150,17 @@ const UserList = ({
             </Center>
           )}
         </SectionHeader>
-        <Box>
-          {users.map((user) => {
+        <Flex alignItems='center' gap={5} maxWidth={['100%', '40%']}>
+        <MdLibraryBooks size={40} />
+            <Select value={currentCourseFilter} onChange={(e) => onChangeCourseFilter(e.target.value)}>
+                <option value={ExamFilter.ALL}>{translate('ALL')}</option>
+                {courses.map(course => (
+                    <option key={course.externalId} value={course.externalId}>{formatCourseName(course)}</option>
+                ))}
+            </Select>
+        </Flex>
+        <Stack>
+          {usersDisplayed.map((user) => {
             return (
               <ContentLine
                 key={user.id}
@@ -144,14 +175,13 @@ const UserList = ({
               </ContentLine>
             )
           })}
-          <NoContentPlaceholder show={users.length === 0 && !isLoadingNewPage} />
+          <NoContentPlaceholder show={usersDisplayed.length === 0 && !isLoadingNewPage} />
           <Placeholder
             show={isLoadingNewPage}
             number={2}
             placeholderElement={<ContentLinePlaceholder />}
           />
-          <LoadMoreButton show={!!nextPageResultToken} isLoading={isLoadingNewPage} onClick={onLoadMore} />
-        </Box>
+        </Stack>
       </Stack>
     </>
   )
