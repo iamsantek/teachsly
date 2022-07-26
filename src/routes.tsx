@@ -177,6 +177,8 @@ const teachersRoutes: ApplicationRoute[] = [
   videoPreviewRoute,
   createExamScreen,
   examsHomeScreen,
+  examAttemptDetailRoute,
+  examAttemptScreenRoute,
   { path: '*', element: <DashboardLayout><TeachersHomeScreen /></DashboardLayout> }
 ]
 

@@ -147,6 +147,7 @@ const UserCRUDModal = ({
 
     onDelete(userToUpdate as User)
     setIsLoading(false)
+    setShowDeleteUserConfirmation(false)
     onClose()
   }
 
