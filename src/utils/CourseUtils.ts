@@ -15,6 +15,8 @@ export const formatCourseName = (course: Course) => {
   return `${course.name} (${dates} ${startTime} - ${endTime}) ${course.virtualClassLink ? ` - ${translate('VIRTUAL_COURSE')}` : ''}`
 }
 
+export const sortCoursesByName = (courses: Course[]) => courses.sort((a, b) => a.name.localeCompare(b.name))
+
 export const renderCourseList = (courses: Course[], additionalGroups?: string[], includeEnglishLevels = false): MultiSelectOption[] => {
   const groupList = courses.map(course => {
     const courseName = formatCourseName(course)
