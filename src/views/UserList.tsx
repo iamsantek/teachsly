@@ -90,6 +90,8 @@ const UserList = ({
 
   const onUpdate = (user: User) => {
     const updatedUsers = findAndUpdateContent(user, users)
+    const updatedDisplayedUsers = findAndUpdateContent(user, usersDisplayed)
+    setUsersDisplayed(updatedDisplayedUsers)
     setUsers(updatedUsers)
   }
 
@@ -113,6 +115,7 @@ const UserList = ({
   }
 
   const onDeleteSuccess = (user: User) => {
+    setUsers(users.filter(u => u.id !== user.id))
     setUsersDisplayed(usersDisplayed.filter(u => u.id !== user.id))
   }
 
