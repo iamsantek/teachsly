@@ -130,7 +130,7 @@ export const ExamAttemptList = () => {
               <ContentLine
                 key={examAttempt.id}
                 leftIcon={<BsCardChecklist />}
-                onView={() => navigator(`/exams/attempt/${examAttempt.id}`)}
+                onView={examAttempt.isCompleted ? () => navigator(`/exams/attempt/${examAttempt.id}`) : undefined}
                 onDelete={!examAttempt.isCompleted ? () => onDeleteClick(examAttempt.id) : undefined}
               >
                 <CommonContentLineTitle title={`${examAttempt.userName} - ${examAttempt.examName}`}>
