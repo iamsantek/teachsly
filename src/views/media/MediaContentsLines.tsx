@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Badge, Box } from '@chakra-ui/react'
 import { EnglishLevel, Media, MediaType } from '../../API'
 import { ContentLine } from '../../components/ContentLine/ContentLine'
 import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
@@ -7,9 +7,10 @@ import { CommonContentLineTitle } from './CommonContentLineTitle'
 import { useContext } from 'react'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { Placeholder } from '../../components/Placeholders/Placeholder'
-import { getFileTypeIcon } from '../../utils/MediaUtils'
-import { findMatch } from '../../utils/GeneralUtils'
+import { getFileTypeIcon, isMediaCreatedWithinLastWeek } from '../../utils/MediaUtils'
+import { checkIfContentHasBeenSeenBefore, findMatch } from '../../utils/GeneralUtils'
 import { useUserGroups } from '../../hooks/useUserGroups'
+import { translate } from '../../utils/LanguageUtils'
 
 interface Props {
   medias: Media[]
@@ -18,14 +19,36 @@ interface Props {
   onEdit: (media: Media) => void
   onDelete: (media: Media) => void
   isLoading: boolean
-
+  showSeenOpacity?: boolean
 }
 
-export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelete, isLoading }: Props) => {
+export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelete, isLoading, showSeenOpacity = false }: Props) => {
   const { context: { externalUserId, user } } = useContext(UserDashboardContext)
   const { groups, userType, hasAdminRole } = useUserGroups()
   const placeholderNumber = Math.floor(Math.random() * 10) + 1
   const filterMedias = hasAdminRole ? medias : findMatch(medias, groups.map(group => group.externalId), userType, user?.englishLevel as EnglishLevel)
+
+  const onClickDownload = (media: Media) => {
+    if (media.link && media.type === MediaType.FILE) {
+      onDownload(media)
+    }
+
+    if (!showSeenOpacity) {
+      return
+    }
+
+    checkIfContentHasBeenSeenBefore(media.id)
+  }
+
+  const onClickView = (media: Media) => {
+    onView(media)
+
+    if (!showSeenOpacity) {
+      return
+    }
+
+    checkIfContentHasBeenSeenBefore(media.id)
+  }
 
   return (
     <Box>
@@ -37,17 +60,15 @@ export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelet
           <ContentLine
             key={media.id}
             leftIcon={Icon}
-            onView={() => onView(media)}
-            onDownload={
-              media.link && media.type === MediaType.FILE
-                ? () => onDownload(media)
-                : undefined
-            }
-            onEdit={(hasAdminRole || isMediaOwner) ? () => onEdit(media) : undefined}
-            onDelete={(hasAdminRole || isMediaOwner) ? () => onDelete(media) : undefined}
+            onView={() => onClickView(media)}
+            onDownload={() => onClickDownload(media)}
+            onEdit = {(hasAdminRole || isMediaOwner) ? () => onEdit(media) : undefined}
+      onDelete={(hasAdminRole || isMediaOwner) ? () => onDelete(media) : undefined}
           >
-            <CommonContentLineTitle title={media.title} badges={media.groups} />
-          </ContentLine>
+      <CommonContentLineTitle id={media.id} title={media.title} badges={media.groups} showSeenBadge={true}>
+        {isMediaCreatedWithinLastWeek(media) && <Badge colorScheme='orange'>{translate('NEW')}</Badge>}
+      </CommonContentLineTitle>
+    </ContentLine>
         )
       })}
       <Placeholder
@@ -56,6 +77,6 @@ export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelet
         placeholderElement={<ContentLinePlaceholder />}
       />
       <NoContentPlaceholder show={medias.length === 0 && !isLoading} />
-    </Box>
+    </Box >
   )
 }

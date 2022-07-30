@@ -144,7 +144,7 @@ export const AdminCourseList = () => {
                 onEdit={() => onEdit(course)}
                 customButtons={customButtons}
               >
-                <CommonContentLineTitle title={course.name}>
+                <CommonContentLineTitle id={course.id} title={course.name}>
                   <Text
                     textStyle={'title'}
                     color={color}

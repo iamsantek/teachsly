@@ -96,7 +96,7 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
           onEdit={hasEditPermission ? () => navigate(`/medias/folder/${folder.id}/edit`) : undefined}
           onDelete={hasAdminRole ? () => showDeleteConfirmation({ folderId: folder.id, folderName: folder.name }) : undefined}
         >
-          <CommonContentLineTitle title={folder.name}>
+          <CommonContentLineTitle id={folder.id} title={folder.name}>
             {hasEditPermission && <BadgeList badges={folder.groups} />}
           </CommonContentLineTitle>
         </ContentLine>

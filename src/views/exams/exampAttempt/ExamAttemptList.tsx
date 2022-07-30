@@ -133,7 +133,7 @@ export const ExamAttemptList = () => {
                 onView={examAttempt.isCompleted ? () => navigator(`/exams/attempt/${examAttempt.id}`) : undefined}
                 onDelete={!examAttempt.isCompleted ? () => onDeleteClick(examAttempt.id) : undefined}
               >
-                <CommonContentLineTitle title={`${examAttempt.userName} - ${examAttempt.examName}`}>
+                <CommonContentLineTitle id={examAttempt.id} title={`${examAttempt.userName} - ${examAttempt.examName}`}>
                   {!examAttempt.isCompleted && <Badge colorScheme='red'>{translate('NOT_FINISHED')} {dayjs(examAttempt.createdAt).format('DD/MM/YYYY HH:MM')}hs</Badge>}
                   {examAttempt.isCompleted && examAttempt.correctedBy && <Badge colorScheme={'green'}>{translate('CORRECTED')} ({examAttempt?.correctedBy})</Badge>}
                 </CommonContentLineTitle>

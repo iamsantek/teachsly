@@ -143,6 +143,7 @@ export const MediaContentsList = ({ medias, isLoading, showCRUDModal, onCRUDModa
             onView={onView}
             onEdit={onEdit}
             onDelete={showDeleteContentDialog}
+            showSeenOpacity={true}
           />
         </Box>
       </Stack>

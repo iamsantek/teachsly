@@ -94,6 +94,22 @@ export const mediaToUpdateMediaPromises = (medias: Media[], groups: string[]) =>
   })
 }
 
+// Sort medias by createdAt in descending order which is a string timestamp
+export const sortMediasByCreatedAt = (medias: Media[]) => {
+  return medias.sort((a, b) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  })
+}
+
+// Check if the medias has been created 1 week ago or earlier
+export const isMediaCreatedWithinLastWeek = (media: Media) => {
+  const createdAt = new Date(media.createdAt)
+  const now = new Date()
+  const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+
+  return createdAt.getTime() >= oneWeekAgo.getTime()
+}
+
 export const recommendedMediaTypes = [
   'image/jpeg',
   'image/png',

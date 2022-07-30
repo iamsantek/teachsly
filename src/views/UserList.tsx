@@ -171,7 +171,7 @@ const UserList = ({
                 onView={() => onView(user)}
                 onEdit={hasAdminRole ? () => onEdit(user) : undefined}
               >
-                <CommonContentLineTitle title={user.name}>
+                <CommonContentLineTitle id={user.id} title={user.name}>
                   {user.isDisabledUser && <Badge colorScheme='red'>{translate('DEACTIVATED_USER')}</Badge>}
 
                 </CommonContentLineTitle>

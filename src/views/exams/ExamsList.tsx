@@ -90,7 +90,7 @@ export const ExamsList = () => {
             leftIcon={<IoNewspaper />}
             onView={() => navigate(link)}
           >
-            <CommonContentLineTitle title={exam.title}>
+            <CommonContentLineTitle id={exam.id} title={exam.title}>
               {!isCompleted && (
                 <Text color='brand.500' textStyle='paragraph'>
                   {translate('EXAM_DEADLINE')} {dayjs(exam.deadline).format('DD/MM HH:mm')}hs
