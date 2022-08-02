@@ -141,6 +141,8 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
   }, [fetchSectionName])
 
   useEffect(() => {
+    fetchTypeRef.current = fetchType
+    setMedias([])
     dispatch({ type: FetchType.ALL, payload: undefined })
     dispatch({ type: FetchType.COURSE, payload: undefined })
     dispatch({ type: FetchType.FOLDER, payload: undefined })
