@@ -6,6 +6,7 @@
     "type": "git",
     "url": "https://github.com/iamsantek/the-office-english-learning-platform-frontend.git"
   },
+  "workspaces": ["apps/*"],
   "keywords": [],
   "author": "Santek",
   "license": "MIT",
