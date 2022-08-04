@@ -1,3 +1,4 @@
+import { TimeGranularity } from '../API'
 import { AnswerType, ExamAttachments, ExamAttachmentType, ExamForm, QuestionPool, QuestionType } from '../interfaces/Exams'
 import { translate } from '../utils/LanguageUtils'
 
@@ -33,7 +34,8 @@ export const defaultExamForm: ExamForm = {
   ],
   timer: {
     type: 'global',
-    timeInSeconds: 120
+    timeInSeconds: 120,
+    timeGranularity: TimeGranularity.HOURS
   },
   deadline: '',
   startDate: ''

@@ -342,7 +342,15 @@ export type CreateExamInput = {
 export type TimerInput = {
   type: string,
   timeInSeconds: number,
+  timeGranularity?: TimeGranularity | null,
 };
+
+export enum TimeGranularity {
+  SECONDS = "SECONDS",
+  MINUTES = "MINUTES",
+  HOURS = "HOURS",
+}
+
 
 export enum ExamType {
   EXAM = "EXAM",
@@ -386,6 +394,7 @@ export type Timer = {
   __typename: "Timer",
   type: string,
   timeInSeconds: number,
+  timeGranularity?: TimeGranularity | null,
 };
 
 export type UpdateExamInput = {
@@ -891,6 +900,7 @@ export type CreateExamMutation = {
       __typename: "Timer",
       type: string,
       timeInSeconds: number,
+      timeGranularity?: TimeGranularity | null,
     },
     deadline: string,
     startDate: string,
@@ -917,6 +927,7 @@ export type UpdateExamMutation = {
       __typename: "Timer",
       type: string,
       timeInSeconds: number,
+      timeGranularity?: TimeGranularity | null,
     },
     deadline: string,
     startDate: string,
@@ -943,6 +954,7 @@ export type DeleteExamMutation = {
       __typename: "Timer",
       type: string,
       timeInSeconds: number,
+      timeGranularity?: TimeGranularity | null,
     },
     deadline: string,
     startDate: string,
@@ -1243,6 +1255,7 @@ export type GetExamQuery = {
       __typename: "Timer",
       type: string,
       timeInSeconds: number,
+      timeGranularity?: TimeGranularity | null,
     },
     deadline: string,
     startDate: string,
@@ -1614,6 +1627,7 @@ export type OnCreateExamSubscription = {
       __typename: "Timer",
       type: string,
       timeInSeconds: number,
+      timeGranularity?: TimeGranularity | null,
     },
     deadline: string,
     startDate: string,
@@ -1639,6 +1653,7 @@ export type OnUpdateExamSubscription = {
       __typename: "Timer",
       type: string,
       timeInSeconds: number,
+      timeGranularity?: TimeGranularity | null,
     },
     deadline: string,
     startDate: string,
@@ -1664,6 +1679,7 @@ export type OnDeleteExamSubscription = {
       __typename: "Timer",
       type: string,
       timeInSeconds: number,
+      timeGranularity?: TimeGranularity | null,
     },
     deadline: string,
     startDate: string,

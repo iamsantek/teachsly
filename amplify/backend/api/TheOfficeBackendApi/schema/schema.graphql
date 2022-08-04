@@ -94,9 +94,16 @@ type Options {
     isCorrectOption: Boolean
   }
 
+ enum TimeGranularity {
+    SECONDS,
+    MINUTES,
+    HOURS
+ } 
+
 type Timer {
     type: String!
     timeInSeconds: Int!
+    timeGranularity: TimeGranularity
 }
 
 type Exam @model

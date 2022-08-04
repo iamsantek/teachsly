@@ -172,6 +172,7 @@ export const getExam = /* GraphQL */ `
       timer {
         type
         timeInSeconds
+        timeGranularity
       }
       deadline
       startDate

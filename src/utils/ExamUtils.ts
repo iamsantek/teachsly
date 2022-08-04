@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { Course, Exam, ExamAttempt, GetExamQuery } from '../API'
+import { Course, Exam, ExamAttempt, GetExamQuery, TimeGranularity } from '../API'
 import { defaultExamTimerOptions } from '../constants/Exams'
 import { TranslationsDictionary } from '../dictionaries/dictionary'
 import { AnswerType, ExamAnswers, ExamAttemptFilter, ExamFilter, ExamForm, ExamKeys, Options, Question, QuestionPool, TimerType } from '../interfaces/Exams'
@@ -55,7 +55,8 @@ export const formatAPIResponse = (exam: GetExamQuery | undefined, courses: Cours
     startDate: dayjs(exam.getExam?.startDate).format('YYYY-MM-DDTHH:mm'),
     timer: {
       type: renderExamType(exam?.getExam?.timer?.type as TimerType),
-      timeInSeconds: exam?.getExam?.timer?.timeInSeconds as number
+      timeInSeconds: exam?.getExam?.timer?.timeInSeconds as number,
+      timeGranularity: exam?.getExam?.timer?.timeGranularity || TimeGranularity.HOURS
     }
   })
 }

@@ -1,4 +1,5 @@
 import { MultiSelectOption } from './MultiSelectOption'
+import { TimeGranularity } from '../API'
 
 export interface Options {
   id: string
@@ -74,13 +75,8 @@ export type TimerType = 'question' | 'global'
 
 export interface Timer {
   type: TimerType | MultiSelectOption
+  timeGranularity: TimeGranularity
   timeInSeconds: number
-}
-
-export enum TimerGranularity {
-  SECONDS,
-  MINUTES,
-  HOURS
 }
 
 export interface Attachment {

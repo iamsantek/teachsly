@@ -9,7 +9,7 @@ import { Select } from '../../components/Inputs/Select'
 import { defaultExamForm, defaultExamTimerOptions, defaultQuestionPool } from '../../constants/Exams'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { useUserGroups } from '../../hooks/useUserGroups'
-import { ExamForm, TimerGranularity } from '../../interfaces/Exams'
+import { ExamForm } from '../../interfaces/Exams'
 import { ToastNotification } from '../../observables/ToastNotification'
 import ExamService from '../../services/ExamService'
 import { generalGroups } from '../../utils/CognitoGroupsUtils'
@@ -22,6 +22,7 @@ import { FileUploader } from '../../components/Inputs/FileUploader'
 import StorageService from '../../services/aws/StorageService'
 import { removeExtension } from '../../utils/StringUtils'
 import { EditableInputComponent } from '../../components/Inputs/EditableInput'
+import { TimeGranularity } from '../../API'
 
 export const CreateExamForm = () => {
   const [showDeleteQuestionPoolConfirmation, setShowDeleteQuestionPoolConfirmation] = useState(false)
@@ -163,10 +164,11 @@ export const CreateExamForm = () => {
 
   const onChangeTime = (e: ChangeEvent<HTMLSelectElement>) => {
     const granularity = e.target.value
+    setValue('timer.timeGranularity', granularity as TimeGranularity)
 
-    if (Number(granularity) === TimerGranularity.SECONDS) {
+    if (granularity === TimeGranularity.SECONDS) {
       setValue('timer.timeInSeconds', timer.timeInSeconds * 60)
-    } else if (Number(granularity) === TimerGranularity.MINUTES) {
+    } else if (granularity === TimeGranularity.MINUTES) {
       setValue('timer.timeInSeconds', timer.timeInSeconds / 60)
     }
   }
@@ -220,9 +222,9 @@ export const CreateExamForm = () => {
             />
 
             <HStack spacing={1}>
-              <ChakraSelect maxW={'20%'} onChange={(e) => onChangeTime(e)}>
-                <option value={TimerGranularity.MINUTES}>Minutos</option>
-                <option value={TimerGranularity.SECONDS}>Segundos</option>
+              <ChakraSelect maxW={'20%'} {...register('timer.timeGranularity')} onChange={(e) => onChangeTime(e)}>
+                <option value={TimeGranularity.MINUTES}>Minutos</option>
+                <option value={TimeGranularity.SECONDS}>Segundos</option>
               </ChakraSelect>
               <ChakraInput
                 type='number'

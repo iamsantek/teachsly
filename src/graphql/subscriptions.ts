@@ -210,6 +210,7 @@ export const onCreateExam = /* GraphQL */ `
       timer {
         type
         timeInSeconds
+        timeGranularity
       }
       deadline
       startDate
@@ -230,6 +231,7 @@ export const onUpdateExam = /* GraphQL */ `
       timer {
         type
         timeInSeconds
+        timeGranularity
       }
       deadline
       startDate
@@ -250,6 +252,7 @@ export const onDeleteExam = /* GraphQL */ `
       timer {
         type
         timeInSeconds
+        timeGranularity
       }
       deadline
       startDate
