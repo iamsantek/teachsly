@@ -29,34 +29,44 @@ import { ConfirmationDialog } from '../components/AlertDialog/ConfirmationDialog
 import { AiFillCheckCircle } from 'react-icons/ai'
 import { renderCourseList, transformGroups } from '../utils/CourseUtils'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
+import { mapSingleValueToMultiSelectOption, renderEnglishLevelOptions } from '../utils/SelectUtils'
+import { MultiSelectOption } from '../interfaces/MultiSelectOption'
+import { ImCross } from 'react-icons/im'
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   onCreate: (user: User) => void;
   onUpdate: (user: User) => void;
+  onDelete: (user: User) => void;
   userToUpdate?: User;
   userType: UserTypes;
 }
 
 function formatUser (user: UserWithMultiSelect) {
   const groupsArray = user?.groups?.map((group) => group.value)
+  const englishLevel = (user.englishLevel as MultiSelectOption).value
 
   return {
     ...user,
-    groups: groupsArray as string[]
+    groups: groupsArray as string[],
+    englishLevel
   } as CreateUserInput | UpdateUserInput
 }
+
+const englishLevels = renderEnglishLevelOptions()
 
 const UserCRUDModal = ({
   isOpen,
   onClose,
   onCreate,
   onUpdate,
+  onDelete,
   userToUpdate,
   userType
 }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [showDisableUserConfirmation, setShowDisableUserConfirmation] = useState<boolean>(false)
   const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] = useState<boolean>(false)
 
   const { context: { courses } } = useContext(UserDashboardContext)
@@ -85,11 +95,15 @@ const UserCRUDModal = ({
     }
 
     const mappedValues = transformGroups(courses, userToUpdate.groups)
+    const englishLevel = mapSingleValueToMultiSelectOption(userToUpdate.englishLevel || '')
 
     const user: UserWithMultiSelect = {
       ...userToUpdate,
-      groups: mappedValues
+      groups: mappedValues,
+      englishLevel
     }
+
+    console.log({ user })
 
     reset(user)
   }, [userToUpdate])
@@ -102,6 +116,7 @@ const UserCRUDModal = ({
 
   const createUser = async (user: UserWithMultiSelect) => {
     const formattedUser = formatUser(user) as CreateUserInput
+
     const createdUser = await UserService.createUser(formattedUser, userType)
 
     if (createdUser) {
@@ -121,14 +136,31 @@ const UserCRUDModal = ({
     onClose()
   }
 
+  const onDeleteUser = async () => {
+    setIsLoading(true)
+    const deletedUser = await UserService.deleteUser(userToUpdate?.id as string, userToUpdate?.cognitoId as string)
+
+    ToastNotification({
+      status: deletedUser ? 'SUCCESS' : 'ERROR',
+      description: deletedUser ? 'USER_DELETED_MESSAGE' : 'USER_DELETED_ERROR'
+    })
+
+    onDelete(userToUpdate as User)
+    setIsLoading(false)
+    setShowDeleteUserConfirmation(false)
+    onClose()
+  }
+
   const updateUser = async (user: UpdateUserInput) => {
     const updatedFields = Object.keys(dirtyFields)
     if (!isDirty && !!updatedFields) {
       return
     }
 
-    const shouldUpdateGroups = Object.keys(dirtyFields).includes('groups')
-    const updateUserResponse = await UserService.updateUser(user, shouldUpdateGroups, userToUpdate?.groups as string[])
+    // Check if dirtyField contains the property groups or englishLevel to update Cognito Groups
+    const shouldUpdateGroups = updatedFields.some(field => field === 'groups' || field === 'englishLevel')
+    const currentGroups = [...userToUpdate?.groups as string[], userToUpdate?.englishLevel as string]
+    const updateUserResponse = await UserService.updateUser(user, shouldUpdateGroups, currentGroups)
 
     if (updateUserResponse) {
       onUpdate(updateUserResponse.updateUser as User)
@@ -166,7 +198,7 @@ const UserCRUDModal = ({
   }
 
   const toggleAccountStatus = () => {
-    setShowDeleteUserConfirmation(false)
+    setShowDisableUserConfirmation(false)
     const user = formatUser(watch())
     const disabledUser = {
       ...user,
@@ -232,6 +264,16 @@ const UserCRUDModal = ({
                   />
 
                   <Select
+                    name="englishLevel"
+                    label="LEVEL"
+                    isRequired={true}
+                    placeholder={translate('LEVEL')}
+                    options={englishLevels}
+                    isMultiSelect={false}
+                    closeMenuOnSelect={true}
+                  />
+
+                  <Select
                     name="groups"
                     label="COURSES"
                     isRequired={true}
@@ -242,12 +284,20 @@ const UserCRUDModal = ({
                   />
                 </Stack>
                 <ConfirmationDialog
-                  isOpen={showDeleteUserConfirmation}
-                  onClose={() => setShowDeleteUserConfirmation(false)}
+                  isOpen={showDisableUserConfirmation}
+                  onClose={() => setShowDisableUserConfirmation(false)}
                   title={isDisabledUser ? 'ACTIVE_USER_BUTTON' : 'DEACTIVATED_USER_BUTTON'}
                   description={isDisabledUser ? 'ACTIVE_USER_DESCRIPTION' : 'DEACTIVATED_USER_DESCRIPTION'}
                   confirmButtonText={isDisabledUser ? 'ACTIVE_USER_BUTTON' : 'DEACTIVATED_USER_BUTTON'}
                   onAction={toggleAccountStatus}
+                />
+                <ConfirmationDialog
+                  isOpen={showDeleteUserConfirmation}
+                  onClose={() => setShowDeleteUserConfirmation(false)}
+                  title={'DELETE_ACCOUNT_BUTTON'}
+                  description='DELETE_ACCOUNT_WARNING'
+                  confirmButtonText='DELETE_ACCOUNT_BUTTON'
+                  onAction={onDeleteUser}
                 />
                 {userToUpdate && (
                   <Flex gap={4} direction='column' align='flex-start'>
@@ -257,7 +307,7 @@ const UserCRUDModal = ({
                       <Button
                         isLoading={isLoading}
                         w={['100%', 'auto']}
-                        onClick={() => setShowDeleteUserConfirmation(true)}
+                        onClick={() => setShowDisableUserConfirmation(true)}
                         leftIcon={isDisabledUser ? <AiFillCheckCircle /> : <MdDangerous />}
                       >
                         {translate(isDisabledUser ? 'ACTIVE_USER_BUTTON' : 'DEACTIVATED_USER_BUTTON')}
@@ -269,6 +319,14 @@ const UserCRUDModal = ({
                         onClick={() => resetPassword()}
                       >
                         {translate('RESET_PASSWORD_BUTTON')}
+                      </Button>
+                      <Button
+                        leftIcon={<ImCross />}
+                        w={['100%', 'auto']}
+                        isLoading={isLoading}
+                        onClick={() => setShowDeleteUserConfirmation(true)}
+                      >
+                        {translate('DELETE_ACCOUNT')}
                       </Button>
                     </VStack>
                   </Flex>

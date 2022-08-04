@@ -9,7 +9,8 @@ import {
   AttributeType,
   CreateGroupCommand,
   AdminRemoveUserFromGroupCommand,
-  AdminSetUserPasswordCommand
+  AdminSetUserPasswordCommand,
+  AdminDeleteUserCommand
 } from '@aws-sdk/client-cognito-identity-provider'
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers'
 import { UpdateUserInput } from '../../API'
@@ -43,8 +44,6 @@ class CognitoService {
             }
           })
         })
-
-        console.log('Client created')
       } else if (error) {
         Logger.log(
           LogLevel.ERROR,
@@ -212,7 +211,6 @@ class CognitoService {
   }
 
   public parseCognitoUser = (attributes: AttributeType[] | undefined) => {
-    console.log('parseCognitoUser')
     const userId = attributes?.find(
       (attribute) => attribute.Name === 'sub'
     )?.Value
@@ -333,6 +331,15 @@ class CognitoService {
       Username: userId,
       Password: '12345678',
       Permanent: false
+    })
+
+    return this.cognitoIdentityProviderClient?.send(command)
+  }
+
+  public deleteCognitoUser = async (userId: string) => {
+    const command = new AdminDeleteUserCommand({
+      UserPoolId: awsmobile.aws_user_pools_id,
+      Username: userId
     })
 
     return this.cognitoIdentityProviderClient?.send(command)

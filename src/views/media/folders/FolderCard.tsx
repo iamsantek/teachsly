@@ -34,7 +34,7 @@ export const FolderCard = ({ folder: { name, id } }: Props) => {
                     <MdFolder />
                 </Circle>
                 <Box>
-                    <CommonContentLineTitle title={name} />
+                    <CommonContentLineTitle id={id} title={name} />
                 </Box>
             </Flex>
         </Box>

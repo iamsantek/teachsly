@@ -20,6 +20,9 @@ import { CreateExamScreen } from './views/exams/CreateExamScreen'
 import { ExamsHomeScreen } from './views/exams/ExamsHomeScreen'
 import DashboardLayout from './layouts/DashboardLayout'
 import { ExamIntroductionScreen } from './views/exams/ExamIntroductionScreen'
+import { ExamAttemptScreen } from './views/exams/exampAttempt/ExamAttemptScreen'
+import { ExamAttemptDetail } from './views/exams/exampAttempt/ExamAttemptDetail'
+import { StudentExamResultScreen } from './views/exams/exampAttempt/students/StudentExamResultScreen'
 
 const adminHomeScreen: ApplicationRoute = {
   name: translate('MENU_HOME'),
@@ -122,6 +125,11 @@ const mediaFolderDetailRoute: ApplicationRoute = { path: '/medias/folder/:folder
 const mediaFolderEditRoute: ApplicationRoute = { path: '/medias/folder/:folderId/edit', element: <MediaFolderScreen />, showInNavbar: false, withDashboardLayout: true }
 const videoPreviewRoute: ApplicationRoute = { path: '/play/:mediaId', element: <ContentLayout />, showInNavbar: false, withDashboardLayout: false }
 
+const examAttemptScreenRoute: ApplicationRoute = { path: '/exams/attempts', name: translate('EXAM_ATTEMPTS'), element: <ExamAttemptScreen />, showInNavbar: false, withDashboardLayout: true }
+const examAttemptDetailRoute: ApplicationRoute = { path: '/exams/attempt/:attemptId', element: <ExamAttemptDetail />, showInNavbar: false, withDashboardLayout: true }
+
+const examResultsRoute: ApplicationRoute = { path: '/exams/results/:attemptId', element: <StudentExamResultScreen />, showInNavbar: false, withDashboardLayout: true }
+
 const adminRoutes: ApplicationRoute[] = [
   adminHomeScreen,
   mediaContents,
@@ -138,6 +146,8 @@ const adminRoutes: ApplicationRoute[] = [
   createExamScreen,
   examsHomeScreen,
   examDetailRoute,
+  examAttemptScreenRoute,
+  examAttemptDetailRoute,
   { path: '*', element: <DashboardLayout><AdminHomeScreen /></DashboardLayout> }
 ]
 
@@ -150,6 +160,8 @@ const studentRoutes: ApplicationRoute[] = [
   videoPreviewRoute,
   examIntroductionRoute,
   examsHomeScreen,
+  examAttemptDetailRoute,
+  examResultsRoute,
   { path: '*', element: <DashboardLayout><StudentsHomeScreen /></DashboardLayout> }
 ]
 
@@ -165,6 +177,8 @@ const teachersRoutes: ApplicationRoute[] = [
   videoPreviewRoute,
   createExamScreen,
   examsHomeScreen,
+  examAttemptDetailRoute,
+  examAttemptScreenRoute,
   { path: '*', element: <DashboardLayout><TeachersHomeScreen /></DashboardLayout> }
 ]
 

@@ -1,8 +1,8 @@
 import { Divider, Stack } from '@chakra-ui/react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { MdFolder } from 'react-icons/md'
 import { useNavigate, useParams } from 'react-router-dom'
-import { MediaFolder } from '../../../API'
+import { EnglishLevel, MediaFolder } from '../../../API'
 import { ContentLine } from '../../../components/ContentLine/ContentLine'
 import { FetchType } from '../../../enums/Media'
 import MediaFolderService from '../../../services/MediaFolderService'
@@ -13,6 +13,8 @@ import { DeleteFolderConfirmation } from '../../../components/AlertDialog/Delete
 import { DeletingFolder } from '../../../interfaces/MediaFolder'
 import { DeleteFolderMethod } from '../../../enums/MediaFolder'
 import { ToastNotification } from '../../../observables/ToastNotification'
+import { findMatch } from '../../../utils/GeneralUtils'
+import { UserDashboardContext } from '../../../contexts/UserDashboardContext'
 
 interface Props {
   fetchType: FetchType
@@ -25,13 +27,16 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
   const [showDeleteFolderMessage, setShowDeleteFolderMessage] = useState<boolean>(false)
   const [deletingFolder, setDeletingFolder] = useState<DeletingFolder | undefined>(undefined)
   const { courseId } = useParams()
-  const { hasEditPermission, hasAdminRole } = useUserGroups()
+  const { hasEditPermission, hasAdminRole, groups, userType } = useUserGroups()
   const navigate = useNavigate()
+  const { context: { user } } = useContext(UserDashboardContext)
 
   const fetchFolders = useCallback(async () => {
     const folders = await MediaFolderService.fetchMediaFolders(fetchType, courseId)
 
-    setFolders(folders?.listMediaFolders?.items as MediaFolder[] || [])
+    const matchedFolder = findMatch(folders?.listMediaFolders?.items as MediaFolder[], groups.map(group => group.externalId), userType, user?.englishLevel as EnglishLevel)
+
+    setFolders(matchedFolder || [])
   }, [fetchType, courseId])
 
   useEffect(() => {
@@ -91,8 +96,8 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
           onEdit={hasEditPermission ? () => navigate(`/medias/folder/${folder.id}/edit`) : undefined}
           onDelete={hasAdminRole ? () => showDeleteConfirmation({ folderId: folder.id, folderName: folder.name }) : undefined}
         >
-          <CommonContentLineTitle title={folder.name}>
-            <BadgeList badges={folder.groups} />
+          <CommonContentLineTitle id={folder.id} title={folder.name}>
+            {hasEditPermission && <BadgeList badges={folder.groups} />}
           </CommonContentLineTitle>
         </ContentLine>
       ))}

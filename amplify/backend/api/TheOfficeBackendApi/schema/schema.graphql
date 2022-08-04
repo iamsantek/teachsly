@@ -1,3 +1,17 @@
+enum ExamType {
+  EXAM,
+  HOMEWORK
+}
+
+enum EnglishLevel {
+  STARTER,
+  ELEMENTARY,
+  PRE_INTERMEDIATE,
+  INTERMEDIATE,
+  UPPER_INTERMEDIATE,
+  ADVANCED
+}
+
 type Course @model
 @auth(rules: [
   {allow: private, operations: [read]},
@@ -13,6 +27,7 @@ type Course @model
   isActive: Boolean @default(value: "true")
   externalId: String!
   scheduleYear: Int!
+  englishLevel: EnglishLevel
 }
 
 enum MediaType {
@@ -70,6 +85,7 @@ type User @model
   groups: [String!]!
   isDisabledUser: Boolean @default(value: "false")
   disabledReason: DisabledAccountReasons
+  englishLevel: EnglishLevel
 } 
 
 type Options {
@@ -87,7 +103,8 @@ type Exam @model
 @auth(rules: [
   {allow: owner},
   {allow: groups, groups: ["Admin"]},
-  {allow: groups, groups: ["Students","Teachers"], operations: [read] },
+  {allow: groups, groups: ["Teachers"], operations: [read] },
+  {allow: groups, groupsField: "groups", operations: [read] }
   ])
 {
   id: ID!
@@ -97,23 +114,29 @@ type Exam @model
   timer: Timer!
   deadline: AWSDateTime!
   startDate: AWSDateTime!
+  type: ExamType
 }
 
 type ExamAttempt @model
 @auth(rules: [
   {allow: owner},
-  {allow: groups, groups: ["Admin"]},
-  {allow: groups, groups: ["Students","Teachers"], operations: [read] },
+  {allow: groups, groups: ["Admin","Teachers"]},
+  {allow: groups, groups: ["Students"], operations: [read] },
   ])
 {
   id: ID!
   examId: ID!
   examName: String!
   userId: ID!
-  score: Int
+  userName: String @default(value: "")
+  score: String
   isCompleted: Boolean @default(value: "false")
   correctAnswers: Int
+  totalQuestions: Int
   correctedBy: String
   externalId: ID! @index(name: "byExternalId", queryField: "examAttemptByExternalId")
-  answers: AWSJSON
+  results: AWSJSON
+  keys: AWSJSON
+  teacherComments: String
+  type: ExamType
 }

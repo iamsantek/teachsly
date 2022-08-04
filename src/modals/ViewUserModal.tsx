@@ -16,6 +16,7 @@ import { BadgeList } from '../components/Badges/BadgeList'
 import { User } from '../API'
 import { BsWhatsapp } from 'react-icons/bs'
 import { AiFillPhone } from 'react-icons/ai'
+import { capitalize } from '../utils/StringUtils'
 
 interface Props {
   isOpen: boolean;
@@ -39,6 +40,9 @@ export const ViewUserModal = ({ isOpen, onClose, user }: Props) => {
 
             <Text textStyle={'title'}>{translate('EMAIL')}</Text>
             <Text textDecoration='underline' textStyle={'paragraph'} as={'a'} href={`mailto:${user?.email}`}>{user?.email}</Text>
+
+            <Text textStyle='title'>{translate('LEVEL')}</Text>
+            <Text>{capitalize(user?.englishLevel || translate('NOT_DEFINED'))}</Text>
 
             {!!Number(user?.phone) && (
               <>

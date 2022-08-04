@@ -1,5 +1,5 @@
 import { Button, Stack, Wrap, WrapItem } from '@chakra-ui/react'
-import { FC, useCallback, useContext, useEffect, useMemo, useReducer, useState } from 'react'
+import { FC, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { MdModeEditOutline } from 'react-icons/md'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -11,6 +11,7 @@ import { useUserGroups } from '../../hooks/useUserGroups'
 import MediaFolderService from '../../services/MediaFolderService'
 import MediaService from '../../services/MediaService'
 import { translate } from '../../utils/LanguageUtils'
+import { sortMediasByCreatedAt } from '../../utils/MediaUtils'
 import { useGroupRoutes } from '../../utils/RouteUtils'
 import { MediaContentsList } from './MediaContentsList'
 
@@ -44,6 +45,7 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
   const { courseId, folderId } = useParams()
   const { context: { courses } } = useContext(UserDashboardContext)
   const { hasTeacherRole, hasAdminRole } = useUserGroups()
+  const fetchTypeRef = useRef<FetchType>(fetchType)
 
   const fetchMediaFolderName = useCallback(async () => {
     return `${translate('FOLDER')} ${mediaFolder?.name || ''} `
@@ -67,8 +69,13 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
   const fetchMediaFolder = useCallback(async () => {
     const mediaFolder = await MediaFolderService.fetchMediaFolderById(folderId)
     const folderMedias = await MediaService.fetchMediaByFolderId(folderId, nextPageTokens.FOLDER)
+
+    if (fetchTypeRef.current !== FetchType.FOLDER) {
+      return
+    }
+
     setMediaFolder(mediaFolder?.getMediaFolder as MediaFolder ?? [])
-    setMedias(medias => medias.concat(folderMedias?.listMedia?.items as Media[]) ?? [])
+    setMedias(medias => sortMediasByCreatedAt(medias.concat(folderMedias?.listMedia?.items as Media[]) ?? []))
 
     if (folderMedias?.listMedia?.nextToken) {
       dispatch({ type: FetchType.FOLDER, payload: folderMedias?.listMedia?.nextToken })
@@ -79,7 +86,12 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
 
   const fetchCourseMedias = useCallback(async () => {
     const courseMedias = await MediaService.fetchMedias(nextPageTokens.COURSE, courseId)
-    setMedias(medias => medias.concat(courseMedias?.listMedia?.items as Media[]) ?? [])
+
+    if (fetchTypeRef.current !== FetchType.COURSE) {
+      return
+    }
+
+    setMedias(medias => sortMediasByCreatedAt(medias.concat(courseMedias?.listMedia?.items as Media[]) ?? []))
 
     if (courseMedias?.listMedia?.nextToken) {
       dispatch({ type: FetchType.COURSE, payload: courseMedias.listMedia.nextToken })
@@ -90,7 +102,12 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
 
   const fetchAllMedias = useCallback(async () => {
     const allMedias = await MediaService.fetchMedias(nextPageTokens.ALL)
-    setMedias(medias => medias.concat(allMedias?.listMedia?.items as Media[] ?? []))
+
+    if (fetchTypeRef.current !== FetchType.ALL) {
+      return
+    }
+
+    setMedias(medias => sortMediasByCreatedAt(medias.concat(allMedias?.listMedia?.items as Media[] ?? [])))
 
     if (allMedias?.listMedia?.nextToken) {
       dispatch({ type: FetchType.ALL, payload: allMedias?.listMedia?.nextToken })
@@ -124,12 +141,11 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
   }, [fetchSectionName])
 
   useEffect(() => {
-    return () => {
-      setMedias([])
-      dispatch({ type: FetchType.ALL, payload: undefined })
-      dispatch({ type: FetchType.COURSE, payload: undefined })
-      dispatch({ type: FetchType.FOLDER, payload: undefined })
-    }
+    fetchTypeRef.current = fetchType
+    setMedias([])
+    dispatch({ type: FetchType.ALL, payload: undefined })
+    dispatch({ type: FetchType.COURSE, payload: undefined })
+    dispatch({ type: FetchType.FOLDER, payload: undefined })
   }, [fetchType])
 
   useEffect(() => {

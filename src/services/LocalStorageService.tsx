@@ -1,5 +1,6 @@
 export enum LocalStorageKeys {
-    USER = 'USER'
+    USER = 'USER',
+    VIEWED_CONTENT = 'VIEWED_CONTENT'
 }
 
 class LocalStorageService {

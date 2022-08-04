@@ -22,6 +22,7 @@ import { Course, User } from './API'
 import { GRAPHQL_ENDPOINT } from './constants/Environment'
 import CognitoService from './services/aws/CognitoService'
 import LocalStorageService, { LocalStorageKeys } from './services/LocalStorageService'
+import { sortCoursesByName } from './utils/CourseUtils'
 
 Amplify.configure({
   ...awsExports,
@@ -77,7 +78,7 @@ const App = () => {
     setUserSettings({
       user: user as User,
       routes,
-      courses: courses as Course[],
+      courses: sortCoursesByName(courses as Course[]),
       externalUserId: cognitoId as string
     })
   }, [fetchCourses])

@@ -14,6 +14,7 @@ export const onCreateCourse = /* GraphQL */ `
       isActive
       externalId
       scheduleYear
+      englishLevel
       createdAt
       updatedAt
     }
@@ -31,6 +32,7 @@ export const onUpdateCourse = /* GraphQL */ `
       isActive
       externalId
       scheduleYear
+      englishLevel
       createdAt
       updatedAt
     }
@@ -48,6 +50,7 @@ export const onDeleteCourse = /* GraphQL */ `
       isActive
       externalId
       scheduleYear
+      englishLevel
       createdAt
       updatedAt
     }
@@ -157,6 +160,7 @@ export const onCreateUser = /* GraphQL */ `
       groups
       isDisabledUser
       disabledReason
+      englishLevel
       createdAt
       updatedAt
     }
@@ -173,6 +177,7 @@ export const onUpdateUser = /* GraphQL */ `
       groups
       isDisabledUser
       disabledReason
+      englishLevel
       createdAt
       updatedAt
     }
@@ -189,6 +194,7 @@ export const onDeleteUser = /* GraphQL */ `
       groups
       isDisabledUser
       disabledReason
+      englishLevel
       createdAt
       updatedAt
     }
@@ -207,6 +213,7 @@ export const onCreateExam = /* GraphQL */ `
       }
       deadline
       startDate
+      type
       createdAt
       updatedAt
       owner
@@ -226,6 +233,7 @@ export const onUpdateExam = /* GraphQL */ `
       }
       deadline
       startDate
+      type
       createdAt
       updatedAt
       owner
@@ -245,6 +253,7 @@ export const onDeleteExam = /* GraphQL */ `
       }
       deadline
       startDate
+      type
       createdAt
       updatedAt
       owner
@@ -258,12 +267,17 @@ export const onCreateExamAttempt = /* GraphQL */ `
       examId
       examName
       userId
+      userName
       score
       isCompleted
       correctAnswers
+      totalQuestions
       correctedBy
       externalId
-      answers
+      results
+      keys
+      teacherComments
+      type
       createdAt
       updatedAt
       owner
@@ -277,12 +291,17 @@ export const onUpdateExamAttempt = /* GraphQL */ `
       examId
       examName
       userId
+      userName
       score
       isCompleted
       correctAnswers
+      totalQuestions
       correctedBy
       externalId
-      answers
+      results
+      keys
+      teacherComments
+      type
       createdAt
       updatedAt
       owner
@@ -296,12 +315,17 @@ export const onDeleteExamAttempt = /* GraphQL */ `
       examId
       examName
       userId
+      userName
       score
       isCompleted
       correctAnswers
+      totalQuestions
       correctedBy
       externalId
-      answers
+      results
+      keys
+      teacherComments
+      type
       createdAt
       updatedAt
       owner

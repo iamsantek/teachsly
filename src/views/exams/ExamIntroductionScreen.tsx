@@ -36,7 +36,7 @@ export const ExamIntroductionScreen = () => {
 
   const fetchExam = useCallback(async (examId: string) => {
     const examPromise = ExamService.getExamById(examId)
-    const examAttemptPromise = ExamService.getExamAttemptByExternalId(examId, user?.id as string)
+    const examAttemptPromise = ExamService.getExamAttemptByExternalId(examId, user?.cognitoId as string)
 
     const [exam, examAttempt] = await Promise.all([examPromise, examAttemptPromise])
 
@@ -71,9 +71,10 @@ export const ExamIntroductionScreen = () => {
 
     const examAttempt = await ExamService.createExamAttempt({
       examId: examId as string,
-      userId: user?.id as string,
+      userId: user?.cognitoId as string,
       examName: exam?.title,
-      externalId: uuid()
+      externalId: uuid(),
+      userName: user?.name as string
     })
 
     if (!examAttempt) {

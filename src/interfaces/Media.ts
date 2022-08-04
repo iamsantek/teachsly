@@ -1,4 +1,4 @@
-import { CreateMediaInput, Media as MediaAPI } from '../API';
+import { CreateMediaInput, Media as MediaAPI } from '../API'
 import { MediaType } from '../models'
 import { MultiSelectOption } from './MultiSelectOption'
 
