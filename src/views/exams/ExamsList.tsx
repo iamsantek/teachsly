@@ -3,12 +3,12 @@ import { ContentLine } from '../../components/ContentLine/ContentLine'
 import ExamService from '../../services/ExamService'
 import { IoNewspaper } from 'react-icons/io5'
 import { CommonContentLineTitle } from '../media/CommonContentLineTitle'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Badge, Stack, Text } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { translate } from '../../utils/LanguageUtils'
 import { useUserGroups } from '../../hooks/useUserGroups'
-import { Exam, ExamAttempt } from '../../API'
+import { Exam, ExamAttempt, ExamType } from '../../API'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { applyCourseFilter, applyExamStatusFilter, getExamLink, getExamStatus } from '../../utils/ExamUtils'
 import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
@@ -23,19 +23,24 @@ export const ExamsList = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [examAttempts, setExamAttempts] = useState<ExamAttempt[]>([])
   const { hasEditPermission } = useUserGroups()
-  const [currentStatusFilter, setCurrentStatusFilter] = useState<IExamFilter>(IExamFilter.ALL)
+  const [currentStatusFilter, setCurrentStatusFilter] = useState<IExamFilter>(IExamFilter.PENDING)
   const [currentCourseFilter, setCurrentCourseFilter] = useState<string>(IExamFilter.ALL)
   const navigate = useNavigate()
+  const location = useLocation()
   const { context: { user } } = useContext(UserDashboardContext)
+  const isExamView = location.pathname.includes('exams')
+  const examType = isExamView ? ExamType.EXAM : ExamType.HOMEWORK
 
   const fetchExams = useCallback(async () => {
-    const exams = await ExamService.getExams()
-    const examAttempts = await ExamService.getExamAttemptsByCognitoId(user?.cognitoId as string)
+    const exams = isExamView ? await ExamService.getExams() : await ExamService.getHomework()
+    const examAttempts = await ExamService.getExamAttemptsByCognitoId(user?.cognitoId as string, examType)
+    const examsWithAppliedFilter = applyExamStatusFilter(exams?.listExams?.items as Exam[] || [], examAttempts?.listExamAttempts?.items as ExamAttempt[] ?? [], currentStatusFilter)
+
     setExams(exams?.listExams?.items as any[] || [])
     setExamAttempts(examAttempts?.listExamAttempts?.items as ExamAttempt[] || [])
-    setRenderedExams(exams?.listExams?.items as Exam[] || [])
+    setRenderedExams(examsWithAppliedFilter)
     setIsLoading(false)
-  }, [user])
+  }, [user, examType, isExamView, currentStatusFilter])
 
   useEffect(() => {
     fetchExams()
@@ -53,8 +58,8 @@ export const ExamsList = () => {
 
   const getBadge = (exam: Exam) => {
     const { examAttempt, isCompleted, isCorrected } = getExamStatus(exam, examAttempts)
-    const badgeText = translate(examAttempt?.correctedBy ? 'CORRECTED' : examAttempt?.isCompleted ? 'COMPLETED' : 'NOT_COMPLETED')
-    const badgeColor = examAttempt?.correctedBy ? 'green' : examAttempt?.isCompleted ? 'blue' : 'red'
+    const badgeText = dayjs().isBefore(exam.startDate) ? `${translate('COMING_SOON')} ${dayjs(exam.deadline).format('DD/MM HH:mm')}hs` : translate(examAttempt?.correctedBy ? 'CORRECTED' : examAttempt?.isCompleted ? 'COMPLETED' : 'NOT_COMPLETED')
+    const badgeColor = dayjs().isBefore(exam.startDate) ? 'green' : examAttempt?.correctedBy ? 'green' : examAttempt?.isCompleted ? 'blue' : 'red'
 
     return { badgeText, badgeColor, isCompleted, isCorrected }
   }

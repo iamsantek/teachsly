@@ -215,6 +215,9 @@ export const onCreateExam = /* GraphQL */ `
       deadline
       startDate
       type
+      settings {
+        allowRetake
+      }
       createdAt
       updatedAt
       owner
@@ -236,6 +239,9 @@ export const onUpdateExam = /* GraphQL */ `
       deadline
       startDate
       type
+      settings {
+        allowRetake
+      }
       createdAt
       updatedAt
       owner
@@ -257,6 +263,9 @@ export const onDeleteExam = /* GraphQL */ `
       deadline
       startDate
       type
+      settings {
+        allowRetake
+      }
       createdAt
       updatedAt
       owner

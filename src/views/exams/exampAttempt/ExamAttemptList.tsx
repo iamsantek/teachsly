@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
-import { ExamAttempt } from '../../../API'
+import { ExamAttempt, ExamType } from '../../../API'
 import { ContentLine } from '../../../components/ContentLine/ContentLine'
 import ExamService from '../../../services/ExamService'
 import { CommonContentLineTitle } from '../../media/CommonContentLineTitle'
 import { BsCardChecklist } from 'react-icons/bs'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Badge, Box, Stack } from '@chakra-ui/react'
 import { translate } from '../../../utils/LanguageUtils'
 import dayjs from 'dayjs'
@@ -24,6 +24,8 @@ export const ExamAttemptList = () => {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
   const [deleteExamAttemptId, setDeleteExamAttemptId] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState(true)
+  const location = useLocation()
+  const type = location.pathname.includes('exams') ? ExamType.EXAM : ExamType.HOMEWORK
 
   // Filters
   const [statusActiveFilter, setStatusActiveFilter] = useState<IExamAttemptFilter>(IExamAttemptFilter.ALL)
@@ -33,13 +35,13 @@ export const ExamAttemptList = () => {
   const navigator = useNavigate()
 
   const fetchExamAttempts = useCallback(async () => {
-    const examsAttemptsResponse = await ExamService.fetchExamAttempts(nextPageToken)
+    const examsAttemptsResponse = await ExamService.fetchExamAttempts(type, nextPageToken)
 
     setExamAttempts(examsAttemptsResponse?.listExamAttempts?.items as ExamAttempt[] ?? [])
     setExamAttemptsDisplayed(examsAttemptsResponse?.listExamAttempts?.items as ExamAttempt[] ?? [])
     setNextPageToken(examsAttemptsResponse?.listExamAttempts?.nextToken as string)
     setIsLoading(false)
-  }, [nextPageToken])
+  }, [nextPageToken, type])
 
   useEffect(() => {
     fetchExamAttempts()

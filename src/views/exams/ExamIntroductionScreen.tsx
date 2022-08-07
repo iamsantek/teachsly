@@ -1,5 +1,5 @@
 import { Alert, AlertIcon, Box, Button, Container, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ExamForm } from '../../interfaces/Exams'
 import ExamService from '../../services/ExamService'
@@ -11,6 +11,8 @@ import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { v4 as uuid } from 'uuid'
 import { ToastNotification } from '../../observables/ToastNotification'
 import { GeneralInformation } from '../../enums/GeneralInformation'
+import { ExamType } from '../../API'
+import { calculateExamDurationInMinutes } from '../../utils/ExamUtils'
 
 export const ExamIntroductionScreen = () => {
   const { context: { user } } = useContext(UserDashboardContext)
@@ -42,7 +44,7 @@ export const ExamIntroductionScreen = () => {
 
     setExam(exam?.getExam as unknown as ExamForm)
 
-    if (examAttempt?.listExamAttempts?.items && examAttempt?.listExamAttempts?.items?.length > 0) {
+    if (!exam?.getExam?.settings?.allowRetake && examAttempt?.listExamAttempts?.items && examAttempt?.listExamAttempts?.items?.length > 0) {
       setIsSubmitted(true)
     }
 
@@ -54,6 +56,8 @@ export const ExamIntroductionScreen = () => {
   useEffect(() => {
     reset()
   }, [countdown])
+
+  const examDuration = useMemo(() => calculateExamDurationInMinutes(exam as ExamForm), [exam])
 
   useEffect(() => {
     if (!examId) {
@@ -74,7 +78,8 @@ export const ExamIntroductionScreen = () => {
       userId: user?.cognitoId as string,
       examName: exam?.title,
       externalId: uuid(),
-      userName: user?.name as string
+      userName: user?.name as string,
+      type: exam.type ?? ExamType.EXAM
     })
 
     if (!examAttempt) {
@@ -87,7 +92,7 @@ export const ExamIntroductionScreen = () => {
     }
 
     setIsProcessing(false)
-    window.location.href = `https://exams.${GeneralInformation.DOMAIN}/${examAttempt.createExamAttempt?.externalId}`
+    window.location.href = `https://${exam.type === ExamType.HOMEWORK ? 'homework' : 'exams'}.${GeneralInformation.DOMAIN}/${examAttempt.createExamAttempt?.externalId}`
   }
 
   if (isLoading) {
@@ -95,6 +100,7 @@ export const ExamIntroductionScreen = () => {
   }
 
   const hasStarted = dayjs().isAfter(exam?.startDate)
+  const isRetakeAllowed = exam?.settings?.allowRetake
 
   return (
     <Container centerContent marginY={10}>
@@ -107,12 +113,12 @@ export const ExamIntroductionScreen = () => {
           {translate('EXAM_INTRO_WORDING_1')}
         </Text>
         <Text textAlign='justify'>
-          {translate('EXAM_INTRO_WORDING_2')}
+          {translate(isRetakeAllowed ? 'EXAM_INTRO_WORDING_2_WITH_RETAKE' : 'EXAM_INTRO_WORDING_2')}
         </Text>
         {isSubmitted && (
           <Alert status='error'>
             <AlertIcon />
-            <Text fontWeight='bold'>Ya has realizado un intento de este examen. No puedes volver a hacerlo.</Text>
+            <Text fontWeight='bold'>{translate('RETAKE_EXAM_WARNING')}</Text>
           </Alert>
         )}
         <Flex flexDirection='column' border='2px' borderColor='brand.500' p={10} alignItems='center' alignContent='center' justifyContent='center'>
@@ -126,7 +132,7 @@ export const ExamIntroductionScreen = () => {
             {days}d:{hours}h:{minutes}m:{seconds}s
           </Text>
           <Text fontWeight='bold'>{translate('EXAM_DEADLINE')} {dayjs(exam?.deadline).format('DD/MM hh:mm')}hs</Text>
-          {/* <Text>{translate('EXAM_DURATION')}: {calculateExamDurationInMinutes(exam as ExamForm)} mins.</Text> */}
+          <Text>{translate('EXAM_DURATION')}: {examDuration} mins.</Text>
         </Flex>
         <Box display='flex' alignContent='center' justifyContent='center' alignItems='center'>
           <Button
@@ -138,7 +144,7 @@ export const ExamIntroductionScreen = () => {
             isDisabled={isTimerFinished || !hasStarted || isSubmitted}
             isLoading={isProcessing}
           >
-            Comenzar
+            {translate('START')}
           </Button>
         </Box>
       </Stack>

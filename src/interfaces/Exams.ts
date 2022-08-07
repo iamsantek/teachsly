@@ -1,5 +1,5 @@
 import { MultiSelectOption } from './MultiSelectOption'
-import { TimeGranularity } from '../API'
+import { ExamType, TimeGranularity } from '../API'
 
 export interface Options {
   id: string
@@ -84,6 +84,10 @@ export interface Attachment {
   path: string
 }
 
+export interface ExamSettings {
+  allowRetake: boolean
+}
+
 export interface ExamForm {
   id?: string
   title: string
@@ -92,6 +96,8 @@ export interface ExamForm {
   startDate: string
   deadline: string
   timer: Timer
+  settings: ExamSettings
+  type: ExamType
 }
 
 export interface ExamAnswers {

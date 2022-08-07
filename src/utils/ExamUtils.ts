@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { Course, Exam, ExamAttempt, GetExamQuery, TimeGranularity } from '../API'
+import { Course, Exam, ExamAttempt, ExamType, GetExamQuery, TimeGranularity } from '../API'
 import { defaultExamTimerOptions } from '../constants/Exams'
 import { TranslationsDictionary } from '../dictionaries/dictionary'
 import { AnswerType, ExamAnswers, ExamAttemptFilter, ExamFilter, ExamForm, ExamKeys, Options, Question, QuestionPool, TimerType } from '../interfaces/Exams'
@@ -57,17 +57,37 @@ export const formatAPIResponse = (exam: GetExamQuery | undefined, courses: Cours
       type: renderExamType(exam?.getExam?.timer?.type as TimerType),
       timeInSeconds: exam?.getExam?.timer?.timeInSeconds as number,
       timeGranularity: exam?.getExam?.timer?.timeGranularity || TimeGranularity.HOURS
-    }
+    },
+    settings: {
+      allowRetake: exam?.getExam?.settings?.allowRetake ?? false
+    },
+    type: exam?.getExam?.type as ExamType || ExamType.EXAM
   })
 }
 
 export const calculateExamDurationInMinutes = (exam: ExamForm): number => {
-  const { timer } = exam
-  if (timer.type === 'global') {
-    return timer.timeInSeconds / 60
+  if (!exam) {
+    return 0
   }
 
-  return (timer.timeInSeconds * exam.questionPools[0].questions.length) / 60
+  const { timer } = exam
+
+  if (timer.type === 'global') {
+    if (timer.timeGranularity === TimeGranularity.MINUTES) {
+      return timer.timeInSeconds
+    }
+
+    return timer.timeInSeconds * 60
+  } else {
+    // Calculate total number of question in all question pools and sum them
+    const totalQuestions = (JSON.parse(exam.questionPools as unknown as string) as QuestionPool[]).reduce((acc, pool) => acc + pool.questions.length, 0)
+
+    if (timer.timeGranularity === TimeGranularity.MINUTES) {
+      return timer.timeInSeconds * totalQuestions
+    }
+
+    return timer.timeInSeconds * totalQuestions * 60
+  }
 }
 
 // Function to eliminate the isCorrect property from the options field in questions in the Exam Form
@@ -205,7 +225,7 @@ export const applyExamStatusFilter = (exams: Exam[], examAttempts: ExamAttempt[]
       case ExamFilter.PENDING_CORRECTION:
         return examAttempts.some(attempt => attempt.examId === exam.id && !attempt.correctedBy)
       case ExamFilter.PENDING:
-        return examAttempts.find(attempt => attempt.examId === exam.id) === undefined || examAttempts.some(attempt => attempt.examId === exam.id && !attempt.isCompleted)
+        return dayjs().isAfter(exam?.startDate) && (examAttempts.find(attempt => attempt.examId === exam.id) === undefined || examAttempts.some(attempt => attempt.examId === exam.id && !attempt.isCompleted))
       default:
         return true
     }
@@ -267,14 +287,36 @@ export const getExamLink = (exam: Exam, examAttempts: ExamAttempt[], isAdmin: bo
   const { isCompleted, isCorrected, examAttempt } = getExamStatus(exam, examAttempts)
 
   if (isAdmin) {
+    if (exam.type === ExamType.HOMEWORK) {
+      return `/homework/${exam.id}`
+    }
+
     return `/exams/${exam.id}`
   }
 
   if (isCompleted && !isCorrected) {
     return '#'
   } else if (isCorrected) {
-    return `/exams/results/${examAttempt?.id}`
+    return exam.type === ExamType.HOMEWORK ? `/homework/results/${examAttempt?.id}` : `/exams/results/${examAttempt?.id}`
   } else {
-    return `/exams/${exam.id}/intro`
+    return exam.type === ExamType.HOMEWORK ? `/homework/${exam.id}/intro` : `/exams/${exam.id}/intro`
   }
 }
+
+export const filterExamsByTypeAndCognitoId = (type: ExamType, cognitoId: string) => type === ExamType.HOMEWORK
+  ? {
+      and: [
+        { userId: { eq: cognitoId } },
+        { type: { eq: ExamType.HOMEWORK } }
+      ]
+    }
+  : {
+      or: [
+        { type: { eq: ExamType.EXAM } },
+        { type: { eq: null } }
+      ]
+    }
+
+export const filterExamsByType = (type: ExamType) => type === ExamType.HOMEWORK
+  ? { type: { eq: ExamType.HOMEWORK } }
+  : { type: { ne: ExamType.HOMEWORK } }

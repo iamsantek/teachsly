@@ -337,6 +337,7 @@ export type CreateExamInput = {
   deadline: string,
   startDate: string,
   type?: ExamType | null,
+  settings?: ExamSettingsInput | null,
 };
 
 export type TimerInput = {
@@ -357,6 +358,10 @@ export enum ExamType {
   HOMEWORK = "HOMEWORK",
 }
 
+
+export type ExamSettingsInput = {
+  allowRetake?: boolean | null,
+};
 
 export type ModelExamConditionInput = {
   groups?: ModelStringInput | null,
@@ -385,6 +390,7 @@ export type Exam = {
   deadline: string,
   startDate: string,
   type?: ExamType | null,
+  settings?: ExamSettings | null,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -397,6 +403,11 @@ export type Timer = {
   timeGranularity?: TimeGranularity | null,
 };
 
+export type ExamSettings = {
+  __typename: "ExamSettings",
+  allowRetake?: boolean | null,
+};
+
 export type UpdateExamInput = {
   id: string,
   groups?: Array< string > | null,
@@ -406,6 +417,7 @@ export type UpdateExamInput = {
   deadline?: string | null,
   startDate?: string | null,
   type?: ExamType | null,
+  settings?: ExamSettingsInput | null,
 };
 
 export type DeleteExamInput = {
@@ -905,6 +917,10 @@ export type CreateExamMutation = {
     deadline: string,
     startDate: string,
     type?: ExamType | null,
+    settings?:  {
+      __typename: "ExamSettings",
+      allowRetake?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -932,6 +948,10 @@ export type UpdateExamMutation = {
     deadline: string,
     startDate: string,
     type?: ExamType | null,
+    settings?:  {
+      __typename: "ExamSettings",
+      allowRetake?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -959,6 +979,10 @@ export type DeleteExamMutation = {
     deadline: string,
     startDate: string,
     type?: ExamType | null,
+    settings?:  {
+      __typename: "ExamSettings",
+      allowRetake?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1260,6 +1284,10 @@ export type GetExamQuery = {
     deadline: string,
     startDate: string,
     type?: ExamType | null,
+    settings?:  {
+      __typename: "ExamSettings",
+      allowRetake?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1632,6 +1660,10 @@ export type OnCreateExamSubscription = {
     deadline: string,
     startDate: string,
     type?: ExamType | null,
+    settings?:  {
+      __typename: "ExamSettings",
+      allowRetake?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1658,6 +1690,10 @@ export type OnUpdateExamSubscription = {
     deadline: string,
     startDate: string,
     type?: ExamType | null,
+    settings?:  {
+      __typename: "ExamSettings",
+      allowRetake?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1684,6 +1720,10 @@ export type OnDeleteExamSubscription = {
     deadline: string,
     startDate: string,
     type?: ExamType | null,
+    settings?:  {
+      __typename: "ExamSettings",
+      allowRetake?: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,

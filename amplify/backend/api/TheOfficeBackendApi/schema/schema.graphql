@@ -106,6 +106,10 @@ type Timer {
     timeGranularity: TimeGranularity
 }
 
+type ExamSettings {
+    allowRetake: Boolean
+}
+
 type Exam @model
 @auth(rules: [
   {allow: owner},
@@ -122,6 +126,7 @@ type Exam @model
   deadline: AWSDateTime!
   startDate: AWSDateTime!
   type: ExamType
+  settings: ExamSettings
 }
 
 type ExamAttempt @model

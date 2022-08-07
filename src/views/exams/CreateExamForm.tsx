@@ -1,12 +1,12 @@
-import { Button, Text, Stack, Accordion, AccordionItem, AccordionButton, AccordionIcon, Box, AccordionPanel, Container, Flex, HStack, Input as ChakraInput, Select as ChakraSelect, List, ListItem, ListIcon } from '@chakra-ui/react'
+import { Button, Text, Stack, Accordion, AccordionItem, AccordionButton, AccordionIcon, Box, AccordionPanel, Container, Flex, HStack, Input as ChakraInput, Select as ChakraSelect, List, ListItem, ListIcon, Checkbox } from '@chakra-ui/react'
 import { ChangeEvent, useCallback, useContext, useEffect, useState } from 'react'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { AiFillDelete, AiOutlinePlus, AiFillFile } from 'react-icons/ai'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { ConfirmationDialog } from '../../components/AlertDialog/ConfirmationDialog'
 import { Input } from '../../components/Inputs/Input'
 import { Select } from '../../components/Inputs/Select'
-import { defaultExamForm, defaultExamTimerOptions, defaultQuestionPool } from '../../constants/Exams'
+import { defaultExamForm, defaultExamTimerOptions, defaultHomeWorkForm, defaultQuestionPool } from '../../constants/Exams'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { useUserGroups } from '../../hooks/useUserGroups'
 import { ExamForm } from '../../interfaces/Exams'
@@ -24,13 +24,25 @@ import { removeExtension } from '../../utils/StringUtils'
 import { EditableInputComponent } from '../../components/Inputs/EditableInput'
 import { TimeGranularity } from '../../API'
 
+const getTranslationButton = (isExam: boolean, isUpdate: boolean) => {
+  if (isExam) {
+    return isUpdate ? 'UPDATE_EXAM' : 'CREATE_EXAM'
+  } else {
+    return isUpdate ? 'UPDATE_HOMEWORK' : 'CREATE_HOMEWORK'
+  }
+}
+
 export const CreateExamForm = () => {
   const [showDeleteQuestionPoolConfirmation, setShowDeleteQuestionPoolConfirmation] = useState(false)
   const [questionPoolIndexToDelete, setQuestionPoolIndexToDelete] = useState(-1)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { groups } = useUserGroups()
+
+  const location = useLocation()
+  const isExam = location.pathname.includes('exams')
+
   const { context: { courses } } = useContext(UserDashboardContext)
-  const formControls = useForm<ExamForm>({ defaultValues: defaultExamForm })
+  const formControls = useForm<ExamForm>({ defaultValues: isExam ? defaultExamForm : defaultHomeWorkForm })
   const { handleSubmit, control, reset, watch, setValue, register } = formControls
   const navigate = useNavigate()
 
@@ -86,7 +98,7 @@ export const CreateExamForm = () => {
       status: examResponse ? 'SUCCESS' : 'ERROR'
     })
     setIsLoading(false)
-    navigate('/exams')
+    navigate(isExam ? '/exams' : '/homework')
   }
 
   const { fields: questionPools, update, remove, append } = useFieldArray({
@@ -177,7 +189,7 @@ export const CreateExamForm = () => {
     <>
       <FormProvider {...formControls}>
         <form onSubmit={handleSubmit(saveExam)}>
-          <Stack spacing={4}>
+          <Stack spacing={6}>
             <Input
               name="title"
               label="TITLE"
@@ -232,6 +244,13 @@ export const CreateExamForm = () => {
               />
             </HStack>
 
+            <Stack spacing={4}>
+              <Text textStyle='title'>{translate('EXAM_SETTINGS')}</Text>
+              <Checkbox size='lg' colorScheme='brand' {...register('settings.allowRetake')}>
+                {translate('ALLOW_RE_TAKE_EXAM')}
+              </Checkbox>
+            </Stack>
+
             <ConfirmationDialog
               isOpen={showDeleteQuestionPoolConfirmation}
               onClose={() => setShowDeleteQuestionPoolConfirmation(false)}
@@ -284,19 +303,19 @@ export const CreateExamForm = () => {
                               {questionPool.attachments.map((attachment, attachmentIndex) => (
                                 <ListItem key={attachmentIndex}>
                                   <Flex gap={1} alignItems='center'>
-                                  <ListIcon as={AiFillFile} cursor='pointer' onClick={async () => {
-                                    const url = await StorageService.getSignedUrl(attachment.path)
-                                    window.open(url?.url, '_blank')
-                                  }} />
-                                  <EditableInputComponent
-                                    value={attachment.name}
-                                    onComplete={(newValue) => updateAttachment(questionPoolIndex, attachmentIndex, newValue)}
-                                    onDelete={() => onDeleteAttachment(questionPoolIndex, attachmentIndex)}
-                                    permissions={{
-                                      canEdit: true,
-                                      canDelete: true
-                                    }}
-                                  />
+                                    <ListIcon as={AiFillFile} cursor='pointer' onClick={async () => {
+                                      const url = await StorageService.getSignedUrl(attachment.path)
+                                      window.open(url?.url, '_blank')
+                                    }} />
+                                    <EditableInputComponent
+                                      value={attachment.name}
+                                      onComplete={(newValue) => updateAttachment(questionPoolIndex, attachmentIndex, newValue)}
+                                      onDelete={() => onDeleteAttachment(questionPoolIndex, attachmentIndex)}
+                                      permissions={{
+                                        canEdit: true,
+                                        canDelete: true
+                                      }}
+                                    />
                                   </Flex>
                                 </ListItem>
                               ))}
@@ -331,7 +350,7 @@ export const CreateExamForm = () => {
                 variant='solid'
                 type='submit'
               >
-                {translate(examId ? 'UPDATE_EXAM' : 'CREATE_EXAM')}
+                {translate(getTranslationButton(isExam, !!examId))}
               </Button>
             </Container>
           </Stack>

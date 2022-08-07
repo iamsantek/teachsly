@@ -1,8 +1,8 @@
-import { CreateExamAttemptInput, CreateExamAttemptMutation, CreateExamMutation, DeleteExamAttemptMutation, GetExamAttemptQuery, GetExamQuery, ListExamAttemptsQuery, ListExamsQuery, UpdateExamAttemptInput, UpdateExamAttemptMutation, UpdateExamMutation } from '../API'
+import { CreateExamAttemptInput, CreateExamAttemptMutation, CreateExamMutation, DeleteExamAttemptMutation, ExamType, GetExamAttemptQuery, GetExamQuery, ListExamAttemptsQuery, ListExamsQuery, UpdateExamAttemptInput, UpdateExamAttemptMutation, UpdateExamMutation } from '../API'
 import { createExam, createExamAttempt, deleteExamAttempt, updateExam, updateExamAttempt } from '../graphql/mutations'
 import { getExam, getExamAttempt, listExamAttempts, listExams } from '../graphql/queries'
 import { ExamForm } from '../interfaces/Exams'
-import { formatExamForm } from '../utils/ExamUtils'
+import { filterExamsByType, filterExamsByTypeAndCognitoId, formatExamForm } from '../utils/ExamUtils'
 import GraphQLService from './GraphQLService'
 
 class ExamService {
@@ -26,7 +26,16 @@ class ExamService {
 
   public async getExams () {
     return GraphQLService.fetchQuery<ListExamsQuery>({
-      query: listExams
+      query: listExams,
+      filter:
+          { type: { ne: ExamType.EXAM } }
+    })
+  }
+
+  public async getHomework () {
+    return GraphQLService.fetchQuery<ListExamsQuery>({
+      query: listExams,
+      filter: { type: { eq: ExamType.HOMEWORK } }
     })
   }
 
@@ -57,17 +66,22 @@ class ExamService {
     })
   }
 
-  public async getExamAttemptsByCognitoId (cognitoId: string) {
+  public async getExamAttemptsByCognitoId (cognitoId: string, type: ExamType) {
+    const filter = filterExamsByTypeAndCognitoId(type, cognitoId)
+
     return GraphQLService.fetchQuery<ListExamAttemptsQuery>({
       query: listExamAttempts,
-      filter: { userId: { eq: cognitoId } }
+      filter
     })
   }
 
-  public async fetchExamAttempts (nextToken?: string | null) {
+  public async fetchExamAttempts (type: ExamType, nextToken?: string | null) {
+    const filter = filterExamsByType(type)
+
     return GraphQLService.fetchQuery<ListExamAttemptsQuery>({
       query: listExamAttempts,
-      nextToken
+      nextToken,
+      filter
     })
   }
 

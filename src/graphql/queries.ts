@@ -177,6 +177,9 @@ export const getExam = /* GraphQL */ `
       deadline
       startDate
       type
+      settings {
+        allowRetake
+      }
       createdAt
       updatedAt
       owner
