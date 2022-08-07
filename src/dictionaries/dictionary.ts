@@ -97,7 +97,7 @@ export enum LanguageES {
   DRAG_AND_DROP_HELPER_TEXT_2 = 'o clickea para seleccionar los archivos',
   MEDIA_SIGNED_URL_ERROR = 'Hubo un error al generar el link del contenido. Por favor, intentar nuevamente.',
   REVIEW_FILES = 'Revisar archivos',
-  DRAWER_NAME_INFORMATION_ALERT = 'Verificar que los archivos tengan el nombre correcto y sea descriptivo para que los alumnos lo puedan encontrar facilmente.',
+  DRAWER_NAME_INFORMATION_ALERT = 'Verificar que los archivos tengan el nombre correcto y secriptivo para que los alumnos lo puedan encontrar facilmente.',
   PASSWORD_RESET_SUCCESS = 'La contraseña se ha reseteado exitosamente.',
   PASSWORD_RESET_ERROR = 'Hubo un error al resetear la contraseña. Por favor, intentar nuevamente.',
   RESET_PASSWORD_BUTTON = 'Resetear contraseña',
@@ -221,6 +221,14 @@ export enum LanguageES {
   RETAKE_EXAM_WARNING='Ya has realizado un intento de este examen. No puedes volver a hacerlo.',
   START= 'Comenzar',
   COMING_SOON= 'Próximamente',
+  QUESTION_CONFIGURATION='Configuración de la pregunta',
+  TEXT= 'Texto',
+  ANSWER_CONFIGURATION='Configuración de la respuesta',
+  QUESTION_TYPE= 'Tipo de pregunta',
+  ANSWER_TYPE='Tipo de respuesta',
+  MULTIPLE_CHOICE= 'Multiple choice',
+  TEXT_AREA= 'A desarrollar',
+  SAVE='Guardar',
 }
 
 export enum LanguageEN {
@@ -441,4 +449,12 @@ export enum LanguageEN {
   RETAKE_EXAM_WARNING= 'You are not allowed to retake the exam. Please contact the teacher.',
   START= 'Start',
   COMING_SOON= 'Coming soon',
+  QUESTION_CONFIGURATION= 'Question configuration',
+  TEXT= 'Text',
+  ANSWER_CONFIGURATION='Answer configuration',
+  QUESTION_TYPE= 'Question type',
+  ANSWER_TYPE='Answer type',
+  MULTIPLE_CHOICE= 'Multiple choice',
+  TEXT_AREA= 'Text area',
+  SAVE='Save',
 }

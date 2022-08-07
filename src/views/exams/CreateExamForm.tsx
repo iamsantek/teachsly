@@ -290,38 +290,41 @@ export const CreateExamForm = () => {
                           isRequired={false}
                         />
 
-                        <FileUploader
-                          name="file"
-                          onChange={(e) => onChangeFile(questionPoolIndex, e)}
-                          label="ATTACH_FILE"
-                        />
+                        {questionPool.attachments.length > 0
+                          ? (
+                            <>
+                              <Text fontWeight='bold'>{translate('MEANINGFUL_FILE_NAMES')}</Text>
+                              <List spacing={3}>
+                                {questionPool.attachments.map((attachment, attachmentIndex) => (
+                                  <ListItem key={attachmentIndex}>
+                                    <Flex gap={1} alignItems='center'>
+                                      <ListIcon as={AiFillFile} cursor='pointer' onClick={async () => {
+                                        const url = await StorageService.getSignedUrl(attachment.path)
+                                        window.open(url?.url, '_blank')
+                                      }} />
+                                      <EditableInputComponent
+                                        value={attachment.name}
+                                        onComplete={(newValue) => updateAttachment(questionPoolIndex, attachmentIndex, newValue)}
+                                        onDelete={() => onDeleteAttachment(questionPoolIndex, attachmentIndex)}
+                                        permissions={{
+                                          canEdit: true,
+                                          canDelete: true
+                                        }}
+                                      />
+                                    </Flex>
+                                  </ListItem>
+                                ))}
+                              </List>
+                            </>
+                            )
+                          : (
+                            <FileUploader
+                              name="file"
+                              onChange={(e) => onChangeFile(questionPoolIndex, e)}
+                              label="ATTACH_FILE"
+                            />
 
-                        {questionPool.attachments.length > 0 && (
-                          <>
-                            <Text fontWeight='bold'>{translate('MEANINGFUL_FILE_NAMES')}</Text>
-                            <List spacing={3}>
-                              {questionPool.attachments.map((attachment, attachmentIndex) => (
-                                <ListItem key={attachmentIndex}>
-                                  <Flex gap={1} alignItems='center'>
-                                    <ListIcon as={AiFillFile} cursor='pointer' onClick={async () => {
-                                      const url = await StorageService.getSignedUrl(attachment.path)
-                                      window.open(url?.url, '_blank')
-                                    }} />
-                                    <EditableInputComponent
-                                      value={attachment.name}
-                                      onComplete={(newValue) => updateAttachment(questionPoolIndex, attachmentIndex, newValue)}
-                                      onDelete={() => onDeleteAttachment(questionPoolIndex, attachmentIndex)}
-                                      permissions={{
-                                        canEdit: true,
-                                        canDelete: true
-                                      }}
-                                    />
-                                  </Flex>
-                                </ListItem>
-                              ))}
-                            </List>
-                          </>
-                        )}
+                            )}
                       </Stack>
                       <QuestionPoolQuestions
                         questionPoolIndex={questionPoolIndex}
