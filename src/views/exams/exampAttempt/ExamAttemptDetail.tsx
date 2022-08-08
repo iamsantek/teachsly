@@ -101,7 +101,7 @@ export const ExamAttemptDetail = () => {
   const answers = examAttempt?.results ? JSON.parse(examAttempt?.results as string) : []
 
   if (examAttempt?.correctedBy) {
-    return <ExamCompleteResult questionPools={questionPools} studentAnswers={answers} examAttempt={examAttempt} />
+    return <ExamCompleteResult studentAnswers={answers} examAttempt={examAttempt} />
   }
 
   return (

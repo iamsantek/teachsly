@@ -4,7 +4,7 @@ import { ExamAttempt } from '../../../../API'
 import { ContentLinePlaceholder } from '../../../../components/Placeholders/ContentLinePlaceholder'
 import { NoContentPlaceholder } from '../../../../components/Placeholders/NoContentPlaceholder'
 import { Placeholder } from '../../../../components/Placeholders/Placeholder'
-import { ExamAnswers, QuestionPool } from '../../../../interfaces/Exams'
+import { ExamAnswers } from '../../../../interfaces/Exams'
 import ExamService from '../../../../services/ExamService'
 import { ExamCompleteResult } from '../results/ExamCompleteResult'
 
@@ -38,19 +38,10 @@ export const StudentExamResultScreen = () => {
     return <NoContentPlaceholder show />
   }
 
-  let questionPools: QuestionPool[] = []
-  let studentAnswers: ExamAnswers | undefined
-
-  try {
-    questionPools = JSON.parse(examAttempt?.keys as string)
-    studentAnswers = JSON.parse(examAttempt?.results as string)
-  } catch {
-    questionPools = []
-  }
+  const studentAnswers: ExamAnswers = JSON.parse(examAttempt?.results as string ?? '')
 
   return (
     <ExamCompleteResult
-      questionPools={questionPools}
       studentAnswers={studentAnswers}
       examAttempt={examAttempt}
     />

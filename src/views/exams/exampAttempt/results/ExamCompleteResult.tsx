@@ -6,13 +6,13 @@ import { translate } from '../../../../utils/LanguageUtils'
 import { QuestionPoolResult } from './QuestionPoolResult'
 
 interface Props {
-  questionPools: QuestionPool[];
   studentAnswers: ExamAnswers | undefined;
   examAttempt: ExamAttempt;
 }
 
-export const ExamCompleteResult = ({ questionPools, studentAnswers, examAttempt }: Props) => {
+export const ExamCompleteResult = ({ studentAnswers, examAttempt }: Props) => {
   const { hasEditPermission } = useUserGroups()
+  const questionPools: QuestionPool[] = JSON.parse(examAttempt.keys ?? '')
   return (
     <Stack marginBottom={10} marginTop={5}>
       <Box rounded='lg' boxShadow='md' p={7}>
@@ -36,7 +36,7 @@ export const ExamCompleteResult = ({ questionPools, studentAnswers, examAttempt 
         </HStack>
       </Box>
       <Stack spacing={10}>
-        {questionPools.map((questionPool, questionPoolIndex) => {
+        {questionPools.map((questionPool: QuestionPool, questionPoolIndex) => {
           return (
             <Box key={questionPool.id} rounded='lg' boxShadow='md' p={7}>
               <QuestionPoolResult
