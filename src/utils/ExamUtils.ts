@@ -311,9 +311,9 @@ export const filterExamsByTypeAndCognitoId = (type: ExamType, cognitoId: string)
       ]
     }
   : {
-      or: [
-        { type: { eq: ExamType.EXAM } },
-        { type: { eq: null } }
+      and: [
+        { userId: { eq: cognitoId } },
+        { type: { ne: ExamType.HOMEWORK } }
       ]
     }
 
