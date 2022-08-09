@@ -173,7 +173,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm" isTruncated>
+                  <Text fontSize="sm" noOfLines={1}>
                     {user?.name as string}
                   </Text>
                   <Text fontSize="xs">

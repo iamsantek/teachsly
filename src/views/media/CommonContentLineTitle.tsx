@@ -1,5 +1,5 @@
 
-import { FC } from 'react'
+import { FC, PropsWithChildren } from 'react'
 import { Center, HStack, Text, useColorModeValue } from '@chakra-ui/react'
 import { isContentSeen as isContentSeenHelper } from '../../utils/GeneralUtils'
 
@@ -10,12 +10,12 @@ interface Props {
   showSeenBadge?: boolean;
 }
 
-export const CommonContentLineTitle: FC<Props> = ({
+export const CommonContentLineTitle = ({
   id,
   title,
   children,
   showSeenBadge = false
-}) => {
+}: PropsWithChildren<Props>) => {
   let isContentSeen: boolean = false
 
   if (showSeenBadge) {

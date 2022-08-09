@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, PropsWithChildren } from 'react'
 import {
   Box,
   Circle,
@@ -26,7 +26,7 @@ interface Props {
   customButtons?: JSX.Element[]
 }
 
-export const ContentLine: FC<Props> = ({
+export const ContentLine= ({
   leftIcon: LeftIcon,
   onView,
   onDownload,
@@ -34,7 +34,7 @@ export const ContentLine: FC<Props> = ({
   onEdit,
   children,
   customButtons
-}) => {
+}: PropsWithChildren<Props>) => {
   const customButtonWrapper = customButtons?.map(customButton => (
     <WrapItem key={generateRandomId()}>{customButton}</WrapItem>
   ))

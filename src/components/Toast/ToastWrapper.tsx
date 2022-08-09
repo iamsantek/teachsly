@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { TranslationsDictionary } from '../../dictionaries/dictionary'
 import { ObservableTopics } from '../../interfaces/ObservableTopics'
 import ObservableService from '../../observables/ObservableService'
-import { Toast } from './Toast'
 
 export interface ToastMessage {
   description: TranslationsDictionary;
@@ -31,13 +30,8 @@ const ToastWrapper = () => {
   }, [])
 
   return (
-
-    Toast({
-      description: toastMessage?.description as TranslationsDictionary,
-      status: toastMessage?.status as any,
-      onCloseComplete: () => setToastMessage(undefined)
-    })
-
+<>
+</>
   )
 }
 
