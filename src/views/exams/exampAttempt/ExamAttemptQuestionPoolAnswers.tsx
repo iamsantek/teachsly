@@ -5,8 +5,9 @@ import { AnswerType, ExamCorrection, ExamKeys, QuestionPool } from '../../../int
 import { alphabet, manualMultipleChoiceCorrection, manualTextCorrection } from '../../../utils/ExamUtils'
 import { generateRandomId } from '../../../utils/StringUtils'
 import { CorrectionBadge } from './CorrectionBadge'
-import { IsCorrectAnswerRadio } from './IsCorrectAnswerRadio'
-import { SelectCorrectAnswer } from './SelectCorrectAnswer'
+import { IsCorrectAnswerRadio } from './results/corrections/IsCorrectAnswerRadio'
+import { SelectCorrectAnswer } from './results/corrections/SelectCorrectAnswer'
+import { TextMarkDownCorrection } from './results/corrections/TextMarkDownCorrection'
 
 interface Props {
   questionPool: QuestionPool;
@@ -79,7 +80,7 @@ export const ExamAttemptQuestionPoolAnswers = ({ questionPoolIndex, questionPool
             )}
             {answerType === AnswerType.TextArea && (
               <Stack spacing={3}>
-                <Text>{answer}</Text>
+                <TextMarkDownCorrection text={answer ?? 'A'} />
                 <IsCorrectAnswerRadio
                   value={checkManualCorrection(questionPool, questionIndex)}
                   onChange={(newValue) => {

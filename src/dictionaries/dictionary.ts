@@ -229,6 +229,7 @@ export enum LanguageES {
   MULTIPLE_CHOICE= 'Multiple choice',
   TEXT_AREA= 'A desarrollar',
   SAVE='Guardar',
+  BLOCKS= 'Bloques',
 }
 
 export enum LanguageEN {
@@ -457,4 +458,5 @@ export enum LanguageEN {
   MULTIPLE_CHOICE= 'Multiple choice',
   TEXT_AREA= 'Text area',
   SAVE='Save',
+  BLOCKS= 'Blocks',
 }

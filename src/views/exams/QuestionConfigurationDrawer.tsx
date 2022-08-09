@@ -45,6 +45,7 @@ export const QuestionConfigurationDrawer = ({ isOpen, onClose, onSave }: Props) 
                                 <Stack direction='column' spacing={2} marginY={3}>
                                     <Radio value={AnswerType.MultipleChoice}>{translate('MULTIPLE_CHOICE')}</Radio>
                                     <Radio value={AnswerType.TextArea}>{translate('TEXT_AREA')}</Radio>
+                                    <Radio value={AnswerType.Blocks}>{translate('BLOCKS')}</Radio>
                                 </Stack>
                             </RadioGroup>
                         </Stack>

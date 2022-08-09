@@ -1,5 +1,5 @@
 import { RadioGroup, Stack, Radio, Text } from '@chakra-ui/react'
-import { translate } from '../../../utils/LanguageUtils'
+import { translate } from '../../../../../utils/LanguageUtils'
 
 interface Props {
     onChange: (value: string) => void;

@@ -38,7 +38,8 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
                 label: '',
                 isCorrectOption: undefined
               }]
-            : undefined
+            : undefined,
+          correctBlockSequence: answerType === AnswerType.Blocks ? '' : undefined
 
         }
       ]
@@ -233,6 +234,14 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
                   label="ATTACH_FILE"
                 />
                 )
+          )}
+
+          {question.answerType === AnswerType.Blocks && (
+            <>
+              <Text fontWeight={600} fontSize="sm" textStyle="title">
+                WIP
+              </Text>
+            </>
           )}
 
           {question.answerType === AnswerType.MultipleChoice && question.options?.map((option, optionIndex) => (
