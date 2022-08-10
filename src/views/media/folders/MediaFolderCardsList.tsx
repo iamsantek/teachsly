@@ -1,4 +1,4 @@
-import { Divider, Stack } from '@chakra-ui/react'
+import { Divider, Stack, useToast } from '@chakra-ui/react'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { MdFolder } from 'react-icons/md'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -12,9 +12,9 @@ import { BadgeList } from '../../../components/Badges/BadgeList'
 import { DeleteFolderConfirmation } from '../../../components/AlertDialog/DeleteFolderConfirmation'
 import { DeletingFolder } from '../../../interfaces/MediaFolder'
 import { DeleteFolderMethod } from '../../../enums/MediaFolder'
-import { ToastNotification } from '../../../observables/ToastNotification'
 import { findMatch } from '../../../utils/GeneralUtils'
 import { UserDashboardContext } from '../../../contexts/UserDashboardContext'
+import { toastConfig } from '../../../utils/ToastUtils'
 
 interface Props {
   fetchType: FetchType
@@ -30,6 +30,7 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
   const { hasEditPermission, hasAdminRole, groups, userType } = useUserGroups()
   const navigate = useNavigate()
   const { context: { user } } = useContext(UserDashboardContext)
+  const toast = useToast()
 
   const fetchFolders = useCallback(async () => {
     const folders = await MediaFolderService.fetchMediaFolders(fetchType, courseId)
@@ -47,10 +48,10 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
     setIsLoading(true)
     const deletedMediaFolder = await MediaFolderService.deleteMediaFolder(folderId, deleteMethod)
 
-    ToastNotification({
+    toast(toastConfig({
       description: deletedMediaFolder ? 'FOLDER_DELETED' : 'FOLDER_DELETE_FAILED',
-      status: deletedMediaFolder ? 'SUCCESS' : 'ERROR'
-    })
+      status: deletedMediaFolder ? 'success' : 'error'
+    }))
 
     if (deletedMediaFolder) {
       setFolders(folders => folders.filter((folder) => folder.id !== folderId))

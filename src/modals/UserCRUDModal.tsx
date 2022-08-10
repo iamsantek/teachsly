@@ -12,12 +12,12 @@ import {
   Divider,
   VStack,
   Text,
-  Flex
+  Flex,
+  useToast
 } from '@chakra-ui/react'
 import { Input as CustomInput } from '../components/Inputs/Input'
 import { Select } from '../components/Inputs/Select'
 import { ModalFooter } from '../components/Modals/ModalFooter'
-import { ToastNotification } from '../observables/ToastNotification'
 import { UserWithMultiSelect } from '../platform-models/User'
 import { CreateUserInput, UpdateUserInput, User } from '../API'
 import { defaultUser } from '../constants/User'
@@ -32,6 +32,7 @@ import { UserDashboardContext } from '../contexts/UserDashboardContext'
 import { mapSingleValueToMultiSelectOption, renderEnglishLevelOptions } from '../utils/SelectUtils'
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import { ImCross } from 'react-icons/im'
+import { toastConfig } from '../utils/ToastUtils'
 
 interface Props {
   isOpen: boolean;
@@ -68,6 +69,7 @@ const UserCRUDModal = ({
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [showDisableUserConfirmation, setShowDisableUserConfirmation] = useState<boolean>(false)
   const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] = useState<boolean>(false)
+  const toast = useToast()
 
   const { context: { courses } } = useContext(UserDashboardContext)
 
@@ -121,15 +123,15 @@ const UserCRUDModal = ({
 
     if (createdUser) {
       onCreate(createdUser)
-      ToastNotification({
-        status: 'SUCCESS',
+      toast(toastConfig({
+        status: 'success',
         description: userType === UserTypes.STUDENT ? 'STUDENT_CREATED_MESSAGE' : 'TEACHER_CREATED_MESSAGE'
-      })
+      }))
     } else {
-      ToastNotification({
-        status: 'ERROR',
+      toast(toastConfig({
+        status: 'error',
         description: 'USER_CREATED_ERROR'
-      })
+      }))
     }
 
     setIsLoading(false)
@@ -140,10 +142,10 @@ const UserCRUDModal = ({
     setIsLoading(true)
     const deletedUser = await UserService.deleteUser(userToUpdate?.id as string, userToUpdate?.cognitoId as string)
 
-    ToastNotification({
-      status: deletedUser ? 'SUCCESS' : 'ERROR',
+    toast(toastConfig({
+      status: deletedUser ? 'success' : 'error',
       description: deletedUser ? 'USER_DELETED_MESSAGE' : 'USER_DELETED_ERROR'
-    })
+    }))
 
     onDelete(userToUpdate as User)
     setIsLoading(false)
@@ -166,10 +168,10 @@ const UserCRUDModal = ({
       onUpdate(updateUserResponse.updateUser as User)
     }
 
-    ToastNotification({
+    toast(toastConfig({
       description: updateUserResponse ? 'USER_UPDATE_SUCCESS' : 'USER_UPDATE_ERROR',
-      status: updateUserResponse ? 'SUCCESS' : 'ERROR'
-    })
+      status: updateUserResponse ? 'success' : 'error'
+    }))
 
     setIsLoading(false)
     onClose()
@@ -213,15 +215,15 @@ const UserCRUDModal = ({
     setIsLoading(true)
 
     if (resetPasswordResponse?.$metadata.httpStatusCode === 200) {
-      ToastNotification({
-        status: 'SUCCESS',
+      toast(toastConfig({
+        status: 'success',
         description: 'PASSWORD_RESET_SUCCESS'
-      })
+      }))
     } else {
-      ToastNotification({
-        status: 'ERROR',
+      toast(toastConfig({
+        status: 'error',
         description: 'PASSWORD_RESET_ERROR'
-      })
+      }))
     }
 
     setIsLoading(false)

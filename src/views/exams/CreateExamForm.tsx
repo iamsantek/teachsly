@@ -1,4 +1,4 @@
-import { Button, Text, Stack, Accordion, AccordionItem, AccordionButton, AccordionIcon, Box, AccordionPanel, Container, Flex, HStack, Input as ChakraInput, Select as ChakraSelect, List, ListItem, ListIcon, Checkbox } from '@chakra-ui/react'
+import { Button, Text, Stack, Accordion, AccordionItem, AccordionButton, AccordionIcon, Box, AccordionPanel, Container, Flex, HStack, Input as ChakraInput, Select as ChakraSelect, List, ListItem, ListIcon, Checkbox, useToast } from '@chakra-ui/react'
 import { ChangeEvent, useCallback, useContext, useEffect, useState } from 'react'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { AiFillDelete, AiOutlinePlus, AiFillFile } from 'react-icons/ai'
@@ -10,7 +10,7 @@ import { defaultExamForm, defaultExamTimerOptions, defaultHomeWorkForm, defaultQ
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { useUserGroups } from '../../hooks/useUserGroups'
 import { ExamForm } from '../../interfaces/Exams'
-import { ToastNotification } from '../../observables/ToastNotification'
+
 import ExamService from '../../services/ExamService'
 import { generalGroups } from '../../utils/CognitoGroupsUtils'
 import { renderCourseList } from '../../utils/CourseUtils'
@@ -23,6 +23,7 @@ import StorageService from '../../services/aws/StorageService'
 import { removeExtension } from '../../utils/StringUtils'
 import { EditableInputComponent } from '../../components/Inputs/EditableInput'
 import { TimeGranularity } from '../../API'
+import { toastConfig } from '../../utils/ToastUtils'
 
 const getTranslationButton = (isExam: boolean, isUpdate: boolean) => {
   if (isExam) {
@@ -39,6 +40,7 @@ export const CreateExamForm = () => {
   const { groups } = useUserGroups()
 
   const location = useLocation()
+  const toast = useToast()
   const isExam = location.pathname.includes('exams')
 
   const { context: { courses } } = useContext(UserDashboardContext)
@@ -73,7 +75,7 @@ export const CreateExamForm = () => {
     // const isEmptyFields =  existEmptyFields(exam)
 
     // if (isEmptyFields) {
-    //   ToastNotification({
+    //   toast(toastConfig({
     //     description: 'EXAM_EMPTY_FIELD_WARNING',
     //     status: 'INFO'
     //   })
@@ -93,10 +95,10 @@ export const CreateExamForm = () => {
       toastDescription = examResponse ? 'CREATE_EXAM_SUCCESS' : 'CREATE_EXAM_ERROR'
     }
 
-    ToastNotification({
+    toast(toastConfig({
       description: toastDescription,
-      status: examResponse ? 'SUCCESS' : 'ERROR'
-    })
+      status: examResponse ? 'success' : 'error'
+    }))
     setIsLoading(false)
     navigate(isExam ? '/exams' : '/homework')
   }
@@ -108,10 +110,10 @@ export const CreateExamForm = () => {
 
   const onDeleteQuestionPool = (questionPoolIndex: number) => {
     if (questionPools.length === 1) {
-      ToastNotification({
+      toast(toastConfig({
         description: 'DELETE_LAST_QUESTIONS_POOL_ERROR',
-        status: 'INFO'
-      })
+        status: 'info'
+      }))
       return
     }
 

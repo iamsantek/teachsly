@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Box, Button, Container, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Container, Flex, Heading, Image, Stack, Text, useToast } from '@chakra-ui/react'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ExamForm } from '../../interfaces/Exams'
@@ -9,10 +9,10 @@ import dayjs from 'dayjs'
 import { translate } from '../../utils/LanguageUtils'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
 import { v4 as uuid } from 'uuid'
-import { ToastNotification } from '../../observables/ToastNotification'
 import { GeneralInformation } from '../../enums/GeneralInformation'
 import { ExamType } from '../../API'
 import { calculateExamDurationInMinutes } from '../../utils/ExamUtils'
+import { toastConfig } from '../../utils/ToastUtils'
 
 export const ExamIntroductionScreen = () => {
   const { context: { user } } = useContext(UserDashboardContext)
@@ -23,6 +23,7 @@ export const ExamIntroductionScreen = () => {
   const [isTimerFinished, setIsTimerFinished] = useState<boolean>(false)
   const [isProcessing, setIsProcessing] = useState<boolean>(false)
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
+  const toast = useToast()
 
   const handleTimerFinish = () => {
     setIsTimerFinished(true)
@@ -83,10 +84,10 @@ export const ExamIntroductionScreen = () => {
     })
 
     if (!examAttempt) {
-      ToastNotification({
+      toast(toastConfig({
         description: 'ADD_OPTION_BUTTON',
-        status: 'ERROR'
-      })
+        status: 'error'
+      }))
       setIsProcessing(false)
       return
     }

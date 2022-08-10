@@ -5,17 +5,18 @@ import ExamService from '../../../services/ExamService'
 import { CommonContentLineTitle } from '../../media/CommonContentLineTitle'
 import { BsCardChecklist } from 'react-icons/bs'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Badge, Box, Stack } from '@chakra-ui/react'
+import { Badge, Box, Stack, useToast } from '@chakra-ui/react'
 import { translate } from '../../../utils/LanguageUtils'
 import dayjs from 'dayjs'
 import { ExamAttemptFilter as IExamAttemptFilter } from '../../../interfaces/Exams'
 import { ExamAttemptFilter } from './filters/ExamAttemptFilter'
-import { ToastNotification } from '../../../observables/ToastNotification'
 import { ConfirmationDialog } from '../../../components/AlertDialog/ConfirmationDialog'
 import { NoContentPlaceholder } from '../../../components/Placeholders/NoContentPlaceholder'
 import { applyNameFilter, applyExamAttemptStatusFilter, applyStudentFilter } from '../../../utils/ExamUtils'
 import { Placeholder } from '../../../components/Placeholders/Placeholder'
 import { ContentLinePlaceholder } from '../../../components/Placeholders/ContentLinePlaceholder'
+import { toast } from 'aws-amplify'
+import { toastConfig } from '../../../utils/ToastUtils'
 
 export const ExamAttemptList = () => {
   const [examAttempts, setExamAttempts] = useState<ExamAttempt[]>([])
@@ -25,6 +26,7 @@ export const ExamAttemptList = () => {
   const [deleteExamAttemptId, setDeleteExamAttemptId] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState(true)
   const location = useLocation()
+  const toast = useToast()
   const type = location.pathname.includes('exams') ? ExamType.EXAM : ExamType.HOMEWORK
 
   // Filters
@@ -74,10 +76,10 @@ export const ExamAttemptList = () => {
   const onDeleteExamAttempt = useCallback(async () => {
     const deleteExamAttempt = await ExamService.deleteExamAttempt(deleteExamAttemptId as string)
 
-    ToastNotification({
+    toast(toastConfig({
       description: deleteExamAttempt ? 'EXAM_ATTEMPT_DELETED_OK' : 'EXAM_ATTEMPT_DELETED_ERROR',
-      status: deleteExamAttempt ? 'SUCCESS' : 'ERROR'
-    })
+      status: deleteExamAttempt ? 'success' : 'error'
+    }))
 
     if (deleteExamAttempt) {
       setDeleteExamAttemptId(undefined)
