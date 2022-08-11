@@ -23,7 +23,7 @@ export const ExamsList = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [examAttempts, setExamAttempts] = useState<ExamAttempt[]>([])
   const { hasEditPermission } = useUserGroups()
-  const [currentStatusFilter, setCurrentStatusFilter] = useState<IExamFilter>(IExamFilter.PENDING)
+  const [currentStatusFilter, setCurrentStatusFilter] = useState<IExamFilter>(IExamFilter.ALL)
   const [currentCourseFilter, setCurrentCourseFilter] = useState<string>(IExamFilter.ALL)
   const navigate = useNavigate()
   const location = useLocation()

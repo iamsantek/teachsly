@@ -1,7 +1,13 @@
 
 export const defaultTheme = {
+  styles: {
+    global: {
+      'html, body': {
+        fontFamily: 'Noto Sans !important',
+      },
+    }
+  },
   initialColorMode: 'light',
-  useSystemColorMode: false,
   colors: {
     brand: {
       50: '#def3ff',
@@ -18,10 +24,11 @@ export const defaultTheme = {
     }
   },
   fonts: {
-    body: 'Noto Sans',
-    heading: 'Noto Sans'
+    body: 'Noto Sans, sans-serif',
+    heading: 'Noto Sans !important',
   },
   textStyles: {
+    font: 'Noto Sans, sans-serif',
     title: {
       fontFamily: 'Noto Sans',
       fontWeight: 700

@@ -26,7 +26,9 @@ export const QuestionResult = ({ question, studentAnswers, questionIndex }: Prop
             })}
             {question.answerType === AnswerType.TextArea && (
                 <Text>
+                    <>
                     {answer} {question.correction?.isCorrectAnswer === true ? ' ✅' : ''} {question.correction?.isCorrectAnswer === false ? ' ❌' : ''}
+                    </>
                 </Text>
             )}
         </Stack>
