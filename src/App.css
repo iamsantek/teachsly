@@ -1,3 +1,9 @@
 .amplify-button[data-variation='primary'] {
   background: '#3394b3';
 }
+
+[contenteditable] ~ grammarly-extension,
+input ~ grammarly-extension,
+textarea ~ grammarly-extension {
+  display: none;
+}

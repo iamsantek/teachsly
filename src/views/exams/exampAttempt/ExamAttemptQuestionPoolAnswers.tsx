@@ -80,7 +80,7 @@ export const ExamAttemptQuestionPoolAnswers = ({ questionPoolIndex, questionPool
             )}
             {answerType === AnswerType.TextArea && (
               <Stack spacing={3}>
-                <TextMarkDownCorrection text={answer ?? 'A'} />
+                <TextMarkDownCorrection text={answer ?? ''} />
                 <IsCorrectAnswerRadio
                   value={checkManualCorrection(questionPool, questionIndex)}
                   onChange={(newValue) => {
