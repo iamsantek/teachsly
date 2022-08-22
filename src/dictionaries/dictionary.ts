@@ -237,6 +237,7 @@ export enum LanguageES {
   STYLE_CORRECTION= 'Corrección de estilo',
   SUGGESTIONS= 'Sugerencias / Comentarios',
   CORRECTION_PREVIEW= 'Vista previa de la corrección',
+  RESET_CORRECTION='Reiniciar correcion'
 }
 
 export enum LanguageEN {
@@ -473,4 +474,5 @@ export enum LanguageEN {
   STYLE_CORRECTION='Style correction',
   SUGGESTIONS= 'Suggestions',
   CORRECTION_PREVIEW= 'Correction preview',
+  RESET_CORRECTION='Reset correction'
 }

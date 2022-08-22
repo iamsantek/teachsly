@@ -305,18 +305,58 @@ export const getExamLink = (exam: Exam, examAttempts: ExamAttempt[], isAdmin: bo
 
 export const filterExamsByTypeAndCognitoId = (type: ExamType, cognitoId: string) => type === ExamType.HOMEWORK
   ? {
-      and: [
-        { userId: { eq: cognitoId } },
-        { type: { eq: ExamType.HOMEWORK } }
-      ]
-    }
+    and: [
+      { userId: { eq: cognitoId } },
+      { type: { eq: ExamType.HOMEWORK } }
+    ]
+  }
   : {
-      and: [
-        { userId: { eq: cognitoId } },
-        { type: { ne: ExamType.HOMEWORK } }
-      ]
-    }
+    and: [
+      { userId: { eq: cognitoId } },
+      { type: { ne: ExamType.HOMEWORK } }
+    ]
+  }
 
 export const filterExamsByType = (type: ExamType) => type === ExamType.HOMEWORK
   ? { type: { eq: ExamType.HOMEWORK } }
   : { type: { ne: ExamType.HOMEWORK } }
+
+
+export const getMarkColor = (text: string) => {
+  const { asteriskWords, doubleAsteriskWords, dashWords, slashWords, parenthesisWords } = generateCorrectionMatches(text)
+
+  if (asteriskWords.includes(text)) {
+    return { color: 'purple.500' }
+  } else if (doubleAsteriskWords.includes(text)) {
+    return { color: 'blue.500' }
+  }
+  else if (dashWords.includes(text)) {
+    return { color: 'pink.500' }
+  }
+  else if (slashWords.includes(text)) {
+    return { color: 'orange.500' }
+  }
+  else if (parenthesisWords.includes(text)) {
+    return { color: 'blackAlpha.500' }
+  } else {
+    return { color: 'blackAlpha.500' }
+  }
+}
+
+
+export const generateCorrectionMatches = (markDownText: string) => {
+  const asteriskWords = markDownText.match(/\*(.*?)\*/g) || []
+  const doubleAsteriskWords = markDownText.match(/#(.*?)#/g) || []
+  const dashWords = markDownText.match(/-([^-]+)-/g) || []
+  const slashWords = markDownText.match(/\/([^/]+)\//g) || []
+  const parenthesisWords = markDownText.match(/\(([^()]+)\)/g) || []
+
+  return {
+    matches: [...asteriskWords, ...doubleAsteriskWords, ...dashWords, ...slashWords, ...parenthesisWords],
+    asteriskWords,
+    doubleAsteriskWords,
+    dashWords,
+    parenthesisWords,
+    slashWords,
+  }
+}
