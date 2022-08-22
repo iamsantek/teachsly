@@ -24,17 +24,19 @@ class ExamService {
     })
   }
 
-  public async getExams () {
+  public async getExams (nextPageToken?: string) {
     return GraphQLService.fetchQuery<ListExamsQuery>({
       query: listExams,
+      nextToken: nextPageToken,
       filter:
-          { type: { ne: ExamType.EXAM } }
+          { type: { ne: ExamType.HOMEWORK } }
     })
   }
 
-  public async getHomework () {
+  public async getHomework (nextPageToken?: string) {
     return GraphQLService.fetchQuery<ListExamsQuery>({
       query: listExams,
+      nextToken: nextPageToken,
       filter: { type: { eq: ExamType.HOMEWORK } }
     })
   }

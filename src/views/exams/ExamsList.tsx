@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useReducer, useState } from 'react'
 import { ContentLine } from '../../components/ContentLine/ContentLine'
 import ExamService from '../../services/ExamService'
 import { IoNewspaper } from 'react-icons/io5'
@@ -17,6 +17,18 @@ import { ExamFilter } from './ExamsFilter'
 import { ExamFilter as IExamFilter } from '../../interfaces/Exams'
 import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPlaceholder'
 
+const initialNextPageTokens: { [key in ExamType]: string | undefined } = {
+  [ExamType.EXAM]: undefined,
+  [ExamType.HOMEWORK]: undefined
+}
+
+const nextPageTokenReducer = (state: { [key in ExamType]: string | undefined }, action: { type: ExamType, payload: string | undefined | null }) => {
+  return {
+    ...state,
+    [action.type]: action.payload
+  }
+}
+
 export const ExamsList = () => {
   const [exams, setExams] = useState<Exam[]>([])
   const [renderedExams, setRenderedExams] = useState<Exam[]>([])
@@ -25,26 +37,42 @@ export const ExamsList = () => {
   const { hasEditPermission } = useUserGroups()
   const [currentStatusFilter, setCurrentStatusFilter] = useState<IExamFilter>(IExamFilter.ALL)
   const [currentCourseFilter, setCurrentCourseFilter] = useState<string>(IExamFilter.ALL)
+  const [nextPageTokens, dispatch] = useReducer(nextPageTokenReducer, initialNextPageTokens)
   const navigate = useNavigate()
   const location = useLocation()
   const { context: { user } } = useContext(UserDashboardContext)
   const isExamView = location.pathname.includes('exams')
   const examType = isExamView ? ExamType.EXAM : ExamType.HOMEWORK
 
+  console.log(examType)
+
+  useEffect(() => {
+    console.log('Cambio', examType)
+    setIsLoading(true)
+    setExamAttempts([])
+    setExams([])
+    setRenderedExams([])
+  }, [examType])
+
   const fetchExams = useCallback(async () => {
-    const exams = isExamView ? await ExamService.getExams() : await ExamService.getHomework()
+    const exams = isExamView ? await ExamService.getExams(nextPageTokens.EXAM) : await ExamService.getHomework(nextPageTokens.HOMEWORK)
     const examAttempts = await ExamService.getExamAttemptsByCognitoId(user?.cognitoId as string, examType)
     const examsWithAppliedFilter = applyExamStatusFilter(exams?.listExams?.items as Exam[] || [], examAttempts?.listExamAttempts?.items as ExamAttempt[] ?? [], currentStatusFilter)
 
-    setExams(exams?.listExams?.items as any[] || [])
-    setExamAttempts(examAttempts?.listExamAttempts?.items as ExamAttempt[] || [])
+    setExams(currentExams => currentExams.concat(exams?.listExams?.items as any[] || []))
+    setExamAttempts(currentExamAttempts => currentExamAttempts.concat(examAttempts?.listExamAttempts?.items as ExamAttempt[] || []))
+
+    if (examAttempts?.listExamAttempts?.nextToken) {
+      dispatch({ type: isExamView ? ExamType.EXAM : ExamType.HOMEWORK, payload: examAttempts?.listExamAttempts?.nextToken })
+    }
+
     setRenderedExams(examsWithAppliedFilter)
     setIsLoading(false)
-  }, [user, examType, isExamView, currentStatusFilter])
+  }, [user, examType, isExamView, currentStatusFilter, nextPageTokens])
 
   useEffect(() => {
     fetchExams()
-  }, [fetchExams])
+  }, [fetchExams, nextPageTokens])
 
   if (isLoading) {
     return (
