@@ -216,6 +216,7 @@ const teachersRoutes: ApplicationRoute[] = [
   homeworkDetailRoute,
   homeworkDetailRoute,
   homeworkAttemptDetailRoute,
+  homeworkAttemptScreenRoute,
   { path: '*', element: <DashboardLayout><TeachersHomeScreen /></DashboardLayout> }
 ]
 
