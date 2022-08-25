@@ -229,6 +229,15 @@ export enum LanguageES {
   MULTIPLE_CHOICE= 'Multiple choice',
   TEXT_AREA= 'A desarrollar',
   SAVE='Guardar',
+  BLOCKS= 'Bloques',
+  GRAMMAR_CORRECTION= 'Corrección gramatical',
+  SPELLING_CORRECTION= 'Corrección ortográfica',
+  PUNCTUATION_CORRECTION= 'Corrección de puntuación',
+  VOCABULARY_CORRECTION= 'Corrección de vocabulario',
+  STYLE_CORRECTION= 'Corrección de estilo',
+  SUGGESTIONS= 'Sugerencias / Comentarios',
+  CORRECTION_PREVIEW= 'Vista previa de la corrección',
+  RESET_CORRECTION='Reiniciar correcion'
 }
 
 export enum LanguageEN {
@@ -457,4 +466,13 @@ export enum LanguageEN {
   MULTIPLE_CHOICE= 'Multiple choice',
   TEXT_AREA= 'Text area',
   SAVE='Save',
+  BLOCKS= 'Blocks',
+  GRAMMAR_CORRECTION='Grammar correction',
+  SPELLING_CORRECTION='Spelling correction',
+  PUNCTUATION_CORRECTION='Punctuation correction',
+  VOCABULARY_CORRECTION='Vocabulary correction',
+  STYLE_CORRECTION='Style correction',
+  SUGGESTIONS= 'Suggestions',
+  CORRECTION_PREVIEW= 'Correction preview',
+  RESET_CORRECTION='Reset correction'
 }

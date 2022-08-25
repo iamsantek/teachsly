@@ -1,4 +1,4 @@
-import { Badge, Button, FormLabel, HStack, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Stack, Text, Textarea } from '@chakra-ui/react'
+import { Badge, Button, FormLabel, HStack, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Stack, Text, Textarea, useToast } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { FormProvider, useForm, useFieldArray, Controller } from 'react-hook-form'
@@ -9,9 +9,9 @@ import { ContentLinePlaceholder } from '../../../components/Placeholders/Content
 import { Placeholder } from '../../../components/Placeholders/Placeholder'
 import { UserDashboardContext } from '../../../contexts/UserDashboardContext'
 import { ExamCorrection, QuestionPool } from '../../../interfaces/Exams'
-import { ToastNotification } from '../../../observables/ToastNotification'
 import ExamService from '../../../services/ExamService'
 import { translate } from '../../../utils/LanguageUtils'
+import { toastConfig } from '../../../utils/ToastUtils'
 import { ExamAttemptAnswers } from './ExamAttemptAnswers'
 import { ExamAttemptCounters } from './ExamAttemptCounters'
 import { ExamCompleteResult } from './results/ExamCompleteResult'
@@ -24,6 +24,7 @@ export const ExamAttemptDetail = () => {
   const [isSendingResults, setIsSendingResults] = useState(false)
 
   const navigate = useNavigate()
+  const toast = useToast()
   const formControls = useForm<ExamCorrection>()
   const { context: { user } } = useContext(UserDashboardContext)
   const { handleSubmit, control, reset, watch, register } = formControls
@@ -81,10 +82,10 @@ export const ExamAttemptDetail = () => {
     }
     const examAttemptResponse = await ExamService.updateExamAttempt(results)
 
-    ToastNotification({
+    toast(toastConfig({
       description: examAttemptResponse ? 'CORRECTION_SUCCESS' : 'CORRECTION_ERROR',
-      status: examAttemptResponse ? 'SUCCESS' : 'ERROR'
-    })
+      status: examAttemptResponse ? 'success' : 'error'
+    }))
 
     setIsSendingResults(false)
 

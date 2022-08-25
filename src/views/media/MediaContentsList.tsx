@@ -1,11 +1,10 @@
 import { useState, useEffect, useContext } from 'react'
 import { Media as PlatformMedia } from '../../interfaces/Media'
-import { Box, Stack } from '@chakra-ui/react'
+import { Box, Stack, useToast } from '@chakra-ui/react'
 import MediaService from '../../services/MediaService'
 import { ViewMediaContentModal } from '../../modals/ViewMediaContentModal'
 import MediaCRUDModal from '../../modals/MediaCRUDModal'
 import { UserDashboardContext } from '../../contexts/UserDashboardContext'
-import { ToastNotification } from '../../observables/ToastNotification'
 import { isAdmin, isTeacher } from '../../utils/CognitoGroupsUtils'
 import { ConfirmationDialog } from '../../components/AlertDialog/ConfirmationDialog'
 import { MediaFolderCardsList } from './folders/MediaFolderCardsList'
@@ -13,6 +12,7 @@ import { MediaContentsLines } from './MediaContentsLines'
 import { Media as MediaAPI } from '../../API'
 import { FetchType } from '../../enums/Media'
 import { useParams } from 'react-router-dom'
+import { toastConfig } from '../../utils/ToastUtils'
 
 interface Props {
   medias: MediaAPI[]
@@ -33,6 +33,7 @@ export const MediaContentsList = ({ medias, isLoading, showCRUDModal, onCRUDModa
   )
 
   const { folderId } = useParams()
+  const toast = useToast()
   const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] = useState<boolean>(false)
 
   useEffect(() => {
@@ -77,10 +78,10 @@ export const MediaContentsList = ({ medias, isLoading, showCRUDModal, onCRUDModa
       setShowDeleteUserConfirmation(false)
       setSelectedMedia(undefined)
 
-      ToastNotification({
-        status: 'SUCCESS',
+      toast(toastConfig({
+        status: 'success',
         description: 'MEDIA_DELETED'
-      })
+      }))
     }
   }
 

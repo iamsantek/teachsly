@@ -9,7 +9,8 @@ export interface Options {
 
 export enum AnswerType {
   MultipleChoice,
-  TextArea
+  TextArea,
+  Blocks
 }
 
 export enum QuestionType {
@@ -18,8 +19,9 @@ export enum QuestionType {
 }
 
 export interface QuestionCorrection {
-  manualCorrection: boolean | undefined
+  manualCorrection?: boolean | undefined
   isCorrectAnswer?: boolean | undefined
+  markDownCorrection?: string
 }
 
 export interface Question {
@@ -42,6 +44,10 @@ export enum ExamAttachmentType {
 export interface ExamAttachments {
   [ExamAttachmentType.AUDIO]: File | undefined;
   [ExamAttachmentType.EXTRA_ATTACHMENT]: File | undefined;
+}
+
+export interface BlocksQuestions extends Question {
+  correctBlockSequence: string
 }
 
 export interface AudioQuestion extends Question {

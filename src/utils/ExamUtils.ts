@@ -142,13 +142,39 @@ export const calculateNumberOfCorrectAnswers = (questionPools: QuestionPool[], a
   return { totalQuestions, correctAnswers, totalPendingQuestions }
 }
 
-export const manualTextCorrection = (questionPool: QuestionPool, questionIndex: number, isCorrectAnswer: boolean) => {
+export const onResetCorrection = (questionPool: QuestionPool, questionIndex: number, defaultAnswer: string) => {
+  const question = questionPool.questions[questionIndex]
+  const newQuestion = {
+    ...question,
+    correction: {
+      ...question.correction,
+      markDownCorrection: defaultAnswer
+    }
+  }
+  const newQuestionPool = {
+    ...questionPool,
+    questions: [
+      ...questionPool.questions.slice(0, questionIndex),
+      newQuestion,
+
+      ...questionPool.questions.slice(questionIndex + 1)
+    ]
+  }
+  return newQuestionPool
+}
+
+
+export const manualTextCorrection = (questionPool: QuestionPool, questionIndex: number, isCorrectAnswer: boolean, markDownCorrection: string) => {
   // Deep clone the question pool
   const updatedQuestionPool: QuestionPool = JSON.parse(JSON.stringify(questionPool))
+  console.log('Before update', updatedQuestionPool.questions[questionIndex].correction)
   updatedQuestionPool.questions[questionIndex].correction = {
+    markDownCorrection: markDownCorrection,
     isCorrectAnswer,
     manualCorrection: true
   }
+
+  console.log('After update', updatedQuestionPool.questions[questionIndex].correction)
 
   return updatedQuestionPool
 }
@@ -305,18 +331,58 @@ export const getExamLink = (exam: Exam, examAttempts: ExamAttempt[], isAdmin: bo
 
 export const filterExamsByTypeAndCognitoId = (type: ExamType, cognitoId: string) => type === ExamType.HOMEWORK
   ? {
-      and: [
-        { userId: { eq: cognitoId } },
-        { type: { eq: ExamType.HOMEWORK } }
-      ]
-    }
+    and: [
+      { userId: { eq: cognitoId } },
+      { type: { eq: ExamType.HOMEWORK } }
+    ]
+  }
   : {
-      and: [
-        { userId: { eq: cognitoId } },
-        { type: { ne: ExamType.HOMEWORK } }
-      ]
-    }
+    and: [
+      { userId: { eq: cognitoId } },
+      { type: { ne: ExamType.HOMEWORK } }
+    ]
+  }
 
 export const filterExamsByType = (type: ExamType) => type === ExamType.HOMEWORK
   ? { type: { eq: ExamType.HOMEWORK } }
   : { type: { ne: ExamType.HOMEWORK } }
+
+
+export const getMarkColor = (text: string) => {
+  const { asteriskWords, doubleAsteriskWords, dashWords, slashWords, plusWords } = generateCorrectionMatches(text)
+
+  if (asteriskWords.includes(text)) {
+    return { color: 'purple.500' }
+  } else if (doubleAsteriskWords.includes(text)) {
+    return { color: 'blue.500' }
+  }
+  else if (dashWords.includes(text)) {
+    return { color: 'pink.500' }
+  }
+  else if (slashWords.includes(text)) {
+    return { color: 'orange.500' }
+  }
+  else if (plusWords.includes(text)) {
+    return { color: 'blackAlpha.500' }
+  } else {
+    return { color: 'blackAlpha.500' }
+  }
+}
+
+
+export const generateCorrectionMatches = (markDownText?: string) => {
+  const asteriskWords = markDownText?.match(/\*(.*?)\*/g) || []
+  const doubleAsteriskWords = markDownText?.match(/#(.*?)#/g) || []
+  const dashWords = markDownText?.match(/-([^-]+)-/g) || []
+  const slashWords = markDownText?.match(/\/([^/]+)\//g) || []
+  const plusWords = markDownText?.match(/\+([^+]+)\+/g) || []
+
+  return {
+    matches: [...asteriskWords, ...doubleAsteriskWords, ...dashWords, ...slashWords, ...plusWords],
+    asteriskWords,
+    doubleAsteriskWords,
+    dashWords,
+    plusWords,
+    slashWords,
+  }
+}

@@ -1,5 +1,5 @@
 import { Select } from '@chakra-ui/react'
-import { Question } from '../../../interfaces/Exams'
+import { Question } from '../../../../../interfaces/Exams'
 
 interface Props {
     question: Question;

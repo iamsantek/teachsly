@@ -5,7 +5,8 @@ import {
   ModalContent,
   ModalOverlay,
   ModalHeader,
-  Stack
+  Stack,
+  useToast
 } from '@chakra-ui/react'
 import { translate } from '../utils/LanguageUtils'
 import { Input as CustomInput } from '../components/Inputs/Input'
@@ -16,9 +17,9 @@ import DateTimeUtils from '../utils/DateTimeUtils'
 import { ModalFooter } from '../components/Modals/ModalFooter'
 import { Select } from '../components/Inputs/Select'
 import { CourseWithMultiSelect } from '../interfaces/Course'
-import { ToastNotification } from '../observables/ToastNotification'
 import { mapSingleValueToMultiSelectOption, renderMultiSelectOptions } from '../utils/SelectUtils'
 import { Course as CourseAPI, CreateCourseInput } from '../API'
+import { toastConfig } from '../utils/ToastUtils'
 
 interface Props {
   isOpen: boolean;
@@ -38,6 +39,7 @@ const CourseCRUDModal = ({
   courseToUpdate
 }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const toast = useToast()
 
   const formControls = useForm({
     defaultValues: defaultCourse as CourseWithMultiSelect
@@ -86,10 +88,10 @@ const CourseCRUDModal = ({
       onClose()
       setIsLoading(false)
 
-      ToastNotification({
-        status: 'SUCCESS',
+      toast(toastConfig({
+        status: 'success',
         description: 'COURSE_CREATED_MESSAGE'
-      })
+      }))
     }
   }
 
@@ -109,10 +111,10 @@ const CourseCRUDModal = ({
       onUpdate(courseSuccessfullyEdited)
       onClose()
 
-      ToastNotification({
-        status: 'SUCCESS',
+      toast(toastConfig({
+        status: 'success',
         description: 'COURSE_UPDATED_SUCCESS'
-      })
+      }))
     }
   }
 

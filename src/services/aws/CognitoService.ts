@@ -18,14 +18,14 @@ import awsmobile from '../../aws-exports'
 import { LogLevel, LogTypes } from '../../enums/LogTypes'
 import { UserTypes } from '../../enums/UserTypes'
 import Logger from '../../utils/Logger'
-import { CognitoUserAmplify } from '@aws-amplify/ui'
 
 const logTag = LogTypes.AuthService
 
 class CognitoService {
   private cognitoIdentityProviderClient: CognitoIdentityProviderClient | undefined
 
-  public createClient = async (user: CognitoUserAmplify) => {
+  // TODO: Type this properly
+  public createClient = async (user: any) => {
     if (this.cognitoIdentityProviderClient) {
       return
     }

@@ -14,7 +14,8 @@ import {
   ModalHeader,
   useColorModeValue,
   Box,
-  Text
+  Text,
+  useToast
 } from '@chakra-ui/react'
 import { Input as CustomInput } from '../components/Inputs/Input'
 import { TextArea } from '../components/Inputs/TextArea'
@@ -28,7 +29,6 @@ import { FileUploader } from '../components/Inputs/FileUploader'
 import { PermissionsList } from '../components/Lists/PermissionsList'
 import { ModalFooter } from '../components/Modals/ModalFooter'
 import { defaultMedia } from '../constants/Medias'
-import { ToastNotification } from '../observables/ToastNotification'
 import { UserDashboardContext } from '../contexts/UserDashboardContext'
 import { Course, CreateMediaInput, Media as MediaAPI, UpdateMediaInput } from '../API'
 import { renderCourseList, transformGroups } from '../utils/CourseUtils'
@@ -36,6 +36,7 @@ import { generalGroups, isAdmin } from '../utils/CognitoGroupsUtils'
 import { useParams } from 'react-router-dom'
 import { recommendedMediaTypes } from '../utils/MediaUtils'
 import { NotRecommendedMediaTypeWarning } from '../components/Alert/NotRecommendedMediaTypeWarning'
+import { toastConfig } from '../utils/ToastUtils'
 
 interface Props {
   isOpen: boolean;
@@ -59,6 +60,7 @@ const MediaCRUDModal = ({
   const [courses, setCourses] = useState<Course[]>([])
   const { folderId } = useParams()
   const [invalidFileType, setInvalidFileType] = useState<boolean>(false)
+  const toast = useToast()
 
   const formControls = useForm({
     defaultValues: defaultMedia as MediaWithMultiSelect
@@ -168,10 +170,10 @@ const MediaCRUDModal = ({
     onCloseModal()
     setIsLoading(false)
 
-    ToastNotification({
+    toast(toastConfig({
       description: uploadedMedia?.createMedia ? 'MEDIA_CREATED_MESSAGE' : 'MEDIA_CREATED_FAILED_MESSAGE',
-      status: uploadedMedia?.createMedia ? 'SUCCESS' : 'ERROR'
-    })
+      status: uploadedMedia?.createMedia ? 'success' : 'error'
+    }))
   }
 
   const updateMedia = async (media: MediaWithMultiSelect) => {
@@ -182,10 +184,10 @@ const MediaCRUDModal = ({
       onUpdate(updatedMedia.updateMedia as MediaAPI)
     }
 
-    ToastNotification({
+    toast(toastConfig({
       description: updatedMedia?.updateMedia ? 'MEDIA_UPDATED_MESSAGE' : 'MEDIA_UPDATED_ERROR_MESSAGE',
-      status: updatedMedia?.updateMedia ? 'SUCCESS' : 'ERROR'
-    })
+      status: updatedMedia?.updateMedia ? 'success' : 'error'
+    }))
 
     setIsLoading(false)
     onCloseModal()

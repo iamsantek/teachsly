@@ -1,5 +1,5 @@
 import { RadioGroup, Stack, Radio, Text } from '@chakra-ui/react'
-import { translate } from '../../../utils/LanguageUtils'
+import { translate } from '../../../../../utils/LanguageUtils'
 
 interface Props {
     onChange: (value: string) => void;
@@ -7,7 +7,6 @@ interface Props {
 }
 
 export const IsCorrectAnswerRadio = ({ onChange, value }: Props) => {
-//   console.log(value)
   return (
         <RadioGroup onChange={(onChange)} value={value}>
             <Stack direction='row' spacing={3}>

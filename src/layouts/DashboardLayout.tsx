@@ -110,7 +110,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {routes?.filter((route: any) => route.showInNavbar).map((link: any, index: number) => (
-        <NavItem key={index} icon={link.icon} path={link.path} onClose={onClose}>
+        <NavItem key={index} icon={link.icon} path={link.path} onClose={onClose} textStyle='title'>
           {link.name}
         </NavItem>
       ))}
@@ -173,7 +173,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm" isTruncated>
+                  <Text fontSize="sm" noOfLines={1}>
                     {user?.name as string}
                   </Text>
                   <Text fontSize="xs">

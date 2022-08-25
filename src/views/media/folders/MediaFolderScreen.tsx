@@ -15,9 +15,9 @@ import { Media, MediaFolder, UpdateMediaFolderInput } from '../../../API'
 import { translate } from '../../../utils/LanguageUtils'
 import { transformGroups } from '../../../utils/CourseUtils'
 import MediaService from '../../../services/MediaService'
-import { Alert, AlertIcon, Button, Skeleton, Stack, Text } from '@chakra-ui/react'
-import { ToastNotification } from '../../../observables/ToastNotification'
+import { Alert, AlertIcon, Button, Skeleton, Stack, Text, useToast } from '@chakra-ui/react'
 import { useUserGroups } from '../../../hooks/useUserGroups'
+import { toastConfig } from '../../../utils/ToastUtils'
 
 export const MediaFolderScreen = () => {
   const [dragAndDropFiles, setDragAndDropFiles] = useState<MediaWithFile[]>([])
@@ -34,6 +34,7 @@ export const MediaFolderScreen = () => {
   const { folderId } = useParams()
   const hasFolderEditPermissions = hasAdminRole || editingFolder?.owner === user?.cognitoId
   const navigate = useNavigate()
+  const toast = useToast()
 
   const formControls = useForm({
     defaultValues: defaultMediaFolder
@@ -139,10 +140,10 @@ export const MediaFolderScreen = () => {
       files
     )
 
-    ToastNotification({
+    toast(toastConfig({
       description: folder ? 'CREATE_MEDIA_FOLDER_SUCCESS' : 'CREATE_MEDIA_FOLDER_FAILURE',
-      status: folder ? 'SUCCESS' : 'ERROR'
-    })
+      status: folder ? 'success' : 'error'
+    }))
 
     setIsProcessing(false)
     navigate(`/medias/folder/${folder?.id}`)
@@ -209,10 +210,10 @@ export const MediaFolderScreen = () => {
 
     setIsProcessing(false)
 
-    ToastNotification({
+    toast(toastConfig({
       description: operationsSuccess ? 'UPDATE_MEDIA_FOLDER_SUCCESS' : 'UPDATE_MEDIA_FOLDER_FAILURE',
-      status: operationsSuccess ? 'SUCCESS' : 'ERROR'
-    })
+      status: operationsSuccess ? 'success' : 'error'
+    }))
 
     if (operationsSuccess) {
       navigate(`/medias/folder/${folderId}`)

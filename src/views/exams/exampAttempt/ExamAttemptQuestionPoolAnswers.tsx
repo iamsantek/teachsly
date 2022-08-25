@@ -1,12 +1,13 @@
 import { Box, HStack, Stack, Text } from '@chakra-ui/react'
 import { useState } from 'react'
-import { UseFieldArrayUpdate } from 'react-hook-form'
-import { AnswerType, ExamCorrection, ExamKeys, QuestionPool } from '../../../interfaces/Exams'
+import { UseFieldArrayUpdate, useFormContext } from 'react-hook-form'
+import { AnswerType, ExamCorrection, ExamForm, ExamKeys, QuestionPool } from '../../../interfaces/Exams'
 import { alphabet, manualMultipleChoiceCorrection, manualTextCorrection } from '../../../utils/ExamUtils'
 import { generateRandomId } from '../../../utils/StringUtils'
 import { CorrectionBadge } from './CorrectionBadge'
-import { IsCorrectAnswerRadio } from './IsCorrectAnswerRadio'
-import { SelectCorrectAnswer } from './SelectCorrectAnswer'
+import { IsCorrectAnswerRadio } from './results/corrections/IsCorrectAnswerRadio'
+import { SelectCorrectAnswer } from './results/corrections/SelectCorrectAnswer'
+import { TextMarkDownCorrection } from './results/corrections/TextMarkDownCorrection'
 
 interface Props {
   questionPool: QuestionPool;
@@ -15,7 +16,9 @@ interface Props {
   updateFn: UseFieldArrayUpdate<ExamCorrection, 'questionPools'>
 }
 
-export const ExamAttemptQuestionPoolAnswers = ({ questionPoolIndex, questionPool, answers, updateFn }: Props) => {
+export const ExamAttemptQuestionPoolAnswers = ({ questionPoolIndex, answers, updateFn }: Props) => {
+  const { watch } = useFormContext<ExamForm>()
+  const questionPool = watch('questionPools')[questionPoolIndex]
   const [value, setValue] = useState<number | undefined>(undefined)
 
   const onMultipleChoiceManualCorrection = (questionPoolIndex: number, questionIndex: number, optionIndex: number) => {
@@ -23,18 +26,7 @@ export const ExamAttemptQuestionPoolAnswers = ({ questionPoolIndex, questionPool
     updateFn(questionPoolIndex, updatedValues)
   }
 
-  const onTextManualCorrection = (questionPool: QuestionPool, questionIndex: number, value: boolean) => {
-    const updatedValues = manualTextCorrection(questionPool, questionIndex, value)
-    updateFn(questionPoolIndex, updatedValues)
-  }
 
-  const checkManualCorrection = (questionPool: QuestionPool, questionIndex: number) => {
-    if (questionPool.questions[questionIndex].correction?.isCorrectAnswer === undefined) {
-      return undefined
-    }
-
-    return questionPool.questions[questionIndex].correction?.isCorrectAnswer ? 1 : 0
-  }
 
   return (
     <Stack spacing={5}>
@@ -79,13 +71,7 @@ export const ExamAttemptQuestionPoolAnswers = ({ questionPoolIndex, questionPool
             )}
             {answerType === AnswerType.TextArea && (
               <Stack spacing={3}>
-                <Text>{answer}</Text>
-                <IsCorrectAnswerRadio
-                  value={checkManualCorrection(questionPool, questionIndex)}
-                  onChange={(newValue) => {
-                    onTextManualCorrection(questionPool, questionIndex, !!parseInt(newValue))
-                  }}
-                />
+                <TextMarkDownCorrection updateFn={updateFn} questionPoolIndex={questionPoolIndex} questionIndex={questionIndex} answer={answer ?? ''} />
               </Stack>
             )}
           </Stack>
