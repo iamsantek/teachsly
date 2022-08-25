@@ -15,6 +15,7 @@ export const SectionHeader: FC<Props> = ({ children, sectionName }: Props) => {
 
   const getSectionNameFromRoute = () => {
     const route = routes?.find(
+      // eslint-disable-next-line no-restricted-globals
       (route) => route.path === location.pathname
     ) as CustomRouteObject | undefined
 
