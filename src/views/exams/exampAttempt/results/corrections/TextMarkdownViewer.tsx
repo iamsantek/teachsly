@@ -1,4 +1,4 @@
-import { useHighlight, Mark } from "@chakra-ui/react"
+import { useHighlight, Text } from "@chakra-ui/react"
 import { generateCorrectionMatches, getMarkColor } from "../../../../../utils/ExamUtils"
 
 interface Props {
@@ -9,16 +9,19 @@ export const TextMarkdownViewer = ({ markdownText }: Props) => {
     const { matches } = generateCorrectionMatches(markdownText)
 
     const generalChunks = useHighlight({
-        text: markdownText,
+        text: markdownText.replace('\n', '___'),
         query: matches
     })
 
     return (
         <>
             {generalChunks.map(({ text, match }) => {
-                if (!match) return text
+                if (!match) {
+                    return <span dangerouslySetInnerHTML={{ __html: text.replace('___', '</br>') }} />
+                }
+
                 const { color } = getMarkColor(text)
-                return <Mark bgColor={color} color='whiteAlpha.900'>{text}</Mark>
+                return <Text as='span' bgColor={color} color='whiteAlpha.900'>{text}</Text>
             }
             )}
         </>

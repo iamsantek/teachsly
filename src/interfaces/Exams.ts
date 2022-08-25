@@ -19,7 +19,7 @@ export enum QuestionType {
 }
 
 export interface QuestionCorrection {
-  manualCorrection: boolean | undefined
+  manualCorrection?: boolean | undefined
   isCorrectAnswer?: boolean | undefined
   markDownCorrection?: string
 }
