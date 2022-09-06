@@ -120,7 +120,7 @@ export const calculateNumberOfCorrectAnswers = (questionPools: QuestionPool[], a
     totalPendingQuestions = totalPendingQuestions + totalQuestionPoolPendingQuestions
     questionPool.questions.forEach((question, questionIndex) => {
       const answers = (JSON.parse(attempt.results as string) as ExamAnswers).answers as ExamKeys
-      const answer = answers[questionPoolIndex][questionIndex]
+      const answer = answers[questionPoolIndex] && answers[questionPoolIndex][questionIndex]
       totalQuestions++
 
       if (question.answerType === AnswerType.MultipleChoice) {

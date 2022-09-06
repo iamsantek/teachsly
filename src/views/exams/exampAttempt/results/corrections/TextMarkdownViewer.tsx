@@ -15,7 +15,7 @@ export const TextMarkdownViewer = ({ markdownText }: Props) => {
 
     return (
         <>
-            {generalChunks.map(({ text, match }) => {
+            {generalChunks.map(({ text, match }: {text: string, match: boolean}) => {
                 if (!match) {
                     return <span dangerouslySetInnerHTML={{ __html: text.replace('___', '</br>') }} />
                 }

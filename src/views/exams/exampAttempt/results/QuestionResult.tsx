@@ -15,7 +15,6 @@ interface Props {
 export const QuestionResult = ({ question, studentAnswers, questionIndex }: Props) => {
     const isSomeCorrectAnswer = question.options?.some(option => option.isCorrectOption)
     const answer = studentAnswers
-    console.log('A', question.correction?.markDownCorrection)
     return (
         <Stack>
             <Text>{questionIndex + 1}) {question.question}</Text>
@@ -31,7 +30,7 @@ export const QuestionResult = ({ question, studentAnswers, questionIndex }: Prop
             {question.answerType === AnswerType.TextArea && (
                 <Text textAlign='justify'>
                     <>
-                        {question.correction?.markDownCorrection ? <TextMarkdownViewer markdownText={question.correction.markDownCorrection} /> : answer}
+                        {answer}
                         <Text marginY={5}>{translate('CORRECT_ANSWER')} {question.correction?.isCorrectAnswer === true ? ' ✅' : ''} {question.correction?.isCorrectAnswer === false ? ' ❌' : ''}</Text>
                         {question.correction?.markDownCorrection && <MarkDownColorHelper />}
                     </>

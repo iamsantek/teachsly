@@ -44,8 +44,6 @@ export const ExamsList = () => {
   const isExamView = location.pathname.includes('exams')
   const examType = isExamView ? ExamType.EXAM : ExamType.HOMEWORK
 
-  console.log(examType)
-
   useEffect(() => {
     console.log('Cambio', examType)
     setIsLoading(true)
