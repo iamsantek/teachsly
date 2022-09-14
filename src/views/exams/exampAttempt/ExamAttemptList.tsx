@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ExamAttempt, ExamType } from '../../../API'
 import { ContentLine } from '../../../components/ContentLine/ContentLine'
 import ExamService from '../../../services/ExamService'
@@ -15,7 +15,6 @@ import { NoContentPlaceholder } from '../../../components/Placeholders/NoContent
 import { applyNameFilter, applyExamAttemptStatusFilter, applyStudentFilter } from '../../../utils/ExamUtils'
 import { Placeholder } from '../../../components/Placeholders/Placeholder'
 import { ContentLinePlaceholder } from '../../../components/Placeholders/ContentLinePlaceholder'
-import { toast } from 'aws-amplify'
 import { toastConfig } from '../../../utils/ToastUtils'
 
 export const ExamAttemptList = () => {
@@ -27,7 +26,7 @@ export const ExamAttemptList = () => {
   const [isLoading, setIsLoading] = useState(true)
   const location = useLocation()
   const toast = useToast()
-  const type = location.pathname.includes('exams') ? ExamType.EXAM : ExamType.HOMEWORK
+  const type = useMemo(() => location.pathname.includes('exams') ? ExamType.EXAM : ExamType.HOMEWORK, [location.pathname])
 
   // Filters
   const [statusActiveFilter, setStatusActiveFilter] = useState<IExamAttemptFilter>(IExamAttemptFilter.ALL)
@@ -39,11 +38,16 @@ export const ExamAttemptList = () => {
   const fetchExamAttempts = useCallback(async () => {
     const examsAttemptsResponse = await ExamService.fetchExamAttempts(type, nextPageToken)
 
-    setExamAttempts(examsAttemptsResponse?.listExamAttempts?.items as ExamAttempt[] ?? [])
-    setExamAttemptsDisplayed(examsAttemptsResponse?.listExamAttempts?.items as ExamAttempt[] ?? [])
-    setNextPageToken(examsAttemptsResponse?.listExamAttempts?.nextToken as string)
+    const items = examsAttemptsResponse?.listExamAttempts?.items as ExamAttempt[] ?? []
+    setExamAttempts(examAttempts => examAttempts.concat(items))
+    setExamAttemptsDisplayed(examAttemptsDisplayed => examAttemptsDisplayed.concat(items))
+
+    if (examsAttemptsResponse?.listExamAttempts?.nextToken) {
+      setNextPageToken(examsAttemptsResponse?.listExamAttempts?.nextToken as string)
+    }
+
     setIsLoading(false)
-  }, [nextPageToken, type])
+  }, [type, nextPageToken])
 
   useEffect(() => {
     fetchExamAttempts()

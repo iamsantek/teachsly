@@ -68,11 +68,12 @@ class ExamService {
     })
   }
 
-  public async getExamAttemptsByCognitoId (cognitoId: string, type: ExamType) {
+  public async getExamAttemptsByCognitoId (cognitoId: string, type: ExamType, nextPageToken: string | null | undefined) {
     const filter = filterExamsByTypeAndCognitoId(type, cognitoId)
 
     return GraphQLService.fetchQuery<ListExamAttemptsQuery>({
       query: listExamAttempts,
+      nextToken: nextPageToken,
       filter
     })
   }

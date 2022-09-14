@@ -17,17 +17,7 @@ import { ExamFilter } from './ExamsFilter'
 import { ExamFilter as IExamFilter } from '../../interfaces/Exams'
 import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPlaceholder'
 
-const initialNextPageTokens: { [key in ExamType]: string | undefined } = {
-  [ExamType.EXAM]: undefined,
-  [ExamType.HOMEWORK]: undefined
-}
 
-const nextPageTokenReducer = (state: { [key in ExamType]: string | undefined }, action: { type: ExamType, payload: string | undefined | null }) => {
-  return {
-    ...state,
-    [action.type]: action.payload
-  }
-}
 
 export const ExamsList = () => {
   const [exams, setExams] = useState<Exam[]>([])
@@ -37,7 +27,8 @@ export const ExamsList = () => {
   const { hasEditPermission } = useUserGroups()
   const [currentStatusFilter, setCurrentStatusFilter] = useState<IExamFilter>(IExamFilter.ALL)
   const [currentCourseFilter, setCurrentCourseFilter] = useState<string>(IExamFilter.ALL)
-  const [nextPageTokens, dispatch] = useReducer(nextPageTokenReducer, initialNextPageTokens)
+  const [examAttemptsNextPageToken, setExamAttemptsNextPageToken] = useState<string | undefined>(undefined)
+  const [examsNextPageToken, setExamsNextPageToken] = useState<string | undefined>(undefined)
   const navigate = useNavigate()
   const location = useLocation()
   const { context: { user } } = useContext(UserDashboardContext)
@@ -45,32 +36,50 @@ export const ExamsList = () => {
   const examType = isExamView ? ExamType.EXAM : ExamType.HOMEWORK
 
   useEffect(() => {
-    console.log('Cambio', examType)
     setIsLoading(true)
     setExamAttempts([])
     setExams([])
     setRenderedExams([])
   }, [examType])
 
-  const fetchExams = useCallback(async () => {
-    const exams = isExamView ? await ExamService.getExams(nextPageTokens.EXAM) : await ExamService.getHomework(nextPageTokens.HOMEWORK)
-    const examAttempts = await ExamService.getExamAttemptsByCognitoId(user?.cognitoId as string, examType)
-    const examsWithAppliedFilter = applyExamStatusFilter(exams?.listExams?.items as Exam[] || [], examAttempts?.listExamAttempts?.items as ExamAttempt[] ?? [], currentStatusFilter)
 
-    setExams(currentExams => currentExams.concat(exams?.listExams?.items as any[] || []))
-    setExamAttempts(currentExamAttempts => currentExamAttempts.concat(examAttempts?.listExamAttempts?.items as ExamAttempt[] || []))
+  const fetchExamAttempts = useCallback(async () => {
+    const examAttempts = await ExamService.getExamAttemptsByCognitoId(user?.cognitoId as string, examType, examAttemptsNextPageToken)
 
     if (examAttempts?.listExamAttempts?.nextToken) {
-      dispatch({ type: isExamView ? ExamType.EXAM : ExamType.HOMEWORK, payload: examAttempts?.listExamAttempts?.nextToken })
+      setExamAttemptsNextPageToken(examAttempts?.listExamAttempts?.nextToken)
     }
 
-    setRenderedExams(examsWithAppliedFilter)
+    setExamAttempts(e => e.concat(examAttempts?.listExamAttempts?.items as ExamAttempt[]))
+  }, [examType, user?.cognitoId, examAttemptsNextPageToken])
+
+
+  const fetchExams = useCallback(async () => {
+    const exams = isExamView ? await ExamService.getExams(examsNextPageToken) : await ExamService.getHomework(examsNextPageToken)
+
+    setExams(currentExams => currentExams.concat(exams?.listExams?.items as any[] || []))
+
+    if (exams?.listExams?.nextToken) {
+      console.log('setting next token')
+
+      setExamsNextPageToken(exams?.listExams.nextToken)
+    }
+
     setIsLoading(false)
-  }, [user, examType, isExamView, currentStatusFilter, nextPageTokens])
+  }, [isExamView, examsNextPageToken])
 
   useEffect(() => {
     fetchExams()
-  }, [fetchExams, nextPageTokens])
+  }, [fetchExams])
+
+  useEffect(() => {
+    fetchExamAttempts()
+  }, [fetchExamAttempts])
+
+  useEffect(() => {
+        const examsWithAppliedFilter = applyExamStatusFilter(exams, examAttempts, currentStatusFilter)
+        setRenderedExams(applyCourseFilter(examsWithAppliedFilter, currentCourseFilter))
+  }, [exams, examAttempts, currentStatusFilter, currentCourseFilter])
 
   if (isLoading) {
     return (
