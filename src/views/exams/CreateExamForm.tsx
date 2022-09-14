@@ -63,7 +63,7 @@ export const CreateExamForm = () => {
     if (!examForm) {
       return
     }
-
+  
     reset(examForm)
   }, [examId, courses, reset])
 
@@ -248,7 +248,7 @@ export const CreateExamForm = () => {
 
             <Stack spacing={4}>
               <Text textStyle='title'>{translate('EXAM_SETTINGS')}</Text>
-              <Checkbox size='lg' colorScheme='brand' {...register('settings.allowRetake')}>
+              <Checkbox isChecked={watch('settings.allowRetake')} size='lg' colorScheme='brand' {...register('settings.allowRetake')}>
                 {translate('ALLOW_RE_TAKE_EXAM')}
               </Checkbox>
             </Stack>
