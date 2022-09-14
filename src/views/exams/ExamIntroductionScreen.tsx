@@ -23,6 +23,7 @@ export const ExamIntroductionScreen = () => {
   const [isTimerFinished, setIsTimerFinished] = useState<boolean>(false)
   const [isProcessing, setIsProcessing] = useState<boolean>(false)
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
+  const [examAttemptId, setExamAttemptId] = useState<string | undefined>()
   const toast = useToast()
 
   const handleTimerFinish = () => {
@@ -44,15 +45,17 @@ export const ExamIntroductionScreen = () => {
     const [exam, examAttempt] = await Promise.all([examPromise, examAttemptPromise])
 
     setExam(exam?.getExam as unknown as ExamForm)
+    const examAttemptId = examAttempt?.listExamAttempts?.items?.[0]?.id
+    setExamAttemptId(examAttemptId as string)
 
-    if (!exam?.getExam?.settings?.allowRetake && examAttempt?.listExamAttempts?.items && examAttempt?.listExamAttempts?.items?.length > 0) {
+    if (!exam?.getExam?.settings?.allowRetake && examAttemptId) {
       setIsSubmitted(true)
     }
 
     const countdown = Math.abs(dayjs().diff((exam?.getExam?.deadline), 'second'))
     setCountdown(countdown)
     setIsLoading(false)
-  }, [])
+  }, [user?.cognitoId])
 
   useEffect(() => {
     reset()
@@ -73,6 +76,11 @@ export const ExamIntroductionScreen = () => {
       return
     }
     setIsProcessing(true)
+
+    if (exam?.settings.allowRetake && examAttemptId) {
+      // Delete previous exam attempt
+      await ExamService.deleteExamAttempt(examAttemptId)
+    }
 
     const examAttempt = await ExamService.createExamAttempt({
       examId: examId as string,
