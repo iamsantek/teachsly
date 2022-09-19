@@ -90,7 +90,7 @@ class UserService {
 
     const assignUserToCognitoGroup = CognitoService.assignUserToCognitoGroup(
       email,
-      updatedGroups
+      updatedGroups.filter(group => group)
     )
 
     return Promise.all([deleteUserFromGroups, assignUserToCognitoGroup])
