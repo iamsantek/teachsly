@@ -1,4 +1,4 @@
-import { Badge, Box } from '@chakra-ui/react'
+import { Badge, Stack } from '@chakra-ui/react'
 import { EnglishLevel, Media, MediaType } from '../../API'
 import { ContentLine } from '../../components/ContentLine/ContentLine'
 import { ContentLinePlaceholder } from '../../components/Placeholders/ContentLinePlaceholder'
@@ -51,7 +51,7 @@ export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelet
   }
 
   return (
-    <Box>
+    <Stack spacing={4}>
       {filterMedias?.map((media) => {
         const Icon = getFileTypeIcon(media.mimeType as string, 20)
         const isMediaOwner = externalUserId === (media as any).owner
@@ -62,13 +62,13 @@ export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelet
             leftIcon={Icon}
             onView={() => onClickView(media)}
             onDownload={() => onClickDownload(media)}
-            onEdit = {(hasAdminRole || isMediaOwner) ? () => onEdit(media) : undefined}
-      onDelete={(hasAdminRole || isMediaOwner) ? () => onDelete(media) : undefined}
+            onEdit={(hasAdminRole || isMediaOwner) ? () => onEdit(media) : undefined}
+            onDelete={(hasAdminRole || isMediaOwner) ? () => onDelete(media) : undefined}
           >
-      <CommonContentLineTitle id={media.id} title={media.title} badges={media.groups} showSeenBadge={true}>
-        {isMediaCreatedWithinLastWeek(media) && <Badge colorScheme='orange'>{translate('NEW')}</Badge>}
-      </CommonContentLineTitle>
-    </ContentLine>
+            <CommonContentLineTitle id={media.id} title={media.title} badges={media.groups} showSeenBadge={true}>
+              {isMediaCreatedWithinLastWeek(media) && <Badge colorScheme='orange'>{translate('NEW')}</Badge>}
+            </CommonContentLineTitle>
+          </ContentLine>
         )
       })}
       <Placeholder
@@ -77,6 +77,6 @@ export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelet
         placeholderElement={<ContentLinePlaceholder />}
       />
       <NoContentPlaceholder show={medias.length === 0 && !isLoading} />
-    </Box >
+    </Stack >
   )
 }

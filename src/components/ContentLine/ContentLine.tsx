@@ -17,23 +17,29 @@ import { generateRandomId } from '../../utils/StringUtils'
 
 interface Props {
   // eslint-disable-next-line no-undef
-  leftIcon: JSX.Element;
+  leftIcon?: JSX.Element;
   onView?: () => void;
   onDownload?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
   // eslint-disable-next-line no-undef
   customButtons?: JSX.Element[]
+  transformOnHover?: boolean;
+  noBorder?: boolean;
+  borderColor?: string;
 }
 
-export const ContentLine= ({
+export const ContentLine = ({
   leftIcon: LeftIcon,
   onView,
   onDownload,
   onDelete,
   onEdit,
   children,
-  customButtons
+  customButtons,
+  transformOnHover = true,
+  noBorder = false,
+  borderColor
 }: PropsWithChildren<Props>) => {
   const customButtonWrapper = customButtons?.map(customButton => (
     <WrapItem key={generateRandomId()}>{customButton}</WrapItem>
@@ -41,27 +47,31 @@ export const ContentLine= ({
 
   return (
     <Box
-      bg="white.100"
+      // bg="white.100"
       rounded="lg"
       borderWidth="1px"
-      boxShadow="lg"
+      bgColor="gray.50"
+      borderColor={borderColor}
+      boxShadow={noBorder ? "none" : "lg"}
       w="100%"
       p={4}
       color="white"
       _hover={{
-        transform: 'scale(1.01)',
+        transform: transformOnHover ? 'scale(1.01)' : 'none',
         cursor: 'pointer'
       }}
     >
-      <Flex justify={'space-between'}>
-        <Circle
-          size="40px"
-          bg="brand.500"
-          color='whiteAlpha.900'
-          marginRight={[3, 5]}
-        >
-          {LeftIcon}
-        </Circle>
+      <Flex justify={'space-between'} alignItems='center'>
+        {LeftIcon && (
+          <Circle
+            size="40px"
+            bg="brand.500"
+            color='whiteAlpha.900'
+            marginRight={[3, 5]}
+          >
+            {LeftIcon}
+          </Circle>
+        )}
         <Flex flex="1" justifyContent="space-between" onClick={onView}>
           {children}
         </Flex>

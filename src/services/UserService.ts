@@ -155,6 +155,18 @@ class UserService {
       )
     }
   }
+
+  public fetchTeacherByCourseId = async (courseExternalId: string) => {
+    const usersByCourseFilter: ModelUserFilterInput = {
+      and: [
+        { isDisabledUser: { eq: false } },
+        { groups: { contains: courseExternalId } },
+        { groups: { contains: UserTypes.TEACHER } }
+      ]
+    }
+
+    return this.fetchUsers(usersByCourseFilter)
+  }
 }
 
 export default new UserService()

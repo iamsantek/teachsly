@@ -152,3 +152,30 @@ type ExamAttempt @model
   teacherComments: String
   type: ExamType
 }
+
+enum LessonPlanningType {
+  EXAM,
+  HOMEWORK,
+  OTHER,
+  LESSON,
+  MEDIA
+}
+
+type LessonPlan @model
+@auth(rules: [
+  {allow: owner},
+  {allow: groups, groups: ["Admin","Teachers"]},
+  {allow: groups, groupsField: "groups", operations: [read] }
+  ])
+{
+  id: ID!
+  groups: [String!]!
+  title: String!
+  date: AWSDate!
+  uploadedBy: String!
+  content: String
+  media: String
+  type: LessonPlanningType
+  externalId: ID! @index(name: "byExternalId", queryField: "lessonPlanByExternalId")
+  extraInformation: AWSJSON
+}   

@@ -21,7 +21,8 @@ export const Input = ({
   placeholder,
   bottomNote,
   type,
-  isDisabled
+  isDisabled,
+  ...rest
 }: Props) => {
   const { register } = useFormContext()
 
@@ -42,7 +43,8 @@ export const Input = ({
         size="md"
         type={type}
         isDisabled={isDisabled}
-        {...register(name, { required: isRequired })}
+        {...register(name, { required: isRequired, ...rest })}
+        {...rest}
       />
 
       {bottomNote && (

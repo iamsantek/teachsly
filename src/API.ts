@@ -506,6 +506,78 @@ export type DeleteExamAttemptInput = {
   id: string,
 };
 
+export type CreateLessonPlanInput = {
+  id?: string | null,
+  groups: Array< string >,
+  title: string,
+  date: string,
+  uploadedBy: string,
+  content?: string | null,
+  media?: string | null,
+  type?: LessonPlanningType | null,
+  externalId: string,
+};
+
+export enum LessonPlanningType {
+  EXAM = "EXAM",
+  HOMEWORK = "HOMEWORK",
+  OTHER = "OTHER",
+  LESSON = "LESSON",
+  MEDIA = "MEDIA",
+}
+
+
+export type ModelLessonPlanConditionInput = {
+  groups?: ModelStringInput | null,
+  title?: ModelStringInput | null,
+  date?: ModelStringInput | null,
+  uploadedBy?: ModelStringInput | null,
+  content?: ModelStringInput | null,
+  media?: ModelStringInput | null,
+  type?: ModelLessonPlanningTypeInput | null,
+  externalId?: ModelIDInput | null,
+  and?: Array< ModelLessonPlanConditionInput | null > | null,
+  or?: Array< ModelLessonPlanConditionInput | null > | null,
+  not?: ModelLessonPlanConditionInput | null,
+};
+
+export type ModelLessonPlanningTypeInput = {
+  eq?: LessonPlanningType | null,
+  ne?: LessonPlanningType | null,
+};
+
+export type LessonPlan = {
+  __typename: "LessonPlan",
+  id: string,
+  groups: Array< string >,
+  title: string,
+  date: string,
+  uploadedBy: string,
+  content?: string | null,
+  media?: string | null,
+  type?: LessonPlanningType | null,
+  externalId: string,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+};
+
+export type UpdateLessonPlanInput = {
+  id: string,
+  groups?: Array< string > | null,
+  title?: string | null,
+  date?: string | null,
+  uploadedBy?: string | null,
+  content?: string | null,
+  media?: string | null,
+  type?: LessonPlanningType | null,
+  externalId?: string | null,
+};
+
+export type DeleteLessonPlanInput = {
+  id: string,
+};
+
 export type ModelCourseFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -629,6 +701,27 @@ export type ModelExamAttemptFilterInput = {
 export type ModelExamAttemptConnection = {
   __typename: "ModelExamAttemptConnection",
   items:  Array<ExamAttempt | null >,
+  nextToken?: string | null,
+};
+
+export type ModelLessonPlanFilterInput = {
+  id?: ModelIDInput | null,
+  groups?: ModelStringInput | null,
+  title?: ModelStringInput | null,
+  date?: ModelStringInput | null,
+  uploadedBy?: ModelStringInput | null,
+  content?: ModelStringInput | null,
+  media?: ModelStringInput | null,
+  type?: ModelLessonPlanningTypeInput | null,
+  externalId?: ModelIDInput | null,
+  and?: Array< ModelLessonPlanFilterInput | null > | null,
+  or?: Array< ModelLessonPlanFilterInput | null > | null,
+  not?: ModelLessonPlanFilterInput | null,
+};
+
+export type ModelLessonPlanConnection = {
+  __typename: "ModelLessonPlanConnection",
+  items:  Array<LessonPlan | null >,
   nextToken?: string | null,
 };
 
@@ -1076,6 +1169,75 @@ export type DeleteExamAttemptMutation = {
   } | null,
 };
 
+export type CreateLessonPlanMutationVariables = {
+  input: CreateLessonPlanInput,
+  condition?: ModelLessonPlanConditionInput | null,
+};
+
+export type CreateLessonPlanMutation = {
+  createLessonPlan?:  {
+    __typename: "LessonPlan",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    date: string,
+    uploadedBy: string,
+    content?: string | null,
+    media?: string | null,
+    type?: LessonPlanningType | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateLessonPlanMutationVariables = {
+  input: UpdateLessonPlanInput,
+  condition?: ModelLessonPlanConditionInput | null,
+};
+
+export type UpdateLessonPlanMutation = {
+  updateLessonPlan?:  {
+    __typename: "LessonPlan",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    date: string,
+    uploadedBy: string,
+    content?: string | null,
+    media?: string | null,
+    type?: LessonPlanningType | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteLessonPlanMutationVariables = {
+  input: DeleteLessonPlanInput,
+  condition?: ModelLessonPlanConditionInput | null,
+};
+
+export type DeleteLessonPlanMutation = {
+  deleteLessonPlan?:  {
+    __typename: "LessonPlan",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    date: string,
+    uploadedBy: string,
+    content?: string | null,
+    media?: string | null,
+    type?: LessonPlanningType | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
 export type GetCourseQueryVariables = {
   id: string,
 };
@@ -1382,6 +1544,56 @@ export type ListExamAttemptsQuery = {
   } | null,
 };
 
+export type GetLessonPlanQueryVariables = {
+  id: string,
+};
+
+export type GetLessonPlanQuery = {
+  getLessonPlan?:  {
+    __typename: "LessonPlan",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    date: string,
+    uploadedBy: string,
+    content?: string | null,
+    media?: string | null,
+    type?: LessonPlanningType | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListLessonPlansQueryVariables = {
+  filter?: ModelLessonPlanFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListLessonPlansQuery = {
+  listLessonPlans?:  {
+    __typename: "ModelLessonPlanConnection",
+    items:  Array< {
+      __typename: "LessonPlan",
+      id: string,
+      groups: Array< string >,
+      title: string,
+      date: string,
+      uploadedBy: string,
+      content?: string | null,
+      media?: string | null,
+      type?: LessonPlanningType | null,
+      externalId: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type ExamAttemptByExternalIdQueryVariables = {
   externalId: string,
   sortDirection?: ModelSortDirection | null,
@@ -1410,6 +1622,36 @@ export type ExamAttemptByExternalIdQuery = {
       keys?: string | null,
       teacherComments?: string | null,
       type?: ExamType | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type LessonPlanByExternalIdQueryVariables = {
+  externalId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelLessonPlanFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type LessonPlanByExternalIdQuery = {
+  lessonPlanByExternalId?:  {
+    __typename: "ModelLessonPlanConnection",
+    items:  Array< {
+      __typename: "LessonPlan",
+      id: string,
+      groups: Array< string >,
+      title: string,
+      date: string,
+      uploadedBy: string,
+      content?: string | null,
+      media?: string | null,
+      type?: LessonPlanningType | null,
+      externalId: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1808,6 +2050,72 @@ export type OnDeleteExamAttemptSubscription = {
     keys?: string | null,
     teacherComments?: string | null,
     type?: ExamType | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnCreateLessonPlanSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateLessonPlanSubscription = {
+  onCreateLessonPlan?:  {
+    __typename: "LessonPlan",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    date: string,
+    uploadedBy: string,
+    content?: string | null,
+    media?: string | null,
+    type?: LessonPlanningType | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateLessonPlanSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateLessonPlanSubscription = {
+  onUpdateLessonPlan?:  {
+    __typename: "LessonPlan",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    date: string,
+    uploadedBy: string,
+    content?: string | null,
+    media?: string | null,
+    type?: LessonPlanningType | null,
+    externalId: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteLessonPlanSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteLessonPlanSubscription = {
+  onDeleteLessonPlan?:  {
+    __typename: "LessonPlan",
+    id: string,
+    groups: Array< string >,
+    title: string,
+    date: string,
+    uploadedBy: string,
+    content?: string | null,
+    media?: string | null,
+    type?: LessonPlanningType | null,
+    externalId: string,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,

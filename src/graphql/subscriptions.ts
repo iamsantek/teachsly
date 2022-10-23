@@ -344,3 +344,57 @@ export const onDeleteExamAttempt = /* GraphQL */ `
     }
   }
 `;
+export const onCreateLessonPlan = /* GraphQL */ `
+  subscription OnCreateLessonPlan($owner: String) {
+    onCreateLessonPlan(owner: $owner) {
+      id
+      groups
+      title
+      date
+      uploadedBy
+      content
+      media
+      type
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateLessonPlan = /* GraphQL */ `
+  subscription OnUpdateLessonPlan($owner: String) {
+    onUpdateLessonPlan(owner: $owner) {
+      id
+      groups
+      title
+      date
+      uploadedBy
+      content
+      media
+      type
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteLessonPlan = /* GraphQL */ `
+  subscription OnDeleteLessonPlan($owner: String) {
+    onDeleteLessonPlan(owner: $owner) {
+      id
+      groups
+      title
+      date
+      uploadedBy
+      content
+      media
+      type
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;

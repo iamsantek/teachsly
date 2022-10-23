@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useReducer, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { ContentLine } from '../../components/ContentLine/ContentLine'
 import ExamService from '../../services/ExamService'
 import { IoNewspaper } from 'react-icons/io5'
@@ -60,8 +60,6 @@ export const ExamsList = () => {
     setExams(currentExams => currentExams.concat(exams?.listExams?.items as any[] || []))
 
     if (exams?.listExams?.nextToken) {
-      console.log('setting next token')
-
       setExamsNextPageToken(exams?.listExams.nextToken)
     }
 
@@ -77,8 +75,8 @@ export const ExamsList = () => {
   }, [fetchExamAttempts])
 
   useEffect(() => {
-        const examsWithAppliedFilter = applyExamStatusFilter(exams, examAttempts, currentStatusFilter)
-        setRenderedExams(applyCourseFilter(examsWithAppliedFilter, currentCourseFilter))
+    const examsWithAppliedFilter = applyExamStatusFilter(exams, examAttempts, currentStatusFilter)
+    setRenderedExams(applyCourseFilter(examsWithAppliedFilter, currentCourseFilter))
   }, [exams, examAttempts, currentStatusFilter, currentCourseFilter])
 
   if (isLoading) {
@@ -93,8 +91,8 @@ export const ExamsList = () => {
 
   const getBadge = (exam: Exam) => {
     const { examAttempt, isCompleted, isCorrected } = getExamStatus(exam, examAttempts)
-    const badgeText = dayjs().isBefore(exam.startDate) ? `${translate('COMING_SOON')} ${dayjs(exam.deadline).format('DD/MM HH:mm')}hs` : translate(examAttempt?.correctedBy ? 'CORRECTED' : examAttempt?.isCompleted ? 'COMPLETED' : 'NOT_COMPLETED')
-    const badgeColor = dayjs().isBefore(exam.startDate) ? 'green' : examAttempt?.correctedBy ? 'green' : examAttempt?.isCompleted ? 'blue' : 'red'
+    const badgeText = dayjs().isAfter(exam.deadline) ? translate('OUT_OF_DEADLINE') : dayjs().isBefore(exam.startDate) ? `${translate('COMING_SOON')} ${dayjs(exam.deadline).format('DD/MM HH:mm')}hs` : translate(examAttempt?.correctedBy ? 'CORRECTED' : examAttempt?.isCompleted ? 'COMPLETED' : 'NOT_COMPLETED')
+    const badgeColor = dayjs().isAfter(exam.deadline) ? 'red' : dayjs().isBefore(exam.startDate) ? 'green' : examAttempt?.correctedBy ? 'green' : examAttempt?.isCompleted ? 'blue' : 'red'
 
     return { badgeText, badgeColor, isCompleted, isCorrected }
   }
@@ -137,9 +135,9 @@ export const ExamsList = () => {
                 </Text>
               )}
               {!hasEditPermission && (
-              <Badge colorScheme={badgeColor} marginX={5}>
-                {badgeText}
-              </Badge>
+                <Badge colorScheme={badgeColor} marginX={5}>
+                  {badgeText}
+                </Badge>
               )}
             </CommonContentLineTitle>
           </ContentLine>

@@ -31,6 +31,7 @@ import { MdGroups } from 'react-icons/md'
 import { generateRandomId } from '../../utils/StringUtils'
 import { TooltipHelper } from '../../components/Tooltips/Tooltip'
 import { generateMediaByCourseRoute, generateStudentsByCourseRoute } from '../../utils/RouteUtils'
+import { BsCardList } from 'react-icons/bs'
 
 export const AdminCourseList = () => {
   const [courses, setCourses] = useState<CourseAPI[]>([])
@@ -95,9 +96,9 @@ export const AdminCourseList = () => {
   return (
     <>
       <ViewCourseModal
-      isOpen={viewCourseModalVisibility}
-      onClose={() => onClose('ViewCourseModal')}
-      course={selectedCourse as CourseAPI}
+        isOpen={viewCourseModalVisibility}
+        onClose={() => onClose('ViewCourseModal')}
+        course={selectedCourse as CourseAPI}
       />
       <CourseCRUDModal
         onCreate={onCreate}
@@ -118,7 +119,7 @@ export const AdminCourseList = () => {
             </Button>
           </Center>
         </SectionHeader>
-        <Box>
+        <Stack spacing={4}>
           {courses.map((course) => {
             const days = DateTimeUtils.shortDays(
               course.scheduleDates as number[]
@@ -133,6 +134,7 @@ export const AdminCourseList = () => {
             )
 
             const customButtons = [
+              <TooltipHelper key={generateRandomId()} label={translate('LESSON_PLAN')}><ButtonSquare onClick={() => navigate(`/lesson-planning/${course.externalId}`)} icon={<BsCardList />} /></TooltipHelper>,
               <TooltipHelper key={generateRandomId()} label={translate('VIEW_STUDENTS')}><ButtonSquare onClick={() => navigate(generateStudentsByCourseRoute(course.externalId))} icon={<MdGroups />} /></TooltipHelper>,
               <TooltipHelper key={generateRandomId()} label={translate('VIEW_MEDIAS')}><ButtonSquare onClick={() => navigate(generateMediaByCourseRoute(course.externalId))} icon={<AiFillFolder />} /></TooltipHelper>
             ]
@@ -166,7 +168,7 @@ export const AdminCourseList = () => {
             placeholderElement={<ContentLinePlaceholder />}
           />
           <NoContentPlaceholder show={courses.length === 0 && !isLoadingNewPage} />
-        </Box>
+        </Stack>
       </Stack>
       <LoadMoreButton show={!!nextPageResultToken} isLoading={isLoadingNewPage} onClick={loadMore} />
     </>

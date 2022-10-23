@@ -6,6 +6,7 @@ import { AnswerType, ExamAnswers, ExamAttemptFilter, ExamFilter, ExamForm, ExamK
 import { MultiSelectOption } from '../interfaces/MultiSelectOption'
 import { BadgeColors } from '../views/exams/exampAttempt/CorrectionBadge'
 import { transformGroups } from './CourseUtils'
+import { translate } from './LanguageUtils'
 import { removeDiacritics } from './StringUtils'
 
 export const alphabet = 'abcdefghijklmnopqrstuvwxyz'
@@ -347,6 +348,12 @@ export const filterExamsByType = (type: ExamType) => type === ExamType.HOMEWORK
   ? { type: { eq: ExamType.HOMEWORK } }
   : { type: { ne: ExamType.HOMEWORK } }
 
+export const getBadgeWithExamAttempt = (exam: Exam, examAttempt: ExamAttempt) => {
+  const badgeText = dayjs().isBefore(exam.startDate) ? `${translate('COMING_SOON')} ${dayjs(exam.deadline).format('DD/MM HH:mm')}hs` : translate(examAttempt?.correctedBy ? 'CORRECTED' : examAttempt?.isCompleted ? 'COMPLETED' : dayjs().isAfter(exam.deadline) ? 'OUT_OF_DEADLINE' : 'NOT_COMPLETED')
+  const badgeColor = dayjs().isBefore(exam.startDate) ? 'green' : examAttempt?.correctedBy ? 'green' : examAttempt?.isCompleted ? 'blue' : 'red'
+
+  return { badgeText, badgeColor }
+}
 
 export const getMarkColor = (text: string) => {
   const { asteriskWords, doubleAsteriskWords, dashWords, slashWords, plusWords } = generateCorrectionMatches(text)

@@ -52,7 +52,15 @@ export const ExamIntroductionScreen = () => {
       setIsSubmitted(true)
     }
 
-    const countdown = Math.abs(dayjs().diff((exam?.getExam?.deadline), 'second'))
+    if (dayjs().isAfter(dayjs(exam?.getExam?.deadline))) {
+      setCountdown(0)
+      setIsTimerFinished(true)
+      setIsLoading(false)
+      return
+    }
+
+    const countdown = dayjs().diff((exam?.getExam?.deadline), 'days')
+    console.log({ countdown })
     setCountdown(countdown)
     setIsLoading(false)
   }, [user?.cognitoId])

@@ -237,7 +237,20 @@ export enum LanguageES {
   STYLE_CORRECTION= 'Corrección de estilo',
   SUGGESTIONS= 'Sugerencias / Comentarios',
   CORRECTION_PREVIEW= 'Vista previa de la corrección',
-  RESET_CORRECTION='Reiniciar correcion'
+  RESET_CORRECTION='Reiniciar correcion',
+  LESSON_PLAN= 'Cronograma de clases',
+  COURSE_DETAILS='Detalles del curso',
+  NEW_LESSON_PLAN= 'Nuevo cronograma de clases',
+  UPDATE_LESSON_PLAN= 'Actualizar cronograma de clases',
+  DELETE_LESSON_PLAN= 'Eliminar cronograma de clases',
+  CREATE_LESSON_PLAN= 'Crear cronograma',
+  LESSON_SUCCESS= 'El cronograma se creó correctamente.',
+  LESSON_ERROR= 'Hubo un error al crear el cronograma. Por favor, intentar nuevamente.',
+  LESSON_UPDATE_SUCCESS= 'El cronograma se actualizó correctamente.',
+  LESSON_UPDATE_ERROR= 'Hubo un error al actualizar el cronograma. Por favor, intentar nuevamente.',
+  OUT_OF_DEADLINE= 'Fuera de término',
+  USEFUL_LINKS= 'Links útiles',
+  LESSON_PLAN_TITLE='Cronograma',
 }
 
 export enum LanguageEN {
@@ -474,5 +487,18 @@ export enum LanguageEN {
   STYLE_CORRECTION='Style correction',
   SUGGESTIONS= 'Suggestions',
   CORRECTION_PREVIEW= 'Correction preview',
-  RESET_CORRECTION='Reset correction'
+  RESET_CORRECTION='Reset correction',
+  LESSON_PLAN= 'Lesson plan',
+  COURSE_DETAILS='Course details',
+  NEW_LESSON_PLAN= 'New lesson plan',
+  UPDATE_LESSON_PLAN= 'Update lesson plan',
+  DELETE_LESSON_PLAN= 'Delete lesson plan',
+  CREATE_LESSON_PLAN= 'Create lesson plan',
+  LESSON_SUCCESS= 'The lesson plan has been successfully created.',
+  LESSON_ERROR= 'An error has occurred when creating the lesson plan. Please try again.',
+  LESSON_UPDATE_SUCCESS= 'The lesson plan has been successfully updated.',
+  LESSON_UPDATE_ERROR= 'An error has occurred when updating the lesson plan. Please try again.',
+  OUT_OF_DEADLINE= 'Out of date',
+  USEFUL_LINKS= 'Useful links',
+  LESSON_PLAN_TITLE= 'Lesson plans',
 }
