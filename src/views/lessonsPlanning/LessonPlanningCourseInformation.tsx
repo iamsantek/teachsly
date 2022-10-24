@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react"
 import { AiFillFolder, AiOutlineClockCircle, AiOutlinePlus } from "react-icons/ai"
 import { BsWhatsapp } from "react-icons/bs"
 import { FaExternalLinkAlt } from "react-icons/fa"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Course, User } from "../../API"
 import { UserDashboardContext } from "../../contexts/UserDashboardContext"
 import { useUserGroups } from "../../hooks/useUserGroups"
@@ -21,6 +21,7 @@ export const LessonPlanningCourseInformation = ({ onAddLessonClick }: Props) => 
     const { courseId } = useParams()
     const { hasEditPermission } = useUserGroups()
     const { context: { courses } } = useContext(UserDashboardContext)
+    const navigate = useNavigate()
     const course = courses.find(course => course.externalId === courseId) as Course
 
     useEffect(() => {
@@ -81,7 +82,7 @@ export const LessonPlanningCourseInformation = ({ onAddLessonClick }: Props) => 
 
                 <Flex flexDirection='column' gap={3} alignItems='flex-end'>
                     <Text fontWeight='bold'>{translate('USEFUL_LINKS')}</Text>
-                    <Button size='sm' leftIcon={<AiFillFolder color='brand' />}>
+                    <Button size='sm' onClick={() => navigate(`/medias/${course.externalId}`)} leftIcon={<AiFillFolder color='brand' />}>
                         {translate('MENU_CONTENTS')}
                     </Button>
                     {course?.virtualClassLink && (

@@ -1,6 +1,6 @@
 import { LessonsPlanningList } from './LessonsPlanningList'
 import { useCallback, useContext, useEffect, useReducer, useState } from 'react'
-import { deleteLessonPlan, getLessonPlans } from '../../services/LessonPlanService'
+import { deleteLessonPlan, getLessonPlans, getLessonPlansByCourseId } from '../../services/LessonPlanService'
 import { CreateLessonPlanInput, EnglishLevel, Exam, ExamAttempt, ExamType, LessonPlan, LessonPlanningType } from '../../API'
 import { findAndUpdateContent } from '../../utils/GeneralUtils'
 import MediaService from '../../services/MediaService'
@@ -14,6 +14,7 @@ import { LessonPlanningItem } from '../../interfaces/LessonPlanning'
 import { Badge, Box } from '@chakra-ui/react'
 import { getBadgeWithExamAttempt } from '../../utils/ExamUtils'
 import { useUserGroups } from '../../hooks/useUserGroups'
+import { NoContentPlaceholder } from '../../components/Placeholders/NoContentPlaceholder'
 
 enum FetchType {
   EXAMS = 'EXAMS',
@@ -49,11 +50,11 @@ export const LessonsPlanningHomeScreen = () => {
   const { courseId } = useParams()
   const { context: { user } } = useContext(UserDashboardContext)
   const [nextPageTokens, dispatch] = useReducer(nextPageTokenReducer, initialNextPageTokens)
-  const { hasAdminRole } = useUserGroups()
+  const { hasAdminRole, hasStudentRole } = useUserGroups()
 
   const fetchLessonPlans = useCallback(async () => {
     setLessonPlanningLoading(true)
-    const lessonPlans = await getLessonPlans(nextPageTokens.LESSONS)
+    const lessonPlans = await getLessonPlansByCourseId(courseId as string, nextPageTokens.LESSONS)
     if (lessonPlans?.listLessonPlans?.items) {
       setLessons(currentLessons => currentLessons.concat(lessonPlans.listLessonPlans?.items as LessonPlan[]))
     }
@@ -76,7 +77,7 @@ export const LessonsPlanningHomeScreen = () => {
         title: exam?.title,
         type: exam?.type === ExamType.HOMEWORK ? LessonPlanningType.HOMEWORK : LessonPlanningType.EXAM,
         date: exam?.createdAt,
-        renderElement: (
+        renderElement: hasStudentRole && (
           <Box marginX={10}>
             <Badge colorScheme={badgeColor}>
               {badgeText}
@@ -214,7 +215,10 @@ export const LessonsPlanningHomeScreen = () => {
         number={10}
         placeholderElement={<ContentLinePlaceholder />}
       />
-      {!isLoading && (
+      <NoContentPlaceholder
+        show={!isLoading && lessons.length === 0}
+      />
+      {!isLoading && lessons.length !== 0 && (
         <LessonsPlanningList
           onCreate={(lessonPlan) => {
             const sortedLessons = sortLessons([...lessons, lessonPlan])

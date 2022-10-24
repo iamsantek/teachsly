@@ -12,9 +12,10 @@ const getLessonPlans = (nextToken?: string | undefined) => {
     })
 }
 
-const getLessonPlansByCourseId = (courseId: string) => {
+const getLessonPlansByCourseId = (courseId: string, nextToken?: string | undefined) => {
     return GraphQLService.fetchQuery<ListLessonPlansQuery>({
         query: listLessonPlans,
+        nextToken,
         filter: {
             groups: {
                 contains: courseId
