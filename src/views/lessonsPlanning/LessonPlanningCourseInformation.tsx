@@ -88,10 +88,8 @@ export const LessonPlanningCourseInformation = ({ onAddLessonClick }: Props) => 
                     {course?.virtualClassLink && (
                         <Button
                             size='sm'
-                            leftIcon={<FaExternalLinkAlt
-                                color='brand'
-                                onClick={() => window.open(course.virtualClassLink as string, '_blank')}
-                            />}>
+                            onClick={() => window.open(course.virtualClassLink as string, '_blank')}
+                            leftIcon={<FaExternalLinkAlt color='brand' />}>
                             {translate('GO_TO_VIRTUAL_CLASS')}
                         </Button>
                     )}
