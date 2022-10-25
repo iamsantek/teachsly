@@ -7,7 +7,7 @@ import Logger from '../utils/Logger'
 import GraphQLService from './GraphQLService'
 import CognitoService from './aws/CognitoService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
-import { Course as CourseAPI, CreateCourseInput, CreateCourseMutation, GetCourseQuery, ListCoursesQuery, UpdateCourseMutation } from '../API'
+import { Course as CourseAPI, CreateCourseInput, CreateCourseMutation, ListCoursesQuery, UpdateCourseMutation } from '../API'
 import { UserTypes } from '../enums/UserTypes'
 import { generateExternalId } from '../utils/CourseUtils'
 
