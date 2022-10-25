@@ -111,7 +111,7 @@ class ExamService {
     })
   }
 
-  public fetchMediaByCourseId = async (courseId: string | undefined, englishLevel: EnglishLevel, nextToken?: string | undefined | null) => {
+  public fetchExamsByCourseId = async (courseId: string | undefined, englishLevel: EnglishLevel, nextToken?: string | undefined | null) => {
     if (!courseId) {
       return
     }

@@ -92,7 +92,7 @@ export const LessonsPlanningList = ({ lessons, onCreate, onDelete, onUpdate, isM
         onCreate={onCreate}
         lessonToUpdate={lessonToUpdate}
       />
-      <Stack spacing={5}>
+      <Stack spacing={5} marginBottom={10}>
         <Text textStyle='title' fontSize='xl'>{translate('LESSON_PLAN_TITLE')}</Text>
         <Box position={'relative'}>
           <Box
@@ -104,7 +104,7 @@ export const LessonsPlanningList = ({ lessons, onCreate, onDelete, onUpdate, isM
             backgroundColor="brand.500"
             zIndex={1}
           />
-          <Stack spacing={5} marginBottom={10}>
+          <Stack spacing={5}>
             {lessons.map(lesson => {
               const isLessonPlan = lesson.type === LessonPlanningType.LESSON
               return (

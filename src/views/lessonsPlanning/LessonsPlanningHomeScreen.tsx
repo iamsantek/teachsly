@@ -1,6 +1,6 @@
 import { LessonsPlanningList } from './LessonsPlanningList'
 import { useCallback, useContext, useEffect, useReducer, useState } from 'react'
-import { deleteLessonPlan, getLessonPlans, getLessonPlansByCourseId } from '../../services/LessonPlanService'
+import { deleteLessonPlan, getLessonPlansByCourseId } from '../../services/LessonPlanService'
 import { CreateLessonPlanInput, EnglishLevel, Exam, ExamAttempt, ExamType, LessonPlan, LessonPlanningType } from '../../API'
 import { findAndUpdateContent } from '../../utils/GeneralUtils'
 import MediaService from '../../services/MediaService'
@@ -40,11 +40,11 @@ const nextPageTokenReducer = (state: { [key in FetchType]: string | undefined },
 export const LessonsPlanningHomeScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [lessons, setLessons] = useState<LessonPlanningItem[]>([])
-  const [mediaLoading, setMediaLoading] = useState(false)
-  const [examLoading, setExamLoading] = useState(false)
-  const [examAttemptsLoading, setExamAttemptsLoading] = useState(false)
+  const [mediaLoading, setMediaLoading] = useState(true)
+  const [examLoading, setExamLoading] = useState(true)
+  const [examAttemptsLoading, setExamAttemptsLoading] = useState(true)
   const [examAttempts, setExamAttempts] = useState<ExamAttempt[]>([])
-  const [lessonPlanningLoading, setLessonPlanningLoading] = useState(false)
+  const [lessonPlanningLoading, setLessonPlanningLoading] = useState(true)
   const [lessonToUpdate, setLessonToUpdate] = useState<LessonPlan | null>(null)
   const [exams, setExams] = useState<Exam[]>([])
   const { courseId } = useParams()
@@ -64,7 +64,7 @@ export const LessonsPlanningHomeScreen = () => {
     }
 
     setLessonPlanningLoading(false)
-  }, [nextPageTokens.LESSONS])
+  }, [nextPageTokens.LESSONS, courseId])
 
   const generateLessonPlanningByExams = useCallback(() => {
     const lessonPlannings: CreateLessonPlanInput[] = exams?.map(exam => {
@@ -91,13 +91,12 @@ export const LessonsPlanningHomeScreen = () => {
     }).filter(x => x) as LessonPlanningItem[]
 
     setLessons(currentLessons => currentLessons.concat(lessonPlannings as LessonPlanningItem[]))
-  }, [examAttempts, exams])
+  }, [examAttempts, exams, hasStudentRole])
 
   const fetchExamAttempts = useCallback(async () => {
     if (exams.length === 0) {
       return
     }
-    setExamAttemptsLoading(true)
 
     const examNames = exams.map(exam => exam.title as string)
     const examAttempts = await ExamService.getExamAttemptsByExamNameAndUserId(examNames, user?.cognitoId as string, nextPageTokens.EXAM_ATTEMPTS)
@@ -114,8 +113,7 @@ export const LessonsPlanningHomeScreen = () => {
   }, [nextPageTokens.EXAM_ATTEMPTS, user?.cognitoId, exams, generateLessonPlanningByExams])
 
   const fetchExams = useCallback(async () => {
-    setExamLoading(true)
-    const exams = await ExamService.fetchMediaByCourseId(courseId, user?.englishLevel as EnglishLevel, nextPageTokens.EXAMS)
+    const exams = await ExamService.fetchExamsByCourseId(courseId, user?.englishLevel as EnglishLevel, nextPageTokens.EXAMS)
 
     if ((exams?.listExams?.items?.length ?? 0) > 0) {
       setExams(currentExams => currentExams.concat(exams?.listExams?.items as Exam[]))
@@ -135,7 +133,6 @@ export const LessonsPlanningHomeScreen = () => {
   }, [examLoading, fetchExamAttempts])
 
   const fetchMedias = useCallback(async () => {
-    setMediaLoading(true)
     const medias = await MediaService.fetchMediaByCourseId(courseId, user?.englishLevel as EnglishLevel, false, nextPageTokens.MEDIA)
 
 
@@ -167,12 +164,19 @@ export const LessonsPlanningHomeScreen = () => {
       window.location.href = '/'
       return
     }
+  }, [user?.groups, courseId, hasAdminRole])
 
-    fetchLessonPlans()
+  useEffect(() => {
     fetchMedias()
-    fetchExams()
-  }, [user?.groups, courseId])
+  }, [fetchMedias])
 
+  useEffect(() => {
+    fetchLessonPlans()
+  }, [fetchLessonPlans])
+
+  useEffect(() => {
+    fetchExams()
+  }, [fetchExams])
 
   // Sort elements by date (asc)
   const sortLessons = (lessons: LessonPlan[]) => {
@@ -202,8 +206,6 @@ export const LessonsPlanningHomeScreen = () => {
   }
 
   const isLoading = mediaLoading || examLoading || lessonPlanningLoading || examAttemptsLoading
-
-  console.log(isLoading)
 
   return (
     <>
