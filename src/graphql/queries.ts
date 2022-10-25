@@ -264,6 +264,49 @@ export const listExamAttempts = /* GraphQL */ `
     }
   }
 `;
+export const getLessonPlan = /* GraphQL */ `
+  query GetLessonPlan($id: ID!) {
+    getLessonPlan(id: $id) {
+      id
+      groups
+      title
+      date
+      uploadedBy
+      content
+      media
+      type
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listLessonPlans = /* GraphQL */ `
+  query ListLessonPlans(
+    $filter: ModelLessonPlanFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLessonPlans(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        groups
+        title
+        date
+        uploadedBy
+        content
+        media
+        type
+        externalId
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
 export const examAttemptByExternalId = /* GraphQL */ `
   query ExamAttemptByExternalId(
     $externalId: ID!
@@ -295,6 +338,39 @@ export const examAttemptByExternalId = /* GraphQL */ `
         keys
         teacherComments
         type
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const lessonPlanByExternalId = /* GraphQL */ `
+  query LessonPlanByExternalId(
+    $externalId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelLessonPlanFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    lessonPlanByExternalId(
+      externalId: $externalId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        groups
+        title
+        date
+        uploadedBy
+        content
+        media
+        type
+        externalId
         createdAt
         updatedAt
         owner

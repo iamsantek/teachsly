@@ -2,7 +2,7 @@ import { LogLevel, LogTypes } from '../enums/LogTypes'
 import { deleteMedia, updateMedia } from '../graphql/mutations'
 import { getMedia, listMedia } from '../graphql/queries'
 import { Media } from '../interfaces/Media'
-import { Media as MediaAPI, DeleteMediaMutation, ListMediaQuery, MediaType, UpdateMediaMutation, UpdateMediaInput, GetMediaQuery } from '../API'
+import { Media as MediaAPI, DeleteMediaMutation, ListMediaQuery, MediaType, UpdateMediaMutation, UpdateMediaInput, GetMediaQuery, EnglishLevel } from '../API'
 import Logger from '../utils/Logger'
 import GraphQLService from './GraphQLService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
@@ -17,9 +17,9 @@ class MediaService {
       query: listMedia,
       filter: courseName
         ? {
-            groups: { contains: courseName },
-            folderId: { attributeExists: false }
-          }
+          groups: { contains: courseName },
+          folderId: { attributeExists: false }
+        }
         : { folderId: { attributeExists: false } },
       nextToken
     })
@@ -75,11 +75,24 @@ class MediaService {
     return signedUrl?.url as string
   }
 
-  public fetchMediaByCourse = async (courseName: string) => {
+  public fetchMediaByCourseId = async (courseId: string | undefined, englishLevel: EnglishLevel, includeMediaInsideFolders: boolean = false, nextToken?: string | undefined | null) => {
+    if (!courseId) {
+      return
+    }
+
     return GraphQLService.fetchQuery<ListMediaQuery>({
       query: listMedia,
+      nextToken,
       filter: {
-        name: { eq: courseName }
+        and: [
+          {
+            or: [
+              { groups: { contains: courseId } },
+              englishLevel && { groups: { contains: englishLevel } },
+            ].filter(x => x)
+          },
+          { folderId: { attributeExists: includeMediaInsideFolders } },
+        ]
       }
     })
   }

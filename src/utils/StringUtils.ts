@@ -21,6 +21,12 @@ export const removeDiacritics = (text: string) => {
   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
 
+// Capitalize the first letter of a string and lowercase the rest
+export const capitalizeWord = (text: string) => {
+  const test = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+  return test
+}
+
 // Capitalize first letter of each word and replace underscores with one space
 export const capitalize = (text: string) => {
   return text.replace(/_/g, ' ').replace(/\w\S*/g, (txt) => {

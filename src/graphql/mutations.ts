@@ -398,3 +398,66 @@ export const deleteExamAttempt = /* GraphQL */ `
     }
   }
 `;
+export const createLessonPlan = /* GraphQL */ `
+  mutation CreateLessonPlan(
+    $input: CreateLessonPlanInput!
+    $condition: ModelLessonPlanConditionInput
+  ) {
+    createLessonPlan(input: $input, condition: $condition) {
+      id
+      groups
+      title
+      date
+      uploadedBy
+      content
+      media
+      type
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateLessonPlan = /* GraphQL */ `
+  mutation UpdateLessonPlan(
+    $input: UpdateLessonPlanInput!
+    $condition: ModelLessonPlanConditionInput
+  ) {
+    updateLessonPlan(input: $input, condition: $condition) {
+      id
+      groups
+      title
+      date
+      uploadedBy
+      content
+      media
+      type
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteLessonPlan = /* GraphQL */ `
+  mutation DeleteLessonPlan(
+    $input: DeleteLessonPlanInput!
+    $condition: ModelLessonPlanConditionInput
+  ) {
+    deleteLessonPlan(input: $input, condition: $condition) {
+      id
+      groups
+      title
+      date
+      uploadedBy
+      content
+      media
+      type
+      externalId
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;

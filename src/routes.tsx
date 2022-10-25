@@ -22,6 +22,7 @@ import { ExamAttemptScreen } from './views/exams/exampAttempt/ExamAttemptScreen'
 import { ExamAttemptDetail } from './views/exams/exampAttempt/ExamAttemptDetail'
 import { StudentExamResultScreen } from './views/exams/exampAttempt/students/StudentExamResultScreen'
 import { ImBooks } from 'react-icons/im'
+import { LessonsPlanningHomeScreen } from './views/lessonsPlanning/LessonsPlanningHomeScreen'
 
 const adminHomeScreen: ApplicationRoute = {
   name: translate('MENU_HOME'),
@@ -130,7 +131,15 @@ const homeworkHomeScreen: ApplicationRoute = {
   element: <ExamsHomeScreen />,
   showInNavbar: true,
   withDashboardLayout: true
+}
 
+const lessonPlaningHomeScreen: ApplicationRoute = {
+  path: '/lesson-planning/:courseId',
+  name: translate('LESSON_PLAN'),
+  icon: ImBooks,
+  element: <LessonsPlanningHomeScreen />,
+  showInNavbar: false,
+  withDashboardLayout: true
 }
 
 const examDetailRoute: ApplicationRoute = { path: '/exams/:examId', element: <CreateExamScreen />, showInNavbar: false, withDashboardLayout: true }
@@ -176,7 +185,7 @@ const adminRoutes: ApplicationRoute[] = [
   homeworkDetailRoute,
   homeworkAttemptDetailRoute,
   homeworkAttemptScreenRoute,
-
+  lessonPlaningHomeScreen,
   { path: '*', element: <DashboardLayout><AdminHomeScreen /></DashboardLayout> }
 ]
 
@@ -194,6 +203,7 @@ const studentRoutes: ApplicationRoute[] = [
   examResultsRoute,
   homeworkResultsRoute,
   homeworkHomeScreen,
+  lessonPlaningHomeScreen,
   { path: '*', element: <DashboardLayout><StudentsHomeScreen /></DashboardLayout> }
 ]
 
@@ -217,6 +227,7 @@ const teachersRoutes: ApplicationRoute[] = [
   homeworkDetailRoute,
   homeworkAttemptDetailRoute,
   homeworkAttemptScreenRoute,
+  lessonPlaningHomeScreen,
   { path: '*', element: <DashboardLayout><TeachersHomeScreen /></DashboardLayout> }
 ]
 

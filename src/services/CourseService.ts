@@ -7,7 +7,7 @@ import Logger from '../utils/Logger'
 import GraphQLService from './GraphQLService'
 import CognitoService from './aws/CognitoService'
 import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
-import { Course as CourseAPI, CreateCourseInput, CreateCourseMutation, ListCoursesQuery, UpdateCourseMutation } from '../API'
+import { Course as CourseAPI, CreateCourseInput, CreateCourseMutation, GetCourseQuery, ListCoursesQuery, UpdateCourseMutation } from '../API'
 import { UserTypes } from '../enums/UserTypes'
 import { generateExternalId } from '../utils/CourseUtils'
 
@@ -27,10 +27,10 @@ class CourseService {
       query: listCourses,
       filter: filterDisabledCourses
         ? {
-            isActive: {
-              eq: 'true'
-            }
+          isActive: {
+            eq: 'true'
           }
+        }
         : {},
       nextToken,
       limit
@@ -125,6 +125,34 @@ class CourseService {
       )
     }
   }
+
+  public fetchCourseByExternalId = async (externalId: string | undefined) => {
+    if (!externalId) {
+      return
+    }
+
+    try {
+      const courses = await GraphQLService.fetchQuery<ListCoursesQuery>({
+        query: listCourses,
+        filter: {
+          externalId: {
+            eq: externalId
+          }
+        }
+      })
+
+      return courses?.listCourses?.items?.[0]
+
+    } catch (error) {
+      Logger.log(
+        LogLevel.ERROR,
+        LogTypes.CourseService,
+        'Error when fetching course by externalId',
+        error
+      )
+    }
+  }
+
 }
 
 export default new CourseService()

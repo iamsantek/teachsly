@@ -4,25 +4,18 @@ import { BiTimeFive } from 'react-icons/bi'
 import { Course } from '../../API'
 import DateTimeUtils, { TimeFormats } from '../../utils/DateTimeUtils'
 import { translate } from '../../utils/LanguageUtils'
-import { CourseCardButtons } from './CourseCardButtons'
 
 interface Props {
     course: Course;
 }
 
 export const CourseCardPreview = ({ course }: Props) => {
-  const { name, scheduleStartTime, scheduleEndTime, scheduleDates, virtualClassLink } = course
-  const startTime = DateTimeUtils.formateHour(scheduleStartTime, TimeFormats.TwentyFourHours)
-  const endTime = DateTimeUtils.formateHour(scheduleEndTime, TimeFormats.TwentyFourHours)
-  const dates = DateTimeUtils.shortDays(scheduleDates as number[])
+    const { name, scheduleStartTime, scheduleEndTime, scheduleDates, virtualClassLink } = course
+    const startTime = DateTimeUtils.formateHour(scheduleStartTime, TimeFormats.TwentyFourHours)
+    const endTime = DateTimeUtils.formateHour(scheduleEndTime, TimeFormats.TwentyFourHours)
+    const dates = DateTimeUtils.shortDays(scheduleDates as number[])
 
-  // WIP Next class time
-  //   const nextDay = (scheduleDates as number[]).find((day: number) => day >= dayjs().day())
-  //   const nextClassDate = dayjs().add(nextDay || 0, 'day')
-  //   const nextClassDateAndTime = nextClassDate.add(Number(startTime.split(':')[0]), 'h')
-  //   const nextClassTime = DateTimeUtils.timeTo(nextClassDateAndTime)
-
-  return (
+    return (
         <Box
             rounded="lg"
             flexBasis='100%'
@@ -38,6 +31,11 @@ export const CourseCardPreview = ({ course }: Props) => {
             justifyContent='space-between'
             height='100%'
             width='100%'
+            _hover={{
+                transform: 'scale(1.03)',
+                cursor: 'pointer'
+            }}
+            onClick={() => window.location.href = `/lesson-planning/${course.externalId}`}
         >
             <Box display={'flex'} gap={3}>
                 <Avatar name={name} />
@@ -68,9 +66,6 @@ export const CourseCardPreview = ({ course }: Props) => {
 
                 </Box>
             </Box>
-            <Box ml={10}>
-                <CourseCardButtons course={course} />
-            </Box>
         </Box>
-  )
+    )
 }
