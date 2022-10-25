@@ -1,7 +1,6 @@
 import {
   Avatar,
   Badge,
-  Box,
   Button,
   Center,
   Stack,

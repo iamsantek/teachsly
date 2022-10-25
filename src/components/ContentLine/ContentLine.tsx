@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react'
+import {  PropsWithChildren } from 'react'
 import {
   Box,
   Circle,
