@@ -413,6 +413,7 @@ export const createLessonPlan = /* GraphQL */ `
       media
       type
       externalId
+      extraInformation
       createdAt
       updatedAt
       owner
@@ -434,6 +435,7 @@ export const updateLessonPlan = /* GraphQL */ `
       media
       type
       externalId
+      extraInformation
       createdAt
       updatedAt
       owner
@@ -455,9 +457,133 @@ export const deleteLessonPlan = /* GraphQL */ `
       media
       type
       externalId
+      extraInformation
       createdAt
       updatedAt
       owner
+    }
+  }
+`;
+export const createPayments = /* GraphQL */ `
+  mutation CreatePayments(
+    $input: CreatePaymentsInput!
+    $condition: ModelPaymentsConditionInput
+  ) {
+    createPayments(input: $input, condition: $condition) {
+      id
+      userId
+      date
+      status
+      type
+      typeId
+      amount
+      mpPaymentId
+      itemName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePayments = /* GraphQL */ `
+  mutation UpdatePayments(
+    $input: UpdatePaymentsInput!
+    $condition: ModelPaymentsConditionInput
+  ) {
+    updatePayments(input: $input, condition: $condition) {
+      id
+      userId
+      date
+      status
+      type
+      typeId
+      amount
+      mpPaymentId
+      itemName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePayments = /* GraphQL */ `
+  mutation DeletePayments(
+    $input: DeletePaymentsInput!
+    $condition: ModelPaymentsConditionInput
+  ) {
+    deletePayments(input: $input, condition: $condition) {
+      id
+      userId
+      date
+      status
+      type
+      typeId
+      amount
+      mpPaymentId
+      itemName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createBooklets = /* GraphQL */ `
+  mutation CreateBooklets(
+    $input: CreateBookletsInput!
+    $condition: ModelBookletsConditionInput
+  ) {
+    createBooklets(input: $input, condition: $condition) {
+      id
+      name
+      description
+      level
+      priceArs
+      priceUsd
+      isActive
+      mpCheckoutUrl
+      mpPreferenceId
+      pdfFile
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateBooklets = /* GraphQL */ `
+  mutation UpdateBooklets(
+    $input: UpdateBookletsInput!
+    $condition: ModelBookletsConditionInput
+  ) {
+    updateBooklets(input: $input, condition: $condition) {
+      id
+      name
+      description
+      level
+      priceArs
+      priceUsd
+      isActive
+      mpCheckoutUrl
+      mpPreferenceId
+      pdfFile
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteBooklets = /* GraphQL */ `
+  mutation DeleteBooklets(
+    $input: DeleteBookletsInput!
+    $condition: ModelBookletsConditionInput
+  ) {
+    deleteBooklets(input: $input, condition: $condition) {
+      id
+      name
+      description
+      level
+      priceArs
+      priceUsd
+      isActive
+      mpCheckoutUrl
+      mpPreferenceId
+      pdfFile
+      createdAt
+      updatedAt
     }
   }
 `;

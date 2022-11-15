@@ -276,6 +276,7 @@ export const getLessonPlan = /* GraphQL */ `
       media
       type
       externalId
+      extraInformation
       createdAt
       updatedAt
       owner
@@ -299,9 +300,94 @@ export const listLessonPlans = /* GraphQL */ `
         media
         type
         externalId
+        extraInformation
         createdAt
         updatedAt
         owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getPayments = /* GraphQL */ `
+  query GetPayments($id: ID!) {
+    getPayments(id: $id) {
+      id
+      userId
+      date
+      status
+      type
+      typeId
+      amount
+      mpPaymentId
+      itemName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPayments = /* GraphQL */ `
+  query ListPayments(
+    $filter: ModelPaymentsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPayments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userId
+        date
+        status
+        type
+        typeId
+        amount
+        mpPaymentId
+        itemName
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getBooklets = /* GraphQL */ `
+  query GetBooklets($id: ID!) {
+    getBooklets(id: $id) {
+      id
+      name
+      description
+      level
+      priceArs
+      priceUsd
+      isActive
+      mpCheckoutUrl
+      mpPreferenceId
+      pdfFile
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listBooklets = /* GraphQL */ `
+  query ListBooklets(
+    $filter: ModelBookletsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBooklets(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        description
+        level
+        priceArs
+        priceUsd
+        isActive
+        mpCheckoutUrl
+        mpPreferenceId
+        pdfFile
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -371,6 +457,7 @@ export const lessonPlanByExternalId = /* GraphQL */ `
         media
         type
         externalId
+        extraInformation
         createdAt
         updatedAt
         owner

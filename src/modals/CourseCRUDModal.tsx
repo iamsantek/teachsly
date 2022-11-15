@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 import {
   Modal,
   ModalBody,
@@ -6,20 +6,23 @@ import {
   ModalOverlay,
   ModalHeader,
   Stack,
-  useToast
-} from '@chakra-ui/react'
-import { translate } from '../utils/LanguageUtils'
-import { Input as CustomInput } from '../components/Inputs/Input'
-import { defaultCourse } from '../constants/Courses'
-import CourseService from '../services/CourseService'
-import { FormProvider, useForm } from 'react-hook-form'
-import DateTimeUtils from '../utils/DateTimeUtils'
-import { ModalFooter } from '../components/Modals/ModalFooter'
-import { Select } from '../components/Inputs/Select'
-import { CourseWithMultiSelect } from '../interfaces/Course'
-import { mapSingleValueToMultiSelectOption, renderMultiSelectOptions } from '../utils/SelectUtils'
-import { Course as CourseAPI, CreateCourseInput } from '../API'
-import { toastConfig } from '../utils/ToastUtils'
+  useToast,
+} from "@chakra-ui/react";
+import { translate } from "../utils/LanguageUtils";
+import { Input as CustomInput } from "../components/Inputs/Input";
+import { defaultCourse } from "../constants/Courses";
+import CourseService from "../services/CourseService";
+import { FormProvider, useForm } from "react-hook-form";
+import DateTimeUtils from "../utils/DateTimeUtils";
+import { ModalFooter } from "../components/Modals/ModalFooter";
+import { Select } from "../components/Inputs/Select";
+import { CourseWithMultiSelect } from "../interfaces/Course";
+import {
+  mapSingleValueToMultiSelectOption,
+  renderMultiSelectOptions,
+} from "../utils/SelectUtils";
+import { Course as CourseAPI, CreateCourseInput } from "../API";
+import { toastConfig } from "../utils/ToastUtils";
 
 interface Props {
   isOpen: boolean;
@@ -29,109 +32,127 @@ interface Props {
   courseToUpdate?: CourseAPI;
 }
 
-const daysOfTheWeek = DateTimeUtils.daysOfTheWeek()
+const daysOfTheWeek = DateTimeUtils.daysOfTheWeek();
 
 const CourseCRUDModal = ({
   isOpen,
   onClose,
   onCreate,
   onUpdate,
-  courseToUpdate
+  courseToUpdate,
 }: Props) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const toast = useToast()
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const toast = useToast();
 
   const formControls = useForm({
-    defaultValues: defaultCourse as CourseWithMultiSelect
-  })
+    defaultValues: defaultCourse as CourseWithMultiSelect,
+  });
 
   const {
     handleSubmit,
     reset,
     watch,
-    formState: { errors }
-  } = formControls
+    formState: { errors },
+  } = formControls;
 
-  const courseId = watch('id')
+  const courseId = watch("id");
 
   useEffect(() => {
     if (courseToUpdate) {
       const course: CourseWithMultiSelect = {
         ...courseToUpdate,
-        scheduleDates: DateTimeUtils.dayIndexesToMultiSelectOption(courseToUpdate.scheduleDates as number[]),
-        scheduleYear: mapSingleValueToMultiSelectOption(String(courseToUpdate.scheduleYear))
-      }
+        scheduleDates: DateTimeUtils.dayIndexesToMultiSelectOption(
+          courseToUpdate.scheduleDates as number[]
+        ),
+        scheduleYear: mapSingleValueToMultiSelectOption(
+          String(courseToUpdate.scheduleYear)
+        ),
+      };
 
-      reset(course)
+      reset(course);
     }
-  }, [courseToUpdate])
+  }, [courseToUpdate]);
 
   useEffect(() => {
     if (!isOpen) {
-      reset(defaultCourse as CourseWithMultiSelect)
+      reset(defaultCourse as CourseWithMultiSelect);
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   const createCourse = async (course: CourseWithMultiSelect) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     const updatedCourse: CreateCourseInput = {
       ...course,
-      scheduleDates: course.scheduleDates.map((date) => Number(date.value)) as number[],
-      scheduleYear: Number(course.scheduleYear.value)
-    }
+      scheduleDates: course.scheduleDates.map((date) =>
+        Number(date.value)
+      ) as number[],
+      scheduleYear: Number(course.scheduleYear.value),
+    };
 
-    const createdCourse = await CourseService.createCourse(updatedCourse)
+    const createdCourse = await CourseService.createCourse(updatedCourse);
 
     if (createdCourse?.createCourse) {
-      onCreate(createdCourse?.createCourse)
-      onClose()
-      setIsLoading(false)
+      onCreate(createdCourse?.createCourse);
+      onClose();
+      setIsLoading(false);
 
-      toast(toastConfig({
-        status: 'success',
-        description: 'COURSE_CREATED_MESSAGE'
-      }))
+      toast(
+        toastConfig({
+          status: "success",
+          description: "COURSE_CREATED_MESSAGE",
+        })
+      );
     }
-  }
+  };
 
-  const formatCourse = (course: CourseWithMultiSelect): CourseAPI | CreateCourseInput => ({
+  const formatCourse = (
+    course: CourseWithMultiSelect
+  ): CourseAPI | CreateCourseInput => ({
     ...course,
-    scheduleDates: course.scheduleDates.map((day) => Number(day.value)) as number[],
-    scheduleYear: Number(course.scheduleYear.value)
-  })
+    scheduleDates: course.scheduleDates.map((day) =>
+      Number(day.value)
+    ) as number[],
+    scheduleYear: Number(course.scheduleYear.value),
+  });
 
   const updateCourse = async (course: CourseWithMultiSelect) => {
-    const updatedCourse = formatCourse(course)
+    const updatedCourse = formatCourse(course);
     const courseSuccessfullyEdited = await CourseService.updateCourse(
       updatedCourse as CourseAPI
-    )
+    );
 
     if (courseSuccessfullyEdited) {
-      onUpdate(courseSuccessfullyEdited)
-      onClose()
+      onUpdate(courseSuccessfullyEdited);
+      onClose();
 
-      toast(toastConfig({
-        status: 'success',
-        description: 'COURSE_UPDATED_SUCCESS'
-      }))
+      toast(
+        toastConfig({
+          status: "success",
+          description: "COURSE_UPDATED_SUCCESS",
+        })
+      );
     }
-  }
+  };
 
   const onSubmit = (course: CourseWithMultiSelect) => {
-    const hasErrors = Object.keys(errors).length !== 0
+    const hasErrors = Object.keys(errors).length !== 0;
 
     if (hasErrors) {
       // TODO: Implement form errors
-      console.log(errors)
-      return
+      console.log(errors);
+      return;
     }
 
-    courseId ? updateCourse(course) : createCourse(course)
-  }
+    courseId ? updateCourse(course) : createCourse(course);
+  };
 
-  const date = new Date()
-  const years = [date.getFullYear(), date.getFullYear() + 1, date.getFullYear() + 2]
+  const date = new Date();
+  const years = [
+    date.getFullYear(),
+    date.getFullYear() + 1,
+    date.getFullYear() + 2,
+  ];
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
@@ -139,10 +160,10 @@ const CourseCRUDModal = ({
       <ModalContent>
         <FormProvider {...formControls}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <ModalHeader textStyle={'paragraph'}>
+            <ModalHeader textStyle={"paragraph"}>
               {courseId
-                ? `${translate('EDITING')} '${courseToUpdate?.name}'`
-                : translate('CREATE_COURSE_MODAL_TITLE')}
+                ? `${translate("EDITING")} '${courseToUpdate?.name}'`
+                : translate("CREATE_COURSE_MODAL_TITLE")}
             </ModalHeader>
             <ModalBody marginBottom={3}>
               <Stack spacing={4}>
@@ -150,45 +171,47 @@ const CourseCRUDModal = ({
                   name="name"
                   label="NAME"
                   isRequired={true}
-                  placeholder={translate('NAME')}
+                  placeholder={translate("NAME")}
                 />
 
                 <CustomInput
                   name="scheduleStartTime"
                   label="COURSE_SCHEDULE"
-                  isRequired={true}
+                  isRequired={false}
                   type="time"
                 />
 
                 <CustomInput
                   name="scheduleEndTime"
-                  label='COURSE_END_SCHEDULE'
-                  isRequired={true}
+                  label="COURSE_END_SCHEDULE"
+                  isRequired={false}
                   type="time"
                 />
 
                 <Select
                   name="scheduleDates"
                   label="COURSE_DATES"
-                  isRequired={true}
-                  placeholder={translate('COURSE_DATES')}
+                  isRequired={false}
+                  placeholder={translate("COURSE_DATES")}
                   options={DateTimeUtils.daysToMultiSelectOption(daysOfTheWeek)}
                   isMultiSelect={true}
                   closeMenuOnSelect={true}
-                  rules={{ required: true }}
+                  rules={{ required: false }}
                 />
 
                 <CustomInput
                   name="virtualClassLink"
                   label="COURSE_LINK"
                   isRequired={false}
-                  bottomNote={translate('COURSE_LINK_HELPER')}
+                  bottomNote={translate("COURSE_LINK_HELPER")}
                 />
                 <Select
                   name="scheduleYear"
                   label="COURSE_YEAR"
                   isRequired={true}
-                  options={renderMultiSelectOptions(years.map(year => year.toString()))}
+                  options={renderMultiSelectOptions(
+                    years.map((year) => year.toString())
+                  )}
                   isMultiSelect={false}
                   closeMenuOnSelect={true}
                 />
@@ -197,7 +220,7 @@ const CourseCRUDModal = ({
             <ModalFooter
               isLoading={isLoading}
               sendButtonText={
-                courseToUpdate ? 'UPDATE_COURSE_BUTTON' : 'CREATE_COURSE_BUTTON'
+                courseToUpdate ? "UPDATE_COURSE_BUTTON" : "CREATE_COURSE_BUTTON"
               }
               onClose={onClose}
             />
@@ -205,7 +228,7 @@ const CourseCRUDModal = ({
         </FormProvider>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
-export default CourseCRUDModal
+export default CourseCRUDModal;

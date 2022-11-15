@@ -5,9 +5,9 @@
 export type CreateCourseInput = {
   id?: string | null,
   name: string,
-  scheduleDates: Array< number | null >,
-  scheduleStartTime: string,
-  scheduleEndTime: string,
+  scheduleDates?: Array< number | null > | null,
+  scheduleStartTime?: string | null,
+  scheduleEndTime?: string | null,
   virtualClassLink?: string | null,
   isActive?: boolean | null,
   externalId: string,
@@ -108,9 +108,9 @@ export type Course = {
   __typename: "Course",
   id: string,
   name: string,
-  scheduleDates: Array< number | null >,
-  scheduleStartTime: string,
-  scheduleEndTime: string,
+  scheduleDates?: Array< number | null > | null,
+  scheduleStartTime?: string | null,
+  scheduleEndTime?: string | null,
   virtualClassLink?: string | null,
   isActive?: boolean | null,
   externalId: string,
@@ -516,6 +516,7 @@ export type CreateLessonPlanInput = {
   media?: string | null,
   type?: LessonPlanningType | null,
   externalId: string,
+  extraInformation?: string | null,
 };
 
 export enum LessonPlanningType {
@@ -536,6 +537,7 @@ export type ModelLessonPlanConditionInput = {
   media?: ModelStringInput | null,
   type?: ModelLessonPlanningTypeInput | null,
   externalId?: ModelIDInput | null,
+  extraInformation?: ModelStringInput | null,
   and?: Array< ModelLessonPlanConditionInput | null > | null,
   or?: Array< ModelLessonPlanConditionInput | null > | null,
   not?: ModelLessonPlanConditionInput | null,
@@ -557,6 +559,7 @@ export type LessonPlan = {
   media?: string | null,
   type?: LessonPlanningType | null,
   externalId: string,
+  extraInformation?: string | null,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -572,9 +575,167 @@ export type UpdateLessonPlanInput = {
   media?: string | null,
   type?: LessonPlanningType | null,
   externalId?: string | null,
+  extraInformation?: string | null,
 };
 
 export type DeleteLessonPlanInput = {
+  id: string,
+};
+
+export type CreatePaymentsInput = {
+  id?: string | null,
+  userId: string,
+  date: string,
+  status: PaymentStatus,
+  type: PaymentType,
+  typeId: string,
+  amount: number,
+  mpPaymentId: string,
+  itemName: string,
+};
+
+export enum PaymentStatus {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  IN_PROCESS = "IN_PROCESS",
+  REJECTED = "REJECTED",
+  REFUNDED = "REFUNDED",
+  CANCELLED = "CANCELLED",
+  IN_MEDIATION = "IN_MEDIATION",
+  CHARGED_BACK = "CHARGED_BACK",
+}
+
+
+export enum PaymentType {
+  BOOKLET = "BOOKLET",
+}
+
+
+export type ModelPaymentsConditionInput = {
+  userId?: ModelIDInput | null,
+  date?: ModelStringInput | null,
+  status?: ModelPaymentStatusInput | null,
+  type?: ModelPaymentTypeInput | null,
+  typeId?: ModelIDInput | null,
+  amount?: ModelFloatInput | null,
+  mpPaymentId?: ModelStringInput | null,
+  itemName?: ModelStringInput | null,
+  and?: Array< ModelPaymentsConditionInput | null > | null,
+  or?: Array< ModelPaymentsConditionInput | null > | null,
+  not?: ModelPaymentsConditionInput | null,
+};
+
+export type ModelPaymentStatusInput = {
+  eq?: PaymentStatus | null,
+  ne?: PaymentStatus | null,
+};
+
+export type ModelPaymentTypeInput = {
+  eq?: PaymentType | null,
+  ne?: PaymentType | null,
+};
+
+export type ModelFloatInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type Payments = {
+  __typename: "Payments",
+  id: string,
+  userId: string,
+  date: string,
+  status: PaymentStatus,
+  type: PaymentType,
+  typeId: string,
+  amount: number,
+  mpPaymentId: string,
+  itemName: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdatePaymentsInput = {
+  id: string,
+  userId?: string | null,
+  date?: string | null,
+  status?: PaymentStatus | null,
+  type?: PaymentType | null,
+  typeId?: string | null,
+  amount?: number | null,
+  mpPaymentId?: string | null,
+  itemName?: string | null,
+};
+
+export type DeletePaymentsInput = {
+  id: string,
+};
+
+export type CreateBookletsInput = {
+  id?: string | null,
+  name: string,
+  description?: string | null,
+  level: EnglishLevel,
+  priceArs: number,
+  priceUsd: number,
+  isActive?: boolean | null,
+  mpCheckoutUrl: string,
+  mpPreferenceId: string,
+  pdfFile: string,
+};
+
+export type ModelBookletsConditionInput = {
+  name?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  level?: ModelEnglishLevelInput | null,
+  priceArs?: ModelFloatInput | null,
+  priceUsd?: ModelFloatInput | null,
+  isActive?: ModelBooleanInput | null,
+  mpCheckoutUrl?: ModelStringInput | null,
+  mpPreferenceId?: ModelStringInput | null,
+  pdfFile?: ModelStringInput | null,
+  and?: Array< ModelBookletsConditionInput | null > | null,
+  or?: Array< ModelBookletsConditionInput | null > | null,
+  not?: ModelBookletsConditionInput | null,
+};
+
+export type Booklets = {
+  __typename: "Booklets",
+  id: string,
+  name: string,
+  description?: string | null,
+  level: EnglishLevel,
+  priceArs: number,
+  priceUsd: number,
+  isActive?: boolean | null,
+  mpCheckoutUrl: string,
+  mpPreferenceId: string,
+  pdfFile: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateBookletsInput = {
+  id: string,
+  name?: string | null,
+  description?: string | null,
+  level?: EnglishLevel | null,
+  priceArs?: number | null,
+  priceUsd?: number | null,
+  isActive?: boolean | null,
+  mpCheckoutUrl?: string | null,
+  mpPreferenceId?: string | null,
+  pdfFile?: string | null,
+};
+
+export type DeleteBookletsInput = {
   id: string,
 };
 
@@ -714,6 +875,7 @@ export type ModelLessonPlanFilterInput = {
   media?: ModelStringInput | null,
   type?: ModelLessonPlanningTypeInput | null,
   externalId?: ModelIDInput | null,
+  extraInformation?: ModelStringInput | null,
   and?: Array< ModelLessonPlanFilterInput | null > | null,
   or?: Array< ModelLessonPlanFilterInput | null > | null,
   not?: ModelLessonPlanFilterInput | null,
@@ -722,6 +884,49 @@ export type ModelLessonPlanFilterInput = {
 export type ModelLessonPlanConnection = {
   __typename: "ModelLessonPlanConnection",
   items:  Array<LessonPlan | null >,
+  nextToken?: string | null,
+};
+
+export type ModelPaymentsFilterInput = {
+  id?: ModelIDInput | null,
+  userId?: ModelIDInput | null,
+  date?: ModelStringInput | null,
+  status?: ModelPaymentStatusInput | null,
+  type?: ModelPaymentTypeInput | null,
+  typeId?: ModelIDInput | null,
+  amount?: ModelFloatInput | null,
+  mpPaymentId?: ModelStringInput | null,
+  itemName?: ModelStringInput | null,
+  and?: Array< ModelPaymentsFilterInput | null > | null,
+  or?: Array< ModelPaymentsFilterInput | null > | null,
+  not?: ModelPaymentsFilterInput | null,
+};
+
+export type ModelPaymentsConnection = {
+  __typename: "ModelPaymentsConnection",
+  items:  Array<Payments | null >,
+  nextToken?: string | null,
+};
+
+export type ModelBookletsFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  level?: ModelEnglishLevelInput | null,
+  priceArs?: ModelFloatInput | null,
+  priceUsd?: ModelFloatInput | null,
+  isActive?: ModelBooleanInput | null,
+  mpCheckoutUrl?: ModelStringInput | null,
+  mpPreferenceId?: ModelStringInput | null,
+  pdfFile?: ModelStringInput | null,
+  and?: Array< ModelBookletsFilterInput | null > | null,
+  or?: Array< ModelBookletsFilterInput | null > | null,
+  not?: ModelBookletsFilterInput | null,
+};
+
+export type ModelBookletsConnection = {
+  __typename: "ModelBookletsConnection",
+  items:  Array<Booklets | null >,
   nextToken?: string | null,
 };
 
@@ -741,9 +946,9 @@ export type CreateCourseMutation = {
     __typename: "Course",
     id: string,
     name: string,
-    scheduleDates: Array< number | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
+    scheduleDates?: Array< number | null > | null,
+    scheduleStartTime?: string | null,
+    scheduleEndTime?: string | null,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
@@ -764,9 +969,9 @@ export type UpdateCourseMutation = {
     __typename: "Course",
     id: string,
     name: string,
-    scheduleDates: Array< number | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
+    scheduleDates?: Array< number | null > | null,
+    scheduleStartTime?: string | null,
+    scheduleEndTime?: string | null,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
@@ -787,9 +992,9 @@ export type DeleteCourseMutation = {
     __typename: "Course",
     id: string,
     name: string,
-    scheduleDates: Array< number | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
+    scheduleDates?: Array< number | null > | null,
+    scheduleStartTime?: string | null,
+    scheduleEndTime?: string | null,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
@@ -1186,6 +1391,7 @@ export type CreateLessonPlanMutation = {
     media?: string | null,
     type?: LessonPlanningType | null,
     externalId: string,
+    extraInformation?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1209,6 +1415,7 @@ export type UpdateLessonPlanMutation = {
     media?: string | null,
     type?: LessonPlanningType | null,
     externalId: string,
+    extraInformation?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1232,9 +1439,145 @@ export type DeleteLessonPlanMutation = {
     media?: string | null,
     type?: LessonPlanningType | null,
     externalId: string,
+    extraInformation?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
+  } | null,
+};
+
+export type CreatePaymentsMutationVariables = {
+  input: CreatePaymentsInput,
+  condition?: ModelPaymentsConditionInput | null,
+};
+
+export type CreatePaymentsMutation = {
+  createPayments?:  {
+    __typename: "Payments",
+    id: string,
+    userId: string,
+    date: string,
+    status: PaymentStatus,
+    type: PaymentType,
+    typeId: string,
+    amount: number,
+    mpPaymentId: string,
+    itemName: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdatePaymentsMutationVariables = {
+  input: UpdatePaymentsInput,
+  condition?: ModelPaymentsConditionInput | null,
+};
+
+export type UpdatePaymentsMutation = {
+  updatePayments?:  {
+    __typename: "Payments",
+    id: string,
+    userId: string,
+    date: string,
+    status: PaymentStatus,
+    type: PaymentType,
+    typeId: string,
+    amount: number,
+    mpPaymentId: string,
+    itemName: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeletePaymentsMutationVariables = {
+  input: DeletePaymentsInput,
+  condition?: ModelPaymentsConditionInput | null,
+};
+
+export type DeletePaymentsMutation = {
+  deletePayments?:  {
+    __typename: "Payments",
+    id: string,
+    userId: string,
+    date: string,
+    status: PaymentStatus,
+    type: PaymentType,
+    typeId: string,
+    amount: number,
+    mpPaymentId: string,
+    itemName: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateBookletsMutationVariables = {
+  input: CreateBookletsInput,
+  condition?: ModelBookletsConditionInput | null,
+};
+
+export type CreateBookletsMutation = {
+  createBooklets?:  {
+    __typename: "Booklets",
+    id: string,
+    name: string,
+    description?: string | null,
+    level: EnglishLevel,
+    priceArs: number,
+    priceUsd: number,
+    isActive?: boolean | null,
+    mpCheckoutUrl: string,
+    mpPreferenceId: string,
+    pdfFile: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateBookletsMutationVariables = {
+  input: UpdateBookletsInput,
+  condition?: ModelBookletsConditionInput | null,
+};
+
+export type UpdateBookletsMutation = {
+  updateBooklets?:  {
+    __typename: "Booklets",
+    id: string,
+    name: string,
+    description?: string | null,
+    level: EnglishLevel,
+    priceArs: number,
+    priceUsd: number,
+    isActive?: boolean | null,
+    mpCheckoutUrl: string,
+    mpPreferenceId: string,
+    pdfFile: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteBookletsMutationVariables = {
+  input: DeleteBookletsInput,
+  condition?: ModelBookletsConditionInput | null,
+};
+
+export type DeleteBookletsMutation = {
+  deleteBooklets?:  {
+    __typename: "Booklets",
+    id: string,
+    name: string,
+    description?: string | null,
+    level: EnglishLevel,
+    priceArs: number,
+    priceUsd: number,
+    isActive?: boolean | null,
+    mpCheckoutUrl: string,
+    mpPreferenceId: string,
+    pdfFile: string,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1247,9 +1590,9 @@ export type GetCourseQuery = {
     __typename: "Course",
     id: string,
     name: string,
-    scheduleDates: Array< number | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
+    scheduleDates?: Array< number | null > | null,
+    scheduleStartTime?: string | null,
+    scheduleEndTime?: string | null,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
@@ -1273,9 +1616,9 @@ export type ListCoursesQuery = {
       __typename: "Course",
       id: string,
       name: string,
-      scheduleDates: Array< number | null >,
-      scheduleStartTime: string,
-      scheduleEndTime: string,
+      scheduleDates?: Array< number | null > | null,
+      scheduleStartTime?: string | null,
+      scheduleEndTime?: string | null,
       virtualClassLink?: string | null,
       isActive?: boolean | null,
       externalId: string,
@@ -1560,6 +1903,7 @@ export type GetLessonPlanQuery = {
     media?: string | null,
     type?: LessonPlanningType | null,
     externalId: string,
+    extraInformation?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1586,9 +1930,108 @@ export type ListLessonPlansQuery = {
       media?: string | null,
       type?: LessonPlanningType | null,
       externalId: string,
+      extraInformation?: string | null,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetPaymentsQueryVariables = {
+  id: string,
+};
+
+export type GetPaymentsQuery = {
+  getPayments?:  {
+    __typename: "Payments",
+    id: string,
+    userId: string,
+    date: string,
+    status: PaymentStatus,
+    type: PaymentType,
+    typeId: string,
+    amount: number,
+    mpPaymentId: string,
+    itemName: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListPaymentsQueryVariables = {
+  filter?: ModelPaymentsFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPaymentsQuery = {
+  listPayments?:  {
+    __typename: "ModelPaymentsConnection",
+    items:  Array< {
+      __typename: "Payments",
+      id: string,
+      userId: string,
+      date: string,
+      status: PaymentStatus,
+      type: PaymentType,
+      typeId: string,
+      amount: number,
+      mpPaymentId: string,
+      itemName: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetBookletsQueryVariables = {
+  id: string,
+};
+
+export type GetBookletsQuery = {
+  getBooklets?:  {
+    __typename: "Booklets",
+    id: string,
+    name: string,
+    description?: string | null,
+    level: EnglishLevel,
+    priceArs: number,
+    priceUsd: number,
+    isActive?: boolean | null,
+    mpCheckoutUrl: string,
+    mpPreferenceId: string,
+    pdfFile: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListBookletsQueryVariables = {
+  filter?: ModelBookletsFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListBookletsQuery = {
+  listBooklets?:  {
+    __typename: "ModelBookletsConnection",
+    items:  Array< {
+      __typename: "Booklets",
+      id: string,
+      name: string,
+      description?: string | null,
+      level: EnglishLevel,
+      priceArs: number,
+      priceUsd: number,
+      isActive?: boolean | null,
+      mpCheckoutUrl: string,
+      mpPreferenceId: string,
+      pdfFile: string,
+      createdAt: string,
+      updatedAt: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1652,6 +2095,7 @@ export type LessonPlanByExternalIdQuery = {
       media?: string | null,
       type?: LessonPlanningType | null,
       externalId: string,
+      extraInformation?: string | null,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1665,9 +2109,9 @@ export type OnCreateCourseSubscription = {
     __typename: "Course",
     id: string,
     name: string,
-    scheduleDates: Array< number | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
+    scheduleDates?: Array< number | null > | null,
+    scheduleStartTime?: string | null,
+    scheduleEndTime?: string | null,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
@@ -1683,9 +2127,9 @@ export type OnUpdateCourseSubscription = {
     __typename: "Course",
     id: string,
     name: string,
-    scheduleDates: Array< number | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
+    scheduleDates?: Array< number | null > | null,
+    scheduleStartTime?: string | null,
+    scheduleEndTime?: string | null,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
@@ -1701,9 +2145,9 @@ export type OnDeleteCourseSubscription = {
     __typename: "Course",
     id: string,
     name: string,
-    scheduleDates: Array< number | null >,
-    scheduleStartTime: string,
-    scheduleEndTime: string,
+    scheduleDates?: Array< number | null > | null,
+    scheduleStartTime?: string | null,
+    scheduleEndTime?: string | null,
     virtualClassLink?: string | null,
     isActive?: boolean | null,
     externalId: string,
@@ -2072,6 +2516,7 @@ export type OnCreateLessonPlanSubscription = {
     media?: string | null,
     type?: LessonPlanningType | null,
     externalId: string,
+    extraInformation?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2094,6 +2539,7 @@ export type OnUpdateLessonPlanSubscription = {
     media?: string | null,
     type?: LessonPlanningType | null,
     externalId: string,
+    extraInformation?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2116,8 +2562,114 @@ export type OnDeleteLessonPlanSubscription = {
     media?: string | null,
     type?: LessonPlanningType | null,
     externalId: string,
+    extraInformation?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
+  } | null,
+};
+
+export type OnCreatePaymentsSubscription = {
+  onCreatePayments?:  {
+    __typename: "Payments",
+    id: string,
+    userId: string,
+    date: string,
+    status: PaymentStatus,
+    type: PaymentType,
+    typeId: string,
+    amount: number,
+    mpPaymentId: string,
+    itemName: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdatePaymentsSubscription = {
+  onUpdatePayments?:  {
+    __typename: "Payments",
+    id: string,
+    userId: string,
+    date: string,
+    status: PaymentStatus,
+    type: PaymentType,
+    typeId: string,
+    amount: number,
+    mpPaymentId: string,
+    itemName: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeletePaymentsSubscription = {
+  onDeletePayments?:  {
+    __typename: "Payments",
+    id: string,
+    userId: string,
+    date: string,
+    status: PaymentStatus,
+    type: PaymentType,
+    typeId: string,
+    amount: number,
+    mpPaymentId: string,
+    itemName: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateBookletsSubscription = {
+  onCreateBooklets?:  {
+    __typename: "Booklets",
+    id: string,
+    name: string,
+    description?: string | null,
+    level: EnglishLevel,
+    priceArs: number,
+    priceUsd: number,
+    isActive?: boolean | null,
+    mpCheckoutUrl: string,
+    mpPreferenceId: string,
+    pdfFile: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateBookletsSubscription = {
+  onUpdateBooklets?:  {
+    __typename: "Booklets",
+    id: string,
+    name: string,
+    description?: string | null,
+    level: EnglishLevel,
+    priceArs: number,
+    priceUsd: number,
+    isActive?: boolean | null,
+    mpCheckoutUrl: string,
+    mpPreferenceId: string,
+    pdfFile: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteBookletsSubscription = {
+  onDeleteBooklets?:  {
+    __typename: "Booklets",
+    id: string,
+    name: string,
+    description?: string | null,
+    level: EnglishLevel,
+    priceArs: number,
+    priceUsd: number,
+    isActive?: boolean | null,
+    mpCheckoutUrl: string,
+    mpPreferenceId: string,
+    pdfFile: string,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };

@@ -20,9 +20,9 @@ type Course @model
   {
   id: ID!
   name: String!
-  scheduleDates: [Int]!
-  scheduleStartTime: AWSTime!
-  scheduleEndTime: AWSTime!
+  scheduleDates: [Int]
+  scheduleStartTime: AWSTime
+  scheduleEndTime: AWSTime
   virtualClassLink: String
   isActive: Boolean @default(value: "true")
   externalId: String!
@@ -179,3 +179,54 @@ type LessonPlan @model
   externalId: ID! @index(name: "byExternalId", queryField: "lessonPlanByExternalId")
   extraInformation: AWSJSON
 }   
+
+enum PaymentStatus {
+  PENDING,
+  APPROVED,
+  IN_PROCESS,
+  REJECTED,
+  REFUNDED,
+  CANCELLED,
+  IN_MEDIATION,
+  CHARGED_BACK
+}
+
+enum PaymentType {
+  BOOKLET
+}
+
+type Payments @model
+@auth(rules: [
+  {allow: groups, groups: ["Admin"]},
+  {allow: groups, groups: ["Students","Teachers"], operations: [read] }
+  ])
+{
+  id: ID!
+  userId: ID!
+  date: AWSDateTime!
+  status: PaymentStatus!
+  type: PaymentType!
+  typeId: ID!
+  amount: Float!
+  mpPaymentId: String!
+  itemName: String!
+}
+
+type Booklets @model
+@auth(rules: [
+  {allow: groups, groups: ["Admin"]},
+  {allow: groups, groups: ["Students","Teachers"], operations: [read] },
+  ])
+{
+  id: ID!
+  name: String!
+  description: String
+  level: EnglishLevel!
+  priceArs: Float!
+  priceUsd: Float!
+  isActive: Boolean @default(value: "true")
+  mpCheckoutUrl: String!
+  mpPreferenceId: String!
+  pdfFile: String!
+}
+

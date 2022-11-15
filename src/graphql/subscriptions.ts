@@ -356,6 +356,7 @@ export const onCreateLessonPlan = /* GraphQL */ `
       media
       type
       externalId
+      extraInformation
       createdAt
       updatedAt
       owner
@@ -374,6 +375,7 @@ export const onUpdateLessonPlan = /* GraphQL */ `
       media
       type
       externalId
+      extraInformation
       createdAt
       updatedAt
       owner
@@ -392,9 +394,115 @@ export const onDeleteLessonPlan = /* GraphQL */ `
       media
       type
       externalId
+      extraInformation
       createdAt
       updatedAt
       owner
+    }
+  }
+`;
+export const onCreatePayments = /* GraphQL */ `
+  subscription OnCreatePayments {
+    onCreatePayments {
+      id
+      userId
+      date
+      status
+      type
+      typeId
+      amount
+      mpPaymentId
+      itemName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePayments = /* GraphQL */ `
+  subscription OnUpdatePayments {
+    onUpdatePayments {
+      id
+      userId
+      date
+      status
+      type
+      typeId
+      amount
+      mpPaymentId
+      itemName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePayments = /* GraphQL */ `
+  subscription OnDeletePayments {
+    onDeletePayments {
+      id
+      userId
+      date
+      status
+      type
+      typeId
+      amount
+      mpPaymentId
+      itemName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateBooklets = /* GraphQL */ `
+  subscription OnCreateBooklets {
+    onCreateBooklets {
+      id
+      name
+      description
+      level
+      priceArs
+      priceUsd
+      isActive
+      mpCheckoutUrl
+      mpPreferenceId
+      pdfFile
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateBooklets = /* GraphQL */ `
+  subscription OnUpdateBooklets {
+    onUpdateBooklets {
+      id
+      name
+      description
+      level
+      priceArs
+      priceUsd
+      isActive
+      mpCheckoutUrl
+      mpPreferenceId
+      pdfFile
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteBooklets = /* GraphQL */ `
+  subscription OnDeleteBooklets {
+    onDeleteBooklets {
+      id
+      name
+      description
+      level
+      priceArs
+      priceUsd
+      isActive
+      mpCheckoutUrl
+      mpPreferenceId
+      pdfFile
+      createdAt
+      updatedAt
     }
   }
 `;

@@ -1,9 +1,9 @@
-import { Flex, Stack, Text } from '@chakra-ui/react'
-import { TranslationsDictionary } from '../../dictionaries/dictionary'
-import { translate } from '../../utils/LanguageUtils'
-import { Controller, useFormContext } from 'react-hook-form'
-import { MultiSelectOption } from '../../interfaces/MultiSelectOption'
-import { Select as ChakraSelect } from 'chakra-react-select'
+import { Flex, Stack, Text } from "@chakra-ui/react";
+import { TranslationsDictionary } from "../../dictionaries/dictionary";
+import { translate } from "../../utils/LanguageUtils";
+import { Controller, useFormContext } from "react-hook-form";
+import { MultiSelectOption } from "../../interfaces/MultiSelectOption";
+import { Select as ChakraSelect } from "chakra-react-select";
 
 interface Props {
   name: string;
@@ -27,9 +27,10 @@ export const Select = ({
   options,
   isMultiSelect,
   isRequired,
-  isDisabled
+  isDisabled,
+  rules,
 }: Props) => {
-  const { control } = useFormContext()
+  const { control } = useFormContext();
 
   return (
     <Stack spacing={1}>
@@ -59,9 +60,7 @@ export const Select = ({
         )}
         control={control}
         name={name}
-        rules={{
-          required: true
-        }}
+        rules={rules}
       />
       {bottomNote && (
         <Text color="gray.400" marginLeft={1}>
@@ -69,5 +68,5 @@ export const Select = ({
         </Text>
       )}
     </Stack>
-  )
-}
+  );
+};
