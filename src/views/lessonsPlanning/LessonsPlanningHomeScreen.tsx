@@ -137,16 +137,9 @@ export const LessonsPlanningHomeScreen = () => {
     setLessons((currentLessons) =>
       currentLessons.concat(lessonPlannings as LessonPlanningItem[])
     );
-  }, [examAttempts, exams, hasStudentRole]);
+  }, [exams, examAttempts, hasStudentRole]);
 
   const fetchExamAttempts = useCallback(async () => {
-    if (exams.length === 0) {
-      if (examAttemptsLoading) {
-        setExamAttemptsLoading(false);
-      }
-      return;
-    }
-
     const examNames = exams.map((exam) => exam.title as string);
     const examAttempts = await ExamService.getExamAttemptsByExamNameAndUserId(
       examNames,
@@ -161,27 +154,25 @@ export const LessonsPlanningHomeScreen = () => {
         )
       );
     }
+
     if (
       examAttempts?.listExamAttempts?.nextToken &&
       examAttempts.listExamAttempts.items.length !== 0
     ) {
-      console.log("next token", examAttempts?.listExamAttempts?.nextToken);
-      console.log("Items", examAttempts.listExamAttempts.items);
       dispatch({
         type: FetchType.EXAM_ATTEMPTS,
         payload: examAttempts.listExamAttempts.nextToken,
       });
     } else {
       setExamAttemptsLoading(false);
+    }
+  }, [nextPageTokens.EXAM_ATTEMPTS, user?.cognitoId, exams]);
+
+  useEffect(() => {
+    if (!examAttemptsLoading) {
       generateLessonPlanningByExams();
     }
-  }, [
-    nextPageTokens.EXAM_ATTEMPTS,
-    user?.cognitoId,
-    exams,
-    generateLessonPlanningByExams,
-    examAttemptsLoading,
-  ]);
+  }, [examAttemptsLoading, generateLessonPlanningByExams]);
 
   const fetchExams = useCallback(async () => {
     const exams = await ExamService.fetchExamsByCourseId(
@@ -205,9 +196,13 @@ export const LessonsPlanningHomeScreen = () => {
 
   useEffect(() => {
     if (!examLoading) {
-      fetchExamAttempts();
+      if (exams.length > 0) {
+        fetchExamAttempts();
+      } else {
+        setExamAttemptsLoading(false);
+      }
     }
-  }, [examLoading, fetchExamAttempts]);
+  }, [examLoading, fetchExamAttempts, exams.length]);
 
   const fetchMedias = useCallback(async () => {
     const medias = await MediaService.fetchMediaByCourseId(
@@ -294,13 +289,6 @@ export const LessonsPlanningHomeScreen = () => {
 
   const isLoading =
     mediaLoading || examLoading || lessonPlanningLoading || examAttemptsLoading;
-
-  //Console log all the loading states
-  console.log("mediaLoading", mediaLoading);
-  console.log("examLoading", examLoading);
-  console.log("lessonPlanningLoading", lessonPlanningLoading);
-  console.log("examAttemptsLoading", examAttemptsLoading);
-  console.log("----");
 
   return (
     <>
