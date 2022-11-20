@@ -9,10 +9,6 @@ An open-source e-learning platform.<br/><br/>
 
 </p>
 
-<p align="center">
-  <a href="#"><strong>See Demo »</strong></a>
-  <br />
-  <br/>
-</p>
+
 
 Documentation in progress.
