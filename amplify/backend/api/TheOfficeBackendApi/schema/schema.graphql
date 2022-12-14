@@ -113,8 +113,7 @@ type ExamSettings {
 type Exam @model
 @auth(rules: [
   {allow: owner},
-  {allow: groups, groups: ["Admin"]},
-  {allow: groups, groups: ["Teachers"], operations: [read] },
+  {allow: groups, groups: ["Admin", "Teachers"]},
   {allow: groups, groupsField: "groups", operations: [read] }
   ])
 {
@@ -195,6 +194,11 @@ enum PaymentType {
   BOOKLET
 }
 
+enum PaymentCurrency {
+  ARS,
+  USD
+}
+
 type Payments @model
 @auth(rules: [
   {allow: groups, groups: ["Admin"]},
@@ -210,6 +214,7 @@ type Payments @model
   amount: Float!
   mpPaymentId: String!
   itemName: String!
+  currency: PaymentCurrency!
 }
 
 type Booklets @model
@@ -220,7 +225,9 @@ type Booklets @model
 {
   id: ID!
   name: String!
+  nameEng: String!
   description: String
+  descriptionEng: String
   level: EnglishLevel!
   priceArs: Float!
   priceUsd: Float!
@@ -228,5 +235,8 @@ type Booklets @model
   mpCheckoutUrl: String!
   mpPreferenceId: String!
   pdfFile: String!
+  paypalCheckoutUrl: String!
+  mpSandBoxCheckoutUrl: String!
+  paypalSandBoxCheckoutUrl: String!
 }
 
