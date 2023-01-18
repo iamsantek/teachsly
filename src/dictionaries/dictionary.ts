@@ -251,6 +251,7 @@ export enum LanguageES {
   OUT_OF_DEADLINE= 'Fuera de término',
   USEFUL_LINKS= 'Links útiles',
   LESSON_PLAN_TITLE='Cronograma',
+  EXAM_ATTACHMENT_HELPER='Este archivo adjunto estará visible para todas las preguntas del ejercicio número #',
 }
 
 export enum LanguageEN {
@@ -501,4 +502,5 @@ export enum LanguageEN {
   OUT_OF_DEADLINE= 'Out of date',
   USEFUL_LINKS= 'Useful links',
   LESSON_PLAN_TITLE= 'Lesson plans',
+  EXAM_ATTACHMENT_HELPER='This file will be visible for all the questions in exercise #'
 }

@@ -320,11 +320,14 @@ export const CreateExamForm = () => {
                             </>
                             )
                           : (
+                            <>
                             <FileUploader
                               name="file"
                               onChange={(e) => onChangeFile(questionPoolIndex, e)}
                               label="ATTACH_FILE"
                             />
+                            <Text color='gray.500'>{translate('EXAM_ATTACHMENT_HELPER')} {questionPoolIndex + 1}</Text>
+                            </>
 
                             )}
                       </Stack>

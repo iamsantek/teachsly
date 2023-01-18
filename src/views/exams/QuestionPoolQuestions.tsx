@@ -155,23 +155,6 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
     })
   }
 
-  const renderFileButtons = (questionIndex: number, attachedFile: string, type: ExamAttachmentType) => (
-    <>
-      <Text fontWeight={600} fontSize="sm" textStyle="title">
-        {translate(type === ExamAttachmentType.AUDIO ? 'AUDIO_FILE' : 'ATTACH_FILE')}
-      </Text>
-      <Flex gap={2}>
-        <Button leftIcon={<AiFillFolder />} onClick={() => viewFile(attachedFile as string)}> Ver archivo </Button>
-        <Button
-          onClick={() => deleteFile(questionIndex, type)}
-          colorScheme='brand'
-          variant='solid'>
-          <AiFillDelete />
-        </Button>
-      </Flex>
-    </>
-  )
-
   return (
     <>
       {questionPool.questions.map((question, questionIndex) => (
@@ -201,40 +184,6 @@ export const QuestionPoolQuestions = ({ questionPool, questionPoolIndex, updateF
             placeholder={`${translate('DESCRIPTION')} #${questionIndex + 1}`}
             {...register(`questionPools.${questionPoolIndex}.questions.${questionIndex}.description`, { required: false })}
           />
-
-          {question.questionType === QuestionType.AUDIO && (
-            !question.source
-              ? (
-                <>
-                  <FileUploader
-                    name="file"
-                    onChange={(e) => onChangeFile(e, questionIndex, ExamAttachmentType.AUDIO)}
-                    label="AUDIO_FILE"
-                  />
-                  {question.source && <audio controls src={question.source} />}
-                </>
-                )
-              : (
-                <>
-                  {renderFileButtons(questionIndex, question.source as string, ExamAttachmentType.AUDIO)}
-                </>
-                )
-          )}
-          {question.questionType === QuestionType.TEXT && (
-            question.attachedFile
-              ? (
-                <>
-                  {renderFileButtons(questionIndex, question.attachedFile, ExamAttachmentType.EXTRA_ATTACHMENT)}
-                </>
-                )
-              : (
-                <FileUploader
-                  name="file"
-                  onChange={(e) => onChangeFile(e, questionIndex, ExamAttachmentType.EXTRA_ATTACHMENT)}
-                  label="ATTACH_FILE"
-                />
-                )
-          )}
 
           {question.answerType === AnswerType.Blocks && (
             <>
