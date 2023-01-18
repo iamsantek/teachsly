@@ -17,7 +17,13 @@ export const formatCourseName = (course: Course) => {
 
 export const sortCoursesByName = (courses: Course[]) => courses.sort((a, b) => a.name.localeCompare(b.name))
 
-export const renderCourseList = (courses: Course[], additionalGroups?: string[], includeEnglishLevels = false): MultiSelectOption[] => {
+export const renderCourseList = (courses: Course[], additionalGroups?: string[], includeEnglishLevels = false, showOnlyActiveCourses = true): MultiSelectOption[] => {
+
+  if (showOnlyActiveCourses) {
+    const currentYear = new Date().getFullYear()
+    courses = courses.filter(course => course.scheduleYear === currentYear)
+  }
+
   const groupList = courses.map(course => {
     const courseName = formatCourseName(course)
 
@@ -69,4 +75,20 @@ export const groupsToString = (courses: Course[], groups: string[] | undefined, 
   }
 
   return [...groupNames, ...userTypes, ...englishLevels]
+}
+
+export const getActiveAndArchivedCourses = (courses: Course[]) => {
+  const currentYear = new Date().getFullYear();
+  const currentYearCourses: Course[] = [];
+  const archivedCourses: Course[] = [];
+
+  courses.forEach((course) => {
+    if (course.scheduleYear === currentYear) {
+      currentYearCourses.push(course);
+    } else {
+      archivedCourses.push(course);
+    }
+  });
+
+  return { currentYearCourses, archivedCourses }
 }
