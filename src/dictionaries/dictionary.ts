@@ -252,6 +252,7 @@ export enum LanguageES {
   USEFUL_LINKS= 'Links útiles',
   LESSON_PLAN_TITLE='Cronograma',
   EXAM_ATTACHMENT_HELPER='Este archivo adjunto estará visible para todas las preguntas del ejercicio número #',
+  CONTACT_US= 'Contactanos',
 }
 
 export enum LanguageEN {
@@ -502,5 +503,6 @@ export enum LanguageEN {
   OUT_OF_DEADLINE= 'Out of date',
   USEFUL_LINKS= 'Useful links',
   LESSON_PLAN_TITLE= 'Lesson plans',
-  EXAM_ATTACHMENT_HELPER='This file will be visible for all the questions in exercise #'
+  EXAM_ATTACHMENT_HELPER='This file will be visible for all the questions in exercise #',
+  CONTACT_US= 'Contact us',
 }
