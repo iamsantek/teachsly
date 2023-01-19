@@ -1,102 +1,108 @@
-import { LogLevel, LogTypes } from '../enums/LogTypes'
-import Logger from '../utils/Logger'
-import CognitoService from './aws/CognitoService'
-import GraphQLService from './GraphQLService'
-import { Auth } from 'aws-amplify'
-import { createUser } from '../graphql/mutations'
-import { CreateUserInput, CreateUserMutation } from '../API'
-import { UserTypes } from '../enums/UserTypes'
-import { User } from '../models'
+import { LogLevel, LogTypes } from "../enums/LogTypes";
+import Logger from "../utils/Logger";
+import CognitoService from "./aws/CognitoService";
+import GraphQLService from "./GraphQLService";
+import { Auth } from "aws-amplify";
+import { createUser } from "../graphql/mutations";
+import { CreateUserInput, CreateUserMutation } from "../API";
+import { UserTypes } from "../enums/UserTypes";
+import { User } from "../models";
 
 class AuthService {
   public createUser = async (user: CreateUserInput, type: UserTypes) => {
-    const { name, email: username, phone } = user
+    const { name, email: username, phone } = user;
 
     const updatedUser: CreateUserInput = {
       ...user,
       name: user.name.trim(),
-      groups: [...user.groups, type]
-    }
+      groups: [...user.groups, type],
+    };
 
     try {
       const adminCreateUserCommandResponse =
-        await CognitoService.createCognitoUser(username, name, phone, type as UserTypes) // Create Cognito user in the User Pool
+        await CognitoService.createCognitoUser(
+          username,
+          name,
+          phone,
+          type as UserTypes
+        ); // Create Cognito user in the User Pool
       const confirmCognitoUserResponse =
-        await CognitoService.confirmCognitoUser(username) // Auto-confirm email
+        await CognitoService.confirmCognitoUser(username); // Auto-confirm email
 
       if (!adminCreateUserCommandResponse) {
-        return
+        return;
       }
 
       if (!confirmCognitoUserResponse) {
-        return
+        return;
       }
 
       const { userId } = CognitoService.parseCognitoUser(
         adminCreateUserCommandResponse?.Attributes
-      )
+      );
       const createDynamoDBUserResponse = await this.persistUser(
         updatedUser,
         userId
-      )
+      );
 
-      const groups = updatedUser.englishLevel ? [...updatedUser.groups, updatedUser.englishLevel] : updatedUser.groups
+      const groups = updatedUser.englishLevel
+        ? [...updatedUser.groups, updatedUser.englishLevel]
+        : updatedUser.groups;
       const assignUserToCognitoGroupResponse =
-        await CognitoService.assignUserToCognitoGroup(
-          userId || '',
-          groups
-        )
+        await CognitoService.assignUserToCognitoGroup(userId || "", groups);
 
       if (!assignUserToCognitoGroupResponse || !createDynamoDBUserResponse) {
-        return
+        return;
       }
 
-      return createDynamoDBUserResponse.createUser
+      return createDynamoDBUserResponse.createUser;
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.AuthService,
-        'Error when creating Cognito user',
+        "Error when creating Cognito user",
         error
-      )
+      );
     }
-  }
+  };
 
   private persistUser = async (
     user: CreateUserInput,
     cognitoId: string | undefined
   ) => {
     if (!cognitoId) {
-      return
+      return;
     }
 
-    const { name, email, groups, phone } = user
+    const { name, email, groups, phone, englishLevel } = user;
+    console.log(!!englishLevel ? englishLevel : null)
     const dynamoDbBUser = new User({
       name,
       email,
       cognitoId,
       groups,
-      phone
-    })
+      phone,
+      englishLevel: !!englishLevel ? englishLevel : null,
+    });
 
     return GraphQLService.fetchQuery<CreateUserMutation>({
       query: createUser,
-      input: dynamoDbBUser
-    })
-  }
+      input: dynamoDbBUser,
+    });
+  };
 
   public signIn = async (email: string, password: string) => {
     try {
-      return Auth.signIn(email, password)
+      return Auth.signIn(email, password);
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.AuthService,
-        'Error when signing in',
+        "Error when signing in",
         error
-      )
+      );
     }
-  }
+  };
 }
 
-export default new AuthService()
+export default new AuthService();
