@@ -50,7 +50,7 @@ class MediaFolderService {
     }
   }
 
-  public fetchMediaFolders = async (fetchType: FetchType = FetchType.ALL, courseId?: string) => {
+  public fetchMediaFolders = async (fetchType: FetchType = FetchType.ALL, courseId?: string | null, nextToken?: string | null | undefined) => {
     const fetchFilter = {
       [FetchType.ALL]: undefined,
       [FetchType.COURSE]: {
@@ -61,7 +61,8 @@ class MediaFolderService {
 
     return GraphQLService.fetchQuery<ListMediaFoldersQuery>({
       query: listMediaFolders,
-      filter: fetchFilter[fetchType]
+      filter: fetchFilter[fetchType],
+      nextToken
     })
   }
 

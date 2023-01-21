@@ -1,19 +1,11 @@
-import {  PropsWithChildren } from 'react'
-import {
-  Box,
-  Circle,
-  Flex,
-  Wrap,
-  WrapItem
-} from '@chakra-ui/react'
-import {
-  AiFillDelete
-} from 'react-icons/ai'
-import { MdCloudDownload, MdModeEditOutline } from 'react-icons/md'
-import { translate } from '../../utils/LanguageUtils'
-import { TooltipHelper } from '../Tooltips/Tooltip'
-import { ButtonSquare } from '../Buttons/SquareButton'
-import { generateRandomId } from '../../utils/StringUtils'
+import { PropsWithChildren } from "react";
+import { Box, Circle, Flex, Wrap, WrapItem, Checkbox } from "@chakra-ui/react";
+import { AiFillDelete } from "react-icons/ai";
+import { MdCloudDownload, MdModeEditOutline } from "react-icons/md";
+import { translate } from "../../utils/LanguageUtils";
+import { TooltipHelper } from "../Tooltips/Tooltip";
+import { ButtonSquare } from "../Buttons/SquareButton";
+import { generateRandomId } from "../../utils/StringUtils";
 
 interface Props {
   // eslint-disable-next-line no-undef
@@ -23,10 +15,14 @@ interface Props {
   onEdit?: () => void;
   onDelete?: () => void;
   // eslint-disable-next-line no-undef
-  customButtons?: JSX.Element[]
+  customButtons?: JSX.Element[];
   transformOnHover?: boolean;
   noBorder?: boolean;
   borderColor?: string;
+  checkable?: boolean;
+  id?: string;
+  onCheck?: (id?: string, checked?: boolean) => void;
+  isChecked?: boolean;
 }
 
 export const ContentLine = ({
@@ -39,11 +35,15 @@ export const ContentLine = ({
   customButtons,
   transformOnHover = true,
   noBorder = false,
-  borderColor
+  borderColor,
+  checkable = false,
+  id,
+  onCheck,
+  isChecked,
 }: PropsWithChildren<Props>) => {
-  const customButtonWrapper = customButtons?.map(customButton => (
+  const customButtonWrapper = customButtons?.map((customButton) => (
     <WrapItem key={generateRandomId()}>{customButton}</WrapItem>
-  ))
+  ));
 
   return (
     <Box
@@ -57,16 +57,23 @@ export const ContentLine = ({
       p={4}
       color="white"
       _hover={{
-        transform: transformOnHover ? 'scale(1.01)' : 'none',
-        cursor: 'pointer'
+        transform: transformOnHover ? "scale(1.01)" : "none",
+        cursor: "pointer",
       }}
     >
-      <Flex justify={'space-between'} alignItems='center'>
+      <Flex justify={"space-between"} alignItems="center" gap={3}>
+        {checkable && (
+          <Checkbox
+            isChecked={isChecked}
+            size="lg"
+            onChange={(e) => onCheck && onCheck(id, e.target.checked)}
+          />
+        )}
         {LeftIcon && (
           <Circle
             size="40px"
             bg="brand.500"
-            color='whiteAlpha.900'
+            color="whiteAlpha.900"
             marginRight={[3, 5]}
           >
             {LeftIcon}
@@ -79,21 +86,21 @@ export const ContentLine = ({
           {customButtonWrapper}
           {onDownload && (
             <WrapItem>
-              <TooltipHelper label={translate('DOWNLOAD')}>
+              <TooltipHelper label={translate("DOWNLOAD")}>
                 <ButtonSquare onClick={onDownload} icon={<MdCloudDownload />} />
               </TooltipHelper>
             </WrapItem>
           )}
           {onEdit && (
             <WrapItem>
-              <TooltipHelper label={translate('EDIT')}>
+              <TooltipHelper label={translate("EDIT")}>
                 <ButtonSquare onClick={onEdit} icon={<MdModeEditOutline />} />
               </TooltipHelper>
             </WrapItem>
           )}
           {onDelete && (
             <WrapItem>
-              <TooltipHelper label={translate('DELETE')}>
+              <TooltipHelper label={translate("DELETE")}>
                 <ButtonSquare onClick={onDelete} icon={<AiFillDelete />} />
               </TooltipHelper>
             </WrapItem>
@@ -101,5 +108,5 @@ export const ContentLine = ({
         </Wrap>
       </Flex>
     </Box>
-  )
-}
+  );
+};

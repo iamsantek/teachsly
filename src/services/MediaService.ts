@@ -130,6 +130,23 @@ class MediaService {
 
     window.open(isAudioOrVideo ? `/play/${media.id as string}` : signedUrl, '_blank')
   }
+
+  public moveToFolder = async (mediaId: string, folderId: string | undefined | null) => {
+    return this.updateMedia({
+      id: mediaId,
+      folderId
+    })
+  }
+
+  public moveToFolderBulk = async (mediaIds: string[], folderId: string | undefined) => {
+    const folderIdParam = !!folderId ? folderId : null 
+    return Promise.all(mediaIds.map(mediaId => this.moveToFolder(mediaId, folderIdParam)))
+  }
+
+  public bulkDelete = async (mediaIds: string[]) => {
+    return Promise.all(mediaIds.map(mediaId => this.deleteMedia(mediaId)))
+  }
+
 }
 
 export default new MediaService()
