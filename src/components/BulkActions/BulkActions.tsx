@@ -4,6 +4,7 @@ import { AiFillDelete } from "react-icons/ai";
 import { BsFolderSymlinkFill } from "react-icons/bs";
 import { TooltipHelper } from "../Tooltips/Tooltip";
 import { translate } from "../../utils/LanguageUtils";
+import { useLocation } from "react-router-dom";
 
 export type BulkActionType = "delete" | "move";
 
@@ -68,10 +69,15 @@ export const BulkActions = ({
   const toast = useToast();
   const id = "toast-id";
   const toastIdRef = useRef<string | number>();
+  const location = useLocation();
 
   const onClose = useCallback(() => {
     toast.close(toastIdRef?.current as string | number);
   }, [toast]);
+
+  useEffect(() => {
+    return () => onClose();
+  }, [location.pathname, onClose]);
 
   const ToastMemoized = useMemo(
     () => (
