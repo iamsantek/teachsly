@@ -26,7 +26,7 @@ interface Props {
 
 export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelete, isLoading, showSeenOpacity = false, onCheck, mediaCheckedIds }: Props) => {
   const { context: { externalUserId, user } } = useContext(UserDashboardContext)
-  const { groups, userType, hasAdminRole } = useUserGroups()
+  const { groups, userType, hasAdminRole, hasEditPermission } = useUserGroups()
   const placeholderNumber = Math.floor(Math.random() * 10) + 1
   const filterMedias = hasAdminRole ? medias : findMatch(medias, groups.map(group => group.externalId), userType, user?.englishLevel as EnglishLevel)
 
@@ -67,7 +67,7 @@ export const MediaContentsLines = ({ medias, onDownload, onView, onEdit, onDelet
             onDownload={() => onClickDownload(media)}
             onEdit={(hasAdminRole || isMediaOwner) ? () => onEdit(media) : undefined}
             onDelete={(hasAdminRole || isMediaOwner) ? () => onDelete(media) : undefined}
-            checkable={true}
+            checkable={hasEditPermission}
             onCheck={onCheck}
             isChecked={mediaCheckedIds?.includes(media.id)}
           >
