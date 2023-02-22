@@ -219,16 +219,12 @@ export const MediaContentsList = ({
         />
       )}
       <Stack spacing={10} flexDirection="column">
-        {!folderId && (
-          <>
-            <Box>
-              <MediaFolderCardsList
-                fetchType={fetchType}
-                onDeleteFolderComplete={onDeleteFolderComplete}
-              />
-            </Box>
-          </>
-        )}
+        <Box>
+          <MediaFolderCardsList
+            fetchType={fetchType}
+            onDeleteFolderComplete={onDeleteFolderComplete}
+          />
+        </Box>
         <Box>
           <BulkActions
             selectedIds={selectedMediaIds}

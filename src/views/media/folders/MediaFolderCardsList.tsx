@@ -26,7 +26,7 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
   const [folders, setFolders] = useState<MediaFolder[]>([])
   const [showDeleteFolderMessage, setShowDeleteFolderMessage] = useState<boolean>(false)
   const [deletingFolder, setDeletingFolder] = useState<DeletingFolder | undefined>(undefined)
-  const { courseId } = useParams()
+  const { courseId, folderId } = useParams()
   const { hasEditPermission, hasAdminRole, groups, userType } = useUserGroups()
   const navigate = useNavigate()
   const { context: { user } } = useContext(UserDashboardContext)
@@ -34,7 +34,7 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
   const [nextToken, setNextToken] = useState<string | undefined>(undefined)
 
   const fetchFolders = useCallback(async () => {
-    const folders = await MediaFolderService.fetchMediaFolders(fetchType, courseId, nextToken)
+    const folders = await MediaFolderService.fetchMediaFolders(fetchType, courseId, nextToken, folderId)
 
     if (folders?.listMediaFolders?.nextToken) {
       setNextToken(folders.listMediaFolders.nextToken)

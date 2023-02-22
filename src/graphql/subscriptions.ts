@@ -62,6 +62,7 @@ export const onCreateMediaFolder = /* GraphQL */ `
       id
       name
       groups
+      parentId
       createdAt
       updatedAt
       owner
@@ -74,6 +75,7 @@ export const onUpdateMediaFolder = /* GraphQL */ `
       id
       name
       groups
+      parentId
       createdAt
       updatedAt
       owner
@@ -86,6 +88,7 @@ export const onDeleteMediaFolder = /* GraphQL */ `
       id
       name
       groups
+      parentId
       createdAt
       updatedAt
       owner
@@ -413,6 +416,7 @@ export const onCreatePayments = /* GraphQL */ `
       amount
       mpPaymentId
       itemName
+      currency
       createdAt
       updatedAt
     }
@@ -430,6 +434,7 @@ export const onUpdatePayments = /* GraphQL */ `
       amount
       mpPaymentId
       itemName
+      currency
       createdAt
       updatedAt
     }
@@ -447,6 +452,7 @@ export const onDeletePayments = /* GraphQL */ `
       amount
       mpPaymentId
       itemName
+      currency
       createdAt
       updatedAt
     }
@@ -457,7 +463,9 @@ export const onCreateBooklets = /* GraphQL */ `
     onCreateBooklets {
       id
       name
+      nameEng
       description
+      descriptionEng
       level
       priceArs
       priceUsd
@@ -465,6 +473,9 @@ export const onCreateBooklets = /* GraphQL */ `
       mpCheckoutUrl
       mpPreferenceId
       pdfFile
+      paypalCheckoutUrl
+      mpSandBoxCheckoutUrl
+      paypalSandBoxCheckoutUrl
       createdAt
       updatedAt
     }
@@ -475,7 +486,9 @@ export const onUpdateBooklets = /* GraphQL */ `
     onUpdateBooklets {
       id
       name
+      nameEng
       description
+      descriptionEng
       level
       priceArs
       priceUsd
@@ -483,6 +496,9 @@ export const onUpdateBooklets = /* GraphQL */ `
       mpCheckoutUrl
       mpPreferenceId
       pdfFile
+      paypalCheckoutUrl
+      mpSandBoxCheckoutUrl
+      paypalSandBoxCheckoutUrl
       createdAt
       updatedAt
     }
@@ -493,7 +509,9 @@ export const onDeleteBooklets = /* GraphQL */ `
     onDeleteBooklets {
       id
       name
+      nameEng
       description
+      descriptionEng
       level
       priceArs
       priceUsd
@@ -501,6 +519,9 @@ export const onDeleteBooklets = /* GraphQL */ `
       mpCheckoutUrl
       mpPreferenceId
       pdfFile
+      paypalCheckoutUrl
+      mpSandBoxCheckoutUrl
+      paypalSandBoxCheckoutUrl
       createdAt
       updatedAt
     }

@@ -16,6 +16,8 @@ export const findAndUpdateContent = <T extends { id: string }>(
 }
 
 export const findMatch = <T extends { groups?: string[]}>(models: T[] | undefined | null, userGroups: string[], userType: UserTypes, englishLevel: EnglishLevel | undefined) => {
+  if (userType === UserTypes.ADMIN) return models
+  
   const userGroupsWithType = [...userGroups, userType, englishLevel]
   return models?.filter(model => (model.groups as string[]).filter(group => userGroupsWithType.includes(group)).length > 0)
 }

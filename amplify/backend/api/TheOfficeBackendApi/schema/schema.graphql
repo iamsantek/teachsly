@@ -45,6 +45,7 @@ type MediaFolder @model
   id: ID!
   name: String!
   groups: [String!]!
+  parentId: ID
 }
 
 type Media @model

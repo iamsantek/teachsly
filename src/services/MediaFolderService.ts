@@ -29,10 +29,10 @@ class MediaFolderService {
     })
   }
 
-  public createFolder = async (folderName: string, groups: string[], uploadedBy: string, files: MediaWithFile[]) => {
+  public createFolder = async (folderName: string, groups: string[], uploadedBy: string, files: MediaWithFile[], parentId?: string) => {
     const mediaFolder: CreateMediaFolderInput = {
       name: folderName,
-      groups: groups
+      groups: groups,
     }
 
     const mediaFolderCreated = await GraphQLService.fetchQuery<CreateMediaFolderMutation>({
@@ -50,13 +50,13 @@ class MediaFolderService {
     }
   }
 
-  public fetchMediaFolders = async (fetchType: FetchType = FetchType.ALL, courseId?: string | null, nextToken?: string | null | undefined) => {
+  public fetchMediaFolders = async (fetchType: FetchType = FetchType.ALL, courseId?: string | null, nextToken?: string | null | undefined, parentId?: string) => {
     const fetchFilter = {
-      [FetchType.ALL]: undefined,
+      [FetchType.ALL]: { parentId: { attributeExists: false } },
       [FetchType.COURSE]: {
         groups: { contains: courseId }
       },
-      [FetchType.FOLDER]: {}
+      [FetchType.FOLDER]: parentId ? { parentId: { eq: parentId } } : { parentId: { attributeExists: false } }
     }
 
     return GraphQLService.fetchQuery<ListMediaFoldersQuery>({
