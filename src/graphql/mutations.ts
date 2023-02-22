@@ -74,6 +74,7 @@ export const createMediaFolder = /* GraphQL */ `
       id
       name
       groups
+      parentId
       createdAt
       updatedAt
       owner
@@ -89,6 +90,7 @@ export const updateMediaFolder = /* GraphQL */ `
       id
       name
       groups
+      parentId
       createdAt
       updatedAt
       owner
@@ -104,6 +106,7 @@ export const deleteMediaFolder = /* GraphQL */ `
       id
       name
       groups
+      parentId
       createdAt
       updatedAt
       owner
@@ -479,6 +482,7 @@ export const createPayments = /* GraphQL */ `
       amount
       mpPaymentId
       itemName
+      currency
       createdAt
       updatedAt
     }
@@ -499,6 +503,7 @@ export const updatePayments = /* GraphQL */ `
       amount
       mpPaymentId
       itemName
+      currency
       createdAt
       updatedAt
     }
@@ -519,6 +524,7 @@ export const deletePayments = /* GraphQL */ `
       amount
       mpPaymentId
       itemName
+      currency
       createdAt
       updatedAt
     }
@@ -532,7 +538,9 @@ export const createBooklets = /* GraphQL */ `
     createBooklets(input: $input, condition: $condition) {
       id
       name
+      nameEng
       description
+      descriptionEng
       level
       priceArs
       priceUsd
@@ -540,6 +548,9 @@ export const createBooklets = /* GraphQL */ `
       mpCheckoutUrl
       mpPreferenceId
       pdfFile
+      paypalCheckoutUrl
+      mpSandBoxCheckoutUrl
+      paypalSandBoxCheckoutUrl
       createdAt
       updatedAt
     }
@@ -553,7 +564,9 @@ export const updateBooklets = /* GraphQL */ `
     updateBooklets(input: $input, condition: $condition) {
       id
       name
+      nameEng
       description
+      descriptionEng
       level
       priceArs
       priceUsd
@@ -561,6 +574,9 @@ export const updateBooklets = /* GraphQL */ `
       mpCheckoutUrl
       mpPreferenceId
       pdfFile
+      paypalCheckoutUrl
+      mpSandBoxCheckoutUrl
+      paypalSandBoxCheckoutUrl
       createdAt
       updatedAt
     }
@@ -574,7 +590,9 @@ export const deleteBooklets = /* GraphQL */ `
     deleteBooklets(input: $input, condition: $condition) {
       id
       name
+      nameEng
       description
+      descriptionEng
       level
       priceArs
       priceUsd
@@ -582,6 +600,9 @@ export const deleteBooklets = /* GraphQL */ `
       mpCheckoutUrl
       mpPreferenceId
       pdfFile
+      paypalCheckoutUrl
+      mpSandBoxCheckoutUrl
+      paypalSandBoxCheckoutUrl
       createdAt
       updatedAt
     }

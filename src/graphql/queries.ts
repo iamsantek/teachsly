@@ -51,6 +51,7 @@ export const getMediaFolder = /* GraphQL */ `
       id
       name
       groups
+      parentId
       createdAt
       updatedAt
       owner
@@ -68,6 +69,7 @@ export const listMediaFolders = /* GraphQL */ `
         id
         name
         groups
+        parentId
         createdAt
         updatedAt
         owner
@@ -321,6 +323,7 @@ export const getPayments = /* GraphQL */ `
       amount
       mpPaymentId
       itemName
+      currency
       createdAt
       updatedAt
     }
@@ -343,6 +346,7 @@ export const listPayments = /* GraphQL */ `
         amount
         mpPaymentId
         itemName
+        currency
         createdAt
         updatedAt
       }
@@ -355,7 +359,9 @@ export const getBooklets = /* GraphQL */ `
     getBooklets(id: $id) {
       id
       name
+      nameEng
       description
+      descriptionEng
       level
       priceArs
       priceUsd
@@ -363,6 +369,9 @@ export const getBooklets = /* GraphQL */ `
       mpCheckoutUrl
       mpPreferenceId
       pdfFile
+      paypalCheckoutUrl
+      mpSandBoxCheckoutUrl
+      paypalSandBoxCheckoutUrl
       createdAt
       updatedAt
     }
@@ -378,7 +387,9 @@ export const listBooklets = /* GraphQL */ `
       items {
         id
         name
+        nameEng
         description
+        descriptionEng
         level
         priceArs
         priceUsd
@@ -386,6 +397,9 @@ export const listBooklets = /* GraphQL */ `
         mpCheckoutUrl
         mpPreferenceId
         pdfFile
+        paypalCheckoutUrl
+        mpSandBoxCheckoutUrl
+        paypalSandBoxCheckoutUrl
         createdAt
         updatedAt
       }

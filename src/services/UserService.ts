@@ -72,7 +72,6 @@ class UserService {
 
     const usersByCourseFilter: ModelUserFilterInput = {
       and: [
-        { isDisabledUser: { eq: false } },
         { groups: { contains: courseOrType } }
       ]
     }
@@ -115,7 +114,10 @@ class UserService {
       return GraphQLService.fetchQuery<UpdateUserMutation>({
         query: updateUserMutation,
         filter: this.cognitoIdFilter(user.cognitoId as string),
-        input: user
+        input: {
+          ...user,
+          englishLevel: !!user.englishLevel ? user.englishLevel : null
+        }
       })
     } catch (error) {
       Logger.log(
