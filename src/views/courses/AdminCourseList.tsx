@@ -34,6 +34,9 @@ import {
   generateStudentsByCourseRoute,
 } from "../../utils/RouteUtils";
 import { BsCardList } from "react-icons/bs";
+import { getActiveAndArchivedCourses } from "../../utils/CourseUtils";
+import { NoActiveCoursesPlaceholder } from "./NoActiveCoursesPlaceholder";
+import { ArchiveCourseList } from "./ArchiveCourseList";
 
 export const AdminCourseList = () => {
   const [courses, setCourses] = useState<CourseAPI[]>([]);
@@ -100,9 +103,14 @@ export const AdminCourseList = () => {
     });
   };
 
+  const { currentYearCourses, archivedCourses } = useMemo(
+    () => getActiveAndArchivedCourses(courses),
+    [courses]
+  );
+
   // Sort courses by name in ascending order
   const sortedCourses = useMemo(() => {
-    return courses.sort((a, b) => {
+    return currentYearCourses.sort((a, b) => {
       if (a.name < b.name) {
         return -1;
       }
@@ -111,7 +119,7 @@ export const AdminCourseList = () => {
       }
       return 0;
     });
-  }, [courses]);
+  }, [currentYearCourses]);
 
   return (
     <>
@@ -139,6 +147,7 @@ export const AdminCourseList = () => {
             </Button>
           </Center>
         </SectionHeader>
+        {currentYearCourses.length === 0 && <NoActiveCoursesPlaceholder />}
         <Stack spacing={4}>
           {sortedCourses.map((course) => {
             const days = DateTimeUtils.shortDays(
@@ -199,7 +208,8 @@ export const AdminCourseList = () => {
                 <CommonContentLineTitle id={course.id} title={course.name}>
                   <Text textStyle={"title"} color={color}>
                     {days}{" "}
-                    {!!startTime && !!endTime && `${startTime} - ${endTime}`}
+                    {!!startTime && !!endTime && `${startTime} - ${endTime}`} (
+                    {course.scheduleYear})
                   </Text>
                   {course.virtualClassLink && (
                     <Badge marginLeft={3} colorScheme={"brand"}>
@@ -218,6 +228,9 @@ export const AdminCourseList = () => {
           <NoContentPlaceholder
             show={courses.length === 0 && !isLoadingNewPage}
           />
+          {archivedCourses.length > 0 && (
+            <ArchiveCourseList courses={archivedCourses} />
+          )}
         </Stack>
       </Stack>
       <LoadMoreButton
