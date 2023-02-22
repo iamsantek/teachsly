@@ -31,14 +31,19 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
   const navigate = useNavigate()
   const { context: { user } } = useContext(UserDashboardContext)
   const toast = useToast()
+  const [nextToken, setNextToken] = useState<string | undefined>(undefined)
 
   const fetchFolders = useCallback(async () => {
-    const folders = await MediaFolderService.fetchMediaFolders(fetchType, courseId)
+    const folders = await MediaFolderService.fetchMediaFolders(fetchType, courseId, nextToken)
+
+    if (folders?.listMediaFolders?.nextToken) {
+      setNextToken(folders.listMediaFolders.nextToken)
+    }
 
     const matchedFolder = findMatch(folders?.listMediaFolders?.items as MediaFolder[], groups.map(group => group.externalId), userType, user?.englishLevel as EnglishLevel)
 
     setFolders(matchedFolder || [])
-  }, [fetchType, courseId])
+  }, [fetchType, courseId, groups, userType, user?.englishLevel, nextToken])
 
   useEffect(() => {
     fetchFolders()
