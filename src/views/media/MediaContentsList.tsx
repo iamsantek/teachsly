@@ -50,7 +50,6 @@ export const MediaContentsList = ({
   const [showBulkDeleteConfirmation, setShowBulkDeleteConfirmation] =
     useState<boolean>(false);
 
-  const { folderId } = useParams();
   const toast = useToast();
   const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] =
     useState<boolean>(false);

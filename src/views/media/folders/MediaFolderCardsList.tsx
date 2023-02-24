@@ -43,7 +43,7 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
     const matchedFolder = findMatch(folders?.listMediaFolders?.items as MediaFolder[], groups.map(group => group.externalId), userType, user?.englishLevel as EnglishLevel)
 
     setFolders(matchedFolder || [])
-  }, [fetchType, courseId, groups, userType, user?.englishLevel, nextToken])
+  }, [fetchType, courseId, groups, userType, user?.englishLevel, nextToken, folderId])
 
   useEffect(() => {
     fetchFolders()
@@ -82,6 +82,11 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
     setDeletingFolder(deleteFolder)
   }, [])
 
+  const onNavigateToFolder = useCallback((folderId: string) => {
+    navigate(`/medias/folder/${folderId}`)
+    window.scrollTo(0, 0)
+  }, [navigate])
+
   return (
     <Stack>
       <DeleteFolderConfirmation
@@ -98,7 +103,7 @@ export const MediaFolderCardsList = ({ fetchType, onDeleteFolderComplete }: Prop
         <ContentLine
           key={folder.id}
           leftIcon={<MdFolder />}
-          onView={() => navigate(`/medias/folder/${folder.id}`)}
+          onView={() => onNavigateToFolder(folder.id)}
           onEdit={hasEditPermission ? () => navigate(`/medias/folder/${folder.id}/edit`) : undefined}
           onDelete={hasAdminRole ? () => showDeleteConfirmation({ folderId: folder.id, folderName: folder.name }) : undefined}
         >
