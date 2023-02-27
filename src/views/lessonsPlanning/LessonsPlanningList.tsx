@@ -114,9 +114,11 @@ export const LessonsPlanningList = ({
         lessonToUpdate={lessonToUpdate}
       />
       <Stack spacing={5} marginBottom={10}>
-        <Text textStyle="title" fontSize="xl">
-          {translate("LESSON_PLAN_TITLE")}
-        </Text>
+        {lessons.length !== 0 && (
+          <Text textStyle="title" fontSize="xl">
+            {translate("LESSON_PLAN_TITLE")}
+          </Text>
+        )}
         <Box position={"relative"}>
           <Box
             marginLeft={8}

@@ -301,7 +301,7 @@ export const LessonsPlanningHomeScreen = () => {
         placeholderElement={<ContentLinePlaceholder />}
       />
       <NoContentPlaceholder show={!isLoading && lessons.length === 0} />
-      {!isLoading && lessons.length !== 0 && (
+      {!isLoading && (
         <LessonsPlanningList
           onCreate={(lessonPlan) => {
             const sortedLessons = sortLessons([...lessons, lessonPlan]);
