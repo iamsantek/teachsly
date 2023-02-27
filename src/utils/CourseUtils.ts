@@ -29,7 +29,7 @@ export const renderCourseList = (courses: Course[], additionalGroups?: string[],
 
     return {
       label: courseName,
-      value: generateExternalId(course),
+      value: course.externalId,
       colorScheme: 'brand'
     }
   })
