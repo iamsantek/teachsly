@@ -1,4 +1,4 @@
-import { Wrap, WrapItem } from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Course } from "../../API";
 import { CourseCardPreview } from "../../components/Card/CourseCardPreview";
@@ -46,13 +46,17 @@ export const CourseList = () => {
   return (
     <>
       {currentYearCourses.length === 0 && <NoActiveCoursesPlaceholder />}
-      <Wrap spacing={4} display="flex" mx={"auto"}>
+      <Grid
+        gap={5}
+        flexDir={["column", "row"]}
+        templateColumns={["repeat(1, 1,fr)", "repeat(3, 1fr)"]}
+      >
         {currentYearCourses.map((course) => (
-          <WrapItem key={course.id} w={["100%", "30%"]}>
+          <GridItem>
             <CourseCardPreview course={course} key={course.id} />
-          </WrapItem>
+          </GridItem>
         ))}
-      </Wrap>
+      </Grid>
       {archivedCourses.length > 0 && (
         <ArchiveCourseList courses={archivedCourses} />
       )}
