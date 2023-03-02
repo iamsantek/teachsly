@@ -7,18 +7,7 @@ export const defaultQuestionPool: QuestionPool = {
   exerciseExplanation: '',
   exerciseDescription: '',
   attachments: [],
-  questions: [{
-    id: '1',
-    question: '',
-    description: '',
-    answerType: AnswerType.MultipleChoice,
-    questionType: QuestionType.TEXT,
-    options: [{
-      id: 'a',
-      label: '',
-      isCorrectOption: undefined
-    }]
-  }]
+  questions: []
 }
 
 export const defaultAttachments: ExamAttachments = {
