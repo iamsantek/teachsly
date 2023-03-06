@@ -120,10 +120,8 @@ const UserCRUDModal = ({
       englishLevel,
     };
 
-    console.log({ user });
-
     reset(user);
-  }, [userToUpdate]);
+  }, [userToUpdate, courses]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -348,7 +346,10 @@ const UserCRUDModal = ({
                     label="COURSES"
                     isRequired={true}
                     placeholder={translate("COURSES")}
-                    options={renderCourseList(courses)}
+                    options={renderCourseList({
+                      courses,
+                      showOnlyActiveCourses: true,
+                    })}
                     isMultiSelect
                     closeMenuOnSelect={true}
                   />

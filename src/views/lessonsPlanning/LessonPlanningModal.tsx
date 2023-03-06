@@ -121,7 +121,6 @@ export const LessonPlanningModal = ({
       savedFile = await StorageService.uploadToS3(file);
     }
 
-
     const lessonPlan = {
       ...lessonToUpdate,
       ...values,
@@ -212,7 +211,11 @@ export const LessonPlanningModal = ({
                     label="GROUP_MULTI_SELECT_TITLE"
                     placeholder={translate("COURSES")}
                     isRequired={true}
-                    options={renderCourseList(courses, generalGroups, true)}
+                    options={renderCourseList({
+                      courses,
+                      additionalGroups: generalGroups,
+                      includeEnglishLevels: true,
+                    })}
                     isMultiSelect={false}
                     closeMenuOnSelect={true}
                   />

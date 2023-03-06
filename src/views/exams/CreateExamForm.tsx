@@ -286,7 +286,11 @@ export const CreateExamForm = () => {
               label="GROUP_MULTI_SELECT_TITLE"
               placeholder={translate("COURSES")}
               isRequired={true}
-              options={renderCourseList(groups, generalGroups, true)}
+              options={renderCourseList({
+                courses: groups,
+                additionalGroups: generalGroups,
+                includeEnglishLevels: true,
+              })}
               isMultiSelect
               closeMenuOnSelect={true}
             />

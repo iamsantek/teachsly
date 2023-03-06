@@ -1,114 +1,137 @@
-import { useCallback, useEffect, useState } from 'react'
-import { matchRoutes, useLocation, useRoutes } from 'react-router-dom'
-import { defaultUserContext } from './constants/DashboardContext'
-import UserService from './services/UserService'
-import Amplify from 'aws-amplify'
-import awsExports from './aws-exports'
-import { applicationRoutes, disabledAccountRoutes } from './routes'
-import DashboardLayout from './layouts/DashboardLayout'
-import { LogInScreen } from './layouts/LogInScreen'
-import { ApplicationRoute, CustomRouteObject } from './interfaces/Routes'
-import { useAuthenticator } from '@aws-amplify/ui-react'
-import { SpinnerScreen } from './views/others/SpinnerScreen'
-import './App.css'
-import CourseService from './services/CourseService'
-import { ApplicationContext, UserContext } from './interfaces/DashboardContext'
-import { UserDashboardContext } from './contexts/UserDashboardContext'
-import { Course, User } from './API'
-import { GRAPHQL_ENDPOINT } from './constants/Environment'
-import CognitoService from './services/aws/CognitoService'
-import LocalStorageService, { LocalStorageKeys } from './services/LocalStorageService'
-import { sortCoursesByName } from './utils/CourseUtils'
+import { useCallback, useEffect, useState } from "react";
+import { matchRoutes, useLocation, useRoutes } from "react-router-dom";
+import { defaultUserContext } from "./constants/DashboardContext";
+import UserService from "./services/UserService";
+import Amplify from "aws-amplify";
+import awsExports from "./aws-exports";
+import { applicationRoutes, disabledAccountRoutes } from "./routes";
+import DashboardLayout from "./layouts/DashboardLayout";
+import { LogInScreen } from "./layouts/LogInScreen";
+import { ApplicationRoute, CustomRouteObject } from "./interfaces/Routes";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import { SpinnerScreen } from "./views/others/SpinnerScreen";
+import "./App.css";
+import CourseService from "./services/CourseService";
+import { ApplicationContext, UserContext } from "./interfaces/DashboardContext";
+import { UserDashboardContext } from "./contexts/UserDashboardContext";
+import { Course, User } from "./API";
+import { GRAPHQL_ENDPOINT } from "./constants/Environment";
+import CognitoService from "./services/aws/CognitoService";
+import LocalStorageService, {
+  LocalStorageKeys,
+} from "./services/LocalStorageService";
+import { sortCoursesByName } from "./utils/CourseUtils";
 
 Amplify.configure({
   ...awsExports,
-  aws_appsync_graphqlEndpoint: GRAPHQL_ENDPOINT
-})
+  aws_appsync_graphqlEndpoint: GRAPHQL_ENDPOINT,
+});
 
 const App = () => {
-  const [userSettings, setUserSettings] = useState<UserContext>(
-    defaultUserContext
-  )
-  const [routes, setRoutes] = useState<ApplicationRoute[]>([])
+  const [userSettings, setUserSettings] =
+    useState<UserContext>(defaultUserContext);
+  const [routes, setRoutes] = useState<ApplicationRoute[]>([]);
+  const [courseNextPageToken, setCourseNextPageToken] = useState<
+    string | undefined
+  >(undefined);
 
-
-  const { user, route: authRoute } = useAuthenticator((context) => [context.user])
+  const { user, route: authRoute } = useAuthenticator((context) => [
+    context.user,
+  ]);
 
   useEffect(() => {
-    CognitoService.createClient(user)
+    CognitoService.createClient(user);
 
     return () => {
-      LocalStorageService.cleanItem(LocalStorageKeys.USER)
-    }
-  }, [user])
+      LocalStorageService.cleanItem(LocalStorageKeys.USER);
+    };
+  }, [user]);
 
   const fetchCourses = useCallback(async () => {
     if (!user) {
-      return []
+      return [];
     }
 
     const courses = await CourseService.fetchCourses({
-      nextToken: undefined
-    })
+      filterDisabledCourses: false,
+      nextToken: courseNextPageToken,
+    });
 
-    return courses?.listCourses?.items
-  }, [user])
-
-  const fetchRoutes = useCallback(async (cognitoUser: any) => {
-    const cognitoId = cognitoUser?.username
-
-    const userResponse = UserService.fetchUserByCognitoId(cognitoId)
-    const courseResponse = fetchCourses()
-
-    const [user, courses] = await Promise.all([userResponse, courseResponse])
-    LocalStorageService.saveItem(LocalStorageKeys.USER, user)
-
-    const userType = UserService.getUserType(user)
-    let routes: ApplicationRoute[] = []
-
-    if (userType) {
-      routes = user?.isDisabledUser ? disabledAccountRoutes : applicationRoutes[userType]
-      setRoutes(routes)
+    if (courses?.listCourses?.nextToken) {
+      setCourseNextPageToken(courses?.listCourses?.nextToken);
     }
 
-    setUserSettings({
-      user: user as User,
-      routes,
-      courses: sortCoursesByName(courses as Course[]),
-      externalUserId: cognitoId as string
-    })
-  }, [fetchCourses])
+    return courses?.listCourses?.items;
+  }, [user, courseNextPageToken, setCourseNextPageToken]);
+
+  const fetchRoutes = useCallback(
+    async (cognitoUser: any) => {
+      const cognitoId = cognitoUser?.username;
+
+      const userResponse = UserService.fetchUserByCognitoId(cognitoId);
+      const courseResponse = fetchCourses();
+
+      const [user, courses] = await Promise.all([userResponse, courseResponse]);
+      LocalStorageService.saveItem(LocalStorageKeys.USER, user);
+
+      const userType = UserService.getUserType(user);
+      let routes: ApplicationRoute[] = [];
+
+      if (userType) {
+        routes = user?.isDisabledUser
+          ? disabledAccountRoutes
+          : applicationRoutes[userType];
+        setRoutes(routes);
+      }
+
+      setUserSettings({
+        user: user as User,
+        routes,
+        courses: sortCoursesByName(courses as Course[]),
+        externalUserId: cognitoId as string,
+      });
+    },
+    [fetchCourses]
+  );
 
   useEffect(() => {
-    if (authRoute === 'authenticated') {
-      fetchRoutes(user)
+    if (authRoute === "authenticated") {
+      fetchRoutes(user);
     }
-  }, [fetchRoutes, user, authRoute])
+  }, [fetchRoutes, user, authRoute]);
 
-  const routeComponent = useRoutes(routes)
-  const isContextLoaded = user && userSettings.routes.length > 0
+  const routeComponent = useRoutes(routes);
+  const isContextLoaded = user && userSettings.routes.length > 0;
 
   const dashboardContext: ApplicationContext = {
     context: userSettings,
-    setApplicationContext: setUserSettings
-  }
+    setApplicationContext: setUserSettings,
+  };
 
-  const matchRoutesArray = matchRoutes(routes, useLocation().pathname)
-  const withDashboardLayout = (matchRoutesArray?.at(0)?.route as CustomRouteObject)?.withDashboardLayout
+  const matchRoutesArray = matchRoutes(routes, useLocation().pathname);
+  const withDashboardLayout = (
+    matchRoutesArray?.at(0)?.route as CustomRouteObject
+  )?.withDashboardLayout;
 
   return (
     <>
       <UserDashboardContext.Provider value={dashboardContext}>
-        {authRoute === 'authenticated'
-          ? isContextLoaded
-            ? (
-              withDashboardLayout ? <DashboardLayout>{routeComponent}</DashboardLayout> : <>{routeComponent}</>
+        {authRoute === "authenticated" ? (
+          isContextLoaded ? (
+            withDashboardLayout ? (
+              <DashboardLayout>{routeComponent}</DashboardLayout>
+            ) : (
+              <>{routeComponent}</>
             )
-            : <SpinnerScreen />
-          : <LogInScreen />}
+          ) : (
+            <SpinnerScreen />
+          )
+        ) : (
+          <LogInScreen />
+        )}
       </UserDashboardContext.Provider>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
