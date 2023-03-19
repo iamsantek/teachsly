@@ -1,5 +1,5 @@
-import { CreateLessonPlanInput, CreateLessonPlanMutation, DeleteLessonPlanMutation, LessonPlanningType, ListLessonPlansQuery, UpdateLessonPlanInput, UpdateLessonPlanMutation } from "../API"
-import { listLessonPlans } from "../graphql/queries"
+import { CreateLessonPlanInput, CreateLessonPlanMutation, DeleteLessonPlanMutation, GetLessonPlanQuery, LessonPlanningType, ListLessonPlansQuery, UpdateLessonPlanInput, UpdateLessonPlanMutation } from "../API"
+import { getLessonPlan, listLessonPlans } from "../graphql/queries"
 import { createLessonPlan as createLessonPlanQuery, deleteLessonPlan as deleteLessonPlanQuery, updateLessonPlan as updateLessonPlanQuery } from "../graphql/mutations"
 import { LessonPlanning } from "../views/lessonsPlanning/LessonPlanningModal"
 import GraphQLService from "./GraphQLService"
@@ -60,10 +60,22 @@ const deleteLessonPlan = async (lessonPlanId: string) => {
     })
 }
 
+const getLessonPlansByExternalId = (externalId: string) => {
+    return GraphQLService.fetchQuery<ListLessonPlansQuery>({
+        query: listLessonPlans,
+        filter: {
+            externalId: {
+                eq: externalId
+            }
+        }
+    })
+}
+
 export {
     getLessonPlans,
     createLessonPlan,
     getLessonPlansByCourseId,
     deleteLessonPlan,
-    updateLessonPlan
+    updateLessonPlan,
+    getLessonPlansByExternalId
 }

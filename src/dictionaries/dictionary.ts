@@ -270,6 +270,7 @@ export enum LanguageES {
   MEDIA_BULK_DELETE_DESCRIPTION='¿Estás seguro que deseas eliminar los contenidos seleccionados?',
   MOVE_TO_FOLDER= 'Mover de carpeta',
   DELETE_CONTENTS= 'Eliminar contenidos',
+  CLASS_RECORDING = 'Grabación de clase',
 }
 
 export enum LanguageEN {
@@ -539,4 +540,5 @@ export enum LanguageEN {
   MEDIA_BULK_DELETE_DESCRIPTION= 'Are you sure you want to delete the selected contents?',
   MOVE_TO_FOLDER= 'Move to folder',
   DELETE_CONTENTS= 'Delete contents',
+  CLASS_RECORDING= 'Class recording',
 }

@@ -99,6 +99,9 @@ export const LessonsPlanningList = ({
           window.open(mediaLink?.url, "_blank");
         }
         break;
+      case LessonPlanningType.RECORDING:
+        window.open(`/recording/${lesson.externalId}`, "_blank");
+        break;
       default:
         return undefined;
     }
@@ -132,8 +135,9 @@ export const LessonsPlanningList = ({
           <Stack spacing={5}>
             {lessons.map((lesson) => {
               const isLessonPlan = lesson.type === LessonPlanningType.LESSON;
+              const isRecording = lesson.type === LessonPlanningType.RECORDING;
               return (
-                <Box>
+                <Box paddingLeft={isRecording ? 50 : 0}>
                   <ContentLine
                     key={lesson.id}
                     transformOnHover={false}

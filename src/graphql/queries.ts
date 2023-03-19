@@ -407,6 +407,39 @@ export const listBooklets = /* GraphQL */ `
     }
   }
 `;
+export const courseByExternalId = /* GraphQL */ `
+  query CourseByExternalId(
+    $externalId: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCourseFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    courseByExternalId(
+      externalId: $externalId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        scheduleDates
+        scheduleStartTime
+        scheduleEndTime
+        virtualClassLink
+        isActive
+        externalId
+        scheduleYear
+        englishLevel
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const examAttemptByExternalId = /* GraphQL */ `
   query ExamAttemptByExternalId(
     $externalId: ID!

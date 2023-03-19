@@ -529,6 +529,7 @@ export enum LessonPlanningType {
   OTHER = "OTHER",
   LESSON = "LESSON",
   MEDIA = "MEDIA",
+  RECORDING = "RECORDING",
 }
 
 
@@ -2111,6 +2112,36 @@ export type ListBookletsQuery = {
       paypalCheckoutUrl: string,
       mpSandBoxCheckoutUrl: string,
       paypalSandBoxCheckoutUrl: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type CourseByExternalIdQueryVariables = {
+  externalId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelCourseFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type CourseByExternalIdQuery = {
+  courseByExternalId?:  {
+    __typename: "ModelCourseConnection",
+    items:  Array< {
+      __typename: "Course",
+      id: string,
+      name: string,
+      scheduleDates?: Array< number | null > | null,
+      scheduleStartTime?: string | null,
+      scheduleEndTime?: string | null,
+      virtualClassLink?: string | null,
+      isActive?: boolean | null,
+      externalId: string,
+      scheduleYear: number,
+      englishLevel?: EnglishLevel | null,
       createdAt: string,
       updatedAt: string,
     } | null >,

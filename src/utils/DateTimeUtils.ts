@@ -35,13 +35,13 @@ class DateTimeUtils {
 
     const daysOfTheWeek = this.daysOfTheWeek();
 
-    return daysOfTheWeek.filter((day, index) => dayIndexes.includes(index + 1));
+    return daysOfTheWeek.filter((day: string, index: number) => dayIndexes.includes(index + 1));
   };
 
   public shortDays = (dayPositions: number[]) => {
     const selectedDays = this.transformDayIndexesToStringDays(dayPositions);
 
-    return selectedDays?.map((day) => day.substring(0, 3)).join(" ");
+    return selectedDays?.map((day: string) => day.substring(0, 3)).join(" ");
   };
 
   public daysOfTheWeek = () => translate("DAYS_OF_THE_WEEK").split(",");

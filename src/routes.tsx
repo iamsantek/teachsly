@@ -23,6 +23,7 @@ import { ExamAttemptDetail } from "./views/exams/exampAttempt/ExamAttemptDetail"
 import { StudentExamResultScreen } from "./views/exams/exampAttempt/students/StudentExamResultScreen";
 import { ImBooks } from "react-icons/im";
 import { LessonsPlanningHomeScreen } from "./views/lessonsPlanning/LessonsPlanningHomeScreen";
+import { RecordingLayout } from "./layouts/RecordingLayout";
 
 const adminHomeScreen: ApplicationRoute = {
   name: translate("MENU_HOME"),
@@ -204,6 +205,13 @@ const videoPreviewRoute: ApplicationRoute = {
   withDashboardLayout: false,
 };
 
+const recordingPreviewRoute: ApplicationRoute = {
+  path: "/recording/:externalId",
+  element: <RecordingLayout />,
+  showInNavbar: false,
+  withDashboardLayout: false,
+};
+
 const examAttemptScreenRoute: ApplicationRoute = {
   path: "/exams/attempts",
   name: translate("EXAM_ATTEMPTS"),
@@ -268,6 +276,7 @@ const adminRoutes: ApplicationRoute[] = [
   homeworkAttemptDetailRoute,
   homeworkAttemptScreenRoute,
   lessonPlaningHomeScreen,
+  recordingPreviewRoute,
   {
     path: "*",
     element: (
@@ -293,6 +302,7 @@ const studentRoutes: ApplicationRoute[] = [
   homeworkResultsRoute,
   homeworkHomeScreen,
   lessonPlaningHomeScreen,
+  recordingPreviewRoute,
   {
     path: "*",
     element: (
@@ -325,6 +335,7 @@ const teachersRoutes: ApplicationRoute[] = [
   homeworkAttemptScreenRoute,
   lessonPlaningHomeScreen,
   examDetailRoute,
+  recordingPreviewRoute,
   {
     path: "*",
     element: (
