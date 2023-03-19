@@ -98,3 +98,46 @@ export const getActiveAndArchivedCourses = (courses: Course[]) => {
 
   return { currentYearCourses, archivedCourses }
 }
+
+export const getUpcomingCourses = (courses: Course[]): Course[] => {
+  const now = new Date(); // Get the current date and time
+  const hoursInAdvance = 8; // How many hours in advance to show the course
+  const hoursInAdvanceDate = new Date(now.getTime() + hoursInAdvance * 60 * 60 * 1000); // Calculate the date and time 2 hours from now
+  const daysInAdvance = 1
+
+  const upcomingCourses = courses.filter((course) => {
+    if (course.scheduleDates) {
+      // Check if today is one of the scheduled days
+      const today = now.getDay() === 0 ? 0 : now.getDay(); // Convert Sunday from 0 to 7
+      if (!course.scheduleDates.includes(today + daysInAdvance)) {
+        return false;
+      }
+    }
+
+    if (course.scheduleStartTime && course.scheduleEndTime) {
+      // Check if the current time is between the start and end time of the course
+      const argStartDate = new Date(`2000-01-01T${course.scheduleStartTime}`);
+      const argEndDate = new Date(`2000-01-01T${course.scheduleEndTime}`);
+      const startTime = new Date(argStartDate)
+      const endTime = new Date(argEndDate)
+
+      // Normalize to GMT+0
+      startTime.setHours(argStartDate.getHours() + 3);
+      endTime.setHours(argEndDate.getHours() + 3);
+
+      // Check if the startTime is between the current time and 2 hours from now
+      console.log(`${course.name}`)
+      console.log(`Start time ${startTime}`)
+      console.log(`End time ${endTime}`)
+      console.log(`Now ${now}`)
+      if (startTime.getTime() < now.getTime() || startTime.getTime() > hoursInAdvanceDate.getTime()) {
+        console.log(`${course.name} salio poque no es la hora`)
+        return true;
+      }
+    }
+
+    return false;
+  });
+
+  return upcomingCourses;
+}

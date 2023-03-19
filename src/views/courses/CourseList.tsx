@@ -8,6 +8,7 @@ import { UserDashboardContext } from "../../contexts/UserDashboardContext";
 import CourseService from "../../services/CourseService";
 import { getActiveAndArchivedCourses } from "../../utils/CourseUtils";
 import { ArchiveCourseList } from "./ArchiveCourseList";
+import { NextClassMessage } from "./NextClassMessage";
 import { NoActiveCoursesPlaceholder } from "./NoActiveCoursesPlaceholder";
 
 export const CourseList = () => {
@@ -46,6 +47,7 @@ export const CourseList = () => {
   return (
     <>
       {currentYearCourses.length === 0 && <NoActiveCoursesPlaceholder />}
+      <NextClassMessage courses={currentYearCourses} />
       <Grid
         gap={5}
         flexDir={["column", "row"]}

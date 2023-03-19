@@ -271,6 +271,12 @@ export enum LanguageES {
   MOVE_TO_FOLDER= 'Mover de carpeta',
   DELETE_CONTENTS= 'Eliminar contenidos',
   CLASS_RECORDING = 'Grabación de clase',
+  GO_TO_CLASS = 'Ir a la clase',
+  YOUR_CLASS = 'Tu clase',
+  BEGINS= 'comienza',
+  AT='a las',
+  TODAY= 'hoy',
+  TOMORROW= 'mañana',
 }
 
 export enum LanguageEN {
@@ -541,4 +547,10 @@ export enum LanguageEN {
   MOVE_TO_FOLDER= 'Move to folder',
   DELETE_CONTENTS= 'Delete contents',
   CLASS_RECORDING= 'Class recording',
+  GO_TO_CLASS= 'Go to live class',
+  YOUR_CLASS = 'Your class',
+  BEGINS= 'begins',
+  AT='at',
+  TODAY= 'today',
+  TOMORROW= 'tomorrow', 
 }
