@@ -125,12 +125,11 @@ export const getUpcomingCourses = (courses: Course[]): Course[] => {
       endTime.setHours(argEndDate.getHours() + 3);
 
       // Check if the startTime is between the current time and 2 hours from now
-      console.log(`${course.name}`)
-      console.log(`Start time ${startTime}`)
-      console.log(`End time ${endTime}`)
-      console.log(`Now ${now}`)
+      if (now.getTime() >= startTime.getTime() && now.getTime() <= endTime.getTime()) {
+        return true;
+      }
+
       if (startTime.getTime() < now.getTime() || startTime.getTime() > hoursInAdvanceDate.getTime()) {
-        console.log(`${course.name} salio poque no es la hora`)
         return true;
       }
     }
