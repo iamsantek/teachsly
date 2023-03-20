@@ -277,6 +277,7 @@ export enum LanguageES {
   AT='a las',
   TODAY= 'hoy',
   TOMORROW= 'mañana',
+  UPCOMING_CLASSES= 'Próximas clases',
 }
 
 export enum LanguageEN {
@@ -553,4 +554,5 @@ export enum LanguageEN {
   AT='at',
   TODAY= 'today',
   TOMORROW= 'tomorrow', 
+  UPCOMING_CLASSES= 'Upcoming classes',
 }

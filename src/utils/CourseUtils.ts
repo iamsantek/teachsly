@@ -101,15 +101,14 @@ export const getActiveAndArchivedCourses = (courses: Course[]) => {
 
 export const getUpcomingCourses = (courses: Course[]): Course[] => {
   const now = new Date(); // Get the current date and time
-  const hoursInAdvance = 8; // How many hours in advance to show the course
+  const hoursInAdvance = 20; // How many hours in advance to show the course
   const hoursInAdvanceDate = new Date(now.getTime() + hoursInAdvance * 60 * 60 * 1000); // Calculate the date and time 2 hours from now
-  const daysInAdvance = 1
 
   const upcomingCourses = courses.filter((course) => {
     if (course.scheduleDates) {
       // Check if today is one of the scheduled days
       const today = now.getDay() === 0 ? 0 : now.getDay(); // Convert Sunday from 0 to 7
-      if (!course.scheduleDates.includes(today + daysInAdvance)) {
+      if (!course.scheduleDates.some((day) => [today, today + 1].includes(day as number))) {
         return false;
       }
     }
