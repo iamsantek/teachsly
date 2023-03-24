@@ -13,6 +13,9 @@ export type CreateCourseInput = {
   externalId: string,
   scheduleYear: number,
   englishLevel?: EnglishLevel | null,
+  type?: CourseType | null,
+  isVirtual?: boolean | null,
+  zoomMeetingId?: string | null,
 };
 
 export enum EnglishLevel {
@@ -22,6 +25,12 @@ export enum EnglishLevel {
   INTERMEDIATE = "INTERMEDIATE",
   UPPER_INTERMEDIATE = "UPPER_INTERMEDIATE",
   ADVANCED = "ADVANCED",
+}
+
+
+export enum CourseType {
+  GROUP = "GROUP",
+  PRIVATE = "PRIVATE",
 }
 
 
@@ -35,6 +44,9 @@ export type ModelCourseConditionInput = {
   externalId?: ModelStringInput | null,
   scheduleYear?: ModelIntInput | null,
   englishLevel?: ModelEnglishLevelInput | null,
+  type?: ModelCourseTypeInput | null,
+  isVirtual?: ModelBooleanInput | null,
+  zoomMeetingId?: ModelStringInput | null,
   and?: Array< ModelCourseConditionInput | null > | null,
   or?: Array< ModelCourseConditionInput | null > | null,
   not?: ModelCourseConditionInput | null,
@@ -104,6 +116,11 @@ export type ModelEnglishLevelInput = {
   ne?: EnglishLevel | null,
 };
 
+export type ModelCourseTypeInput = {
+  eq?: CourseType | null,
+  ne?: CourseType | null,
+};
+
 export type Course = {
   __typename: "Course",
   id: string,
@@ -116,6 +133,9 @@ export type Course = {
   externalId: string,
   scheduleYear: number,
   englishLevel?: EnglishLevel | null,
+  type?: CourseType | null,
+  isVirtual?: boolean | null,
+  zoomMeetingId?: string | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -131,6 +151,9 @@ export type UpdateCourseInput = {
   externalId?: string | null,
   scheduleYear?: number | null,
   englishLevel?: EnglishLevel | null,
+  type?: CourseType | null,
+  isVirtual?: boolean | null,
+  zoomMeetingId?: string | null,
 };
 
 export type DeleteCourseInput = {
@@ -790,6 +813,9 @@ export type ModelCourseFilterInput = {
   externalId?: ModelStringInput | null,
   scheduleYear?: ModelIntInput | null,
   englishLevel?: ModelEnglishLevelInput | null,
+  type?: ModelCourseTypeInput | null,
+  isVirtual?: ModelBooleanInput | null,
+  zoomMeetingId?: ModelStringInput | null,
   and?: Array< ModelCourseFilterInput | null > | null,
   or?: Array< ModelCourseFilterInput | null > | null,
   not?: ModelCourseFilterInput | null,
@@ -1001,6 +1027,9 @@ export type CreateCourseMutation = {
     externalId: string,
     scheduleYear: number,
     englishLevel?: EnglishLevel | null,
+    type?: CourseType | null,
+    isVirtual?: boolean | null,
+    zoomMeetingId?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1024,6 +1053,9 @@ export type UpdateCourseMutation = {
     externalId: string,
     scheduleYear: number,
     englishLevel?: EnglishLevel | null,
+    type?: CourseType | null,
+    isVirtual?: boolean | null,
+    zoomMeetingId?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1047,6 +1079,9 @@ export type DeleteCourseMutation = {
     externalId: string,
     scheduleYear: number,
     englishLevel?: EnglishLevel | null,
+    type?: CourseType | null,
+    isVirtual?: boolean | null,
+    zoomMeetingId?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1666,6 +1701,9 @@ export type GetCourseQuery = {
     externalId: string,
     scheduleYear: number,
     englishLevel?: EnglishLevel | null,
+    type?: CourseType | null,
+    isVirtual?: boolean | null,
+    zoomMeetingId?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1692,6 +1730,9 @@ export type ListCoursesQuery = {
       externalId: string,
       scheduleYear: number,
       englishLevel?: EnglishLevel | null,
+      type?: CourseType | null,
+      isVirtual?: boolean | null,
+      zoomMeetingId?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -2142,6 +2183,9 @@ export type CourseByExternalIdQuery = {
       externalId: string,
       scheduleYear: number,
       englishLevel?: EnglishLevel | null,
+      type?: CourseType | null,
+      isVirtual?: boolean | null,
+      zoomMeetingId?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -2229,6 +2273,9 @@ export type OnCreateCourseSubscription = {
     externalId: string,
     scheduleYear: number,
     englishLevel?: EnglishLevel | null,
+    type?: CourseType | null,
+    isVirtual?: boolean | null,
+    zoomMeetingId?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2247,6 +2294,9 @@ export type OnUpdateCourseSubscription = {
     externalId: string,
     scheduleYear: number,
     englishLevel?: EnglishLevel | null,
+    type?: CourseType | null,
+    isVirtual?: boolean | null,
+    zoomMeetingId?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2265,6 +2315,9 @@ export type OnDeleteCourseSubscription = {
     externalId: string,
     scheduleYear: number,
     englishLevel?: EnglishLevel | null,
+    type?: CourseType | null,
+    isVirtual?: boolean | null,
+    zoomMeetingId?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,

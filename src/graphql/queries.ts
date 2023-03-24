@@ -15,6 +15,9 @@ export const getCourse = /* GraphQL */ `
       externalId
       scheduleYear
       englishLevel
+      type
+      isVirtual
+      zoomMeetingId
       createdAt
       updatedAt
     }
@@ -38,6 +41,9 @@ export const listCourses = /* GraphQL */ `
         externalId
         scheduleYear
         englishLevel
+        type
+        isVirtual
+        zoomMeetingId
         createdAt
         updatedAt
       }
@@ -433,6 +439,9 @@ export const courseByExternalId = /* GraphQL */ `
         externalId
         scheduleYear
         englishLevel
+        type
+        isVirtual
+        zoomMeetingId
         createdAt
         updatedAt
       }

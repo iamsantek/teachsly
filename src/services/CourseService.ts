@@ -60,6 +60,46 @@ class CourseService {
     );
     const groupExternalId = generateExternalId(courseCreation);
 
+    if (!process.env.REACT_APP_ZOOM_API_ENDPOINT) {
+      Logger.log(
+        LogLevel.ERROR,
+        LogTypes.CourseService,
+        "Error when creating Zoom Meeting",
+        "Missing Zoom API Endpoint"
+      );
+    }
+
+    let zoomMeetingId = "";
+    if (courseCreation.isVirtual) {
+      try {
+        const zoomMeeting = await fetch(
+          process.env.REACT_APP_ZOOM_API_ENDPOINT as string,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              meetingName: courseCreation.name,
+              externalId: groupExternalId,
+              startHour: scheduleStartTime,
+              weeklyDays: scheduleDates,
+            }),
+          }
+        );
+
+        const zoomMeetingResponse = await zoomMeeting.json();
+        zoomMeetingId = zoomMeetingResponse?.id;
+      } catch (error) {
+        Logger.log(
+          LogLevel.ERROR,
+          LogTypes.CourseService,
+          "Error when creating Zoom Meeting",
+          error
+        );
+      }
+    }
+
     const course: CreateCourseInput = {
       name: courseCreation.name,
       scheduleDates: scheduleDates,
@@ -68,6 +108,7 @@ class CourseService {
       virtualClassLink: courseCreation.virtualClassLink as string,
       externalId: groupExternalId,
       scheduleYear: Number(courseCreation.scheduleYear),
+      zoomMeetingId: zoomMeetingId ? zoomMeetingId : null,
     };
 
     const createCognitoGroupResponse = await CognitoService.createCognitoGroup(

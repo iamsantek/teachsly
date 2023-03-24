@@ -1,5 +1,5 @@
 import { CourseWithMultiSelect } from '../interfaces/Course'
-import { CreateCourseInput } from '../API'
+import { CourseType, CreateCourseInput } from '../API'
 
 const currentYear = new Date().getFullYear().toString()
 export const defaultCourse: CreateCourseInput | CourseWithMultiSelect = {
@@ -10,5 +10,8 @@ export const defaultCourse: CreateCourseInput | CourseWithMultiSelect = {
   scheduleStartTime: '',
   virtualClassLink: '',
   externalId: '',
-  scheduleYear: { label: currentYear, value: currentYear }
+  scheduleYear: { label: currentYear, value: currentYear },
+  type: { label: CourseType.GROUP, value: CourseType.GROUP },
+  isVirtual: false,
+  zoomMeetingId: '',
 }

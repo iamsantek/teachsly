@@ -12,6 +12,11 @@ enum EnglishLevel {
   ADVANCED
 }
 
+enum CourseType {
+  GROUP,
+  PRIVATE
+}
+
 type Course @model
 @auth(rules: [
   {allow: private, operations: [read]},
@@ -28,6 +33,9 @@ type Course @model
   externalId: String! @index(name: "byExternalId", queryField: "courseByExternalId")
   scheduleYear: Int!
   englishLevel: EnglishLevel
+  type: CourseType
+  isVirtual: Boolean
+  zoomMeetingId: String
 }
 
 enum MediaType {

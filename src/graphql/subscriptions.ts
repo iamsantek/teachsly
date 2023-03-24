@@ -15,6 +15,9 @@ export const onCreateCourse = /* GraphQL */ `
       externalId
       scheduleYear
       englishLevel
+      type
+      isVirtual
+      zoomMeetingId
       createdAt
       updatedAt
     }
@@ -33,6 +36,9 @@ export const onUpdateCourse = /* GraphQL */ `
       externalId
       scheduleYear
       englishLevel
+      type
+      isVirtual
+      zoomMeetingId
       createdAt
       updatedAt
     }
@@ -51,6 +57,9 @@ export const onDeleteCourse = /* GraphQL */ `
       externalId
       scheduleYear
       englishLevel
+      type
+      isVirtual
+      zoomMeetingId
       createdAt
       updatedAt
     }

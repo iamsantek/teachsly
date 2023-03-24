@@ -7,6 +7,8 @@ import {
   ModalHeader,
   Stack,
   useToast,
+  Checkbox,
+  Text,
 } from "@chakra-ui/react";
 import { translate } from "../utils/LanguageUtils";
 import { Input as CustomInput } from "../components/Inputs/Input";
@@ -21,8 +23,9 @@ import {
   mapSingleValueToMultiSelectOption,
   renderMultiSelectOptions,
 } from "../utils/SelectUtils";
-import { Course as CourseAPI, CreateCourseInput } from "../API";
+import { Course as CourseAPI, CourseType, CreateCourseInput } from "../API";
 import { toastConfig } from "../utils/ToastUtils";
+import { MultiSelectOption } from "../interfaces/MultiSelectOption";
 
 interface Props {
   isOpen: boolean;
@@ -52,6 +55,7 @@ const CourseCRUDModal = ({
     handleSubmit,
     reset,
     watch,
+    register,
     formState: { errors },
   } = formControls;
 
@@ -66,6 +70,9 @@ const CourseCRUDModal = ({
         ),
         scheduleYear: mapSingleValueToMultiSelectOption(
           String(courseToUpdate.scheduleYear)
+        ),
+        type: mapSingleValueToMultiSelectOption(
+          courseToUpdate.type || CourseType.GROUP
         ),
       };
 
@@ -88,6 +95,8 @@ const CourseCRUDModal = ({
         Number(date.value)
       ) as number[],
       scheduleYear: Number(course.scheduleYear.value),
+      type: (course.type as MultiSelectOption).value as CourseType,
+      isVirtual: true,
     };
 
     const createdCourse = await CourseService.createCourse(updatedCourse);
@@ -114,6 +123,7 @@ const CourseCRUDModal = ({
       Number(day.value)
     ) as number[],
     scheduleYear: Number(course.scheduleYear.value),
+    type: (course.type as MultiSelectOption).value as CourseType,
   });
 
   const updateCourse = async (course: CourseWithMultiSelect) => {
@@ -211,6 +221,28 @@ const CourseCRUDModal = ({
                   isRequired={true}
                   options={renderMultiSelectOptions(
                     years.map((year) => year.toString())
+                  )}
+                  isMultiSelect={false}
+                  closeMenuOnSelect={true}
+                />
+
+                <Checkbox
+                  isChecked={!!watch("isVirtual")}
+                  size="lg"
+                  colorScheme="brand"
+                  {...register("isVirtual")}
+                >
+                  {translate("VIRTUAL_COURSE")}
+                </Checkbox>
+                {watch("isVirtual") && (
+                  <Text>{translate("VIRTUAL_COURSE_EXPLANATION")}</Text>
+                )}
+                <Select
+                  name="type"
+                  label="COURSE_TYPE"
+                  isRequired={true}
+                  options={renderMultiSelectOptions(
+                    Object.values(CourseType).map((type) => type.toString())
                   )}
                   isMultiSelect={false}
                   closeMenuOnSelect={true}
