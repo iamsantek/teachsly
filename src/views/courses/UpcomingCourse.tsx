@@ -18,7 +18,7 @@ export const UpcomingCourse = ({ course }: Props) => {
   const today = new Date().getDay();
   const correctedToday = today === 7 ? 0 : today;
 
-  const liveClassesUrl = `https://live.plataforma.theofficeenglishlearning.com/?meetingId=${course.virtualClassLink}&userId=${user?.id}`;
+  const liveClassesUrl = `${process.env.REACT_APP_ZOOM_CLASSES_LINK}/?meetingId=${course.virtualClassLink}&userId=${user?.id}`;
 
   const startTime = DateTimeUtils.formateHour(
     course.scheduleStartTime,
