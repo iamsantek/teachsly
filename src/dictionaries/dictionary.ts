@@ -279,7 +279,8 @@ export enum LanguageES {
   TOMORROW= 'mañana',
   UPCOMING_CLASSES= 'Próximas clases',
   COURSE_TYPE= 'Tipo de curso',
-  VIRTUAL_COURSE_EXPLANATION='Se creara una meeting de Zoom con los datos ingresados en el formulario.'
+  VIRTUAL_COURSE_EXPLANATION='Se creara una meeting de Zoom con los datos ingresados en el formulario.',
+  RECORDING_CHAT_TITLE= 'Chat de la grabación',
 }
 
 export enum LanguageEN {
@@ -558,5 +559,6 @@ export enum LanguageEN {
   TOMORROW= 'tomorrow', 
   UPCOMING_CLASSES= 'Upcoming classes',
   COURSE_TYPE= 'Course type',
-  VIRTUAL_COURSE_EXPLANATION="A meet will be created for this class with the above information"
+  VIRTUAL_COURSE_EXPLANATION="A meet will be created for this class with the above information",
+  RECORDING_CHAT_TITLE='Class chat'
 }
