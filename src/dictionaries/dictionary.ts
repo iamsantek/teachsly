@@ -281,6 +281,7 @@ export enum LanguageES {
   COURSE_TYPE= 'Tipo de curso',
   VIRTUAL_COURSE_EXPLANATION='Se creara una meeting de Zoom con los datos ingresados en el formulario.',
   RECORDING_CHAT_TITLE= 'Chat de la grabación',
+  LINK= 'Link',
 }
 
 export enum LanguageEN {
@@ -560,5 +561,6 @@ export enum LanguageEN {
   UPCOMING_CLASSES= 'Upcoming classes',
   COURSE_TYPE= 'Course type',
   VIRTUAL_COURSE_EXPLANATION="A meet will be created for this class with the above information",
-  RECORDING_CHAT_TITLE='Class chat'
+  RECORDING_CHAT_TITLE='Class chat',
+  LINK= 'Link',
 }

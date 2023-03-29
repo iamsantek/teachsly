@@ -1,7 +1,6 @@
-import { CreateLessonPlanInput, CreateLessonPlanMutation, DeleteLessonPlanMutation, GetLessonPlanQuery, LessonPlanningType, ListLessonPlansQuery, UpdateLessonPlanInput, UpdateLessonPlanMutation } from "../API"
-import { getLessonPlan, listLessonPlans } from "../graphql/queries"
+import { CreateLessonPlanInput, CreateLessonPlanMutation, DeleteLessonPlanMutation, LessonPlanningType, ListLessonPlansQuery, UpdateLessonPlanInput, UpdateLessonPlanMutation } from "../API"
+import { listLessonPlans } from "../graphql/queries"
 import { createLessonPlan as createLessonPlanQuery, deleteLessonPlan as deleteLessonPlanQuery, updateLessonPlan as updateLessonPlanQuery } from "../graphql/mutations"
-import { LessonPlanning } from "../views/lessonsPlanning/LessonPlanningModal"
 import GraphQLService from "./GraphQLService"
 import { v4 as uuid } from 'uuid'
 
@@ -24,8 +23,8 @@ const getLessonPlansByCourseId = (courseId: string, nextToken?: string | undefin
     })
 }
 
-const createLessonPlan = async (lessonPlan: LessonPlanning) => {
-    const { title, groups, content, uploadedBy, date, type, media } = lessonPlan
+const createLessonPlan = async (lessonPlan: CreateLessonPlanInput) => {
+    const { title, groups, content, uploadedBy, date, type, media, link } = lessonPlan
 
     const createLessonPlanInput: CreateLessonPlanInput = {
         title,
@@ -34,8 +33,9 @@ const createLessonPlan = async (lessonPlan: LessonPlanning) => {
         groups: groups as string[],
         externalId: uuid(),
         date,
-        type: type as LessonPlanningType ?? LessonPlanningType.LESSON,
-        media
+        type: type ?? LessonPlanningType.LESSON,
+        media,
+        link
     }
 
     return GraphQLService.fetchQuery<CreateLessonPlanMutation>({

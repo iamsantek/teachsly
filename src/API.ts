@@ -544,6 +544,7 @@ export type CreateLessonPlanInput = {
   type?: LessonPlanningType | null,
   externalId: string,
   extraInformation?: string | null,
+  link?: string | null,
 };
 
 export enum LessonPlanningType {
@@ -553,6 +554,7 @@ export enum LessonPlanningType {
   LESSON = "LESSON",
   MEDIA = "MEDIA",
   RECORDING = "RECORDING",
+  LINK = "LINK",
 }
 
 
@@ -566,6 +568,7 @@ export type ModelLessonPlanConditionInput = {
   type?: ModelLessonPlanningTypeInput | null,
   externalId?: ModelIDInput | null,
   extraInformation?: ModelStringInput | null,
+  link?: ModelStringInput | null,
   and?: Array< ModelLessonPlanConditionInput | null > | null,
   or?: Array< ModelLessonPlanConditionInput | null > | null,
   not?: ModelLessonPlanConditionInput | null,
@@ -588,6 +591,7 @@ export type LessonPlan = {
   type?: LessonPlanningType | null,
   externalId: string,
   extraInformation?: string | null,
+  link?: string | null,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -604,6 +608,7 @@ export type UpdateLessonPlanInput = {
   type?: LessonPlanningType | null,
   externalId?: string | null,
   extraInformation?: string | null,
+  link?: string | null,
 };
 
 export type DeleteLessonPlanInput = {
@@ -943,6 +948,7 @@ export type ModelLessonPlanFilterInput = {
   type?: ModelLessonPlanningTypeInput | null,
   externalId?: ModelIDInput | null,
   extraInformation?: ModelStringInput | null,
+  link?: ModelStringInput | null,
   and?: Array< ModelLessonPlanFilterInput | null > | null,
   or?: Array< ModelLessonPlanFilterInput | null > | null,
   not?: ModelLessonPlanFilterInput | null,
@@ -1477,6 +1483,7 @@ export type CreateLessonPlanMutation = {
     type?: LessonPlanningType | null,
     externalId: string,
     extraInformation?: string | null,
+    link?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1501,6 +1508,7 @@ export type UpdateLessonPlanMutation = {
     type?: LessonPlanningType | null,
     externalId: string,
     extraInformation?: string | null,
+    link?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1525,6 +1533,7 @@ export type DeleteLessonPlanMutation = {
     type?: LessonPlanningType | null,
     externalId: string,
     extraInformation?: string | null,
+    link?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2015,6 +2024,7 @@ export type GetLessonPlanQuery = {
     type?: LessonPlanningType | null,
     externalId: string,
     extraInformation?: string | null,
+    link?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2042,6 +2052,7 @@ export type ListLessonPlansQuery = {
       type?: LessonPlanningType | null,
       externalId: string,
       extraInformation?: string | null,
+      link?: string | null,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -2252,6 +2263,7 @@ export type LessonPlanByExternalIdQuery = {
       type?: LessonPlanningType | null,
       externalId: string,
       extraInformation?: string | null,
+      link?: string | null,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -2685,6 +2697,7 @@ export type OnCreateLessonPlanSubscription = {
     type?: LessonPlanningType | null,
     externalId: string,
     extraInformation?: string | null,
+    link?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2708,6 +2721,7 @@ export type OnUpdateLessonPlanSubscription = {
     type?: LessonPlanningType | null,
     externalId: string,
     extraInformation?: string | null,
+    link?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2731,6 +2745,7 @@ export type OnDeleteLessonPlanSubscription = {
     type?: LessonPlanningType | null,
     externalId: string,
     extraInformation?: string | null,
+    link?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,

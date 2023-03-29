@@ -15,8 +15,8 @@ import {
   CreateLessonPlanMutation,
   LessonPlan,
   LessonPlanningType,
-  UpdateLessonPlanInput,
   UpdateLessonPlanMutation,
+  CreateLessonPlanInput
 } from "../../API";
 import { FileUploader } from "../../components/Inputs/FileUploader";
 import { Input } from "../../components/Inputs/Input";
@@ -33,26 +33,33 @@ import {
 import { generalGroups } from "../../utils/CognitoGroupsUtils";
 import { renderCourseList, transformGroups } from "../../utils/CourseUtils";
 import { translate } from "../../utils/LanguageUtils";
+import { renderMultiSelectOptions } from "../../utils/SelectUtils";
 import { toastConfig } from "../../utils/ToastUtils";
 
-export type LessonPlanning = {
-  groups: MultiSelectOption | string[] | null;
-  title: string;
-  date: string;
-  uploadedBy: string;
-  content?: string;
-  type?: string;
-  externalId: string;
-  media?: string;
-};
+export interface LessonPlanningWithMultiSelect
+  extends Omit<CreateLessonPlanInput, "type"> {
+  type: MultiSelectOption;
+}
 
-export const defaultLessonPlanning: LessonPlanning = {
-  groups: null,
+// export type LessonPlanning = {
+//   groups: MultiSelectOption
+//   title: string;
+//   date: string;
+//   uploadedBy: string;
+//   content?: string;
+//   type?: { value: string; label: string };
+//   externalId: string;
+//   media?: string;
+//   link?: string;
+// };
+
+export const defaultLessonPlanning: LessonPlanningWithMultiSelect = {
+  groups: [],
   title: "",
   date: "",
   uploadedBy: "",
   content: "",
-  type: LessonPlanningType.LESSON,
+  type: { value: LessonPlanningType.LESSON, label: LessonPlanningType.LESSON },
   externalId: "",
   media: "",
 };
@@ -64,6 +71,17 @@ interface Props {
   onUpdate: (lessonPlanning: LessonPlan) => void;
   lessonToUpdate: LessonPlan | null;
 }
+
+// Transform LessonPlanningAllowedTypes in something iterable
+const lessonPlanningAllowedTypes = Object.entries(LessonPlanningType)
+  .filter(([key, value]) => {
+    const isAllowedType =
+      value !== LessonPlanningType.HOMEWORK &&
+      value !== LessonPlanningType.RECORDING &&
+      value !== LessonPlanningType.EXAM;
+    return isAllowedType;
+  })
+  .map(([key, value]) => value);
 
 export const LessonPlanningModal = ({
   isOpen,
@@ -78,24 +96,25 @@ export const LessonPlanningModal = ({
   const { courseId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File>();
-  const formControls = useForm<LessonPlanning>({
+  const formControls = useForm<LessonPlanningWithMultiSelect>({
     defaultValues: defaultLessonPlanning,
   });
   const currentCourse = courses.find(
     (course) => course.externalId === courseId
   );
 
-  const { handleSubmit, reset, setValue } = formControls;
+  const { handleSubmit, reset, setValue, watch } = formControls;
   const toast = useToast();
 
+  const type = watch("type");
+  console.log("type", type);
+
   useEffect(() => {
-    setValue(
-      "groups",
-      currentCourse
-        ? transformGroups(courses, [currentCourse.externalId])[0]
-        : null
-    );
-  }, [currentCourse]);
+    const transformedGroups = transformGroups(courses, [
+      currentCourse?.externalId as string,
+    ])[0];
+    setValue("groups", [transformedGroups?.value as string]);
+  }, [currentCourse, courses]);
 
   useEffect(() => {
     setValue("date", new Date().toISOString().split("T")[0]);
@@ -105,15 +124,19 @@ export const LessonPlanningModal = ({
       reset({
         ...lessonToUpdate,
         media: lessonToUpdate.media || "",
-        groups: group,
+        groups: [group.value],
         content: lessonToUpdate.content ?? "",
-        type: lessonToUpdate.type ?? LessonPlanningType.LESSON,
+        type: {
+          value: lessonToUpdate.type ?? LessonPlanningType.LESSON,
+          label: lessonToUpdate.type ?? LessonPlanningType.LESSON,
+        },
         date: lessonToUpdate.date.split("T")[0],
+        link: lessonToUpdate.link ?? "",
       });
     }
   }, [lessonToUpdate, courses]);
 
-  const saveLessonPlanning = async (values: LessonPlanning) => {
+  const saveLessonPlanning = async (values: LessonPlanningWithMultiSelect) => {
     setIsLoading(true);
     let savedFile: PutResult | undefined;
 
@@ -121,21 +144,24 @@ export const LessonPlanningModal = ({
       savedFile = await StorageService.uploadToS3(file);
     }
 
+    const type = values.type.value as LessonPlanningType;
+
     const lessonPlan = {
       ...lessonToUpdate,
       ...values,
+      id: lessonToUpdate?.id as string,
       media: savedFile?.key,
       uploadedBy: user?.name || "",
-      type: values.type ?? LessonPlanningType.LESSON,
-      groups: [(values.groups as MultiSelectOption).value || ""],
+      type,
+      groups: values.groups as string[],
     };
 
     let result: CreateLessonPlanMutation | UpdateLessonPlanMutation | undefined;
     let toastMessage: TranslationsDictionary;
     if (lessonToUpdate) {
-      result = (await updateLessonPlan(lessonPlan as UpdateLessonPlanInput)) as
+      result = (await updateLessonPlan(lessonPlan) as
         | UpdateLessonPlanMutation
-        | undefined;
+        | undefined);
       if (result?.updateLessonPlan) {
         onUpdate(result.updateLessonPlan as LessonPlan);
         toastMessage = "LESSON_UPDATE_SUCCESS";
@@ -143,7 +169,7 @@ export const LessonPlanningModal = ({
         toastMessage = "LESSON_UPDATE_ERROR";
       }
     } else {
-      result = (await createLessonPlan(lessonPlan as LessonPlanning)) as
+      result = (await createLessonPlan(lessonPlan)) as
         | CreateLessonPlanMutation
         | undefined;
 
@@ -227,11 +253,35 @@ export const LessonPlanningModal = ({
                     placeholder={translate("EXAM_START_DATE")}
                     type="date"
                   />
-                  <FileUploader
-                    name="media"
-                    onChange={onChangeFile}
-                    label="ATTACH_FILE"
+
+                  <Select
+                    name="type"
+                    label="TYPE"
+                    isRequired={true}
+                    placeholder={translate("TYPE")}
+                    options={renderMultiSelectOptions(
+                      Object.values(lessonPlanningAllowedTypes)
+                    )}
+                    isMultiSelect={false}
+                    closeMenuOnSelect={true}
                   />
+
+                  {type?.value === LessonPlanningType.MEDIA && (
+                    <FileUploader
+                      name="media"
+                      onChange={onChangeFile}
+                      label="ATTACH_FILE"
+                    />
+                  )}
+                  {type?.value === LessonPlanningType.LINK && (
+                    <Input
+                      name="link"
+                      label="LINK"
+                      isRequired={true}
+                      placeholder="https://www.youtube.com/watch?v="
+                      type="text"
+                    />
+                  )}
                 </Stack>
               </ModalBody>
               <ModalFooter

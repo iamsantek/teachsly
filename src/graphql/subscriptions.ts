@@ -369,6 +369,7 @@ export const onCreateLessonPlan = /* GraphQL */ `
       type
       externalId
       extraInformation
+      link
       createdAt
       updatedAt
       owner
@@ -388,6 +389,7 @@ export const onUpdateLessonPlan = /* GraphQL */ `
       type
       externalId
       extraInformation
+      link
       createdAt
       updatedAt
       owner
@@ -407,6 +409,7 @@ export const onDeleteLessonPlan = /* GraphQL */ `
       type
       externalId
       extraInformation
+      link
       createdAt
       updatedAt
       owner

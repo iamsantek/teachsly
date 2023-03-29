@@ -285,6 +285,7 @@ export const getLessonPlan = /* GraphQL */ `
       type
       externalId
       extraInformation
+      link
       createdAt
       updatedAt
       owner
@@ -309,6 +310,7 @@ export const listLessonPlans = /* GraphQL */ `
         type
         externalId
         extraInformation
+        link
         createdAt
         updatedAt
         owner
@@ -514,6 +516,7 @@ export const lessonPlanByExternalId = /* GraphQL */ `
         type
         externalId
         extraInformation
+        link
         createdAt
         updatedAt
         owner

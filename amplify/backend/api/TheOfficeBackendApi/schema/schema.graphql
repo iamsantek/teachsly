@@ -168,6 +168,7 @@ enum LessonPlanningType {
   LESSON,
   MEDIA,
   RECORDING,
+  LINK,
 }
 
 type LessonPlan @model
@@ -187,6 +188,7 @@ type LessonPlan @model
   type: LessonPlanningType
   externalId: ID! @index(name: "byExternalId", queryField: "lessonPlanByExternalId")
   extraInformation: AWSJSON
+  link: String
 }   
 
 enum PaymentStatus {

@@ -1,4 +1,5 @@
 import { Badge, Box, Flex, Stack, Text } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { ExamType, LessonPlan, LessonPlanningType } from "../../API";
 import { ContentLine } from "../../components/ContentLine/ContentLine";
 import { contentLineColor } from "../../constants/LessonPlanning";
@@ -32,25 +33,12 @@ export const LessonsPlanningList = ({
 }: Props) => {
   const { hasEditPermission } = useUserGroups();
 
-  // Format date like this: 30 July
-  const formatDate = (date: string) => {
-    const dateObj = new Date(date);
-    const month = dateObj.toLocaleString("default", { month: "short" });
-    const day = dateObj.getDate();
-    return { day, month };
-  };
-
   const LessonDate = ({ date }: { date: string }) => {
-    const { day, month } = formatDate(date);
+    const formattedDate = dayjs(date).format("DD MMM");
     return (
       <Flex flexDirection="column" zIndex={11}>
         <Text fontSize={10} fontWeight="bold" textAlign={"center"}>
-          {" "}
-          {day}
-        </Text>
-        <Text fontSize={10} fontWeight="bold" textAlign={"center"}>
-          {" "}
-          {month}
+          {formattedDate}
         </Text>
       </Flex>
     );
@@ -102,10 +90,26 @@ export const LessonsPlanningList = ({
       case LessonPlanningType.RECORDING:
         window.open(`/recording/${lesson.externalId}`, "_blank");
         break;
+      case LessonPlanningType.LINK:
+        window.open(lesson.link as string, "_blank");
+        break;
       default:
         return undefined;
     }
   };
+
+  const deletionAllowedTypes = [
+    LessonPlanningType.LESSON,
+    LessonPlanningType.MEDIA,
+    LessonPlanningType.OTHER,
+    LessonPlanningType.LINK,
+  ];
+
+  const editionAllowedTypes = [
+    LessonPlanningType.LESSON,
+    LessonPlanningType.OTHER,
+    LessonPlanningType.LINK,
+  ];
 
   return (
     <>
@@ -134,7 +138,6 @@ export const LessonsPlanningList = ({
           />
           <Stack spacing={5}>
             {lessons.map((lesson) => {
-              const isLessonPlan = lesson.type === LessonPlanningType.LESSON;
               const isRecording = lesson.type === LessonPlanningType.RECORDING;
               return (
                 <Box paddingLeft={isRecording ? 50 : 0}>
@@ -144,12 +147,18 @@ export const LessonsPlanningList = ({
                     leftIcon={<LessonDate date={lesson.date} />}
                     noBorder={true}
                     onDelete={
-                      hasEditPermission && isLessonPlan
+                      hasEditPermission &&
+                      deletionAllowedTypes.includes(
+                        lesson.type as LessonPlanningType
+                      )
                         ? () => onDelete(lesson)
                         : undefined
                     }
                     onEdit={
-                      hasEditPermission && isLessonPlan
+                      hasEditPermission &&
+                      editionAllowedTypes.includes(
+                        lesson.type as LessonPlanningType
+                      )
                         ? () => onUpdate(lesson)
                         : undefined
                     }

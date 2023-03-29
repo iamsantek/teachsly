@@ -91,7 +91,10 @@ export const LessonsPlanningHomeScreen = () => {
       );
     }
 
-    if (lessonPlans?.listLessonPlans?.nextToken) {
+    if (
+      lessonPlans?.listLessonPlans?.nextToken &&
+      lessonPlans.listLessonPlans.items.length !== 0
+    ) {
       dispatch({
         type: FetchType.LESSONS,
         payload: lessonPlans.listLessonPlans.nextToken,
@@ -230,7 +233,7 @@ export const LessonsPlanningHomeScreen = () => {
       lessonPlans.concat(newLessonPlans as LessonPlanningItem[])
     );
 
-    if (medias?.listMedia?.nextToken) {
+    if (medias?.listMedia?.nextToken && medias.listMedia.items.length !== 0) {
       dispatch({ type: FetchType.MEDIA, payload: medias.listMedia.nextToken });
     }
 
@@ -267,6 +270,7 @@ export const LessonsPlanningHomeScreen = () => {
     });
   };
 
+
   const onDelete = async (lessonPlan: LessonPlan) => {
     const deletedLessonPlan = await deleteLessonPlan(lessonPlan.id);
     if (deletedLessonPlan) {
@@ -284,7 +288,7 @@ export const LessonsPlanningHomeScreen = () => {
 
   const onUpdateSuccess = (lessonPlan: LessonPlanningItem) => {
     const newLessons = findAndUpdateContent(lessonPlan, lessons);
-    setLessons(newLessons);
+    setLessons(sortLessons(newLessons));
   };
 
   const isLoading =

@@ -7,4 +7,5 @@ export const contentLineColor: { [key: string]: string } = {
     [LessonPlanningType.OTHER]: 'yellow',
     [LessonPlanningType.LESSON]: 'purple',
     [LessonPlanningType.RECORDING]: 'red',
+    [LessonPlanningType.LINK]: 'cyan',
 }
