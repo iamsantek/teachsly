@@ -3,7 +3,7 @@ import { translate } from "../../utils/LanguageUtils";
 import { TbMoodEmpty } from "react-icons/tb";
 
 export const NoActiveCoursesPlaceholder = () => {
-  const NoResultsIcon = chakra(TbMoodEmpty)
+  const NoResultsIcon = chakra(TbMoodEmpty);
   return (
     <Flex
       direction="column"

@@ -10,7 +10,7 @@ interface NotAllowedProperties {
 // TODO: Type this util
 export const removeNotAllowedPropertiesFromModel = (model: any) => {
   if (!model) {
-    return
+    return;
   }
 
   const {
@@ -20,7 +20,7 @@ export const removeNotAllowedPropertiesFromModel = (model: any) => {
     _lastChangedAt,
     owner,
     ...updatedModel
-  } = model
+  } = model;
 
-  return updatedModel
-}
+  return updatedModel;
+};

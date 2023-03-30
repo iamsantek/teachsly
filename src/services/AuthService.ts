@@ -75,7 +75,7 @@ class AuthService {
     }
 
     const { name, email, groups, phone, englishLevel } = user;
-    console.log(!!englishLevel ? englishLevel : null)
+    console.log(!!englishLevel ? englishLevel : null);
     const dynamoDbBUser = new User({
       name,
       email,

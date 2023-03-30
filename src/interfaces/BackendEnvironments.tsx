@@ -1,4 +1,4 @@
 export enum BackendEnvironments {
-    QA = 'qa',
-    PROD = 'prod'
+  QA = "qa",
+  PROD = "prod",
 }

@@ -1,12 +1,21 @@
-import { LogLevel, LogTypes } from '../enums/LogTypes'
-import { deleteMedia, updateMedia } from '../graphql/mutations'
-import { getMedia, listMedia } from '../graphql/queries'
-import { Media } from '../interfaces/Media'
-import { Media as MediaAPI, DeleteMediaMutation, ListMediaQuery, MediaType, UpdateMediaMutation, UpdateMediaInput, GetMediaQuery, EnglishLevel } from '../API'
-import Logger from '../utils/Logger'
-import GraphQLService from './GraphQLService'
-import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
-import StorageService from './aws/StorageService'
+import { LogLevel, LogTypes } from "../enums/LogTypes";
+import { deleteMedia, updateMedia } from "../graphql/mutations";
+import { getMedia, listMedia } from "../graphql/queries";
+import { Media } from "../interfaces/Media";
+import {
+  Media as MediaAPI,
+  DeleteMediaMutation,
+  ListMediaQuery,
+  MediaType,
+  UpdateMediaMutation,
+  UpdateMediaInput,
+  GetMediaQuery,
+  EnglishLevel,
+} from "../API";
+import Logger from "../utils/Logger";
+import GraphQLService from "./GraphQLService";
+import { removeNotAllowedPropertiesFromModel } from "../utils/GraphQLUtils";
+import StorageService from "./aws/StorageService";
 
 class MediaService {
   public fetchMedias = async (
@@ -17,67 +26,72 @@ class MediaService {
       query: listMedia,
       filter: courseName
         ? {
-          groups: { contains: courseName },
-          folderId: { attributeExists: false }
-        }
+            groups: { contains: courseName },
+            folderId: { attributeExists: false },
+          }
         : { folderId: { attributeExists: false } },
-      nextToken
-    })
-  }
+      nextToken,
+    });
+  };
 
   public updateMedia = async (media: UpdateMediaInput) => {
     try {
       return GraphQLService.fetchQuery<UpdateMediaMutation>({
         query: updateMedia,
-        input: removeNotAllowedPropertiesFromModel(media)
-      })
+        input: removeNotAllowedPropertiesFromModel(media),
+      });
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.CourseService,
-        'Error when updating Media',
+        "Error when updating Media",
         error
-      )
+      );
     }
-  }
+  };
 
   public deleteMedia = async (mediaId: string) => {
     try {
       const media = await GraphQLService.fetchQuery<DeleteMediaMutation>({
         query: deleteMedia,
         input: {
-          id: mediaId
-        }
-      })
+          id: mediaId,
+        },
+      });
 
-      return media?.deleteMedia as Media
+      return media?.deleteMedia as Media;
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.CourseService,
-        'Error when deleting a Media',
+        "Error when deleting a Media",
         error
-      )
+      );
     }
-  }
+  };
 
   public generateSignedUrl = async (key: string) => {
-    return StorageService.getSignedUrl(key)
-  }
+    return StorageService.getSignedUrl(key);
+  };
 
   public getMediaLink = async (key: string, type: MediaType) => {
     if (type === MediaType.LINK) {
-      return key
+      return key;
     }
 
-    const signedUrl = await this.generateSignedUrl(key)
+    const signedUrl = await this.generateSignedUrl(key);
 
-    return signedUrl?.url as string
-  }
+    return signedUrl?.url as string;
+  };
 
-  public fetchMediaByCourseId = async (courseId: string | undefined, englishLevel: EnglishLevel, includeMediaInsideFolders: boolean = false, nextToken?: string | undefined | null) => {
+  public fetchMediaByCourseId = async (
+    courseId: string | undefined,
+    englishLevel: EnglishLevel,
+    includeMediaInsideFolders: boolean = false,
+    nextToken?: string | undefined | null
+  ) => {
     if (!courseId) {
-      return
+      return;
     }
 
     return GraphQLService.fetchQuery<ListMediaQuery>({
@@ -89,64 +103,78 @@ class MediaService {
             or: [
               { groups: { contains: courseId } },
               englishLevel && { groups: { contains: englishLevel } },
-            ].filter(x => x)
+            ].filter((x) => x),
           },
           { folderId: { attributeExists: includeMediaInsideFolders } },
-        ]
-      }
-    })
-  }
+        ],
+      },
+    });
+  };
 
-  public fetchMediaByFolderId = async (folderId: string | undefined, nextToken: string | null | undefined) => {
+  public fetchMediaByFolderId = async (
+    folderId: string | undefined,
+    nextToken: string | null | undefined
+  ) => {
     if (!folderId) {
-      return
+      return;
     }
 
     return GraphQLService.fetchQuery<ListMediaQuery>({
       query: listMedia,
       filter: {
-        folderId: { eq: folderId }
+        folderId: { eq: folderId },
       },
-      nextToken
-    })
-  }
+      nextToken,
+    });
+  };
 
   public fetchMediaById = async (mediaId: string) => {
     return GraphQLService.fetchQuery<GetMediaQuery>({
       query: getMedia,
-      id: mediaId
-    })
-  }
+      id: mediaId,
+    });
+  };
 
   public redirectToMediaUrl = async (media: MediaAPI | Media) => {
     if (media?.type === MediaType.LINK) {
-      window.open(media.link, '_blank')
-      return
+      window.open(media.link, "_blank");
+      return;
     }
 
-    const signedUrl = await this.getMediaLink(media.link, media.type)
+    const signedUrl = await this.getMediaLink(media.link, media.type);
 
-    const isAudioOrVideo = media?.mimeType?.includes('audio') || media?.mimeType?.includes('video')
+    const isAudioOrVideo =
+      media?.mimeType?.includes("audio") || media?.mimeType?.includes("video");
 
-    window.open(isAudioOrVideo ? `/play/${media.id as string}` : signedUrl, '_blank')
-  }
+    window.open(
+      isAudioOrVideo ? `/play/${media.id as string}` : signedUrl,
+      "_blank"
+    );
+  };
 
-  public moveToFolder = async (mediaId: string, folderId: string | undefined | null) => {
+  public moveToFolder = async (
+    mediaId: string,
+    folderId: string | undefined | null
+  ) => {
     return this.updateMedia({
       id: mediaId,
-      folderId
-    })
-  }
+      folderId,
+    });
+  };
 
-  public moveToFolderBulk = async (mediaIds: string[], folderId: string | undefined) => {
-    const folderIdParam = !!folderId ? folderId : null 
-    return Promise.all(mediaIds.map(mediaId => this.moveToFolder(mediaId, folderIdParam)))
-  }
+  public moveToFolderBulk = async (
+    mediaIds: string[],
+    folderId: string | undefined
+  ) => {
+    const folderIdParam = !!folderId ? folderId : null;
+    return Promise.all(
+      mediaIds.map((mediaId) => this.moveToFolder(mediaId, folderIdParam))
+    );
+  };
 
   public bulkDelete = async (mediaIds: string[]) => {
-    return Promise.all(mediaIds.map(mediaId => this.deleteMedia(mediaId)))
-  }
-
+    return Promise.all(mediaIds.map((mediaId) => this.deleteMedia(mediaId)));
+  };
 }
 
-export default new MediaService()
+export default new MediaService();

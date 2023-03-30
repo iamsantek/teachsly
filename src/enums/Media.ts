@@ -1,5 +1,5 @@
 export enum FetchType {
-    ALL = 'ALL',
-    FOLDER = 'FOLDER',
-    COURSE = 'COURSE',
-  }
+  ALL = "ALL",
+  FOLDER = "FOLDER",
+  COURSE = "COURSE",
+}

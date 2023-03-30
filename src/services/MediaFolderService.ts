@@ -1,137 +1,183 @@
-import { CreateMediaFolderInput, CreateMediaFolderMutation, MediaType, MediaFolder, ListMediaFoldersQuery, GetMediaFolderQuery, UpdateMediaFolderMutation, UpdateMediaFolderInput, DeleteMediaFolderMutation, UpdateMediaMutation } from '../API'
-import { LogLevel, LogTypes } from '../enums/LogTypes'
-import { FetchType } from '../enums/Media'
-import { DeleteFolderMethod } from '../enums/MediaFolder'
-import { createMediaFolder, deleteMediaFolder, updateMediaFolder } from '../graphql/mutations'
-import { listMediaFolders, getMediaFolder } from '../graphql/queries'
-import { Media, MediaWithFile } from '../interfaces/Media'
-import Logger from '../utils/Logger'
-import StorageService from './aws/StorageService'
-import GraphQLService from './GraphQLService'
-import MediaService from './MediaService'
+import {
+  CreateMediaFolderInput,
+  CreateMediaFolderMutation,
+  MediaType,
+  MediaFolder,
+  ListMediaFoldersQuery,
+  GetMediaFolderQuery,
+  UpdateMediaFolderMutation,
+  UpdateMediaFolderInput,
+  DeleteMediaFolderMutation,
+  UpdateMediaMutation,
+} from "../API";
+import { LogLevel, LogTypes } from "../enums/LogTypes";
+import { FetchType } from "../enums/Media";
+import { DeleteFolderMethod } from "../enums/MediaFolder";
+import {
+  createMediaFolder,
+  deleteMediaFolder,
+  updateMediaFolder,
+} from "../graphql/mutations";
+import { listMediaFolders, getMediaFolder } from "../graphql/queries";
+import { Media, MediaWithFile } from "../interfaces/Media";
+import Logger from "../utils/Logger";
+import StorageService from "./aws/StorageService";
+import GraphQLService from "./GraphQLService";
+import MediaService from "./MediaService";
 
 class MediaFolderService {
-  public addMediasToFolder = (medias: MediaWithFile[], folderId: string, uploadedBy: string, groups: string[]) => {
-    return medias.map(async media => {
+  public addMediasToFolder = (
+    medias: MediaWithFile[],
+    folderId: string,
+    uploadedBy: string,
+    groups: string[]
+  ) => {
+    return medias.map(async (media) => {
       const formattedMedia = {
-        id: '',
+        id: "",
         title: media.title,
-        description: '',
+        description: "",
         groups,
-        link: '',
+        link: "",
         uploadedBy,
         type: MediaType.FILE,
         folderId,
-        mimeType: media.file.type
-      }
+        mimeType: media.file.type,
+      };
 
-      return StorageService.persistMedia(formattedMedia, media.file)
-    })
-  }
+      return StorageService.persistMedia(formattedMedia, media.file);
+    });
+  };
 
-  public createFolder = async (folderName: string, groups: string[], uploadedBy: string, files: MediaWithFile[], parentId?: string) => {
+  public createFolder = async (
+    folderName: string,
+    groups: string[],
+    uploadedBy: string,
+    files: MediaWithFile[],
+    parentId?: string
+  ) => {
     const mediaFolder: CreateMediaFolderInput = {
       name: folderName,
       groups: groups,
-    }
+    };
 
-    const mediaFolderCreated = await GraphQLService.fetchQuery<CreateMediaFolderMutation>({
-      query: createMediaFolder,
-      input: mediaFolder
-    })
+    const mediaFolderCreated =
+      await GraphQLService.fetchQuery<CreateMediaFolderMutation>({
+        query: createMediaFolder,
+        input: mediaFolder,
+      });
 
-    const mediaFolderId = mediaFolderCreated?.createMediaFolder?.id
+    const mediaFolderId = mediaFolderCreated?.createMediaFolder?.id;
 
     if (mediaFolderId) {
-      const mediasToFolderPromises = this.addMediasToFolder(files, mediaFolderId, uploadedBy, groups)
-      await Promise.all(mediasToFolderPromises)
+      const mediasToFolderPromises = this.addMediasToFolder(
+        files,
+        mediaFolderId,
+        uploadedBy,
+        groups
+      );
+      await Promise.all(mediasToFolderPromises);
 
-      return mediaFolderCreated.createMediaFolder as MediaFolder
+      return mediaFolderCreated.createMediaFolder as MediaFolder;
     }
-  }
+  };
 
-  public fetchMediaFolders = async (fetchType: FetchType = FetchType.ALL, courseId?: string | null, nextToken?: string | null | undefined, parentId?: string) => {
+  public fetchMediaFolders = async (
+    fetchType: FetchType = FetchType.ALL,
+    courseId?: string | null,
+    nextToken?: string | null | undefined,
+    parentId?: string
+  ) => {
     const fetchFilter = {
       [FetchType.ALL]: { parentId: { attributeExists: false } },
       [FetchType.COURSE]: {
-        groups: { contains: courseId }
+        groups: { contains: courseId },
       },
-      [FetchType.FOLDER]: parentId ? { parentId: { eq: parentId } } : { parentId: { attributeExists: false } }
-    }
+      [FetchType.FOLDER]: parentId
+        ? { parentId: { eq: parentId } }
+        : { parentId: { attributeExists: false } },
+    };
 
     return GraphQLService.fetchQuery<ListMediaFoldersQuery>({
       query: listMediaFolders,
       filter: fetchFilter[fetchType],
-      nextToken
-    })
-  }
+      nextToken,
+    });
+  };
 
   public fetchMediaFolderById = async (folderId?: string) => {
     if (!folderId) {
-      return
+      return;
     }
 
     return GraphQLService.fetchQuery<GetMediaFolderQuery>({
       query: getMediaFolder,
-      id: folderId
-    })
-  }
+      id: folderId,
+    });
+  };
 
   public updateFolder = async (folder: UpdateMediaFolderInput) => {
     try {
-      const models = await GraphQLService.fetchQuery<UpdateMediaFolderMutation>({
-        query: updateMediaFolder,
-        input: folder
-      })
+      const models = await GraphQLService.fetchQuery<UpdateMediaFolderMutation>(
+        {
+          query: updateMediaFolder,
+          input: folder,
+        }
+      );
 
-      return models
+      return models;
     } catch (error) {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.MediaFolderService,
-        'Error when updating Media Folder',
+        "Error when updating Media Folder",
         error
-      )
+      );
     }
-  }
+  };
 
-  public deleteMediaFolder = async (folderId: string, deleteMethod: DeleteFolderMethod) => {
-    const deleteMediaFolder = await this.deleteMediaFolderById(folderId)
-    let updatePromises: Promise<Media | UpdateMediaMutation | undefined>[] | undefined = []
+  public deleteMediaFolder = async (
+    folderId: string,
+    deleteMethod: DeleteFolderMethod
+  ) => {
+    const deleteMediaFolder = await this.deleteMediaFolderById(folderId);
+    let updatePromises:
+      | Promise<Media | UpdateMediaMutation | undefined>[]
+      | undefined = [];
 
     if (!deleteMediaFolder?.deleteMediaFolder) {
-      return
+      return;
     }
 
-    const medias = await MediaService.fetchMediaByFolderId(folderId, undefined)
+    const medias = await MediaService.fetchMediaByFolderId(folderId, undefined);
 
-    updatePromises = medias?.listMedia?.items.filter(Boolean).map(media => {
+    updatePromises = medias?.listMedia?.items.filter(Boolean).map((media) => {
       if (deleteMethod === DeleteFolderMethod.DELETE_FOLDER) {
         // Update all medias to root folder
         return MediaService.updateMedia({
           ...media,
           id: media?.id as string,
-          folderId: null
-        })
+          folderId: null,
+        });
       } else {
-        return MediaService.deleteMedia(media?.id as string)
+        return MediaService.deleteMedia(media?.id as string);
       }
-    })
+    });
     if (updatePromises) {
-      const allPromisesCompleted = await Promise.all(updatePromises)
+      const allPromisesCompleted = await Promise.all(updatePromises);
 
-      return allPromisesCompleted.every(Boolean)
+      return allPromisesCompleted.every(Boolean);
     }
-  }
+  };
 
   public deleteMediaFolderById = async (folderId: string) => {
     return GraphQLService.fetchQuery<DeleteMediaFolderMutation>({
       query: deleteMediaFolder,
       input: {
-        id: folderId
-      }
-    })
-  }
+        id: folderId,
+      },
+    });
+  };
 }
 
-export default new MediaFolderService()
+export default new MediaFolderService();

@@ -1,6 +1,6 @@
-import { CreateMediaInput, Media as MediaAPI } from '../API'
-import { MediaType } from '../models'
-import { MultiSelectOption } from './MultiSelectOption'
+import { CreateMediaInput, Media as MediaAPI } from "../API";
+import { MediaType } from "../models";
+import { MultiSelectOption } from "./MultiSelectOption";
 
 export interface Media {
   id?: string;
@@ -14,7 +14,8 @@ export interface Media {
   mimeType?: string;
 }
 
-export interface MediaWithMultiSelect extends Omit<MediaAPI | CreateMediaInput, 'groups' | 'type'> {
+export interface MediaWithMultiSelect
+  extends Omit<MediaAPI | CreateMediaInput, "groups" | "type"> {
   groups: MultiSelectOption[];
   type: MultiSelectOption;
 }

@@ -1,7 +1,8 @@
-import { User } from '../API'
-import { MultiSelectOption } from '../interfaces/MultiSelectOption'
+import { User } from "../API";
+import { MultiSelectOption } from "../interfaces/MultiSelectOption";
 
-export interface UserWithMultiSelect extends Omit<User, 'groups' | 'englishLevel'> {
+export interface UserWithMultiSelect
+  extends Omit<User, "groups" | "englishLevel"> {
   groups: MultiSelectOption[];
   englishLevel: MultiSelectOption;
 }

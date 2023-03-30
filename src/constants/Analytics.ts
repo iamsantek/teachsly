@@ -1,3 +1,3 @@
-import { GeneralInformation } from '../enums/GeneralInformation'
+import { GeneralInformation } from "../enums/GeneralInformation";
 
-export const ANALYTICS_URL = `https://analytics.${GeneralInformation.DOMAIN}`
+export const ANALYTICS_URL = `https://analytics.${GeneralInformation.DOMAIN}`;

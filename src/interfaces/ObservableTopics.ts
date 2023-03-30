@@ -1,3 +1,3 @@
 export enum ObservableTopics {
-  ToastNotification = 'toast-notification',
+  ToastNotification = "toast-notification",
 }

@@ -1,7 +1,12 @@
-import { HStack, SkeletonCircle, SkeletonText, useColorModeValue } from '@chakra-ui/react'
+import {
+  HStack,
+  SkeletonCircle,
+  SkeletonText,
+  useColorModeValue,
+} from "@chakra-ui/react";
 
 export const ContentLinePlaceholder = () => {
-  const color = useColorModeValue('white', 'gray.800')
+  const color = useColorModeValue("white", "gray.800");
 
   return (
     <HStack
@@ -16,5 +21,5 @@ export const ContentLinePlaceholder = () => {
       <SkeletonCircle />
       <SkeletonText width={1} flex={1} />
     </HStack>
-  )
-}
+  );
+};

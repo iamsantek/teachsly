@@ -1,5 +1,5 @@
-.amplify-button[data-variation='primary'] {
-  background: '#3394b3';
+.amplify-button[data-variation="primary"] {
+  background: "#3394b3";
 }
 
 [contenteditable] ~ grammarly-extension,

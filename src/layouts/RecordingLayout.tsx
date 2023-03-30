@@ -1,11 +1,4 @@
-import {
-  Box,
-  Container,
-  Heading,
-  Image,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Container, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MediaType } from "../API";
@@ -93,7 +86,7 @@ export const RecordingLayout = () => {
   }
 
   return (
-    <Box w="100%" h="container.lg" bgColor='black'>
+    <Box w="100%" h="container.lg" bgColor="black">
       <Container paddingY={5} maxW={["95%", "85%"]} centerContent gap={5}>
         <Image w={["20", "24"]} src={require("../assets/img/brand/logo.png")} />
         <Heading
@@ -105,11 +98,21 @@ export const RecordingLayout = () => {
           {translate("CLASS_RECORDING")}
         </Heading>
         <Stack maxW="container.sm" spacing={10}>
-          {mediaUrl && <video autoPlay muted src={mediaUrl} width="100%" controls />}
+          {mediaUrl && (
+            <video autoPlay muted src={mediaUrl} width="100%" controls />
+          )}
 
           {chatTranscription && (
             <Stack spacing={3}>
-              <Text textAlign='center' textStyle="title" color='whiteAlpha.900' fontSize='lg' fontWeight='bold'>{translate("RECORDING_CHAT_TITLE")}</Text>
+              <Text
+                textAlign="center"
+                textStyle="title"
+                color="whiteAlpha.900"
+                fontSize="lg"
+                fontWeight="bold"
+              >
+                {translate("RECORDING_CHAT_TITLE")}
+              </Text>
               <Text color="whiteAlpha.900" as="pre">
                 {chatTranscription}
               </Text>

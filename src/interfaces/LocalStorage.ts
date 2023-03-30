@@ -1,4 +1,4 @@
 export interface LocalStorageSeenItem {
-    id: string;
-    timestamp: number;
-  }
+  id: string;
+  timestamp: number;
+}

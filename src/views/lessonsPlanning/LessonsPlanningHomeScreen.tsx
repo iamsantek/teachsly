@@ -91,10 +91,7 @@ export const LessonsPlanningHomeScreen = () => {
       );
     }
 
-    if (
-      lessonPlans?.listLessonPlans?.nextToken &&
-      lessonPlans.listLessonPlans.items.length !== 0
-    ) {
+    if (lessonPlans?.listLessonPlans?.nextToken) {
       dispatch({
         type: FetchType.LESSONS,
         payload: lessonPlans.listLessonPlans.nextToken,
@@ -158,10 +155,7 @@ export const LessonsPlanningHomeScreen = () => {
       );
     }
 
-    if (
-      examAttempts?.listExamAttempts?.nextToken &&
-      examAttempts.listExamAttempts.items.length !== 0
-    ) {
+    if (examAttempts?.listExamAttempts?.nextToken) {
       dispatch({
         type: FetchType.EXAM_ATTEMPTS,
         payload: examAttempts.listExamAttempts.nextToken,
@@ -190,7 +184,7 @@ export const LessonsPlanningHomeScreen = () => {
       );
     }
 
-    if (exams?.listExams?.nextToken && exams.listExams.items.length !== 0) {
+    if (exams?.listExams?.nextToken) {
       dispatch({ type: FetchType.EXAMS, payload: exams.listExams.nextToken });
     } else {
       setExamLoading(false);
@@ -233,7 +227,7 @@ export const LessonsPlanningHomeScreen = () => {
       lessonPlans.concat(newLessonPlans as LessonPlanningItem[])
     );
 
-    if (medias?.listMedia?.nextToken && medias.listMedia.items.length !== 0) {
+    if (medias?.listMedia?.nextToken) {
       dispatch({ type: FetchType.MEDIA, payload: medias.listMedia.nextToken });
     }
 
@@ -269,7 +263,6 @@ export const LessonsPlanningHomeScreen = () => {
       return dateA.getTime() - dateB.getTime();
     });
   };
-
 
   const onDelete = async (lessonPlan: LessonPlan) => {
     const deletedLessonPlan = await deleteLessonPlan(lessonPlan.id);

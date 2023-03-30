@@ -1,9 +1,9 @@
-import { Text } from '@chakra-ui/react'
+import { Text } from "@chakra-ui/react";
 
 export const PaymentsScreen = () => {
   return (
-        <>
-        <Text>Payments Screen</Text>
-        </>
-  )
-}
+    <>
+      <Text>Payments Screen</Text>
+    </>
+  );
+};

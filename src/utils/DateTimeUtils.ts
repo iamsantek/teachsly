@@ -35,7 +35,9 @@ class DateTimeUtils {
 
     const daysOfTheWeek = this.daysOfTheWeek();
 
-    return daysOfTheWeek.filter((day: string, index: number) => dayIndexes.includes(index + 1));
+    return daysOfTheWeek.filter((day: string, index: number) =>
+      dayIndexes.includes(index + 1)
+    );
   };
 
   public shortDays = (dayPositions: number[]) => {

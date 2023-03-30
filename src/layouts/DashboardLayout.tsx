@@ -1,4 +1,4 @@
-import { ReactNode, useContext, ReactText } from 'react'
+import { ReactNode, useContext, ReactText } from "react";
 import {
   IconButton,
   Avatar,
@@ -20,18 +20,18 @@ import {
   MenuItem,
   MenuList,
   Image,
-  Spacer
-} from '@chakra-ui/react'
-import { FiMenu, FiBell, FiChevronDown } from 'react-icons/fi'
-import { IconType } from 'react-icons'
-import { UserDashboardContext } from '../contexts/UserDashboardContext'
-import UserService from '../services/UserService'
-import { useNavigate } from 'react-router-dom'
-import { Footer } from '../components/Footers/Footer'
+  Spacer,
+} from "@chakra-ui/react";
+import { FiMenu, FiBell, FiChevronDown } from "react-icons/fi";
+import { IconType } from "react-icons";
+import { UserDashboardContext } from "../contexts/UserDashboardContext";
+import UserService from "../services/UserService";
+import { useNavigate } from "react-router-dom";
+import { Footer } from "../components/Footers/Footer";
 // import DarkModeSwitch from '../components/Switches/DarkModeSwitch'
-import { translate } from '../utils/LanguageUtils'
-import { useAuthenticator } from '@aws-amplify/ui-react'
-import { ApplicationRoute, CustomRouteObject } from '../interfaces/Routes'
+import { translate } from "../utils/LanguageUtils";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import { ApplicationRoute, CustomRouteObject } from "../interfaces/Routes";
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
@@ -41,14 +41,14 @@ interface NavItemProps extends FlexProps {
 }
 
 const NavItem = ({ icon, onClose, children, path, ...rest }: NavItemProps) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <Box
-      style={{ textDecoration: 'none', fontWeight: 800 }}
-      _focus={{ boxShadow: 'none' }}
+      style={{ textDecoration: "none", fontWeight: 800 }}
+      _focus={{ boxShadow: "none" }}
       onClick={() => {
-        navigate(path as string)
-        onClose()
+        navigate(path as string);
+        onClose();
       }}
     >
       <Flex
@@ -59,8 +59,8 @@ const NavItem = ({ icon, onClose, children, path, ...rest }: NavItemProps) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: 'brand.400',
-          color: 'white'
+          bg: "brand.400",
+          color: "white",
         }}
         {...rest}
       >
@@ -69,7 +69,7 @@ const NavItem = ({ icon, onClose, children, path, ...rest }: NavItemProps) => {
             mr="4"
             fontSize="16"
             _groupHover={{
-              color: 'white'
+              color: "white",
             }}
             as={icon}
           />
@@ -77,23 +77,27 @@ const NavItem = ({ icon, onClose, children, path, ...rest }: NavItemProps) => {
         {children}
       </Flex>
     </Box>
-  )
-}
+  );
+};
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
-  const { context: { routes: applicationRoutes } } = useContext(UserDashboardContext)
-  const routes = applicationRoutes?.filter((route: ApplicationRoute) => (route as CustomRouteObject).name)
+  const {
+    context: { routes: applicationRoutes },
+  } = useContext(UserDashboardContext);
+  const routes = applicationRoutes?.filter(
+    (route: ApplicationRoute) => (route as CustomRouteObject).name
+  );
 
   return (
     <Box
-      bg={useColorModeValue('white', 'gray.900')}
+      bg={useColorModeValue("white", "gray.900")}
       borderRight="1px"
-      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-      w={{ base: 'full', md: 60 }}
+      borderRightColor={useColorModeValue("gray.200", "gray.700")}
+      w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
       paddingTop={5}
@@ -106,27 +110,41 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         justifyContent="space-between"
         marginBottom={[10, 5]}
       >
-        <Image w={[36, 40]} padding={[0, 4]} src={require('../assets/img/brand/logo.png')} />
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+        <Image
+          w={[36, 40]}
+          padding={[0, 4]}
+          src={require("../assets/img/brand/logo.png")}
+        />
+        <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {routes?.filter((route: any) => route.showInNavbar).map((link: any, index: number) => (
-        <NavItem key={index} icon={link.icon} path={link.path} onClose={onClose} textStyle='title'>
-          {link.name}
-        </NavItem>
-      ))}
+      {routes
+        ?.filter((route: any) => route.showInNavbar)
+        .map((link: any, index: number) => (
+          <NavItem
+            key={index}
+            icon={link.icon}
+            path={link.path}
+            onClose={onClose}
+            textStyle="title"
+          >
+            {link.name}
+          </NavItem>
+        ))}
       <Spacer />
       {/* <DarkModeSwitch /> */}
       <Footer />
     </Box>
-  )
-}
+  );
+};
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
-  const { context: { user } } = useContext(UserDashboardContext)
-  const { signOut } = useAuthenticator()
+  const {
+    context: { user },
+  } = useContext(UserDashboardContext);
+  const { signOut } = useAuthenticator();
 
   return (
     <Flex
@@ -134,41 +152,45 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      bg={useColorModeValue('white', 'gray.900')}
+      bg={useColorModeValue("white", "gray.900")}
       borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
-      justifyContent={{ base: 'space-between', md: 'flex-end' }}
+      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
+      justifyContent={{ base: "space-between", md: "flex-end" }}
       {...rest}
     >
       <IconButton
-        display={{ base: 'flex', md: 'none' }}
+        display={{ base: "flex", md: "none" }}
         onClick={onOpen}
         variant="outline"
         aria-label="open menu"
         icon={<FiMenu />}
       />
-      <Image w={20} display={{ base: 'flex', md: 'none' }} src={require('../assets/img/brand/logo.png')} />
+      <Image
+        w={20}
+        display={{ base: "flex", md: "none" }}
+        src={require("../assets/img/brand/logo.png")}
+      />
 
-      <HStack spacing={{ base: '0', md: '6' }}>
+      <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton
           size="lg"
           variant="ghost"
           aria-label="open menu"
-          as={'div'}
+          as={"div"}
           icon={<FiBell />}
         />
-        <Flex alignItems={'center'}>
+        <Flex alignItems={"center"}>
           <Menu>
             <MenuButton
-              as={'div'}
+              as={"div"}
               py={2}
               transition="all 0.3s"
-              _focus={{ boxShadow: 'none' }}
+              _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar size={'sm'} name={user?.name as string} />
+                <Avatar size={"sm"} name={user?.name as string} />
                 <VStack
-                  display={{ base: 'none', md: 'flex' }}
+                  display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
                   spacing="1px"
                   ml="2"
@@ -176,35 +198,33 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   <Text fontSize="sm" noOfLines={1}>
                     {user?.name as string}
                   </Text>
-                  <Text fontSize="xs">
-                    {UserService.getUserType(user)}
-                  </Text>
+                  <Text fontSize="xs">{UserService.getUserType(user)}</Text>
                 </VStack>
-                <Box display={{ base: 'none', md: 'flex' }}>
+                <Box display={{ base: "none", md: "flex" }}>
                   <FiChevronDown />
                 </Box>
               </HStack>
             </MenuButton>
             <MenuList
-              bg={useColorModeValue('white', 'gray.900')}
-              borderColor={useColorModeValue('gray.200', 'gray.700')}
+              bg={useColorModeValue("white", "gray.900")}
+              borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem onClick={signOut}>{translate('SIGN_OUT')}</MenuItem>
+              <MenuItem onClick={signOut}>{translate("SIGN_OUT")}</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
       </HStack>
     </Flex>
-  )
-}
+  );
+};
 
-export default function DashboardLayout ({ children }: { children: ReactNode }) {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+export default function DashboardLayout({ children }: { children: ReactNode }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent
         onClose={() => onClose}
-        display={{ base: 'none', md: 'block' }}
+        display={{ base: "none", md: "block" }}
       />
       <Drawer
         autoFocus={false}
@@ -225,5 +245,5 @@ export default function DashboardLayout ({ children }: { children: ReactNode }) 
         {children}
       </Box>
     </Box>
-  )
+  );
 }

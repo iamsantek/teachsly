@@ -16,7 +16,7 @@ import {
   LessonPlan,
   LessonPlanningType,
   UpdateLessonPlanMutation,
-  CreateLessonPlanInput
+  CreateLessonPlanInput,
 } from "../../API";
 import { FileUploader } from "../../components/Inputs/FileUploader";
 import { Input } from "../../components/Inputs/Input";
@@ -159,9 +159,9 @@ export const LessonPlanningModal = ({
     let result: CreateLessonPlanMutation | UpdateLessonPlanMutation | undefined;
     let toastMessage: TranslationsDictionary;
     if (lessonToUpdate) {
-      result = (await updateLessonPlan(lessonPlan) as
+      result = (await updateLessonPlan(lessonPlan)) as
         | UpdateLessonPlanMutation
-        | undefined);
+        | undefined;
       if (result?.updateLessonPlan) {
         onUpdate(result.updateLessonPlan as LessonPlan);
         toastMessage = "LESSON_UPDATE_SUCCESS";

@@ -1,11 +1,8 @@
-import {
-  graphqlOperation,
-  GraphQLResult
-} from '@aws-amplify/api-graphql'
-import { API } from 'aws-amplify'
-import { LogLevel, LogTypes } from '../enums/LogTypes'
-import { removeNotAllowedPropertiesFromModel } from '../utils/GraphQLUtils'
-import Logger from '../utils/Logger'
+import { graphqlOperation, GraphQLResult } from "@aws-amplify/api-graphql";
+import { API } from "aws-amplify";
+import { LogLevel, LogTypes } from "../enums/LogTypes";
+import { removeNotAllowedPropertiesFromModel } from "../utils/GraphQLUtils";
+import Logger from "../utils/Logger";
 interface SingleResult<T> {
   [key: string]: T | Array<T>;
 }
@@ -27,7 +24,7 @@ type QueryParameters = {
   filter?: Object | undefined;
   limit?: number | null;
   id?: Object | undefined;
-}
+};
 
 class GraphQLService {
   public fetchQuery = async <T>({
@@ -36,27 +33,27 @@ class GraphQLService {
     limit = undefined,
     nextToken = undefined,
     filter = undefined,
-    id = undefined
+    id = undefined,
   }: QueryParameters): Promise<T | undefined> => {
     try {
-      const sanitizedInput = removeNotAllowedPropertiesFromModel(input)
+      const sanitizedInput = removeNotAllowedPropertiesFromModel(input);
 
-      const models = await API.graphql(
+      const models = (await API.graphql(
         graphqlOperation(query, {
           input: sanitizedInput,
           filter,
           limit,
           nextToken,
-          id
+          id,
         })
-      ) as GraphQLResult<T>
+      )) as GraphQLResult<T>;
 
-      return models.data as T
+      return models.data as T;
     } catch (e: any) {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.GraphQLService,
-        'Error when executing GraphQL fetch query',
+        "Error when executing GraphQL fetch query",
         e,
         {
           query,
@@ -64,35 +61,32 @@ class GraphQLService {
           limit,
           nextToken,
           filter,
-          id
+          id,
         }
-      )
+      );
     }
-  }
+  };
 
-  public fetchById = async <T>(
-    query: string,
-    filter: Object
-  ) => {
+  public fetchById = async <T>(query: string, filter: Object) => {
     try {
-      const models = await API.graphql(
+      const models = (await API.graphql(
         graphqlOperation(query, filter)
-      ) as GraphQLResult<T>
+      )) as GraphQLResult<T>;
 
-      return models.data as T
+      return models.data as T;
     } catch (e: any) {
       Logger.log(
         LogLevel.ERROR,
         LogTypes.GraphQLService,
-        'Error when executing GraphQL fetchById Query',
+        "Error when executing GraphQL fetchById Query",
         e,
         {
           query,
-          filter
+          filter,
         }
-      )
+      );
     }
-  }
+  };
 }
 
-export default new GraphQLService()
+export default new GraphQLService();

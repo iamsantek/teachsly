@@ -1,264 +1,376 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { DragAndDropZone } from '../../../components/DragAndDrop/DragAndDropZone'
-import { SectionHeader } from '../../../components/Headers/SectionHeader'
-import { MediaDrawer, MediaWithFile } from '../../../interfaces/Media'
-import { MediaFolderEditableListDrawer } from './MediaFolderEditableListDrawer'
-import { MediaFolderSettingsInputs } from './MediaFolderSettingsInputs'
-import { FormProvider, useForm } from 'react-hook-form'
-import { defaultMediaFolder } from '../../../constants/Medias'
-import { MediaFolderFilesCounter } from './MediaFolderFilesCounter'
-import { mapFilesToMediaWithFile, mediaDrawerToUpdateMediaPromises, mediaToMediaDrawer, mediaToUpdateMediaPromises, mediaWithFileToMediaDrawer } from '../../../utils/MediaUtils'
-import { UserDashboardContext } from '../../../contexts/UserDashboardContext'
-import MediaFolderService from '../../../services/MediaFolderService'
-import { useNavigate, useParams } from 'react-router-dom'
-import { Media, MediaFolder, UpdateMediaFolderInput } from '../../../API'
-import { translate } from '../../../utils/LanguageUtils'
-import { transformGroups } from '../../../utils/CourseUtils'
-import MediaService from '../../../services/MediaService'
-import { Alert, AlertIcon, Button, Skeleton, Stack, Text, useToast } from '@chakra-ui/react'
-import { useUserGroups } from '../../../hooks/useUserGroups'
-import { toastConfig } from '../../../utils/ToastUtils'
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { DragAndDropZone } from "../../../components/DragAndDrop/DragAndDropZone";
+import { SectionHeader } from "../../../components/Headers/SectionHeader";
+import { MediaDrawer, MediaWithFile } from "../../../interfaces/Media";
+import { MediaFolderEditableListDrawer } from "./MediaFolderEditableListDrawer";
+import { MediaFolderSettingsInputs } from "./MediaFolderSettingsInputs";
+import { FormProvider, useForm } from "react-hook-form";
+import { defaultMediaFolder } from "../../../constants/Medias";
+import { MediaFolderFilesCounter } from "./MediaFolderFilesCounter";
+import {
+  mapFilesToMediaWithFile,
+  mediaDrawerToUpdateMediaPromises,
+  mediaToMediaDrawer,
+  mediaToUpdateMediaPromises,
+  mediaWithFileToMediaDrawer,
+} from "../../../utils/MediaUtils";
+import { UserDashboardContext } from "../../../contexts/UserDashboardContext";
+import MediaFolderService from "../../../services/MediaFolderService";
+import { useNavigate, useParams } from "react-router-dom";
+import { Media, MediaFolder, UpdateMediaFolderInput } from "../../../API";
+import { translate } from "../../../utils/LanguageUtils";
+import { transformGroups } from "../../../utils/CourseUtils";
+import MediaService from "../../../services/MediaService";
+import {
+  Alert,
+  AlertIcon,
+  Button,
+  Skeleton,
+  Stack,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import { useUserGroups } from "../../../hooks/useUserGroups";
+import { toastConfig } from "../../../utils/ToastUtils";
 
 export const MediaFolderScreen = () => {
-  const [dragAndDropFiles, setDragAndDropFiles] = useState<MediaWithFile[]>([])
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-  const [editingFolder, setEditingFolder] = useState<MediaFolder | null>()
-  const [folderMedias, setFolderMedias] = useState<Media[]>([])
-  const [deletedIds, setDeletedIds] = useState<string[]>([])
-  const [editedMedias, setEditedMedias] = useState<MediaDrawer[]>([])
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [nextPageToken, setNextPageToken] = useState<string | null | undefined>()
+  const [dragAndDropFiles, setDragAndDropFiles] = useState<MediaWithFile[]>([]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [editingFolder, setEditingFolder] = useState<MediaFolder | null>();
+  const [folderMedias, setFolderMedias] = useState<Media[]>([]);
+  const [deletedIds, setDeletedIds] = useState<string[]>([]);
+  const [editedMedias, setEditedMedias] = useState<MediaDrawer[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [nextPageToken, setNextPageToken] = useState<
+    string | null | undefined
+  >();
 
-  const { context: { user, courses } } = useContext(UserDashboardContext)
-  const { hasAdminRole } = useUserGroups()
-  const { folderId } = useParams()
-  const hasFolderEditPermissions = hasAdminRole || editingFolder?.owner === user?.cognitoId
-  const navigate = useNavigate()
-  const toast = useToast()
+  const {
+    context: { user, courses },
+  } = useContext(UserDashboardContext);
+  const { hasAdminRole } = useUserGroups();
+  const { folderId } = useParams();
+  const hasFolderEditPermissions =
+    hasAdminRole || editingFolder?.owner === user?.cognitoId;
+  const navigate = useNavigate();
+  const toast = useToast();
 
   const formControls = useForm({
-    defaultValues: defaultMediaFolder
-  })
+    defaultValues: defaultMediaFolder,
+  });
 
   const {
     watch,
     handleSubmit,
     reset,
-    formState: { isDirty, dirtyFields }
-  } = formControls
+    formState: { isDirty, dirtyFields },
+  } = formControls;
 
   const getMediasByFolderId = useCallback(async () => {
-    const folderMedias = await MediaService.fetchMediaByFolderId(folderId, nextPageToken)
-    setFolderMedias(medias => medias.concat(folderMedias?.listMedia?.items as Media[]))
+    const folderMedias = await MediaService.fetchMediaByFolderId(
+      folderId,
+      nextPageToken
+    );
+    setFolderMedias((medias) =>
+      medias.concat(folderMedias?.listMedia?.items as Media[])
+    );
 
     if (folderMedias?.listMedia?.nextToken) {
-      setNextPageToken(folderMedias.listMedia.nextToken)
+      setNextPageToken(folderMedias.listMedia.nextToken);
     }
-  }, [folderId, nextPageToken])
+  }, [folderId, nextPageToken]);
 
   const getMediaFolder = useCallback(async () => {
-    const mediaFolder = await MediaFolderService.fetchMediaFolderById(folderId)
+    const mediaFolder = await MediaFolderService.fetchMediaFolderById(folderId);
 
     if (!mediaFolder) {
-      return
+      return;
     }
 
-    setEditingFolder(mediaFolder.getMediaFolder)
+    setEditingFolder(mediaFolder.getMediaFolder);
 
-    const groups = transformGroups(courses, mediaFolder?.getMediaFolder?.groups as string[] || [])
+    const groups = transformGroups(
+      courses,
+      (mediaFolder?.getMediaFolder?.groups as string[]) || []
+    );
 
     reset({
       title: mediaFolder?.getMediaFolder?.name as string,
-      groups
-    })
-  }, [folderId, courses, reset])
+      groups,
+    });
+  }, [folderId, courses, reset]);
 
   useEffect(() => {
-    getMediaFolder()
-  }, [getMediaFolder])
+    getMediaFolder();
+  }, [getMediaFolder]);
 
   useEffect(() => {
-    getMediasByFolderId()
-  }, [folderId, getMediasByFolderId])
+    getMediasByFolderId();
+  }, [folderId, getMediasByFolderId]);
 
   const onDropSuccess = useCallback((newFiles: File[]) => {
-    const mediaWithFile: MediaWithFile[] = mapFilesToMediaWithFile(newFiles)
-    setDragAndDropFiles(files => [...files, ...mediaWithFile])
-  }, [])
+    const mediaWithFile: MediaWithFile[] = mapFilesToMediaWithFile(newFiles);
+    setDragAndDropFiles((files) => [...files, ...mediaWithFile]);
+  }, []);
 
-  const onUpdateAlreadyUploaded = useCallback((updatedFile: MediaDrawer) => {
-    const editedIndex = editedMedias.findIndex(media => media.id === updatedFile.id)
-    const folderMediasIndex = folderMedias.findIndex(media => media.id === updatedFile.id)
+  const onUpdateAlreadyUploaded = useCallback(
+    (updatedFile: MediaDrawer) => {
+      const editedIndex = editedMedias.findIndex(
+        (media) => media.id === updatedFile.id
+      );
+      const folderMediasIndex = folderMedias.findIndex(
+        (media) => media.id === updatedFile.id
+      );
 
-    if (editedIndex !== -1) {
-      const updatedMedia = [...editedMedias]
+      if (editedIndex !== -1) {
+        const updatedMedia = [...editedMedias];
 
-      updatedMedia[editedIndex].title = updatedFile.title
+        updatedMedia[editedIndex].title = updatedFile.title;
 
-      setEditedMedias(updatedMedia)
-    } else {
-      setEditedMedias(medias => medias.concat(updatedFile))
-    }
+        setEditedMedias(updatedMedia);
+      } else {
+        setEditedMedias((medias) => medias.concat(updatedFile));
+      }
 
-    if (folderMediasIndex !== -1) {
-      const updatedFolderMedias = [...folderMedias]
-      updatedFolderMedias[folderMediasIndex].title = updatedFile.title
-      setFolderMedias(updatedFolderMedias)
-    }
-  }, [editedMedias, folderMedias])
+      if (folderMediasIndex !== -1) {
+        const updatedFolderMedias = [...folderMedias];
+        updatedFolderMedias[folderMediasIndex].title = updatedFile.title;
+        setFolderMedias(updatedFolderMedias);
+      }
+    },
+    [editedMedias, folderMedias]
+  );
 
-  const onUpdateNotYetUploaded = useCallback((updatedFile: MediaDrawer) => {
-    const mediaIndex = dragAndDropFiles.findIndex(file => file.id === updatedFile.id)
-    dragAndDropFiles[mediaIndex].title = updatedFile.title
-    setDragAndDropFiles(files => [...files])
-  }, [dragAndDropFiles])
+  const onUpdateNotYetUploaded = useCallback(
+    (updatedFile: MediaDrawer) => {
+      const mediaIndex = dragAndDropFiles.findIndex(
+        (file) => file.id === updatedFile.id
+      );
+      dragAndDropFiles[mediaIndex].title = updatedFile.title;
+      setDragAndDropFiles((files) => [...files]);
+    },
+    [dragAndDropFiles]
+  );
 
-  const onUpdate = useCallback((updatedFile: MediaDrawer) => {
-    updatedFile.isUploaded ? onUpdateAlreadyUploaded(updatedFile) : onUpdateNotYetUploaded(updatedFile)
-  }, [onUpdateAlreadyUploaded, onUpdateNotYetUploaded])
+  const onUpdate = useCallback(
+    (updatedFile: MediaDrawer) => {
+      updatedFile.isUploaded
+        ? onUpdateAlreadyUploaded(updatedFile)
+        : onUpdateNotYetUploaded(updatedFile);
+    },
+    [onUpdateAlreadyUploaded, onUpdateNotYetUploaded]
+  );
 
   const onDeleteNotYetUploaded = useCallback((id: string) => {
-    setDragAndDropFiles(files => files.filter(file => file.id !== id))
-  }, [])
+    setDragAndDropFiles((files) => files.filter((file) => file.id !== id));
+  }, []);
 
   const onDeleteAlreadyUploaded = useCallback((id: string) => {
-    setDeletedIds(deletedIds => [...deletedIds, id])
-    setFolderMedias(files => files.filter(file => file.id !== id))
-  }, [])
+    setDeletedIds((deletedIds) => [...deletedIds, id]);
+    setFolderMedias((files) => files.filter((file) => file.id !== id));
+  }, []);
 
-  const onDelete = useCallback((deletedFile: MediaDrawer) => {
-    const { id, isUploaded } = deletedFile
-    isUploaded ? onDeleteAlreadyUploaded(id) : onDeleteNotYetUploaded(id)
-  }, [onDeleteAlreadyUploaded, onDeleteNotYetUploaded])
+  const onDelete = useCallback(
+    (deletedFile: MediaDrawer) => {
+      const { id, isUploaded } = deletedFile;
+      isUploaded ? onDeleteAlreadyUploaded(id) : onDeleteNotYetUploaded(id);
+    },
+    [onDeleteAlreadyUploaded, onDeleteNotYetUploaded]
+  );
 
-  const createFolder = useCallback(async (folderName: string, groups: string[], files: MediaWithFile[]) => {
-    setIsProcessing(true)
-    const folder = await MediaFolderService.createFolder(
-      folderName,
-      groups,
-      user?.name as string,
-      files
-    )
+  const createFolder = useCallback(
+    async (folderName: string, groups: string[], files: MediaWithFile[]) => {
+      setIsProcessing(true);
+      const folder = await MediaFolderService.createFolder(
+        folderName,
+        groups,
+        user?.name as string,
+        files
+      );
 
-    toast(toastConfig({
-      description: folder ? 'CREATE_MEDIA_FOLDER_SUCCESS' : 'CREATE_MEDIA_FOLDER_FAILURE',
-      status: folder ? 'success' : 'error'
-    }))
+      toast(
+        toastConfig({
+          description: folder
+            ? "CREATE_MEDIA_FOLDER_SUCCESS"
+            : "CREATE_MEDIA_FOLDER_FAILURE",
+          status: folder ? "success" : "error",
+        })
+      );
 
-    setIsProcessing(false)
-    navigate(`/medias/folder/${folder?.id}`)
-  }, [user, navigate])
+      setIsProcessing(false);
+      navigate(`/medias/folder/${folder?.id}`);
+    },
+    [user, navigate]
+  );
 
   const onUpdateMediaFolderInformation = useCallback(async () => {
-    const { title, groups } = watch()
+    const { title, groups } = watch();
 
     const folder: UpdateMediaFolderInput = {
       id: editingFolder?.id as string,
       name: title,
-      groups: groups.map(group => group.value) as string[]
-    }
+      groups: groups.map((group) => group.value) as string[],
+    };
 
-    return MediaFolderService.updateFolder(folder)
-  }, [watch, editingFolder])
+    return MediaFolderService.updateFolder(folder);
+  }, [watch, editingFolder]);
 
   const onDeleteMedia = useCallback(async () => {
-    return deletedIds.map(async id => (
-      MediaService.deleteMedia(id)
-    ))
-  }, [deletedIds])
+    return deletedIds.map(async (id) => MediaService.deleteMedia(id));
+  }, [deletedIds]);
 
   const updateFolder = useCallback(async () => {
-    setIsProcessing(true)
-    const folderOperationsPromises = []
+    setIsProcessing(true);
+    const folderOperationsPromises = [];
 
     // Edit Folder information
     if (isDirty && hasFolderEditPermissions) {
-      folderOperationsPromises.push(onUpdateMediaFolderInformation())
+      folderOperationsPromises.push(onUpdateMediaFolderInformation());
     }
 
-    const groupsHasBeenModified = !!dirtyFields.groups
+    const groupsHasBeenModified = !!dirtyFields.groups;
     if (groupsHasBeenModified) {
-      const groups = watch('groups').map(group => group.value) as string[]
-      const updatedMediasPromises = mediaToUpdateMediaPromises(folderMedias, groups)
+      const groups = watch("groups").map((group) => group.value) as string[];
+      const updatedMediasPromises = mediaToUpdateMediaPromises(
+        folderMedias,
+        groups
+      );
 
-      folderOperationsPromises.push(updatedMediasPromises)
+      folderOperationsPromises.push(updatedMediasPromises);
     }
 
     // Deleted medias
-    folderOperationsPromises.push(onDeleteMedia())
+    folderOperationsPromises.push(onDeleteMedia());
 
     // Added medias
     if (dragAndDropFiles.length > 0) {
-      const groups = watch().groups.map(group => group.value) as string[]
+      const groups = watch().groups.map((group) => group.value) as string[];
       const addMediaPromises = MediaFolderService.addMediasToFolder(
         dragAndDropFiles,
         folderId as string,
         user?.name as string,
         groups
-      )
+      );
 
-      folderOperationsPromises.push(addMediaPromises)
+      folderOperationsPromises.push(addMediaPromises);
     }
 
     // Edited medias
-    const updatePromises = mediaDrawerToUpdateMediaPromises(editedMedias)
+    const updatePromises = mediaDrawerToUpdateMediaPromises(editedMedias);
 
-    folderOperationsPromises.push(updatePromises)
+    folderOperationsPromises.push(updatePromises);
 
-    const folderOperationsPromisesResult = await Promise.all(folderOperationsPromises.flat(Infinity))
-    const operationsSuccess = folderOperationsPromisesResult.every(operation => operation)
+    const folderOperationsPromisesResult = await Promise.all(
+      folderOperationsPromises.flat(Infinity)
+    );
+    const operationsSuccess = folderOperationsPromisesResult.every(
+      (operation) => operation
+    );
 
-    setIsProcessing(false)
+    setIsProcessing(false);
 
-    toast(toastConfig({
-      description: operationsSuccess ? 'UPDATE_MEDIA_FOLDER_SUCCESS' : 'UPDATE_MEDIA_FOLDER_FAILURE',
-      status: operationsSuccess ? 'success' : 'error'
-    }))
+    toast(
+      toastConfig({
+        description: operationsSuccess
+          ? "UPDATE_MEDIA_FOLDER_SUCCESS"
+          : "UPDATE_MEDIA_FOLDER_FAILURE",
+        status: operationsSuccess ? "success" : "error",
+      })
+    );
 
     if (operationsSuccess) {
-      navigate(`/medias/folder/${folderId}`)
+      navigate(`/medias/folder/${folderId}`);
     }
-  }, [hasFolderEditPermissions, folderId, editedMedias, dragAndDropFiles, isDirty, navigate, watch, onDeleteMedia, user, onUpdateMediaFolderInformation, dirtyFields.groups, folderMedias])
+  }, [
+    hasFolderEditPermissions,
+    folderId,
+    editedMedias,
+    dragAndDropFiles,
+    isDirty,
+    navigate,
+    watch,
+    onDeleteMedia,
+    user,
+    onUpdateMediaFolderInformation,
+    dirtyFields.groups,
+    folderMedias,
+  ]);
 
-  const onSubmit = useCallback((data: any) => {
-    const groups = data.groups.map((group: any) => group.value)
+  const onSubmit = useCallback(
+    (data: any) => {
+      const groups = data.groups.map((group: any) => group.value);
 
-    folderId ? updateFolder() : createFolder(data.title, groups, dragAndDropFiles)
-  }, [dragAndDropFiles, updateFolder, folderId, createFolder])
+      folderId
+        ? updateFolder()
+        : createFolder(data.title, groups, dragAndDropFiles);
+    },
+    [dragAndDropFiles, updateFolder, folderId, createFolder]
+  );
 
-  const { title: drawerTitle } = watch()
-  const sectionName = folderId ? `${translate('EDITING')} '${editingFolder?.name ?? translate('FOLDER')}'` : translate('CREATE_FOLDER')
-  const fileTypes = useMemo(() => folderId ? [...folderMedias.map(media => media.mimeType) as string[], ...dragAndDropFiles.map(file => file.file.type)] : dragAndDropFiles.map(file => file.file.type), [folderMedias, folderId, dragAndDropFiles])
-  const drawerMedia = useMemo(() => folderId ? [...mediaToMediaDrawer(folderMedias), ...mediaWithFileToMediaDrawer(dragAndDropFiles)] : mediaWithFileToMediaDrawer(dragAndDropFiles), [folderId, folderMedias, dragAndDropFiles])
-  const isMediaFolderFilesModified = deletedIds.length > 0 || dragAndDropFiles.length > 0 || editedMedias.length > 0
-  const isFolderInformationModified = isDirty || isMediaFolderFilesModified
+  const { title: drawerTitle } = watch();
+  const sectionName = folderId
+    ? `${translate("EDITING")} '${editingFolder?.name ?? translate("FOLDER")}'`
+    : translate("CREATE_FOLDER");
+  const fileTypes = useMemo(
+    () =>
+      folderId
+        ? [
+            ...(folderMedias.map((media) => media.mimeType) as string[]),
+            ...dragAndDropFiles.map((file) => file.file.type),
+          ]
+        : dragAndDropFiles.map((file) => file.file.type),
+    [folderMedias, folderId, dragAndDropFiles]
+  );
+  const drawerMedia = useMemo(
+    () =>
+      folderId
+        ? [
+            ...mediaToMediaDrawer(folderMedias),
+            ...mediaWithFileToMediaDrawer(dragAndDropFiles),
+          ]
+        : mediaWithFileToMediaDrawer(dragAndDropFiles),
+    [folderId, folderMedias, dragAndDropFiles]
+  );
+  const isMediaFolderFilesModified =
+    deletedIds.length > 0 ||
+    dragAndDropFiles.length > 0 ||
+    editedMedias.length > 0;
+  const isFolderInformationModified = isDirty || isMediaFolderFilesModified;
 
   return (
     <Stack spacing={4}>
       <Skeleton isLoaded={folderId ? !!editingFolder : !editingFolder}>
-          <SectionHeader sectionName={sectionName}>
-            {folderId && isFolderInformationModified && (
-              <Button
-                colorScheme='brand'
-                isLoading={isProcessing}
-                loadingText={translate('PROCESSING')}
-                onClick={() => updateFolder()}>
-                {translate('UPDATE_FOLDER')}
-              </Button>
-            )}
-          </SectionHeader>
+        <SectionHeader sectionName={sectionName}>
+          {folderId && isFolderInformationModified && (
+            <Button
+              colorScheme="brand"
+              isLoading={isProcessing}
+              loadingText={translate("PROCESSING")}
+              onClick={() => updateFolder()}
+            >
+              {translate("UPDATE_FOLDER")}
+            </Button>
+          )}
+        </SectionHeader>
       </Skeleton>
       {!!folderId && !hasFolderEditPermissions && (
-            <Alert status='info' variant='left-accent' marginY={4}>
-              <AlertIcon />
-              <Text fontWeight='bold'>{translate('NO_FOLDER_EDIT_PERMISSION_TITLE_MESSAGE')}</Text>
-            </Alert>
+        <Alert status="info" variant="left-accent" marginY={4}>
+          <AlertIcon />
+          <Text fontWeight="bold">
+            {translate("NO_FOLDER_EDIT_PERMISSION_TITLE_MESSAGE")}
+          </Text>
+        </Alert>
       )}
       <FormProvider {...formControls}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <MediaFolderSettingsInputs readOnly={!!folderId && !hasFolderEditPermissions} />
+          <MediaFolderSettingsInputs
+            readOnly={!!folderId && !hasFolderEditPermissions}
+          />
           <DragAndDropZone onDropSuccess={onDropSuccess} />
-          <MediaFolderFilesCounter fileTypes={fileTypes} onClick={() => setIsDrawerOpen(true)} />
+          <MediaFolderFilesCounter
+            fileTypes={fileTypes}
+            onClick={() => setIsDrawerOpen(true)}
+          />
           <MediaFolderEditableListDrawer
             title={drawerTitle}
             isOpen={isDrawerOpen}
@@ -274,5 +386,5 @@ export const MediaFolderScreen = () => {
         </form>
       </FormProvider>
     </Stack>
-  )
-}
+  );
+};

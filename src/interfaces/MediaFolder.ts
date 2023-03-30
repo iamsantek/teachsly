@@ -1,4 +1,4 @@
 export interface DeletingFolder {
-    folderId: string
-    folderName: string
+  folderId: string;
+  folderName: string;
 }

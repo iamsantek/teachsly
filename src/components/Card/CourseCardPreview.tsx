@@ -60,11 +60,13 @@ export const CourseCardPreview = ({ course }: Props) => {
           gap={3}
           width="100%"
         >
-          <Flex justifyContent="space-between" width='100%'>
+          <Flex justifyContent="space-between" width="100%">
             <Badge rounded="md" bg="brand.500" color="white">
               {translate(virtualClassLink ? "VIRTUAL_COURSE" : "ON_SITE_CLASS")}
             </Badge>
-            <Text fontSize='xs' fontWeight='bold'>{course.scheduleYear}</Text>
+            <Text fontSize="xs" fontWeight="bold">
+              {course.scheduleYear}
+            </Text>
           </Flex>
           <Box display="flex" flexDirection={"column"}>
             <Text as="h1" textStyle={"title"} fontSize={"xl"}>

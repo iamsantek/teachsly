@@ -1,8 +1,12 @@
-import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
+import {
+  ModelInit,
+  MutableModel,
+  PersistentModelConstructor,
+} from "@aws-amplify/datastore";
 
 export enum ExamType {
   EXAM = "EXAM",
-  HOMEWORK = "HOMEWORK"
+  HOMEWORK = "HOMEWORK",
 }
 
 export enum EnglishLevel {
@@ -11,23 +15,23 @@ export enum EnglishLevel {
   PRE_INTERMEDIATE = "PRE_INTERMEDIATE",
   INTERMEDIATE = "INTERMEDIATE",
   UPPER_INTERMEDIATE = "UPPER_INTERMEDIATE",
-  ADVANCED = "ADVANCED"
+  ADVANCED = "ADVANCED",
 }
 
 export enum MediaType {
   LINK = "LINK",
-  FILE = "FILE"
+  FILE = "FILE",
 }
 
 export enum DisabledAccountReasons {
   DISABLED_BY_ADMIN = "DISABLED_BY_ADMIN",
-  PAYMENT_NOT_COMPLETED = "PAYMENT_NOT_COMPLETED"
+  PAYMENT_NOT_COMPLETED = "PAYMENT_NOT_COMPLETED",
 }
 
 export enum TimeGranularity {
   SECONDS = "SECONDS",
   MINUTES = "MINUTES",
-  HOURS = "HOURS"
+  HOURS = "HOURS",
 }
 
 export enum LessonPlanningType {
@@ -35,7 +39,7 @@ export enum LessonPlanningType {
   HOMEWORK = "HOMEWORK",
   OTHER = "OTHER",
   LESSON = "LESSON",
-  MEDIA = "MEDIA"
+  MEDIA = "MEDIA",
 }
 
 export enum PaymentStatus {
@@ -46,11 +50,11 @@ export enum PaymentStatus {
   REFUNDED = "REFUNDED",
   CANCELLED = "CANCELLED",
   IN_MEDIATION = "IN_MEDIATION",
-  CHARGED_BACK = "CHARGED_BACK"
+  CHARGED_BACK = "CHARGED_BACK",
 }
 
 export enum PaymentType {
-  BOOKLET = "BOOKLET"
+  BOOKLET = "BOOKLET",
 }
 
 export declare class Options {
@@ -63,7 +67,10 @@ export declare class Options {
 export declare class Timer {
   readonly type: string;
   readonly timeInSeconds: number;
-  readonly timeGranularity?: TimeGranularity | keyof typeof TimeGranularity | null;
+  readonly timeGranularity?:
+    | TimeGranularity
+    | keyof typeof TimeGranularity
+    | null;
   constructor(init: ModelInit<Timer>);
 }
 
@@ -73,40 +80,40 @@ export declare class ExamSettings {
 }
 
 type CourseMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
+  readOnlyFields: "createdAt" | "updatedAt";
+};
 
 type MediaFolderMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
+  readOnlyFields: "createdAt" | "updatedAt";
+};
 
 type MediaMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
+  readOnlyFields: "createdAt" | "updatedAt";
+};
 
 type UserMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
+  readOnlyFields: "createdAt" | "updatedAt";
+};
 
 type ExamMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
+  readOnlyFields: "createdAt" | "updatedAt";
+};
 
 type ExamAttemptMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
+  readOnlyFields: "createdAt" | "updatedAt";
+};
 
 type LessonPlanMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
+  readOnlyFields: "createdAt" | "updatedAt";
+};
 
 type PaymentsMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
+  readOnlyFields: "createdAt" | "updatedAt";
+};
 
 type BookletsMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
+  readOnlyFields: "createdAt" | "updatedAt";
+};
 
 export declare class Course {
   readonly id: string;
@@ -122,7 +129,12 @@ export declare class Course {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Course, CourseMetaData>);
-  static copyOf(source: Course, mutator: (draft: MutableModel<Course, CourseMetaData>) => MutableModel<Course, CourseMetaData> | void): Course;
+  static copyOf(
+    source: Course,
+    mutator: (
+      draft: MutableModel<Course, CourseMetaData>
+    ) => MutableModel<Course, CourseMetaData> | void
+  ): Course;
 }
 
 export declare class MediaFolder {
@@ -132,7 +144,12 @@ export declare class MediaFolder {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<MediaFolder, MediaFolderMetaData>);
-  static copyOf(source: MediaFolder, mutator: (draft: MutableModel<MediaFolder, MediaFolderMetaData>) => MutableModel<MediaFolder, MediaFolderMetaData> | void): MediaFolder;
+  static copyOf(
+    source: MediaFolder,
+    mutator: (
+      draft: MutableModel<MediaFolder, MediaFolderMetaData>
+    ) => MutableModel<MediaFolder, MediaFolderMetaData> | void
+  ): MediaFolder;
 }
 
 export declare class Media {
@@ -149,7 +166,12 @@ export declare class Media {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Media, MediaMetaData>);
-  static copyOf(source: Media, mutator: (draft: MutableModel<Media, MediaMetaData>) => MutableModel<Media, MediaMetaData> | void): Media;
+  static copyOf(
+    source: Media,
+    mutator: (
+      draft: MutableModel<Media, MediaMetaData>
+    ) => MutableModel<Media, MediaMetaData> | void
+  ): Media;
 }
 
 export declare class User {
@@ -160,12 +182,20 @@ export declare class User {
   readonly cognitoId: string;
   readonly groups: string[];
   readonly isDisabledUser?: boolean | null;
-  readonly disabledReason?: DisabledAccountReasons | keyof typeof DisabledAccountReasons | null;
+  readonly disabledReason?:
+    | DisabledAccountReasons
+    | keyof typeof DisabledAccountReasons
+    | null;
   readonly englishLevel?: EnglishLevel | keyof typeof EnglishLevel | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<User, UserMetaData>);
-  static copyOf(source: User, mutator: (draft: MutableModel<User, UserMetaData>) => MutableModel<User, UserMetaData> | void): User;
+  static copyOf(
+    source: User,
+    mutator: (
+      draft: MutableModel<User, UserMetaData>
+    ) => MutableModel<User, UserMetaData> | void
+  ): User;
 }
 
 export declare class Exam {
@@ -181,7 +211,12 @@ export declare class Exam {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Exam, ExamMetaData>);
-  static copyOf(source: Exam, mutator: (draft: MutableModel<Exam, ExamMetaData>) => MutableModel<Exam, ExamMetaData> | void): Exam;
+  static copyOf(
+    source: Exam,
+    mutator: (
+      draft: MutableModel<Exam, ExamMetaData>
+    ) => MutableModel<Exam, ExamMetaData> | void
+  ): Exam;
 }
 
 export declare class ExamAttempt {
@@ -203,7 +238,12 @@ export declare class ExamAttempt {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<ExamAttempt, ExamAttemptMetaData>);
-  static copyOf(source: ExamAttempt, mutator: (draft: MutableModel<ExamAttempt, ExamAttemptMetaData>) => MutableModel<ExamAttempt, ExamAttemptMetaData> | void): ExamAttempt;
+  static copyOf(
+    source: ExamAttempt,
+    mutator: (
+      draft: MutableModel<ExamAttempt, ExamAttemptMetaData>
+    ) => MutableModel<ExamAttempt, ExamAttemptMetaData> | void
+  ): ExamAttempt;
 }
 
 export declare class LessonPlan {
@@ -220,7 +260,12 @@ export declare class LessonPlan {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<LessonPlan, LessonPlanMetaData>);
-  static copyOf(source: LessonPlan, mutator: (draft: MutableModel<LessonPlan, LessonPlanMetaData>) => MutableModel<LessonPlan, LessonPlanMetaData> | void): LessonPlan;
+  static copyOf(
+    source: LessonPlan,
+    mutator: (
+      draft: MutableModel<LessonPlan, LessonPlanMetaData>
+    ) => MutableModel<LessonPlan, LessonPlanMetaData> | void
+  ): LessonPlan;
 }
 
 export declare class Payments {
@@ -236,7 +281,12 @@ export declare class Payments {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Payments, PaymentsMetaData>);
-  static copyOf(source: Payments, mutator: (draft: MutableModel<Payments, PaymentsMetaData>) => MutableModel<Payments, PaymentsMetaData> | void): Payments;
+  static copyOf(
+    source: Payments,
+    mutator: (
+      draft: MutableModel<Payments, PaymentsMetaData>
+    ) => MutableModel<Payments, PaymentsMetaData> | void
+  ): Payments;
 }
 
 export declare class Booklets {
@@ -253,5 +303,10 @@ export declare class Booklets {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Booklets, BookletsMetaData>);
-  static copyOf(source: Booklets, mutator: (draft: MutableModel<Booklets, BookletsMetaData>) => MutableModel<Booklets, BookletsMetaData> | void): Booklets;
+  static copyOf(
+    source: Booklets,
+    mutator: (
+      draft: MutableModel<Booklets, BookletsMetaData>
+    ) => MutableModel<Booklets, BookletsMetaData> | void
+  ): Booklets;
 }
