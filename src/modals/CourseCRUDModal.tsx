@@ -209,12 +209,6 @@ const CourseCRUDModal = ({
                   rules={{ required: false }}
                 />
 
-                <CustomInput
-                  name="virtualClassLink"
-                  label="COURSE_LINK"
-                  isRequired={false}
-                  bottomNote={translate("COURSE_LINK_HELPER")}
-                />
                 <Select
                   name="scheduleYear"
                   label="COURSE_YEAR"
