@@ -56,7 +56,7 @@ const CourseCRUDModal = ({
     reset,
     watch,
     register,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = formControls;
 
   const courseId = watch("id");
@@ -104,7 +104,6 @@ const CourseCRUDModal = ({
     if (createdCourse?.createCourse) {
       onCreate(createdCourse?.createCourse);
       onClose();
-      setIsLoading(false);
 
       toast(
         toastConfig({
@@ -113,6 +112,7 @@ const CourseCRUDModal = ({
         })
       );
     }
+    setIsLoading(false);
   };
 
   const formatCourse = (
@@ -127,9 +127,14 @@ const CourseCRUDModal = ({
   });
 
   const updateCourse = async (course: CourseWithMultiSelect) => {
+    setIsLoading(true);
     const updatedCourse = formatCourse(course);
+    const isVirtualCheckboxChanged = !!(
+      dirtyFields.isVirtual && course.isVirtual
+    );
     const courseSuccessfullyEdited = await CourseService.updateCourse(
-      updatedCourse as CourseAPI
+      updatedCourse as CourseAPI,
+      isVirtualCheckboxChanged
     );
 
     if (courseSuccessfullyEdited) {
@@ -143,6 +148,7 @@ const CourseCRUDModal = ({
         })
       );
     }
+    setIsLoading(false);
   };
 
   const onSubmit = (course: CourseWithMultiSelect) => {

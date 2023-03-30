@@ -46,6 +46,43 @@ class CourseService {
     // TODO: Implement delete course logic
   };
 
+  public createZoomMeeting = async ({
+    meetingName,
+    startHour,
+    weeklyDays,
+  }: {
+    meetingName: string;
+    startHour: string;
+    weeklyDays: number[];
+  }): Promise<string | undefined> => {
+    try {
+      const zoomMeeting = await fetch(
+        process.env.REACT_APP_ZOOM_API_ENDPOINT as string,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            meetingName,
+            startHour,
+            weeklyDays,
+          }),
+        }
+      );
+
+      const zoomMeetingResponse = await zoomMeeting.json();
+      return zoomMeetingResponse?.id;
+    } catch (error) {
+      Logger.log(
+        LogLevel.ERROR,
+        LogTypes.CourseService,
+        "Error when creating Zoom Meeting",
+        error
+      );
+    }
+  };
+
   public createCourse = async (courseCreation: CreateCourseInput) => {
     const scheduleStartTime = DateTimeUtils.formateHour(
       courseCreation.scheduleStartTime,
@@ -69,35 +106,13 @@ class CourseService {
       );
     }
 
-    let zoomMeetingId = "";
+    let zoomMeetingId: string | undefined = "";
     if (courseCreation.isVirtual) {
-      try {
-        const zoomMeeting = await fetch(
-          process.env.REACT_APP_ZOOM_API_ENDPOINT as string,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              meetingName: groupExternalId,
-              externalId: groupExternalId,
-              startHour: scheduleStartTime,
-              weeklyDays: scheduleDates,
-            }),
-          }
-        );
-
-        const zoomMeetingResponse = await zoomMeeting.json();
-        zoomMeetingId = zoomMeetingResponse?.id;
-      } catch (error) {
-        Logger.log(
-          LogLevel.ERROR,
-          LogTypes.CourseService,
-          "Error when creating Zoom Meeting",
-          error
-        );
-      }
+      zoomMeetingId = await this.createZoomMeeting({
+        meetingName: groupExternalId,
+        startHour: scheduleStartTime,
+        weeklyDays: scheduleDates as number[],
+      });
     }
 
     const course: CreateCourseInput = {
@@ -109,7 +124,7 @@ class CourseService {
       externalId: groupExternalId,
       scheduleYear: Number(courseCreation.scheduleYear),
       zoomMeetingId: zoomMeetingId ? zoomMeetingId : null,
-      isVirtual: !!zoomMeetingId
+      isVirtual: !!zoomMeetingId,
     };
 
     const createCognitoGroupResponse = await CognitoService.createCognitoGroup(
@@ -130,11 +145,43 @@ class CourseService {
     );
   };
 
-  public updateCourse = async (course: CourseAPI) => {
+  public updateCourse = async (
+    course: CourseAPI,
+    updateZoomMeeting?: boolean
+  ) => {
     try {
+      if (updateZoomMeeting) {
+        const scheduleStartTime = DateTimeUtils.formateHour(
+          course.scheduleStartTime,
+          TimeFormats.AWSTime
+        );
+        const scheduleDates = Array.from(course.scheduleDates?.values() ?? []);
+
+        const zoomMeetingId = await this.createZoomMeeting({
+          meetingName: course.externalId,
+          startHour: scheduleStartTime,
+          weeklyDays: scheduleDates as number[],
+        });
+
+        const models = await GraphQLService.fetchQuery<UpdateCourseMutation>({
+          query: updateCourse,
+          input: removeNotAllowedPropertiesFromModel({
+            ...course,
+            zoomMeetingId,
+            isVirtual: true
+          }),
+        });
+
+        return (models?.updateCourse as CourseAPI) || [];
+      }
+
       const models = await GraphQLService.fetchQuery<UpdateCourseMutation>({
         query: updateCourse,
-        input: removeNotAllowedPropertiesFromModel(course),
+        input: removeNotAllowedPropertiesFromModel({
+          ...course,
+          isVirtual: false,
+          zoomMeetingId: null
+        }),
       });
 
       return (models?.updateCourse as CourseAPI) || [];
