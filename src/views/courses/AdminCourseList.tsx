@@ -211,7 +211,7 @@ export const AdminCourseList = () => {
                     {!!startTime && !!endTime && `${startTime} - ${endTime}`} (
                     {course.scheduleYear})
                   </Text>
-                  {course.virtualClassLink && (
+                  {course.isVirtual && (
                     <Badge marginLeft={3} colorScheme={"brand"}>
                       {translate("VIRTUAL_COURSE")}
                     </Badge>

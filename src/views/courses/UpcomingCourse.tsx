@@ -46,7 +46,7 @@ export const UpcomingCourse = ({ course }: Props) => {
             )}{" "}
             {translate("AT")} {startTime}hs
           </Text>
-          {course.zoomMeetingId && (
+          {course.isVirtual && course.zoomMeetingId && (
             <Button
               colorScheme="brand"
               leftIcon={<BiVideoRecording />}

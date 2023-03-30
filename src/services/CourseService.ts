@@ -109,6 +109,7 @@ class CourseService {
       externalId: groupExternalId,
       scheduleYear: Number(courseCreation.scheduleYear),
       zoomMeetingId: zoomMeetingId ? zoomMeetingId : null,
+      isVirtual: !!zoomMeetingId
     };
 
     const createCognitoGroupResponse = await CognitoService.createCognitoGroup(

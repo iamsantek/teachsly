@@ -10,13 +10,8 @@ interface Props {
 }
 
 export const CourseCardPreview = ({ course }: Props) => {
-  const {
-    name,
-    scheduleStartTime,
-    scheduleEndTime,
-    scheduleDates,
-    virtualClassLink,
-  } = course;
+  const { name, scheduleStartTime, scheduleEndTime, scheduleDates, isVirtual } =
+    course;
   const startTime = DateTimeUtils.formateHour(
     scheduleStartTime,
     TimeFormats.TwentyFourHours
@@ -62,7 +57,7 @@ export const CourseCardPreview = ({ course }: Props) => {
         >
           <Flex justifyContent="space-between" width="100%">
             <Badge rounded="md" bg="brand.500" color="white">
-              {translate(virtualClassLink ? "VIRTUAL_COURSE" : "ON_SITE_CLASS")}
+              {translate(isVirtual ? "VIRTUAL_COURSE" : "ON_SITE_CLASS")}
             </Badge>
             <Text fontSize="xs" fontWeight="bold">
               {course.scheduleYear}
