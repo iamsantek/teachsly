@@ -30,8 +30,6 @@ import {
   createLessonPlan,
   updateLessonPlan,
 } from "../../services/LessonPlanService";
-import { generalGroups } from "../../utils/CognitoGroupsUtils";
-import { renderCourseList, transformGroups } from "../../utils/CourseUtils";
 import { translate } from "../../utils/LanguageUtils";
 import { renderMultiSelectOptions } from "../../utils/SelectUtils";
 import { toastConfig } from "../../utils/ToastUtils";
@@ -40,18 +38,6 @@ export interface LessonPlanningWithMultiSelect
   extends Omit<CreateLessonPlanInput, "type"> {
   type: MultiSelectOption;
 }
-
-// export type LessonPlanning = {
-//   groups: MultiSelectOption
-//   title: string;
-//   date: string;
-//   uploadedBy: string;
-//   content?: string;
-//   type?: { value: string; label: string };
-//   externalId: string;
-//   media?: string;
-//   link?: string;
-// };
 
 export const defaultLessonPlanning: LessonPlanningWithMultiSelect = {
   groups: [],
@@ -107,24 +93,14 @@ export const LessonPlanningModal = ({
   const toast = useToast();
 
   const type = watch("type");
-  console.log("type", type);
-
-  useEffect(() => {
-    const transformedGroups = transformGroups(courses, [
-      currentCourse?.externalId as string,
-    ])[0];
-    setValue("groups", [transformedGroups?.value as string]);
-  }, [currentCourse, courses]);
 
   useEffect(() => {
     setValue("date", new Date().toISOString().split("T")[0]);
 
     if (lessonToUpdate) {
-      const group = transformGroups(courses, [lessonToUpdate.groups[0]])[0];
       reset({
         ...lessonToUpdate,
         media: lessonToUpdate.media || "",
-        groups: [group.value],
         content: lessonToUpdate.content ?? "",
         type: {
           value: lessonToUpdate.type ?? LessonPlanningType.LESSON,
@@ -153,7 +129,7 @@ export const LessonPlanningModal = ({
       media: savedFile?.key,
       uploadedBy: user?.name || "",
       type,
-      groups: values.groups as string[],
+      groups: [currentCourse?.externalId as string],
     };
 
     let result: CreateLessonPlanMutation | UpdateLessonPlanMutation | undefined;
@@ -216,7 +192,7 @@ export const LessonPlanningModal = ({
           <form onSubmit={handleSubmit(saveLessonPlanning)}>
             <ModalContent>
               <ModalHeader textStyle={"paragraph"}>
-                {translate("LESSON_PLAN")}
+                {translate("LESSON_PLAN")} - {currentCourse?.name}
               </ModalHeader>
               <ModalBody marginBottom={3}>
                 <Stack spacing={6}>
@@ -231,19 +207,6 @@ export const LessonPlanningModal = ({
                     label="DESCRIPTION"
                     isRequired={false}
                     placeholder={`E.g Read the article and answer the questions 1-5`}
-                  />
-                  <Select
-                    name="groups"
-                    label="GROUP_MULTI_SELECT_TITLE"
-                    placeholder={translate("COURSES")}
-                    isRequired={true}
-                    options={renderCourseList({
-                      courses,
-                      additionalGroups: generalGroups,
-                      includeEnglishLevels: true,
-                    })}
-                    isMultiSelect={false}
-                    closeMenuOnSelect={true}
                   />
 
                   <Input
