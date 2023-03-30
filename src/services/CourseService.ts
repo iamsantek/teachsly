@@ -80,7 +80,7 @@ class CourseService {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              meetingName: courseCreation.name,
+              meetingName: groupExternalId,
               externalId: groupExternalId,
               startHour: scheduleStartTime,
               weeklyDays: scheduleDates,
