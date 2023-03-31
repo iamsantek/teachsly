@@ -131,7 +131,7 @@ type Exam @model
   title: String!
   questionPools: AWSJSON!
   timer: Timer!
-  deadline: AWSDateTime!
+  deadline: AWSDateTime
   startDate: AWSDateTime!
   type: ExamType
   settings: ExamSettings

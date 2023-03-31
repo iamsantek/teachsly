@@ -50,7 +50,7 @@ export const formatExamForm = (exam: ExamForm) => ({
     (group) => group.value
   ) as string[],
   startDate: new Date(exam.startDate).toISOString(),
-  deadline: new Date(exam.deadline).toISOString(),
+  deadline: exam.deadline ? new Date(exam.deadline).toISOString() : undefined,
   questionPools: JSON.stringify(exam.questionPools),
   timer: {
     ...exam.timer,
@@ -74,24 +74,25 @@ export const formatAPIResponse = (
     return;
   }
 
+  const examDetails = exam.getExam;
   return {
     ...exam?.getExam,
     groups: transformGroups(courses, exam?.getExam?.groups as string[]),
-    questionPools: JSON.parse(
-      exam?.getExam?.questionPools as unknown as string
-    ),
-    deadline: dayjs(exam.getExam?.deadline).format("YYYY-MM-DDTHH:mm"),
-    startDate: dayjs(exam.getExam?.startDate).format("YYYY-MM-DDTHH:mm"),
+    questionPools: JSON.parse(examDetails?.questionPools as unknown as string),
+    deadline: examDetails.deadline
+      ? dayjs(examDetails?.deadline).format("YYYY-MM-DDTHH:mm")
+      : undefined,
+    startDate: dayjs(examDetails.startDate).format("YYYY-MM-DDTHH:mm"),
     timer: {
-      type: renderExamType(exam?.getExam?.timer?.type as TimerType),
-      timeInSeconds: exam?.getExam?.timer?.timeInSeconds as number,
+      type: renderExamType(examDetails?.timer?.type as TimerType),
+      timeInSeconds: examDetails?.timer?.timeInSeconds as number,
       timeGranularity:
-        exam?.getExam?.timer?.timeGranularity || TimeGranularity.HOURS,
+        examDetails?.timer?.timeGranularity || TimeGranularity.HOURS,
     },
     settings: {
-      allowRetake: exam?.getExam?.settings?.allowRetake ?? false,
+      allowRetake: examDetails?.settings?.allowRetake ?? false,
     },
-    type: (exam?.getExam?.type as ExamType) || ExamType.EXAM,
+    type: (examDetails?.type as ExamType) || ExamType.EXAM,
   };
 };
 
@@ -330,7 +331,7 @@ export const applyExamStatusFilter = (
   return exams.filter((exam) => {
     switch (status) {
       case ExamFilter.OUTDATED:
-        return dayjs().isAfter(dayjs(exam.deadline));
+        return exam.deadline ? dayjs().isAfter(dayjs(exam.deadline)) : false;
       case ExamFilter.CORRECTED:
         return examAttempts.some(
           (attempt) => attempt.examId === exam.id && attempt.correctedBy

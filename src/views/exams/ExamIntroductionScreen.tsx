@@ -39,6 +39,7 @@ export const ExamIntroductionScreen = () => {
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [examAttemptId, setExamAttemptId] = useState<string | undefined>();
   const toast = useToast();
+  const hasDeadline = !!exam?.deadline;
 
   const handleTimerFinish = () => {
     setIsTimerFinished(true);
@@ -182,18 +183,21 @@ export const ExamIntroductionScreen = () => {
           alignContent="center"
           justifyContent="center"
         >
-          <Text
-            align="justify"
-            bgGradient="linear(to-l, #3394b3, #FF0080)"
-            bgClip="text"
-            fontSize="4xl"
-            fontWeight="bold"
-          >
-            {days}d:{hours}h:{minutes}m:{seconds}s
-          </Text>
+          {hasDeadline && (
+            <Text
+              align="justify"
+              bgGradient="linear(to-l, #3394b3, #FF0080)"
+              bgClip="text"
+              fontSize="4xl"
+              fontWeight="bold"
+            >
+              {days}d:{hours}h:{minutes}m:{seconds}s
+            </Text>
+          )}
           <Text fontWeight="bold">
-            {translate("EXAM_DEADLINE")}{" "}
-            {dayjs(exam?.deadline).format("DD/MM hh:mm")}hs
+            {exam?.deadline
+              ? `${translate("EXAM_DEADLINE")} ${dayjs(exam?.deadline).format("DD/MM hh:mm")}hs`
+              : translate("NO_DEADLINE_SET")}
           </Text>
           <Text>
             {translate("EXAM_DURATION")}: {examDuration} mins.
@@ -211,7 +215,11 @@ export const ExamIntroductionScreen = () => {
             colorScheme="brand"
             _hover={{ transform: "scale(1.05)" }}
             onClick={() => onStart()}
-            isDisabled={isTimerFinished || !hasStarted || isSubmitted}
+            isDisabled={
+              hasDeadline
+                ? isTimerFinished || !hasStarted || isSubmitted
+                : false
+            }
             isLoading={isProcessing}
           >
             {translate("START")}

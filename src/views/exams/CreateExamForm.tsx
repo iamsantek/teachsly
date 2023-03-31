@@ -306,11 +306,12 @@ export const CreateExamForm = () => {
               <Input
                 name="deadline"
                 label="EXAM_DEADLINE"
-                isRequired={true}
+                isRequired={false}
                 placeholder={translate("EXAM_DEADLINE")}
                 type="datetime-local"
               />
             </Flex>
+            <Text color="gray.500" fontWeight="italic">** {translate("NO_DEADLINE_EXPLANATION")}</Text>
 
             <Select
               name="timer.type"

@@ -282,6 +282,8 @@ export enum LanguageES {
   VIRTUAL_COURSE_EXPLANATION = "Se creara una meeting de Zoom con los datos ingresados en el formulario.",
   RECORDING_CHAT_TITLE = "Chat de la grabación",
   LINK = "Link",
+  NO_DEADLINE_SET = "Sin fecha límite",
+  NO_DEADLINE_EXPLANATION='Dejar "Fecha límite" en blanco para no establecer un plazo máximo de entrega.',
 }
 
 export enum LanguageEN {
@@ -563,4 +565,6 @@ export enum LanguageEN {
   VIRTUAL_COURSE_EXPLANATION = "A meet will be created for this class with the above information",
   RECORDING_CHAT_TITLE = "Class chat",
   LINK = "Link",
+  NO_DEADLINE_SET = "No deadline for this taks",
+  NO_DEADLINE_EXPLANATION="Leave the deadline field empty if you don't want to set a deadline for this task.",
 }

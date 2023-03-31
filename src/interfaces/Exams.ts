@@ -100,7 +100,7 @@ export interface ExamForm {
   groups: MultiSelectOption[] | string[];
   questionPools: QuestionPool[];
   startDate: string;
-  deadline: string;
+  deadline?: string;
   timer: Timer;
   settings: ExamSettings;
   type: ExamType;

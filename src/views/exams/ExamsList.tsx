@@ -183,8 +183,11 @@ export const ExamsList = () => {
             <CommonContentLineTitle id={exam.id} title={exam.title}>
               {!isCompleted && (
                 <Text color="brand.500" textStyle="paragraph">
-                  {translate("EXAM_DEADLINE")}{" "}
-                  {dayjs(exam.deadline).format("DD/MM HH:mm")}hs
+                  {exam.deadline
+                    ? `${translate("EXAM_DEADLINE")} ${dayjs(
+                        exam.deadline
+                      ).format("DD/MM HH:mm")}hs`
+                    : translate("NO_DEADLINE_SET")}
                 </Text>
               )}
               {!hasEditPermission && (
