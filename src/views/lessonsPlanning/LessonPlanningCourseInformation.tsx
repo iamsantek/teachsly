@@ -27,7 +27,7 @@ export const LessonPlanningCourseInformation = ({
   const { courseId } = useParams();
   const { hasEditPermission } = useUserGroups();
   const {
-    context: { courses },
+    context: { courses, user },
   } = useContext(UserDashboardContext);
   const navigate = useNavigate();
   const course = courses.find(
@@ -59,6 +59,8 @@ export const LessonPlanningCourseInformation = ({
     TimeFormats.TwentyFourHours
   );
 
+  const liveClassesUrl = `${process.env.REACT_APP_ZOOM_CLASSES_LINK}/?meetingId=${course.zoomMeetingId}&userId=${user?.id}`;
+
   return (
     <Stack spacing={4} marginBottom={10}>
       <Flex gap={5}>
@@ -73,7 +75,7 @@ export const LessonPlanningCourseInformation = ({
           </Button>
         )}
       </Flex>
-      <Flex justifyContent="space-between">
+      <Flex justifyContent="space-between" flexDirection={{ base: 'column', md: 'row'}}>
         <Flex gap={3} flexDirection="column">
           <Flex gap={3}>
             <CourseDays days={scheduleDates as number[]} />
@@ -108,7 +110,7 @@ export const LessonPlanningCourseInformation = ({
           </Flex>
         </Flex>
 
-        <Flex flexDirection="column" gap={3} alignItems="flex-end">
+        <Flex flexDirection="column" marginY={{base: 3, md: 0}} gap={3} alignItems={{ base: "flex-start", md: "flex-end"}}>
           <Text fontWeight="bold">{translate("USEFUL_LINKS")}</Text>
           <Button
             size="sm"
@@ -117,11 +119,11 @@ export const LessonPlanningCourseInformation = ({
           >
             {translate("MENU_CONTENTS")}
           </Button>
-          {course?.virtualClassLink && (
+          {course?.zoomMeetingId && (
             <Button
               size="sm"
               onClick={() =>
-                window.open(course.virtualClassLink as string, "_blank")
+                window.open(liveClassesUrl as string, "_blank")
               }
               leftIcon={<FaExternalLinkAlt color="brand" />}
             >

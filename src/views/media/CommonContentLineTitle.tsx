@@ -50,6 +50,9 @@ export const CommonContentLineTitle = ({
           </Center>
         )}
       </HStack>
+      <Text marginY={3} display={{ base: "flex", md: "none"}}>
+        {children}
+      </Text>
     </Flex>
   );
 };
