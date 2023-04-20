@@ -76,9 +76,10 @@ const deleteLessonPlan = async (lessonPlanId: string) => {
   });
 };
 
-const getLessonPlansByExternalId = (externalId: string) => {
+const getLessonPlansByExternalId = (externalId: string, nextToken?: string) => {
   return GraphQLService.fetchQuery<ListLessonPlansQuery>({
     query: listLessonPlans,
+    nextToken,
     filter: {
       externalId: {
         eq: externalId,
