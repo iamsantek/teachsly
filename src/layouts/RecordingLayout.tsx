@@ -1,7 +1,19 @@
-import { Box, Container, Heading, Image, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Heading,
+  Image,
+  Stack,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { DeleteLessonPlanMutation, LessonPlan, ListLessonPlansQuery, MediaType } from "../API";
+import {
+  LessonPlan,
+  ListLessonPlansQuery,
+  MediaType,
+} from "../API";
 import { UserDashboardContext } from "../contexts/UserDashboardContext";
 import { GeneralInformation } from "../enums/GeneralInformation";
 import { useUserGroups } from "../hooks/useUserGroups";
@@ -10,13 +22,18 @@ import MediaService from "../services/MediaService";
 import { translate } from "../utils/LanguageUtils";
 import { useGroupRoutes } from "../utils/RouteUtils";
 import { SpinnerScreen } from "../views/others/SpinnerScreen";
+import { toastConfig } from "../utils/ToastUtils";
 
 export const RecordingLayout = () => {
   const [mediaUrl, setMediaUrl] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [chatTranscription, setChatTranscription] = useState<string>();
-  const [lessonPlanning, setLessonPlanning] = useState<LessonPlan | undefined>();
-  const [nextLessonPlanningToken, setNextLessonPlanningToken] = useState<string | undefined>();
+  const [lessonPlanning, setLessonPlanning] = useState<
+    LessonPlan | undefined
+  >();
+  const [nextLessonPlanningToken, setNextLessonPlanningToken] = useState<
+    string | undefined
+  >();
 
   const { externalId } = useParams();
   const { isAllowedRoute } = useGroupRoutes();
@@ -25,6 +42,7 @@ export const RecordingLayout = () => {
     context: { user },
   } = useContext(UserDashboardContext);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const checkChatUrl = useCallback(async (chatUrl) => {
     if (!chatUrl) {
@@ -42,29 +60,40 @@ export const RecordingLayout = () => {
 
   const getLessonPlanning = useCallback(
     async (externalId) => {
-      const lessonPlanning: ListLessonPlansQuery | undefined = await getLessonPlansByExternalId(externalId, nextLessonPlanningToken);
+      const lessonPlanning: ListLessonPlansQuery | undefined =
+        await getLessonPlansByExternalId(externalId, nextLessonPlanningToken);
 
       if (lessonPlanning?.listLessonPlans?.nextToken) {
         setNextLessonPlanningToken(lessonPlanning?.listLessonPlans.nextToken);
       }
 
-      if (lessonPlanning?.listLessonPlans?.items && lessonPlanning?.listLessonPlans?.items[0]) {
+      if (
+        lessonPlanning?.listLessonPlans?.items &&
+        lessonPlanning?.listLessonPlans?.items[0]
+      ) {
         const lessonPlan = lessonPlanning?.listLessonPlans?.items[0];
         setLessonPlanning(lessonPlan);
+        return;
       }
-    },
-    [nextLessonPlanningToken]
-  );
 
+      toast(
+        toastConfig({
+          status: "error",
+          description: "RECORDING_NOT_FOUND",
+        })
+      );
+      navigate("/");
+    },
+    [nextLessonPlanningToken, navigate, toast]
+  );
 
   useEffect(() => {
     getLessonPlanning(externalId);
   }, [externalId, getLessonPlanning]);
 
-
   useEffect(() => {
     const getLessonPlanning = async () => {
-      if (!externalId) {
+      if (!externalId || !lessonPlanning) {
         return;
       }
 
@@ -80,11 +109,8 @@ export const RecordingLayout = () => {
         return;
       }
 
-
       const recordingFileName = `${lessonPlanning?.media as string}.mp4`;
       const chatFileName = `${lessonPlanning?.media as string}.txt`;
-
-      console.log({ recordingFileName, chatFileName })
 
       const [mediaUrl, chartUrl] = await Promise.all([
         MediaService.getMediaLink(recordingFileName, MediaType.FILE),
@@ -92,7 +118,6 @@ export const RecordingLayout = () => {
       ]);
 
       const chatTranscription = await checkChatUrl(chartUrl);
-      console.log(chatTranscription);
       if (chatTranscription) {
         setChatTranscription(chatTranscription);
       }
@@ -102,7 +127,14 @@ export const RecordingLayout = () => {
     };
 
     getLessonPlanning();
-  }, [navigate, user?.groups, hasAdminRole, externalId, checkChatUrl, lessonPlanning]);
+  }, [
+    navigate,
+    user?.groups,
+    hasAdminRole,
+    externalId,
+    checkChatUrl,
+    lessonPlanning,
+  ]);
 
   useEffect(() => {
     if (!isAllowedRoute) {
