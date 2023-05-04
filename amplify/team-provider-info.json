@@ -22,6 +22,9 @@
       "auth": {
         "userPoolGroups": {},
         "TheOfficeAuthApi": {}
+      },
+      "storage": {
+        "TheOfficeBucket": {}
       }
     }
   },
