@@ -244,11 +244,7 @@ type Booklets @model
   priceArs: Float!
   priceUsd: Float!
   isActive: Boolean @default(value: "true")
-  mpCheckoutUrl: String!
-  mpPreferenceId: String!
-  pdfFile: String!
   paypalCheckoutUrl: String!
-  mpSandBoxCheckoutUrl: String!
   paypalSandBoxCheckoutUrl: String!
   cognitoGroups: [String!]
 }
