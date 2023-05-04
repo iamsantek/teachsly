@@ -284,6 +284,7 @@ export enum LanguageES {
   LINK = "Link",
   NO_DEADLINE_SET = "Sin fecha límite",
   NO_DEADLINE_EXPLANATION='Dejar "Fecha límite" en blanco para no establecer un plazo máximo de entrega.',
+  RECORDING_NOT_FOUND="No se encontró la grabación, Por favor, contactanos para revisarlo."
 }
 
 export enum LanguageEN {
@@ -567,4 +568,5 @@ export enum LanguageEN {
   LINK = "Link",
   NO_DEADLINE_SET = "No deadline for this taks",
   NO_DEADLINE_EXPLANATION="Leave the deadline field empty if you don't want to set a deadline for this task.",
+  RECORDING_NOT_FOUND = "The recording has not been found.",
 }

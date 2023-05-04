@@ -351,8 +351,35 @@ export const disabledAccountRoutes: ApplicationRoute[] = [
   { path: "*", element: <StudentsHomeScreen /> },
 ];
 
+export const bookletStudentsRoutes: ApplicationRoute[] = [
+  studentHomeScreen,
+  mediaContents,
+  mediaContentDetailRoute,
+  studentsByCourseRoute,
+  mediaFolderDetailRoute,
+  videoPreviewRoute,
+  examIntroductionRoute,
+  homeworkIntroductionRoute,
+  examsHomeScreen,
+  examAttemptDetailRoute,
+  examResultsRoute,
+  homeworkResultsRoute,
+  homeworkHomeScreen,
+  lessonPlaningHomeScreen,
+  recordingPreviewRoute,
+  {
+    path: "*",
+    element: (
+      <DashboardLayout>
+        <StudentsHomeScreen />
+      </DashboardLayout>
+    ),
+  },
+];
+
 export const applicationRoutes: ApplicationRoutes = {
   [UserTypes.ADMIN]: adminRoutes,
   [UserTypes.STUDENT]: studentRoutes,
   [UserTypes.TEACHER]: teachersRoutes,
+  [UserTypes.BOOKLET_STUDENT]: bookletStudentsRoutes,
 };

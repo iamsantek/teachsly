@@ -742,6 +742,7 @@ export type CreateBookletsInput = {
   paypalCheckoutUrl: string,
   mpSandBoxCheckoutUrl: string,
   paypalSandBoxCheckoutUrl: string,
+  cognitoGroups?: Array< string > | null,
 };
 
 export type ModelBookletsConditionInput = {
@@ -759,6 +760,7 @@ export type ModelBookletsConditionInput = {
   paypalCheckoutUrl?: ModelStringInput | null,
   mpSandBoxCheckoutUrl?: ModelStringInput | null,
   paypalSandBoxCheckoutUrl?: ModelStringInput | null,
+  cognitoGroups?: ModelStringInput | null,
   and?: Array< ModelBookletsConditionInput | null > | null,
   or?: Array< ModelBookletsConditionInput | null > | null,
   not?: ModelBookletsConditionInput | null,
@@ -781,6 +783,7 @@ export type Booklets = {
   paypalCheckoutUrl: string,
   mpSandBoxCheckoutUrl: string,
   paypalSandBoxCheckoutUrl: string,
+  cognitoGroups?: Array< string > | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -801,6 +804,7 @@ export type UpdateBookletsInput = {
   paypalCheckoutUrl?: string | null,
   mpSandBoxCheckoutUrl?: string | null,
   paypalSandBoxCheckoutUrl?: string | null,
+  cognitoGroups?: Array< string > | null,
 };
 
 export type DeleteBookletsInput = {
@@ -998,6 +1002,7 @@ export type ModelBookletsFilterInput = {
   paypalCheckoutUrl?: ModelStringInput | null,
   mpSandBoxCheckoutUrl?: ModelStringInput | null,
   paypalSandBoxCheckoutUrl?: ModelStringInput | null,
+  cognitoGroups?: ModelStringInput | null,
   and?: Array< ModelBookletsFilterInput | null > | null,
   or?: Array< ModelBookletsFilterInput | null > | null,
   not?: ModelBookletsFilterInput | null,
@@ -1632,6 +1637,7 @@ export type CreateBookletsMutation = {
     paypalCheckoutUrl: string,
     mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
+    cognitoGroups?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1660,6 +1666,7 @@ export type UpdateBookletsMutation = {
     paypalCheckoutUrl: string,
     mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
+    cognitoGroups?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1688,6 +1695,7 @@ export type DeleteBookletsMutation = {
     paypalCheckoutUrl: string,
     mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
+    cognitoGroups?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2133,6 +2141,7 @@ export type GetBookletsQuery = {
     paypalCheckoutUrl: string,
     mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
+    cognitoGroups?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2164,6 +2173,7 @@ export type ListBookletsQuery = {
       paypalCheckoutUrl: string,
       mpSandBoxCheckoutUrl: string,
       paypalSandBoxCheckoutUrl: string,
+      cognitoGroups?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -2824,6 +2834,7 @@ export type OnCreateBookletsSubscription = {
     paypalCheckoutUrl: string,
     mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
+    cognitoGroups?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2847,6 +2858,7 @@ export type OnUpdateBookletsSubscription = {
     paypalCheckoutUrl: string,
     mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
+    cognitoGroups?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2870,6 +2882,7 @@ export type OnDeleteBookletsSubscription = {
     paypalCheckoutUrl: string,
     mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
+    cognitoGroups?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,

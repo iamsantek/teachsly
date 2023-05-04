@@ -563,6 +563,7 @@ export const createBooklets = /* GraphQL */ `
       paypalCheckoutUrl
       mpSandBoxCheckoutUrl
       paypalSandBoxCheckoutUrl
+      cognitoGroups
       createdAt
       updatedAt
     }
@@ -589,6 +590,7 @@ export const updateBooklets = /* GraphQL */ `
       paypalCheckoutUrl
       mpSandBoxCheckoutUrl
       paypalSandBoxCheckoutUrl
+      cognitoGroups
       createdAt
       updatedAt
     }
@@ -615,6 +617,7 @@ export const deleteBooklets = /* GraphQL */ `
       paypalCheckoutUrl
       mpSandBoxCheckoutUrl
       paypalSandBoxCheckoutUrl
+      cognitoGroups
       createdAt
       updatedAt
     }

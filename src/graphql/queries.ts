@@ -380,6 +380,7 @@ export const getBooklets = /* GraphQL */ `
       paypalCheckoutUrl
       mpSandBoxCheckoutUrl
       paypalSandBoxCheckoutUrl
+      cognitoGroups
       createdAt
       updatedAt
     }
@@ -408,6 +409,7 @@ export const listBooklets = /* GraphQL */ `
         paypalCheckoutUrl
         mpSandBoxCheckoutUrl
         paypalSandBoxCheckoutUrl
+        cognitoGroups
         createdAt
         updatedAt
       }

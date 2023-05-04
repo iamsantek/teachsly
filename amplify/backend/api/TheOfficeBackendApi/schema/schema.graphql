@@ -83,7 +83,7 @@ enum DisabledAccountReasons {
 type User @model
 @auth(rules: [
   {allow: groups, groups: ["Admin"]},
-  {allow: groups, groups: ["Students","Teachers"], operations: [read] },
+  {allow: groups, groups: ["Students","Teachers", "BookletStudents"], operations: [read] },
   ])
   {
   id: ID!
@@ -250,5 +250,6 @@ type Booklets @model
   paypalCheckoutUrl: String!
   mpSandBoxCheckoutUrl: String!
   paypalSandBoxCheckoutUrl: String!
+  cognitoGroups: [String!]
 }
 

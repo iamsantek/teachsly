@@ -115,7 +115,7 @@ export const MediaContentsLines = ({
       })}
       <Placeholder
         show={isLoading}
-        number={placeholderNumber}
+        number={3}
         placeholderElement={<ContentLinePlaceholder />}
       />
       <NoContentPlaceholder show={medias.length === 0 && !isLoading} />

@@ -28,10 +28,10 @@ import { UserDashboardContext } from "../contexts/UserDashboardContext";
 import UserService from "../services/UserService";
 import { useNavigate } from "react-router-dom";
 import { Footer } from "../components/Footers/Footer";
-// import DarkModeSwitch from '../components/Switches/DarkModeSwitch'
 import { translate } from "../utils/LanguageUtils";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { ApplicationRoute, CustomRouteObject } from "../interfaces/Routes";
+import { UserTypesWording } from "../enums/UserTypes";
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
@@ -146,6 +146,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   } = useContext(UserDashboardContext);
   const { signOut } = useAuthenticator();
 
+  const userType = UserService.getUserType(user) as string;
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -198,7 +200,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   <Text fontSize="sm" noOfLines={1}>
                     {user?.name as string}
                   </Text>
-                  <Text fontSize="xs">{UserService.getUserType(user)}</Text>
+                  <Text fontSize="xs">{(UserTypesWording as any)[userType]}</Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
                   <FiChevronDown />
