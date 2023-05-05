@@ -13,54 +13,18 @@
       "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-theofficeenglishlear-prod-174021-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
+      "auth": {
+        "TheOfficeAuthApi": {},
+        "userPoolGroups": {}
+      },
       "function": {
         "TheOfficeAuthApiCustomMessage": {
           "deploymentBucketName": "amplify-theofficeenglishlear-prod-174021-deployment",
           "s3Key": "amplify-builds/TheOfficeAuthApiCustomMessage-38317972614c54715574-build.zip"
         }
       },
-      "auth": {
-        "userPoolGroups": {},
-        "TheOfficeAuthApi": {}
-      },
       "storage": {
         "TheOfficeBucket": {}
-      }
-    }
-  },
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-theofficeplatform-dev-225223-authRole",
-      "UnauthRoleArn": "arn:aws:iam::017261671711:role/amplify-theofficeplatform-dev-225223-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::017261671711:role/amplify-theofficeplatform-dev-225223-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-theofficeplatform-dev-225223-deployment",
-      "UnauthRoleName": "amplify-theofficeplatform-dev-225223-unauthRole",
-      "StackName": "amplify-theofficeplatform-dev-225223",
-      "StackId": "arn:aws:cloudformation:us-east-1:017261671711:stack/amplify-theofficeplatform-dev-225223/815cebb0-5312-11ec-b47c-0a0575ffedcb",
-      "AmplifyAppId": "d1qxvtw9vp11j9",
-      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-theofficeplatform-dev-225223-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
-    },
-    "categories": {
-      "function": {
-        "TheOfficeEnglishConfirmUserEmail": {
-          "deploymentBucketName": "amplify-theofficeplatform-dev-225223-deployment",
-          "s3Key": "amplify-builds/TheOfficeEnglishConfirmUserEmail-382b6a6d746278574676-build.zip"
-        },
-        "TheOfficeAuthCustomMessage": {
-          "deploymentBucketName": "amplify-theofficeplatform-dev-225223-deployment",
-          "s3Key": "amplify-builds/TheOfficeAuthCustomMessage-30652b32396751717764-build.zip"
-        },
-        "TheOfficeAuthApiCustomMessage": {
-          "deploymentBucketName": "amplify-theofficeplatform-dev-225223-deployment",
-          "s3Key": "amplify-builds/TheOfficeAuthApiCustomMessage-7a4a5268344677777470-build.zip"
-        }
-      },
-      "auth": {
-        "TheOfficeAuth": {},
-        "TheOfficeAuthApi": {},
-        "true": {},
-        "userPoolGroups": {}
       }
     }
   }

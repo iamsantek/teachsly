@@ -1,40 +1,41 @@
 export type AmplifyDependentResourcesAttributes = {
-    "api": {
-        "TheOfficeBackendApi": {
-            "GraphQLAPIKeyOutput": "string",
-            "GraphQLAPIIdOutput": "string",
-            "GraphQLAPIEndpointOutput": "string"
-        }
-    },
-    "auth": {
-        "userPoolGroups": {
-            "AdminGroupRole": "string",
-            "TeachersGroupRole": "string",
-            "StudentsGroupRole": "string"
-        },
-        "TheOfficeAuthApi": {
-            "IdentityPoolId": "string",
-            "IdentityPoolName": "string",
-            "UserPoolId": "string",
-            "UserPoolArn": "string",
-            "UserPoolName": "string",
-            "AppClientIDWeb": "string",
-            "AppClientID": "string",
-            "CreatedSNSRole": "string"
-        }
-    },
-    "storage": {
-        "TheOfficeBucket": {
-            "BucketName": "string",
-            "Region": "string"
-        }
-    },
-    "function": {
-        "TheOfficeAuthApiCustomMessage": {
-            "Name": "string",
-            "Arn": "string",
-            "LambdaExecutionRole": "string",
-            "Region": "string"
-        }
+  "api": {
+    "TheOfficeBackendApi": {
+      "GraphQLAPIEndpointOutput": "string",
+      "GraphQLAPIIdOutput": "string",
+      "GraphQLAPIKeyOutput": "string"
     }
+  },
+  "auth": {
+    "TheOfficeAuthApi": {
+      "AppClientID": "string",
+      "AppClientIDWeb": "string",
+      "CreatedSNSRole": "string",
+      "IdentityPoolId": "string",
+      "IdentityPoolName": "string",
+      "UserPoolArn": "string",
+      "UserPoolId": "string",
+      "UserPoolName": "string"
+    },
+    "userPoolGroups": {
+      "AdminGroupRole": "string",
+      "StudentsGroupRole": "string",
+      "TeachersGroupRole": "string"
+    }
+  },
+  "function": {
+    "TheOfficeAuthApiCustomMessage": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    }
+  },
+  "storage": {
+    "TheOfficeBucket": {
+      "BucketName": "string",
+      "Region": "string"
+    }
+  }
 }
