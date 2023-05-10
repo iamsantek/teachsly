@@ -9,11 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  LessonPlan,
-  ListLessonPlansQuery,
-  MediaType,
-} from "../API";
+import { LessonPlan, ListLessonPlansQuery, MediaType } from "../API";
 import { UserDashboardContext } from "../contexts/UserDashboardContext";
 import { GeneralInformation } from "../enums/GeneralInformation";
 import { useUserGroups } from "../hooks/useUserGroups";
@@ -63,9 +59,6 @@ export const RecordingLayout = () => {
       const lessonPlanning: ListLessonPlansQuery | undefined =
         await getLessonPlansByExternalId(externalId, nextLessonPlanningToken);
 
-      if (lessonPlanning?.listLessonPlans?.nextToken) {
-        setNextLessonPlanningToken(lessonPlanning?.listLessonPlans.nextToken);
-      }
 
       if (
         lessonPlanning?.listLessonPlans?.items &&
@@ -73,16 +66,26 @@ export const RecordingLayout = () => {
       ) {
         const lessonPlan = lessonPlanning?.listLessonPlans?.items[0];
         setLessonPlanning(lessonPlan);
+        setIsLoading(false);
         return;
       }
 
-      toast(
-        toastConfig({
-          status: "error",
-          description: "RECORDING_NOT_FOUND",
-        })
-      );
-      navigate("/");
+      if (lessonPlanning?.listLessonPlans?.nextToken) {
+        setNextLessonPlanningToken(lessonPlanning?.listLessonPlans.nextToken);
+      }
+
+      if (
+        !lessonPlanning?.listLessonPlans?.items?.length &&
+        !lessonPlanning?.listLessonPlans?.nextToken
+      ) {
+        toast(
+          toastConfig({
+            status: "error",
+            description: "RECORDING_NOT_FOUND",
+          })
+        );
+        navigate("/");
+      }
     },
     [nextLessonPlanningToken, navigate, toast]
   );
@@ -92,7 +95,7 @@ export const RecordingLayout = () => {
   }, [externalId, getLessonPlanning]);
 
   useEffect(() => {
-    const getLessonPlanning = async () => {
+    const getVideoAndChatUrls = async () => {
       if (!externalId || !lessonPlanning) {
         return;
       }
@@ -106,6 +109,7 @@ export const RecordingLayout = () => {
       }
 
       if (!lessonPlanning) {
+        navigate("/");
         return;
       }
 
@@ -126,7 +130,7 @@ export const RecordingLayout = () => {
       setIsLoading(false);
     };
 
-    getLessonPlanning();
+    getVideoAndChatUrls();
   }, [
     navigate,
     user?.groups,
@@ -147,7 +151,7 @@ export const RecordingLayout = () => {
   }
 
   return (
-    <Box w="100%" h="container.lg" bgColor="black">
+    <Box minHeight='100vh' bgColor="black">
       <Container paddingY={5} maxW={["95%", "85%"]} centerContent gap={5}>
         <Image w={["20", "24"]} src={require("../assets/img/brand/logo.png")} />
         <Heading
@@ -174,7 +178,7 @@ export const RecordingLayout = () => {
               >
                 {translate("RECORDING_CHAT_TITLE")}
               </Text>
-              <Text color="whiteAlpha.900" as="pre">
+              <Text color="whiteAlpha.900" as="pre" overflow='scroll'>
                 {chatTranscription}
               </Text>
             </Stack>
