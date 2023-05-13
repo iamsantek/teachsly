@@ -46,7 +46,9 @@ export const CourseList = () => {
 
   return (
     <>
-      {currentYearCourses.length === 0 && <NoActiveCoursesPlaceholder />}
+      {currentYearCourses.length === 0 && !isLoading && (
+        <NoActiveCoursesPlaceholder />
+      )}
       <NextClassMessage courses={currentYearCourses} />
       <Grid
         gap={5}

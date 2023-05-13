@@ -59,7 +59,6 @@ export const RecordingLayout = () => {
       const lessonPlanning: ListLessonPlansQuery | undefined =
         await getLessonPlansByExternalId(externalId, nextLessonPlanningToken);
 
-
       if (
         lessonPlanning?.listLessonPlans?.items &&
         lessonPlanning?.listLessonPlans?.items[0]
@@ -151,7 +150,7 @@ export const RecordingLayout = () => {
   }
 
   return (
-    <Box minHeight='100vh' bgColor="black">
+    <Box minHeight="100vh" bgColor="black">
       <Container paddingY={5} maxW={["95%", "85%"]} centerContent gap={5}>
         <Image w={["20", "24"]} src={require("../assets/img/brand/logo.png")} />
         <Heading
@@ -178,7 +177,7 @@ export const RecordingLayout = () => {
               >
                 {translate("RECORDING_CHAT_TITLE")}
               </Text>
-              <Text color="whiteAlpha.900" as="pre" overflow='scroll'>
+              <Text color="whiteAlpha.900" as="pre" overflow="scroll">
                 {chatTranscription}
               </Text>
             </Stack>

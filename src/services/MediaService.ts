@@ -16,6 +16,7 @@ import Logger from "../utils/Logger";
 import GraphQLService from "./GraphQLService";
 import { removeNotAllowedPropertiesFromModel } from "../utils/GraphQLUtils";
 import StorageService from "./aws/StorageService";
+import { GeneralInformation } from "../enums/GeneralInformation";
 
 class MediaService {
   public fetchMedias = async (
@@ -174,6 +175,24 @@ class MediaService {
 
   public bulkDelete = async (mediaIds: string[]) => {
     return Promise.all(mediaIds.map((mediaId) => this.deleteMedia(mediaId)));
+  };
+
+  public fetchAudioTranscript = async (key: string) => {
+    try {
+      const transcriptionUrl = `https://transcriptions.${GeneralInformation.DOMAIN}?key=${key}`;
+
+      const transcriptionResponse = await fetch(transcriptionUrl);
+      const { transcript } = await transcriptionResponse.json();
+
+      return transcript;
+    } catch (error) {
+      Logger.log(
+        LogLevel.ERROR,
+        LogTypes.CourseService,
+        "Error when fetching audio transcription",
+        error
+      );
+    }
   };
 }
 

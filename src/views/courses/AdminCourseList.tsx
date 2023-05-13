@@ -147,7 +147,9 @@ export const AdminCourseList = () => {
             </Button>
           </Center>
         </SectionHeader>
-        {currentYearCourses.length === 0 && <NoActiveCoursesPlaceholder />}
+        {currentYearCourses.length === 0 && !isLoadingNewPage && (
+          <NoActiveCoursesPlaceholder />
+        )}
         <Stack spacing={4}>
           {sortedCourses.map((course) => {
             const days = DateTimeUtils.shortDays(

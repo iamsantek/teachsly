@@ -20,7 +20,7 @@ import { useUserGroups } from "../../hooks/useUserGroups";
 import MediaFolderService from "../../services/MediaFolderService";
 import MediaService from "../../services/MediaService";
 import { translate } from "../../utils/LanguageUtils";
-import { sortMediasByCreatedAt } from "../../utils/MediaUtils";
+import { sortMediasByCreatedAt, sortMediaByName } from "../../utils/MediaUtils";
 import { useGroupRoutes } from "../../utils/RouteUtils";
 import { MediaContentsList } from "./MediaContentsList";
 
@@ -203,6 +203,13 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
       navigate("/");
     }
   }, [isAllowedRoute, navigate]);
+
+  useEffect(() => {
+    if (!isLoadingNewPage && folderId) {
+      const sortedMediasByName = sortMediaByName(medias);
+      setMedias(sortedMediasByName);
+    }
+  }, [isLoadingNewPage, medias, folderId]);
 
   if (!isAllowedRoute) {
     return null;

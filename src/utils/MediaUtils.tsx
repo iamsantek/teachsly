@@ -113,6 +113,12 @@ export const sortMediasByCreatedAt = (medias: Media[]) => {
   });
 };
 
+export const sortMediaByName = (medias: Media[]) => {
+  return medias.sort((a, b) => {
+    return a.title.localeCompare(b.title);
+  });
+};
+
 // Check if the medias has been created 1 week ago or earlier
 export const isMediaCreatedWithinLastWeek = (media: Media) => {
   const createdAt = new Date(media.createdAt);

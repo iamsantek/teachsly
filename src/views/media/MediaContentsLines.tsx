@@ -45,7 +45,6 @@ export const MediaContentsLines = ({
     context: { externalUserId, user },
   } = useContext(UserDashboardContext);
   const { groups, userType, hasAdminRole, hasEditPermission } = useUserGroups();
-  const placeholderNumber = Math.floor(Math.random() * 10) + 1;
   const filterMedias = hasAdminRole
     ? medias
     : findMatch(
