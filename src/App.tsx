@@ -21,6 +21,11 @@ import LocalStorageService, {
   LocalStorageKeys,
 } from "./services/LocalStorageService";
 import { sortCoursesByName } from "./utils/CourseUtils";
+import ReactGA from "react-ga4";
+
+ReactGA.initialize(
+  process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID as string
+);
 
 Amplify.configure({
   ...awsExports,

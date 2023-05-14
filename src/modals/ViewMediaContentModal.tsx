@@ -15,6 +15,8 @@ import { translate } from "../utils/LanguageUtils";
 import { BiLinkExternal } from "react-icons/bi";
 import { BadgeList } from "../components/Badges/BadgeList";
 import { useState } from "react";
+import AnalyticsService from "../services/AnalyticsService";
+import { GoogleAnalyticsCategory } from "../constants/Analytics";
 
 interface Props {
   isOpen: boolean;
@@ -26,6 +28,10 @@ export const ViewMediaContentModal = ({ isOpen, onClose, media }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onClick = async () => {
+    AnalyticsService.sendEventToAnalytics({
+      category: GoogleAnalyticsCategory.MEDIA,
+      action: "VIEW_MEDIA",
+    });
     setIsLoading(true);
     await MediaService.redirectToMediaUrl(media);
     setIsLoading(false);
