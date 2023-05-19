@@ -103,12 +103,14 @@ export const LessonsPlanningList = ({
     LessonPlanningType.MEDIA,
     LessonPlanningType.OTHER,
     LessonPlanningType.LINK,
+    LessonPlanningType.RECORDING,
   ];
 
   const editionAllowedTypes = [
     LessonPlanningType.LESSON,
     LessonPlanningType.OTHER,
     LessonPlanningType.LINK,
+    LessonPlanningType.RECORDING,
   ];
 
   return (

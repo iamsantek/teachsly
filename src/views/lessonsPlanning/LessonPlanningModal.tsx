@@ -227,6 +227,9 @@ export const LessonPlanningModal = ({
                     )}
                     isMultiSelect={false}
                     closeMenuOnSelect={true}
+                    isDisabled={
+                      lessonToUpdate?.type === LessonPlanningType.RECORDING
+                    }
                   />
 
                   {type?.value === LessonPlanningType.MEDIA && (
