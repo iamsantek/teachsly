@@ -374,11 +374,7 @@ export const getBooklets = /* GraphQL */ `
       priceArs
       priceUsd
       isActive
-      mpCheckoutUrl
-      mpPreferenceId
-      pdfFile
       paypalCheckoutUrl
-      mpSandBoxCheckoutUrl
       paypalSandBoxCheckoutUrl
       cognitoGroups
       createdAt
@@ -403,13 +399,48 @@ export const listBooklets = /* GraphQL */ `
         priceArs
         priceUsd
         isActive
-        mpCheckoutUrl
-        mpPreferenceId
-        pdfFile
         paypalCheckoutUrl
-        mpSandBoxCheckoutUrl
         paypalSandBoxCheckoutUrl
         cognitoGroups
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getPlacementResults = /* GraphQL */ `
+  query GetPlacementResults($id: ID!) {
+    getPlacementResults(id: $id) {
+      id
+      fullName
+      email
+      level
+      phone
+      country
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPlacementResults = /* GraphQL */ `
+  query ListPlacementResults(
+    $filter: ModelPlacementResultsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPlacementResults(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        fullName
+        email
+        level
+        phone
+        country
         createdAt
         updatedAt
       }

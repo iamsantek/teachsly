@@ -287,6 +287,9 @@ export enum LanguageES {
   RECORDING_NOT_FOUND="No se encontró la grabación, Por favor, contactanos para revisarlo.",
   TRANSCRIPTION_DISCLAIMER="* Esta es una transcripción automática de la grabación. Puede contener errores y no ser 100% fiel a la grabación original. Usala como guía.",
   TRANSCRIPTION_TITLE="Transcripción del audio",
+  NO_FINAL_MARK_WARNING="No se puede enviar la corrección sin una nota final.",
+  PENDING_ANSWERS_ERROR='No se puede enviar la corrección sin corregir todas las respuestas.',
+  PENDING_TASKS_BEFORE_SEND_CORRECTION="Antes de enviar la corrección, por favor revisar las siguientes configuraciones:",
 }
 
 export enum LanguageEN {
@@ -573,4 +576,7 @@ export enum LanguageEN {
   RECORDING_NOT_FOUND = "The recording has not been found.",
   TRANSCRIPTION_TITLE='Audio transcription',
   TRANSCRIPTION_DISCLAIMER='The transcription is generated automatically and may contain errors.',
+  NO_FINAL_MARK_WARNING="You can't send the correction without a final mark.",
+  PENDING_ANSWERS_ERROR='You can not send the correction without correcting all the answers.',
+  PENDING_TASKS_BEFORE_SEND_CORRECTION='There are pending tasks before sending the correction:',
 }

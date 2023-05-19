@@ -3,8 +3,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateCourse = /* GraphQL */ `
-  subscription OnCreateCourse {
-    onCreateCourse {
+  subscription OnCreateCourse($filter: ModelSubscriptionCourseFilterInput) {
+    onCreateCourse(filter: $filter) {
       id
       name
       scheduleDates
@@ -24,8 +24,8 @@ export const onCreateCourse = /* GraphQL */ `
   }
 `;
 export const onUpdateCourse = /* GraphQL */ `
-  subscription OnUpdateCourse {
-    onUpdateCourse {
+  subscription OnUpdateCourse($filter: ModelSubscriptionCourseFilterInput) {
+    onUpdateCourse(filter: $filter) {
       id
       name
       scheduleDates
@@ -45,8 +45,8 @@ export const onUpdateCourse = /* GraphQL */ `
   }
 `;
 export const onDeleteCourse = /* GraphQL */ `
-  subscription OnDeleteCourse {
-    onDeleteCourse {
+  subscription OnDeleteCourse($filter: ModelSubscriptionCourseFilterInput) {
+    onDeleteCourse(filter: $filter) {
       id
       name
       scheduleDates
@@ -66,8 +66,11 @@ export const onDeleteCourse = /* GraphQL */ `
   }
 `;
 export const onCreateMediaFolder = /* GraphQL */ `
-  subscription OnCreateMediaFolder($owner: String) {
-    onCreateMediaFolder(owner: $owner) {
+  subscription OnCreateMediaFolder(
+    $filter: ModelSubscriptionMediaFolderFilterInput
+    $owner: String
+  ) {
+    onCreateMediaFolder(filter: $filter, owner: $owner) {
       id
       name
       groups
@@ -79,8 +82,11 @@ export const onCreateMediaFolder = /* GraphQL */ `
   }
 `;
 export const onUpdateMediaFolder = /* GraphQL */ `
-  subscription OnUpdateMediaFolder($owner: String) {
-    onUpdateMediaFolder(owner: $owner) {
+  subscription OnUpdateMediaFolder(
+    $filter: ModelSubscriptionMediaFolderFilterInput
+    $owner: String
+  ) {
+    onUpdateMediaFolder(filter: $filter, owner: $owner) {
       id
       name
       groups
@@ -92,8 +98,11 @@ export const onUpdateMediaFolder = /* GraphQL */ `
   }
 `;
 export const onDeleteMediaFolder = /* GraphQL */ `
-  subscription OnDeleteMediaFolder($owner: String) {
-    onDeleteMediaFolder(owner: $owner) {
+  subscription OnDeleteMediaFolder(
+    $filter: ModelSubscriptionMediaFolderFilterInput
+    $owner: String
+  ) {
+    onDeleteMediaFolder(filter: $filter, owner: $owner) {
       id
       name
       groups
@@ -105,8 +114,11 @@ export const onDeleteMediaFolder = /* GraphQL */ `
   }
 `;
 export const onCreateMedia = /* GraphQL */ `
-  subscription OnCreateMedia($owner: String) {
-    onCreateMedia(owner: $owner) {
+  subscription OnCreateMedia(
+    $filter: ModelSubscriptionMediaFilterInput
+    $owner: String
+  ) {
+    onCreateMedia(filter: $filter, owner: $owner) {
       id
       title
       type
@@ -124,8 +136,11 @@ export const onCreateMedia = /* GraphQL */ `
   }
 `;
 export const onUpdateMedia = /* GraphQL */ `
-  subscription OnUpdateMedia($owner: String) {
-    onUpdateMedia(owner: $owner) {
+  subscription OnUpdateMedia(
+    $filter: ModelSubscriptionMediaFilterInput
+    $owner: String
+  ) {
+    onUpdateMedia(filter: $filter, owner: $owner) {
       id
       title
       type
@@ -143,8 +158,11 @@ export const onUpdateMedia = /* GraphQL */ `
   }
 `;
 export const onDeleteMedia = /* GraphQL */ `
-  subscription OnDeleteMedia($owner: String) {
-    onDeleteMedia(owner: $owner) {
+  subscription OnDeleteMedia(
+    $filter: ModelSubscriptionMediaFilterInput
+    $owner: String
+  ) {
+    onDeleteMedia(filter: $filter, owner: $owner) {
       id
       title
       type
@@ -162,8 +180,8 @@ export const onDeleteMedia = /* GraphQL */ `
   }
 `;
 export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser {
-    onCreateUser {
+  subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
+    onCreateUser(filter: $filter) {
       id
       name
       email
@@ -179,8 +197,8 @@ export const onCreateUser = /* GraphQL */ `
   }
 `;
 export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser {
-    onUpdateUser {
+  subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
+    onUpdateUser(filter: $filter) {
       id
       name
       email
@@ -196,8 +214,8 @@ export const onUpdateUser = /* GraphQL */ `
   }
 `;
 export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser {
-    onDeleteUser {
+  subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
+    onDeleteUser(filter: $filter) {
       id
       name
       email
@@ -213,8 +231,11 @@ export const onDeleteUser = /* GraphQL */ `
   }
 `;
 export const onCreateExam = /* GraphQL */ `
-  subscription OnCreateExam($owner: String) {
-    onCreateExam(owner: $owner) {
+  subscription OnCreateExam(
+    $filter: ModelSubscriptionExamFilterInput
+    $owner: String
+  ) {
+    onCreateExam(filter: $filter, owner: $owner) {
       id
       groups
       title
@@ -237,8 +258,11 @@ export const onCreateExam = /* GraphQL */ `
   }
 `;
 export const onUpdateExam = /* GraphQL */ `
-  subscription OnUpdateExam($owner: String) {
-    onUpdateExam(owner: $owner) {
+  subscription OnUpdateExam(
+    $filter: ModelSubscriptionExamFilterInput
+    $owner: String
+  ) {
+    onUpdateExam(filter: $filter, owner: $owner) {
       id
       groups
       title
@@ -261,8 +285,11 @@ export const onUpdateExam = /* GraphQL */ `
   }
 `;
 export const onDeleteExam = /* GraphQL */ `
-  subscription OnDeleteExam($owner: String) {
-    onDeleteExam(owner: $owner) {
+  subscription OnDeleteExam(
+    $filter: ModelSubscriptionExamFilterInput
+    $owner: String
+  ) {
+    onDeleteExam(filter: $filter, owner: $owner) {
       id
       groups
       title
@@ -285,8 +312,11 @@ export const onDeleteExam = /* GraphQL */ `
   }
 `;
 export const onCreateExamAttempt = /* GraphQL */ `
-  subscription OnCreateExamAttempt($owner: String) {
-    onCreateExamAttempt(owner: $owner) {
+  subscription OnCreateExamAttempt(
+    $filter: ModelSubscriptionExamAttemptFilterInput
+    $owner: String
+  ) {
+    onCreateExamAttempt(filter: $filter, owner: $owner) {
       id
       examId
       examName
@@ -309,8 +339,11 @@ export const onCreateExamAttempt = /* GraphQL */ `
   }
 `;
 export const onUpdateExamAttempt = /* GraphQL */ `
-  subscription OnUpdateExamAttempt($owner: String) {
-    onUpdateExamAttempt(owner: $owner) {
+  subscription OnUpdateExamAttempt(
+    $filter: ModelSubscriptionExamAttemptFilterInput
+    $owner: String
+  ) {
+    onUpdateExamAttempt(filter: $filter, owner: $owner) {
       id
       examId
       examName
@@ -333,8 +366,11 @@ export const onUpdateExamAttempt = /* GraphQL */ `
   }
 `;
 export const onDeleteExamAttempt = /* GraphQL */ `
-  subscription OnDeleteExamAttempt($owner: String) {
-    onDeleteExamAttempt(owner: $owner) {
+  subscription OnDeleteExamAttempt(
+    $filter: ModelSubscriptionExamAttemptFilterInput
+    $owner: String
+  ) {
+    onDeleteExamAttempt(filter: $filter, owner: $owner) {
       id
       examId
       examName
@@ -357,8 +393,11 @@ export const onDeleteExamAttempt = /* GraphQL */ `
   }
 `;
 export const onCreateLessonPlan = /* GraphQL */ `
-  subscription OnCreateLessonPlan($owner: String) {
-    onCreateLessonPlan(owner: $owner) {
+  subscription OnCreateLessonPlan(
+    $filter: ModelSubscriptionLessonPlanFilterInput
+    $owner: String
+  ) {
+    onCreateLessonPlan(filter: $filter, owner: $owner) {
       id
       groups
       title
@@ -377,8 +416,11 @@ export const onCreateLessonPlan = /* GraphQL */ `
   }
 `;
 export const onUpdateLessonPlan = /* GraphQL */ `
-  subscription OnUpdateLessonPlan($owner: String) {
-    onUpdateLessonPlan(owner: $owner) {
+  subscription OnUpdateLessonPlan(
+    $filter: ModelSubscriptionLessonPlanFilterInput
+    $owner: String
+  ) {
+    onUpdateLessonPlan(filter: $filter, owner: $owner) {
       id
       groups
       title
@@ -397,8 +439,11 @@ export const onUpdateLessonPlan = /* GraphQL */ `
   }
 `;
 export const onDeleteLessonPlan = /* GraphQL */ `
-  subscription OnDeleteLessonPlan($owner: String) {
-    onDeleteLessonPlan(owner: $owner) {
+  subscription OnDeleteLessonPlan(
+    $filter: ModelSubscriptionLessonPlanFilterInput
+    $owner: String
+  ) {
+    onDeleteLessonPlan(filter: $filter, owner: $owner) {
       id
       groups
       title
@@ -417,8 +462,8 @@ export const onDeleteLessonPlan = /* GraphQL */ `
   }
 `;
 export const onCreatePayments = /* GraphQL */ `
-  subscription OnCreatePayments {
-    onCreatePayments {
+  subscription OnCreatePayments($filter: ModelSubscriptionPaymentsFilterInput) {
+    onCreatePayments(filter: $filter) {
       id
       userId
       date
@@ -435,8 +480,8 @@ export const onCreatePayments = /* GraphQL */ `
   }
 `;
 export const onUpdatePayments = /* GraphQL */ `
-  subscription OnUpdatePayments {
-    onUpdatePayments {
+  subscription OnUpdatePayments($filter: ModelSubscriptionPaymentsFilterInput) {
+    onUpdatePayments(filter: $filter) {
       id
       userId
       date
@@ -453,8 +498,8 @@ export const onUpdatePayments = /* GraphQL */ `
   }
 `;
 export const onDeletePayments = /* GraphQL */ `
-  subscription OnDeletePayments {
-    onDeletePayments {
+  subscription OnDeletePayments($filter: ModelSubscriptionPaymentsFilterInput) {
+    onDeletePayments(filter: $filter) {
       id
       userId
       date
@@ -471,8 +516,8 @@ export const onDeletePayments = /* GraphQL */ `
   }
 `;
 export const onCreateBooklets = /* GraphQL */ `
-  subscription OnCreateBooklets {
-    onCreateBooklets {
+  subscription OnCreateBooklets($filter: ModelSubscriptionBookletsFilterInput) {
+    onCreateBooklets(filter: $filter) {
       id
       name
       nameEng
@@ -482,11 +527,7 @@ export const onCreateBooklets = /* GraphQL */ `
       priceArs
       priceUsd
       isActive
-      mpCheckoutUrl
-      mpPreferenceId
-      pdfFile
       paypalCheckoutUrl
-      mpSandBoxCheckoutUrl
       paypalSandBoxCheckoutUrl
       cognitoGroups
       createdAt
@@ -495,8 +536,8 @@ export const onCreateBooklets = /* GraphQL */ `
   }
 `;
 export const onUpdateBooklets = /* GraphQL */ `
-  subscription OnUpdateBooklets {
-    onUpdateBooklets {
+  subscription OnUpdateBooklets($filter: ModelSubscriptionBookletsFilterInput) {
+    onUpdateBooklets(filter: $filter) {
       id
       name
       nameEng
@@ -506,11 +547,7 @@ export const onUpdateBooklets = /* GraphQL */ `
       priceArs
       priceUsd
       isActive
-      mpCheckoutUrl
-      mpPreferenceId
-      pdfFile
       paypalCheckoutUrl
-      mpSandBoxCheckoutUrl
       paypalSandBoxCheckoutUrl
       cognitoGroups
       createdAt
@@ -519,8 +556,8 @@ export const onUpdateBooklets = /* GraphQL */ `
   }
 `;
 export const onDeleteBooklets = /* GraphQL */ `
-  subscription OnDeleteBooklets {
-    onDeleteBooklets {
+  subscription OnDeleteBooklets($filter: ModelSubscriptionBookletsFilterInput) {
+    onDeleteBooklets(filter: $filter) {
       id
       name
       nameEng
@@ -530,13 +567,57 @@ export const onDeleteBooklets = /* GraphQL */ `
       priceArs
       priceUsd
       isActive
-      mpCheckoutUrl
-      mpPreferenceId
-      pdfFile
       paypalCheckoutUrl
-      mpSandBoxCheckoutUrl
       paypalSandBoxCheckoutUrl
       cognitoGroups
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreatePlacementResults = /* GraphQL */ `
+  subscription OnCreatePlacementResults(
+    $filter: ModelSubscriptionPlacementResultsFilterInput
+  ) {
+    onCreatePlacementResults(filter: $filter) {
+      id
+      fullName
+      email
+      level
+      phone
+      country
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePlacementResults = /* GraphQL */ `
+  subscription OnUpdatePlacementResults(
+    $filter: ModelSubscriptionPlacementResultsFilterInput
+  ) {
+    onUpdatePlacementResults(filter: $filter) {
+      id
+      fullName
+      email
+      level
+      phone
+      country
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePlacementResults = /* GraphQL */ `
+  subscription OnDeletePlacementResults(
+    $filter: ModelSubscriptionPlacementResultsFilterInput
+  ) {
+    onDeletePlacementResults(filter: $filter) {
+      id
+      fullName
+      email
+      level
+      phone
+      country
       createdAt
       updatedAt
     }

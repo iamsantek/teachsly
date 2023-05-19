@@ -557,11 +557,7 @@ export const createBooklets = /* GraphQL */ `
       priceArs
       priceUsd
       isActive
-      mpCheckoutUrl
-      mpPreferenceId
-      pdfFile
       paypalCheckoutUrl
-      mpSandBoxCheckoutUrl
       paypalSandBoxCheckoutUrl
       cognitoGroups
       createdAt
@@ -584,11 +580,7 @@ export const updateBooklets = /* GraphQL */ `
       priceArs
       priceUsd
       isActive
-      mpCheckoutUrl
-      mpPreferenceId
-      pdfFile
       paypalCheckoutUrl
-      mpSandBoxCheckoutUrl
       paypalSandBoxCheckoutUrl
       cognitoGroups
       createdAt
@@ -611,13 +603,60 @@ export const deleteBooklets = /* GraphQL */ `
       priceArs
       priceUsd
       isActive
-      mpCheckoutUrl
-      mpPreferenceId
-      pdfFile
       paypalCheckoutUrl
-      mpSandBoxCheckoutUrl
       paypalSandBoxCheckoutUrl
       cognitoGroups
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createPlacementResults = /* GraphQL */ `
+  mutation CreatePlacementResults(
+    $input: CreatePlacementResultsInput!
+    $condition: ModelPlacementResultsConditionInput
+  ) {
+    createPlacementResults(input: $input, condition: $condition) {
+      id
+      fullName
+      email
+      level
+      phone
+      country
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePlacementResults = /* GraphQL */ `
+  mutation UpdatePlacementResults(
+    $input: UpdatePlacementResultsInput!
+    $condition: ModelPlacementResultsConditionInput
+  ) {
+    updatePlacementResults(input: $input, condition: $condition) {
+      id
+      fullName
+      email
+      level
+      phone
+      country
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePlacementResults = /* GraphQL */ `
+  mutation DeletePlacementResults(
+    $input: DeletePlacementResultsInput!
+    $condition: ModelPlacementResultsConditionInput
+  ) {
+    deletePlacementResults(input: $input, condition: $condition) {
+      id
+      fullName
+      email
+      level
+      phone
+      country
       createdAt
       updatedAt
     }

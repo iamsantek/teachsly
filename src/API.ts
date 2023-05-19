@@ -736,11 +736,7 @@ export type CreateBookletsInput = {
   priceArs: number,
   priceUsd: number,
   isActive?: boolean | null,
-  mpCheckoutUrl: string,
-  mpPreferenceId: string,
-  pdfFile: string,
   paypalCheckoutUrl: string,
-  mpSandBoxCheckoutUrl: string,
   paypalSandBoxCheckoutUrl: string,
   cognitoGroups?: Array< string > | null,
 };
@@ -754,11 +750,7 @@ export type ModelBookletsConditionInput = {
   priceArs?: ModelFloatInput | null,
   priceUsd?: ModelFloatInput | null,
   isActive?: ModelBooleanInput | null,
-  mpCheckoutUrl?: ModelStringInput | null,
-  mpPreferenceId?: ModelStringInput | null,
-  pdfFile?: ModelStringInput | null,
   paypalCheckoutUrl?: ModelStringInput | null,
-  mpSandBoxCheckoutUrl?: ModelStringInput | null,
   paypalSandBoxCheckoutUrl?: ModelStringInput | null,
   cognitoGroups?: ModelStringInput | null,
   and?: Array< ModelBookletsConditionInput | null > | null,
@@ -777,11 +769,7 @@ export type Booklets = {
   priceArs: number,
   priceUsd: number,
   isActive?: boolean | null,
-  mpCheckoutUrl: string,
-  mpPreferenceId: string,
-  pdfFile: string,
   paypalCheckoutUrl: string,
-  mpSandBoxCheckoutUrl: string,
   paypalSandBoxCheckoutUrl: string,
   cognitoGroups?: Array< string > | null,
   createdAt: string,
@@ -798,16 +786,57 @@ export type UpdateBookletsInput = {
   priceArs?: number | null,
   priceUsd?: number | null,
   isActive?: boolean | null,
-  mpCheckoutUrl?: string | null,
-  mpPreferenceId?: string | null,
-  pdfFile?: string | null,
   paypalCheckoutUrl?: string | null,
-  mpSandBoxCheckoutUrl?: string | null,
   paypalSandBoxCheckoutUrl?: string | null,
   cognitoGroups?: Array< string > | null,
 };
 
 export type DeleteBookletsInput = {
+  id: string,
+};
+
+export type CreatePlacementResultsInput = {
+  id?: string | null,
+  fullName: string,
+  email: string,
+  level: string,
+  phone: string,
+  country: string,
+};
+
+export type ModelPlacementResultsConditionInput = {
+  fullName?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  level?: ModelStringInput | null,
+  phone?: ModelStringInput | null,
+  country?: ModelStringInput | null,
+  and?: Array< ModelPlacementResultsConditionInput | null > | null,
+  or?: Array< ModelPlacementResultsConditionInput | null > | null,
+  not?: ModelPlacementResultsConditionInput | null,
+};
+
+export type PlacementResults = {
+  __typename: "PlacementResults",
+  id: string,
+  fullName: string,
+  email: string,
+  level: string,
+  phone: string,
+  country: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdatePlacementResultsInput = {
+  id: string,
+  fullName?: string | null,
+  email?: string | null,
+  level?: string | null,
+  phone?: string | null,
+  country?: string | null,
+};
+
+export type DeletePlacementResultsInput = {
   id: string,
 };
 
@@ -996,11 +1025,7 @@ export type ModelBookletsFilterInput = {
   priceArs?: ModelFloatInput | null,
   priceUsd?: ModelFloatInput | null,
   isActive?: ModelBooleanInput | null,
-  mpCheckoutUrl?: ModelStringInput | null,
-  mpPreferenceId?: ModelStringInput | null,
-  pdfFile?: ModelStringInput | null,
   paypalCheckoutUrl?: ModelStringInput | null,
-  mpSandBoxCheckoutUrl?: ModelStringInput | null,
   paypalSandBoxCheckoutUrl?: ModelStringInput | null,
   cognitoGroups?: ModelStringInput | null,
   and?: Array< ModelBookletsFilterInput | null > | null,
@@ -1014,11 +1039,231 @@ export type ModelBookletsConnection = {
   nextToken?: string | null,
 };
 
+export type ModelPlacementResultsFilterInput = {
+  id?: ModelIDInput | null,
+  fullName?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  level?: ModelStringInput | null,
+  phone?: ModelStringInput | null,
+  country?: ModelStringInput | null,
+  and?: Array< ModelPlacementResultsFilterInput | null > | null,
+  or?: Array< ModelPlacementResultsFilterInput | null > | null,
+  not?: ModelPlacementResultsFilterInput | null,
+};
+
+export type ModelPlacementResultsConnection = {
+  __typename: "ModelPlacementResultsConnection",
+  items:  Array<PlacementResults | null >,
+  nextToken?: string | null,
+};
+
 export enum ModelSortDirection {
   ASC = "ASC",
   DESC = "DESC",
 }
 
+
+export type ModelSubscriptionCourseFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  scheduleDates?: ModelSubscriptionIntInput | null,
+  scheduleStartTime?: ModelSubscriptionStringInput | null,
+  scheduleEndTime?: ModelSubscriptionStringInput | null,
+  virtualClassLink?: ModelSubscriptionStringInput | null,
+  isActive?: ModelSubscriptionBooleanInput | null,
+  externalId?: ModelSubscriptionStringInput | null,
+  scheduleYear?: ModelSubscriptionIntInput | null,
+  englishLevel?: ModelSubscriptionStringInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  isVirtual?: ModelSubscriptionBooleanInput | null,
+  zoomMeetingId?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionCourseFilterInput | null > | null,
+  or?: Array< ModelSubscriptionCourseFilterInput | null > | null,
+};
+
+export type ModelSubscriptionIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  in?: Array< string | null > | null,
+  notIn?: Array< string | null > | null,
+};
+
+export type ModelSubscriptionStringInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  in?: Array< string | null > | null,
+  notIn?: Array< string | null > | null,
+};
+
+export type ModelSubscriptionIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  in?: Array< number | null > | null,
+  notIn?: Array< number | null > | null,
+};
+
+export type ModelSubscriptionBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+};
+
+export type ModelSubscriptionMediaFolderFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  parentId?: ModelSubscriptionIDInput | null,
+  and?: Array< ModelSubscriptionMediaFolderFilterInput | null > | null,
+  or?: Array< ModelSubscriptionMediaFolderFilterInput | null > | null,
+};
+
+export type ModelSubscriptionMediaFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  title?: ModelSubscriptionStringInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  description?: ModelSubscriptionStringInput | null,
+  link?: ModelSubscriptionStringInput | null,
+  content?: ModelSubscriptionStringInput | null,
+  uploadedBy?: ModelSubscriptionStringInput | null,
+  mimeType?: ModelSubscriptionStringInput | null,
+  folderId?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionMediaFilterInput | null > | null,
+  or?: Array< ModelSubscriptionMediaFilterInput | null > | null,
+};
+
+export type ModelSubscriptionUserFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  email?: ModelSubscriptionStringInput | null,
+  phone?: ModelSubscriptionStringInput | null,
+  cognitoId?: ModelSubscriptionIDInput | null,
+  groups?: ModelSubscriptionStringInput | null,
+  isDisabledUser?: ModelSubscriptionBooleanInput | null,
+  disabledReason?: ModelSubscriptionStringInput | null,
+  englishLevel?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionUserFilterInput | null > | null,
+  or?: Array< ModelSubscriptionUserFilterInput | null > | null,
+};
+
+export type ModelSubscriptionExamFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  title?: ModelSubscriptionStringInput | null,
+  questionPools?: ModelSubscriptionStringInput | null,
+  deadline?: ModelSubscriptionStringInput | null,
+  startDate?: ModelSubscriptionStringInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionExamFilterInput | null > | null,
+  or?: Array< ModelSubscriptionExamFilterInput | null > | null,
+};
+
+export type ModelSubscriptionExamAttemptFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  examId?: ModelSubscriptionIDInput | null,
+  examName?: ModelSubscriptionStringInput | null,
+  userId?: ModelSubscriptionIDInput | null,
+  userName?: ModelSubscriptionStringInput | null,
+  score?: ModelSubscriptionStringInput | null,
+  isCompleted?: ModelSubscriptionBooleanInput | null,
+  correctAnswers?: ModelSubscriptionIntInput | null,
+  totalQuestions?: ModelSubscriptionIntInput | null,
+  correctedBy?: ModelSubscriptionStringInput | null,
+  externalId?: ModelSubscriptionIDInput | null,
+  results?: ModelSubscriptionStringInput | null,
+  keys?: ModelSubscriptionStringInput | null,
+  teacherComments?: ModelSubscriptionStringInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionExamAttemptFilterInput | null > | null,
+  or?: Array< ModelSubscriptionExamAttemptFilterInput | null > | null,
+};
+
+export type ModelSubscriptionLessonPlanFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  title?: ModelSubscriptionStringInput | null,
+  date?: ModelSubscriptionStringInput | null,
+  uploadedBy?: ModelSubscriptionStringInput | null,
+  content?: ModelSubscriptionStringInput | null,
+  media?: ModelSubscriptionStringInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  externalId?: ModelSubscriptionIDInput | null,
+  extraInformation?: ModelSubscriptionStringInput | null,
+  link?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionLessonPlanFilterInput | null > | null,
+  or?: Array< ModelSubscriptionLessonPlanFilterInput | null > | null,
+};
+
+export type ModelSubscriptionPaymentsFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  userId?: ModelSubscriptionIDInput | null,
+  date?: ModelSubscriptionStringInput | null,
+  status?: ModelSubscriptionStringInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  typeId?: ModelSubscriptionIDInput | null,
+  amount?: ModelSubscriptionFloatInput | null,
+  mpPaymentId?: ModelSubscriptionStringInput | null,
+  itemName?: ModelSubscriptionStringInput | null,
+  currency?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionPaymentsFilterInput | null > | null,
+  or?: Array< ModelSubscriptionPaymentsFilterInput | null > | null,
+};
+
+export type ModelSubscriptionFloatInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  in?: Array< number | null > | null,
+  notIn?: Array< number | null > | null,
+};
+
+export type ModelSubscriptionBookletsFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  nameEng?: ModelSubscriptionStringInput | null,
+  description?: ModelSubscriptionStringInput | null,
+  descriptionEng?: ModelSubscriptionStringInput | null,
+  level?: ModelSubscriptionStringInput | null,
+  priceArs?: ModelSubscriptionFloatInput | null,
+  priceUsd?: ModelSubscriptionFloatInput | null,
+  isActive?: ModelSubscriptionBooleanInput | null,
+  paypalCheckoutUrl?: ModelSubscriptionStringInput | null,
+  paypalSandBoxCheckoutUrl?: ModelSubscriptionStringInput | null,
+  cognitoGroups?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionBookletsFilterInput | null > | null,
+  or?: Array< ModelSubscriptionBookletsFilterInput | null > | null,
+};
+
+export type ModelSubscriptionPlacementResultsFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  fullName?: ModelSubscriptionStringInput | null,
+  email?: ModelSubscriptionStringInput | null,
+  level?: ModelSubscriptionStringInput | null,
+  phone?: ModelSubscriptionStringInput | null,
+  country?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionPlacementResultsFilterInput | null > | null,
+  or?: Array< ModelSubscriptionPlacementResultsFilterInput | null > | null,
+};
 
 export type CreateCourseMutationVariables = {
   input: CreateCourseInput,
@@ -1631,11 +1876,7 @@ export type CreateBookletsMutation = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    mpCheckoutUrl: string,
-    mpPreferenceId: string,
-    pdfFile: string,
     paypalCheckoutUrl: string,
-    mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
     createdAt: string,
@@ -1660,11 +1901,7 @@ export type UpdateBookletsMutation = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    mpCheckoutUrl: string,
-    mpPreferenceId: string,
-    pdfFile: string,
     paypalCheckoutUrl: string,
-    mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
     createdAt: string,
@@ -1689,13 +1926,66 @@ export type DeleteBookletsMutation = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    mpCheckoutUrl: string,
-    mpPreferenceId: string,
-    pdfFile: string,
     paypalCheckoutUrl: string,
-    mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreatePlacementResultsMutationVariables = {
+  input: CreatePlacementResultsInput,
+  condition?: ModelPlacementResultsConditionInput | null,
+};
+
+export type CreatePlacementResultsMutation = {
+  createPlacementResults?:  {
+    __typename: "PlacementResults",
+    id: string,
+    fullName: string,
+    email: string,
+    level: string,
+    phone: string,
+    country: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdatePlacementResultsMutationVariables = {
+  input: UpdatePlacementResultsInput,
+  condition?: ModelPlacementResultsConditionInput | null,
+};
+
+export type UpdatePlacementResultsMutation = {
+  updatePlacementResults?:  {
+    __typename: "PlacementResults",
+    id: string,
+    fullName: string,
+    email: string,
+    level: string,
+    phone: string,
+    country: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeletePlacementResultsMutationVariables = {
+  input: DeletePlacementResultsInput,
+  condition?: ModelPlacementResultsConditionInput | null,
+};
+
+export type DeletePlacementResultsMutation = {
+  deletePlacementResults?:  {
+    __typename: "PlacementResults",
+    id: string,
+    fullName: string,
+    email: string,
+    level: string,
+    phone: string,
+    country: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2135,11 +2425,7 @@ export type GetBookletsQuery = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    mpCheckoutUrl: string,
-    mpPreferenceId: string,
-    pdfFile: string,
     paypalCheckoutUrl: string,
-    mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
     createdAt: string,
@@ -2167,13 +2453,51 @@ export type ListBookletsQuery = {
       priceArs: number,
       priceUsd: number,
       isActive?: boolean | null,
-      mpCheckoutUrl: string,
-      mpPreferenceId: string,
-      pdfFile: string,
       paypalCheckoutUrl: string,
-      mpSandBoxCheckoutUrl: string,
       paypalSandBoxCheckoutUrl: string,
       cognitoGroups?: Array< string > | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetPlacementResultsQueryVariables = {
+  id: string,
+};
+
+export type GetPlacementResultsQuery = {
+  getPlacementResults?:  {
+    __typename: "PlacementResults",
+    id: string,
+    fullName: string,
+    email: string,
+    level: string,
+    phone: string,
+    country: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListPlacementResultsQueryVariables = {
+  filter?: ModelPlacementResultsFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPlacementResultsQuery = {
+  listPlacementResults?:  {
+    __typename: "ModelPlacementResultsConnection",
+    items:  Array< {
+      __typename: "PlacementResults",
+      id: string,
+      fullName: string,
+      email: string,
+      level: string,
+      phone: string,
+      country: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -2282,6 +2606,10 @@ export type LessonPlanByExternalIdQuery = {
   } | null,
 };
 
+export type OnCreateCourseSubscriptionVariables = {
+  filter?: ModelSubscriptionCourseFilterInput | null,
+};
+
 export type OnCreateCourseSubscription = {
   onCreateCourse?:  {
     __typename: "Course",
@@ -2303,6 +2631,10 @@ export type OnCreateCourseSubscription = {
   } | null,
 };
 
+export type OnUpdateCourseSubscriptionVariables = {
+  filter?: ModelSubscriptionCourseFilterInput | null,
+};
+
 export type OnUpdateCourseSubscription = {
   onUpdateCourse?:  {
     __typename: "Course",
@@ -2322,6 +2654,10 @@ export type OnUpdateCourseSubscription = {
     createdAt: string,
     updatedAt: string,
   } | null,
+};
+
+export type OnDeleteCourseSubscriptionVariables = {
+  filter?: ModelSubscriptionCourseFilterInput | null,
 };
 
 export type OnDeleteCourseSubscription = {
@@ -2346,6 +2682,7 @@ export type OnDeleteCourseSubscription = {
 };
 
 export type OnCreateMediaFolderSubscriptionVariables = {
+  filter?: ModelSubscriptionMediaFolderFilterInput | null,
   owner?: string | null,
 };
 
@@ -2363,6 +2700,7 @@ export type OnCreateMediaFolderSubscription = {
 };
 
 export type OnUpdateMediaFolderSubscriptionVariables = {
+  filter?: ModelSubscriptionMediaFolderFilterInput | null,
   owner?: string | null,
 };
 
@@ -2380,6 +2718,7 @@ export type OnUpdateMediaFolderSubscription = {
 };
 
 export type OnDeleteMediaFolderSubscriptionVariables = {
+  filter?: ModelSubscriptionMediaFolderFilterInput | null,
   owner?: string | null,
 };
 
@@ -2397,6 +2736,7 @@ export type OnDeleteMediaFolderSubscription = {
 };
 
 export type OnCreateMediaSubscriptionVariables = {
+  filter?: ModelSubscriptionMediaFilterInput | null,
   owner?: string | null,
 };
 
@@ -2420,6 +2760,7 @@ export type OnCreateMediaSubscription = {
 };
 
 export type OnUpdateMediaSubscriptionVariables = {
+  filter?: ModelSubscriptionMediaFilterInput | null,
   owner?: string | null,
 };
 
@@ -2443,6 +2784,7 @@ export type OnUpdateMediaSubscription = {
 };
 
 export type OnDeleteMediaSubscriptionVariables = {
+  filter?: ModelSubscriptionMediaFilterInput | null,
   owner?: string | null,
 };
 
@@ -2465,6 +2807,10 @@ export type OnDeleteMediaSubscription = {
   } | null,
 };
 
+export type OnCreateUserSubscriptionVariables = {
+  filter?: ModelSubscriptionUserFilterInput | null,
+};
+
 export type OnCreateUserSubscription = {
   onCreateUser?:  {
     __typename: "User",
@@ -2482,6 +2828,10 @@ export type OnCreateUserSubscription = {
   } | null,
 };
 
+export type OnUpdateUserSubscriptionVariables = {
+  filter?: ModelSubscriptionUserFilterInput | null,
+};
+
 export type OnUpdateUserSubscription = {
   onUpdateUser?:  {
     __typename: "User",
@@ -2497,6 +2847,10 @@ export type OnUpdateUserSubscription = {
     createdAt: string,
     updatedAt: string,
   } | null,
+};
+
+export type OnDeleteUserSubscriptionVariables = {
+  filter?: ModelSubscriptionUserFilterInput | null,
 };
 
 export type OnDeleteUserSubscription = {
@@ -2517,6 +2871,7 @@ export type OnDeleteUserSubscription = {
 };
 
 export type OnCreateExamSubscriptionVariables = {
+  filter?: ModelSubscriptionExamFilterInput | null,
   owner?: string | null,
 };
 
@@ -2547,6 +2902,7 @@ export type OnCreateExamSubscription = {
 };
 
 export type OnUpdateExamSubscriptionVariables = {
+  filter?: ModelSubscriptionExamFilterInput | null,
   owner?: string | null,
 };
 
@@ -2577,6 +2933,7 @@ export type OnUpdateExamSubscription = {
 };
 
 export type OnDeleteExamSubscriptionVariables = {
+  filter?: ModelSubscriptionExamFilterInput | null,
   owner?: string | null,
 };
 
@@ -2607,6 +2964,7 @@ export type OnDeleteExamSubscription = {
 };
 
 export type OnCreateExamAttemptSubscriptionVariables = {
+  filter?: ModelSubscriptionExamAttemptFilterInput | null,
   owner?: string | null,
 };
 
@@ -2635,6 +2993,7 @@ export type OnCreateExamAttemptSubscription = {
 };
 
 export type OnUpdateExamAttemptSubscriptionVariables = {
+  filter?: ModelSubscriptionExamAttemptFilterInput | null,
   owner?: string | null,
 };
 
@@ -2663,6 +3022,7 @@ export type OnUpdateExamAttemptSubscription = {
 };
 
 export type OnDeleteExamAttemptSubscriptionVariables = {
+  filter?: ModelSubscriptionExamAttemptFilterInput | null,
   owner?: string | null,
 };
 
@@ -2691,6 +3051,7 @@ export type OnDeleteExamAttemptSubscription = {
 };
 
 export type OnCreateLessonPlanSubscriptionVariables = {
+  filter?: ModelSubscriptionLessonPlanFilterInput | null,
   owner?: string | null,
 };
 
@@ -2715,6 +3076,7 @@ export type OnCreateLessonPlanSubscription = {
 };
 
 export type OnUpdateLessonPlanSubscriptionVariables = {
+  filter?: ModelSubscriptionLessonPlanFilterInput | null,
   owner?: string | null,
 };
 
@@ -2739,6 +3101,7 @@ export type OnUpdateLessonPlanSubscription = {
 };
 
 export type OnDeleteLessonPlanSubscriptionVariables = {
+  filter?: ModelSubscriptionLessonPlanFilterInput | null,
   owner?: string | null,
 };
 
@@ -2762,6 +3125,10 @@ export type OnDeleteLessonPlanSubscription = {
   } | null,
 };
 
+export type OnCreatePaymentsSubscriptionVariables = {
+  filter?: ModelSubscriptionPaymentsFilterInput | null,
+};
+
 export type OnCreatePaymentsSubscription = {
   onCreatePayments?:  {
     __typename: "Payments",
@@ -2778,6 +3145,10 @@ export type OnCreatePaymentsSubscription = {
     createdAt: string,
     updatedAt: string,
   } | null,
+};
+
+export type OnUpdatePaymentsSubscriptionVariables = {
+  filter?: ModelSubscriptionPaymentsFilterInput | null,
 };
 
 export type OnUpdatePaymentsSubscription = {
@@ -2798,6 +3169,10 @@ export type OnUpdatePaymentsSubscription = {
   } | null,
 };
 
+export type OnDeletePaymentsSubscriptionVariables = {
+  filter?: ModelSubscriptionPaymentsFilterInput | null,
+};
+
 export type OnDeletePaymentsSubscription = {
   onDeletePayments?:  {
     __typename: "Payments",
@@ -2816,6 +3191,10 @@ export type OnDeletePaymentsSubscription = {
   } | null,
 };
 
+export type OnCreateBookletsSubscriptionVariables = {
+  filter?: ModelSubscriptionBookletsFilterInput | null,
+};
+
 export type OnCreateBookletsSubscription = {
   onCreateBooklets?:  {
     __typename: "Booklets",
@@ -2828,16 +3207,16 @@ export type OnCreateBookletsSubscription = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    mpCheckoutUrl: string,
-    mpPreferenceId: string,
-    pdfFile: string,
     paypalCheckoutUrl: string,
-    mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
+};
+
+export type OnUpdateBookletsSubscriptionVariables = {
+  filter?: ModelSubscriptionBookletsFilterInput | null,
 };
 
 export type OnUpdateBookletsSubscription = {
@@ -2852,16 +3231,16 @@ export type OnUpdateBookletsSubscription = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    mpCheckoutUrl: string,
-    mpPreferenceId: string,
-    pdfFile: string,
     paypalCheckoutUrl: string,
-    mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
   } | null,
+};
+
+export type OnDeleteBookletsSubscriptionVariables = {
+  filter?: ModelSubscriptionBookletsFilterInput | null,
 };
 
 export type OnDeleteBookletsSubscription = {
@@ -2876,13 +3255,63 @@ export type OnDeleteBookletsSubscription = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    mpCheckoutUrl: string,
-    mpPreferenceId: string,
-    pdfFile: string,
     paypalCheckoutUrl: string,
-    mpSandBoxCheckoutUrl: string,
     paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreatePlacementResultsSubscriptionVariables = {
+  filter?: ModelSubscriptionPlacementResultsFilterInput | null,
+};
+
+export type OnCreatePlacementResultsSubscription = {
+  onCreatePlacementResults?:  {
+    __typename: "PlacementResults",
+    id: string,
+    fullName: string,
+    email: string,
+    level: string,
+    phone: string,
+    country: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdatePlacementResultsSubscriptionVariables = {
+  filter?: ModelSubscriptionPlacementResultsFilterInput | null,
+};
+
+export type OnUpdatePlacementResultsSubscription = {
+  onUpdatePlacementResults?:  {
+    __typename: "PlacementResults",
+    id: string,
+    fullName: string,
+    email: string,
+    level: string,
+    phone: string,
+    country: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeletePlacementResultsSubscriptionVariables = {
+  filter?: ModelSubscriptionPlacementResultsFilterInput | null,
+};
+
+export type OnDeletePlacementResultsSubscription = {
+  onDeletePlacementResults?:  {
+    __typename: "PlacementResults",
+    id: string,
+    fullName: string,
+    email: string,
+    level: string,
+    phone: string,
+    country: string,
     createdAt: string,
     updatedAt: string,
   } | null,
