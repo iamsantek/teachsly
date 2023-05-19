@@ -53,7 +53,17 @@ export const QuestionResult = ({
               {question.correction?.isCorrectAnswer === true ? " ✅" : ""}{" "}
               {question.correction?.isCorrectAnswer === false ? " ❌" : ""}
             </Text>
-            {question.correction?.markDownCorrection && <MarkDownColorHelper />}
+            {question.correction?.markDownCorrection && (
+              <>
+                <Text fontWeight="bold" marginY={3}>
+                  {translate("CORRECTION")}
+                </Text>
+                <TextMarkdownViewer
+                  markdownText={question.correction?.markDownCorrection}
+                />
+                <MarkDownColorHelper showResetButton={false} />
+              </>
+            )}
           </>
         </Text>
       )}

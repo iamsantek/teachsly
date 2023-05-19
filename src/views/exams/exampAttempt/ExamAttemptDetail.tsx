@@ -1,6 +1,7 @@
 import {
   Badge,
   Button,
+  Flex,
   FormLabel,
   HStack,
   NumberDecrementStepper,
@@ -147,6 +148,12 @@ export const ExamAttemptDetail = () => {
     );
   }
 
+  const isPendingAnswers = watch("pendingAnswers") > 0;
+  const noFinalMark = Number(watch("score")) === 0;
+
+  const disableSendButton =
+    isPendingAnswers || !!examAttempt?.correctedBy || noFinalMark;
+
   return (
     <Stack marginBottom={10}>
       <SectionHeader sectionName={examAttempt?.userName as string} />
@@ -201,7 +208,7 @@ export const ExamAttemptDetail = () => {
               {...register("teacherComment")}
             />
 
-            <FormLabel>{translate("FINAL_MARK")}</FormLabel>
+            <FormLabel>{translate("FINAL_MARK")} *</FormLabel>
             <Controller
               render={({ field: { onChange, value, ref } }) => (
                 <NumberInput
@@ -217,7 +224,10 @@ export const ExamAttemptDetail = () => {
                   step={0.25}
                   size="lg"
                 >
-                  <NumberInputField />
+                  <NumberInputField
+                    borderColor="brand.500"
+                    border="2px solid"
+                  />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
@@ -235,12 +245,25 @@ export const ExamAttemptDetail = () => {
               type="submit"
               colorScheme="brand"
               isLoading={isSendingResults}
-              disabled={
-                watch("pendingAnswers") > 0 || !!examAttempt?.correctedBy
-              }
+              disabled={disableSendButton}
             >
               {translate("FINISH_CORRECTION")}
             </Button>
+            <Flex flexDirection="column" gap={3} textAlign="center">
+              {disableSendButton && (
+                <Text>{translate("PENDING_TASKS_BEFORE_SEND_CORRECTION")}</Text>
+              )}
+              {isPendingAnswers && (
+                <Text fontWeight="bold" color="brand.500">
+                  {translate("PENDING_ANSWERS_ERROR")}
+                </Text>
+              )}
+              {noFinalMark && (
+                <Text fontWeight="bold" color="brand.500">
+                  {translate("NO_FINAL_MARK_WARNING")}
+                </Text>
+              )}
+            </Flex>
           </Stack>
         </form>
       </FormProvider>

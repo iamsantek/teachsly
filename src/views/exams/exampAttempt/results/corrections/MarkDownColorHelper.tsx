@@ -40,9 +40,13 @@ const correctionTypes: MarkdownHelper[] = [
 
 interface Props {
   onResetCorrection?: () => void;
+  showResetButton?: boolean;
 }
 
-export const MarkDownColorHelper = ({ onResetCorrection }: Props) => {
+export const MarkDownColorHelper = ({
+  onResetCorrection,
+  showResetButton,
+}: Props) => {
   const { hasEditPermission } = useUserGroups();
   return (
     <Flex marginY={5}>
@@ -64,7 +68,7 @@ export const MarkDownColorHelper = ({ onResetCorrection }: Props) => {
             <Text>{translate(description)}</Text>
           </>
         ))}
-        {hasEditPermission && (
+        {hasEditPermission && showResetButton && (
           <Button
             leftIcon={<GrPowerReset />}
             onClick={onResetCorrection}
