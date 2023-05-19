@@ -8,7 +8,7 @@ import {
   Flex,
   Checkbox,
 } from "@chakra-ui/react";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import { useFormContext, UseFieldArrayUpdate } from "react-hook-form";
 import { AiFillDelete } from "react-icons/ai";
 import { BsListCheck } from "react-icons/bs";
@@ -20,13 +20,11 @@ import {
   QuestionType,
   AnswerType,
   ExamAttachments,
-  ExamAttachmentType,
 } from "../../interfaces/Exams";
 import { translate } from "../../utils/LanguageUtils";
 import { QuestionConfigurationDrawer } from "./QuestionConfigurationDrawer";
-import StorageService from "../../services/aws/StorageService";
-import CloudFrontService from "../../services/aws/CloudFrontService";
 import { alphabet } from "../../utils/ExamUtils";
+import { driveRegExp } from "../../utils/StringUtils";
 
 interface Props {
   questionPool: QuestionPool;
@@ -41,7 +39,6 @@ export const QuestionPoolQuestions = ({
 }: Props) => {
   const { register, watch } = useFormContext();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [files, setFiles] = useState<{ [key: string]: ExamAttachments }>();
 
   const addQuestion = (
     questionPoolIndex: number,
@@ -175,7 +172,7 @@ export const QuestionPoolQuestions = ({
               placeholder={`${translate("QUESTION")} #${questionIndex + 1}`}
               {...register(
                 `questionPools.${questionPoolIndex}.questions.${questionIndex}.question`,
-                { required: false }
+                { required: false, pattern: new RegExp(driveRegExp) }
               )}
             />
 
@@ -196,7 +193,7 @@ export const QuestionPoolQuestions = ({
             placeholder={`${translate("DESCRIPTION")} #${questionIndex + 1}`}
             {...register(
               `questionPools.${questionPoolIndex}.questions.${questionIndex}.description`,
-              { required: false }
+              { required: false, pattern: new RegExp(driveRegExp) }
             )}
           />
 

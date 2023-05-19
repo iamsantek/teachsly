@@ -25,23 +25,52 @@ import { MultiSelectOption } from "../interfaces/MultiSelectOption";
 import { BadgeColors } from "../views/exams/exampAttempt/CorrectionBadge";
 import { transformGroups } from "./CourseUtils";
 import { translate } from "./LanguageUtils";
-import { removeDiacritics } from "./StringUtils";
+import { isNotAllowedWebsite, removeDiacritics } from "./StringUtils";
 
 export const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
 // Check that any of questions and options inside the questions pools in Exam Form are empty
-export const existEmptyFields = (examForm: ExamForm): boolean => {
+export const runFieldsValidations = (
+  examForm: ExamForm
+): TranslationsDictionary[] => {
+  const errors: TranslationsDictionary[] = [];
   const { questionPools } = examForm;
-  return questionPools.some((pool) => {
-    const isEmpty = pool.questions.some((question) => {
-      if (question.options?.length === 0 || question.question.length === 0) {
-        return true;
+  questionPools.forEach((pool) => {
+    const notAllowedLinks = [
+      isNotAllowedWebsite(pool.exerciseDescription),
+      isNotAllowedWebsite(pool.exerciseExplanation),
+    ].some(Boolean);
+
+    if (notAllowedLinks) {
+      errors.push("DRIVE_LINK_NOT_ALLOWED");
+    }
+
+    pool.questions.forEach((question) => {
+      if (question.question.length === 0) {
+        errors.push("EMPTY_QUESTION");
       }
 
-      return question.options?.some((option) => option.label === "");
+      const isEmptyOptions = question.options?.some(
+        (option) => option.label === ""
+      );
+      
+      if (isEmptyOptions) {
+        errors.push("EMPTY_OPTION");
+      }
+
+      const notAllowedLinks = [
+        isNotAllowedWebsite(question.question),
+        isNotAllowedWebsite(question.description),
+      ].some(Boolean);
+
+      if (notAllowedLinks) {
+        errors.push("DRIVE_LINK_NOT_ALLOWED");
+      }
     });
-    return isEmpty;
   });
+
+  // Return unique errors
+  return [...new Set(errors)];
 };
 
 export const formatExamForm = (exam: ExamForm) => ({

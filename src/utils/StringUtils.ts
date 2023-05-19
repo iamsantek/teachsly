@@ -34,3 +34,19 @@ export const capitalize = (text: string) => {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 };
+
+export const driveRegExp = /^(?!.*drive\.com).*$/
+
+export const notAllowedWebsites = [
+  "drive.com",
+  "drive.google.com",
+  "docs.google.com",
+  "onedrive.live.com",
+  "dropbox.com",
+  "onedrive.com",
+];
+
+export const isNotAllowedWebsite = (string?: string | null) => {
+  if (!string) return false;
+  return notAllowedWebsites.some((subcadena) => string.includes(subcadena));
+};

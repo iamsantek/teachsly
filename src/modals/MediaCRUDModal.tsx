@@ -42,6 +42,7 @@ import { useParams } from "react-router-dom";
 import { recommendedMediaTypes } from "../utils/MediaUtils";
 import { NotRecommendedMediaTypeWarning } from "../components/Alert/NotRecommendedMediaTypeWarning";
 import { toastConfig } from "../utils/ToastUtils";
+import { isNotAllowedWebsite } from "../utils/StringUtils";
 
 interface Props {
   isOpen: boolean;
@@ -238,7 +239,22 @@ const MediaCRUDModal = ({
   };
 
   const onSubmit = (media: MediaWithMultiSelect) => {
-    setIsLoading(true);
+    const isDriveLink = [
+      isNotAllowedWebsite(media.link),
+      isNotAllowedWebsite(media.title),
+      isNotAllowedWebsite(media.description),
+    ].some(Boolean);
+
+    if (isDriveLink) {
+      toast(
+        toastConfig({
+          description: "DRIVE_LINK_NOT_ALLOWED",
+          status: "error",
+        })
+      );
+      return;
+    }
+
     const hasErrors = Object.keys(errors).length !== 0;
 
     if (hasErrors) {

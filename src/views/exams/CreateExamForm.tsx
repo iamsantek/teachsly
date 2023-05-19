@@ -46,7 +46,7 @@ import { ExamForm } from "../../interfaces/Exams";
 import ExamService from "../../services/ExamService";
 import { generalGroups } from "../../utils/CognitoGroupsUtils";
 import { renderCourseList } from "../../utils/CourseUtils";
-import { formatAPIResponse } from "../../utils/ExamUtils";
+import { runFieldsValidations, formatAPIResponse } from "../../utils/ExamUtils";
 import { translate } from "../../utils/LanguageUtils";
 import { QuestionPoolQuestions } from "./QuestionPoolQuestions";
 import { TranslationsDictionary } from "../../dictionaries/dictionary";
@@ -116,15 +116,19 @@ export const CreateExamForm = () => {
   }, [examId, fetchExamById]);
 
   const saveExam = async (exam: ExamForm) => {
-    // const isEmptyFields =  existEmptyFields(exam)
+    const errors = runFieldsValidations(exam);
 
-    // if (isEmptyFields) {
-    //   toast(toastConfig({
-    //     description: 'EXAM_EMPTY_FIELD_WARNING',
-    //     status: 'INFO'
-    //   })
-    //   return
-    // }
+    if (errors.length > 0) {
+      errors.forEach((field) => {
+        toast(
+          toastConfig({
+            description: field,
+            status: "error",
+          })
+        );
+      });
+      return;
+    }
 
     setIsLoading(true);
 
@@ -311,7 +315,9 @@ export const CreateExamForm = () => {
                 type="datetime-local"
               />
             </Flex>
-            <Text color="gray.500" fontWeight="italic">** {translate("NO_DEADLINE_EXPLANATION")}</Text>
+            <Text color="gray.500" fontWeight="italic">
+              ** {translate("NO_DEADLINE_EXPLANATION")}
+            </Text>
 
             <Select
               name="timer.type"

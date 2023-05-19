@@ -33,6 +33,9 @@ import {
 import { translate } from "../../utils/LanguageUtils";
 import { renderMultiSelectOptions } from "../../utils/SelectUtils";
 import { toastConfig } from "../../utils/ToastUtils";
+import {
+  isNotAllowedWebsite,
+} from "../../utils/StringUtils";
 
 export interface LessonPlanningWithMultiSelect
   extends Omit<CreateLessonPlanInput, "type"> {
@@ -113,6 +116,22 @@ export const LessonPlanningModal = ({
   }, [lessonToUpdate, courses]);
 
   const saveLessonPlanning = async (values: LessonPlanningWithMultiSelect) => {
+    const isNotAllowedLinks = [
+      isNotAllowedWebsite(values.link),
+      isNotAllowedWebsite(values.title),
+      isNotAllowedWebsite(values.content),
+    ].some(Boolean);
+
+    if (isNotAllowedLinks) {
+      toast(
+        toastConfig({
+          description: "DRIVE_LINK_NOT_ALLOWED",
+          status: "error",
+        })
+      );
+      return;
+    }
+
     setIsLoading(true);
     let savedFile: PutResult | undefined;
 
