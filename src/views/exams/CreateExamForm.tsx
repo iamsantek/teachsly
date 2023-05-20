@@ -399,7 +399,7 @@ export const CreateExamForm = () => {
                         <Input
                           name={`questionPools.${questionPoolIndex}.exerciseExplanation`}
                           label="EXERCISE_EXPLANATION"
-                          isRequired={false}
+                          isRequired={true}
                         />
                         <Input
                           name={`questionPools.${questionPoolIndex}.exerciseDescription`}

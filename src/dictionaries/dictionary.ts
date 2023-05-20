@@ -295,6 +295,7 @@ export enum LanguageES {
   DRIVE_LINK_NOT_ALLOWED= "Link externos (drive, dropbox, etc) no permitidos. Por favor, subir el archivo directamente a la plataforma.",
   EMPTY_OPTION="Hay preguntas con opciones vacías.",
   EMPTY_QUESTION="Hay preguntas vacías.",
+  EMPTY_EXERCISE_EXPLANATION="Hay ejercicios con explicaciones vacías.",
 }
 
 export enum LanguageEN {
@@ -589,4 +590,5 @@ export enum LanguageEN {
   DRIVE_LINK_NOT_ALLOWED= "Link not allowed. Please, upload the file directly to the platform.",
   EMPTY_OPTION="There are options without text.",
   EMPTY_QUESTION="There are questions without text.",
+  EMPTY_EXERCISE_EXPLANATION="There are exercises without explanation.",
 }
