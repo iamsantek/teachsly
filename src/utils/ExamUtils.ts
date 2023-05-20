@@ -36,6 +36,11 @@ export const runFieldsValidations = (
   const errors: TranslationsDictionary[] = [];
   const { questionPools } = examForm;
   questionPools.forEach((pool) => {
+    const isEmptyExplanation = pool.exerciseExplanation.length === 0;
+    if (isEmptyExplanation) {
+      errors.push("EMPTY_EXERCISE_EXPLANATION");
+    }
+
     const notAllowedLinks = [
       isNotAllowedWebsite(pool.exerciseDescription),
       isNotAllowedWebsite(pool.exerciseExplanation),
@@ -46,14 +51,15 @@ export const runFieldsValidations = (
     }
 
     pool.questions.forEach((question) => {
-      if (question.question.length === 0) {
-        errors.push("EMPTY_QUESTION");
-      }
+      // Disable because we allow empty questions if the exercise is explained in the exercise explanation
+      // if (question.question.length === 0) {
+      //   errors.push("EMPTY_QUESTION");
+      // }
 
       const isEmptyOptions = question.options?.some(
         (option) => option.label === ""
       );
-      
+
       if (isEmptyOptions) {
         errors.push("EMPTY_OPTION");
       }

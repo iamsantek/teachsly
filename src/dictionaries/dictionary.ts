@@ -158,7 +158,7 @@ export enum LanguageES {
   EXAM_DURATION = "Duración del examen",
   AUDIO_FILE = "Archivo de audio",
   EXERCISE_EXPLANATION = "Explicación del ejercicio",
-  EXERCISE_DESCRIPTION = "Descripción del ejercicio",
+  EXERCISE_DESCRIPTION = "Descripción del ejercicio (opcional)",
   EXERCISE = "Ejercicio",
   MEANINGFUL_FILE_NAMES = "Nombrar a los archivos de una forma intuitiva para su debida identificación. Ex: 'Reading Exercise 1'",
   EXAM_ATTEMPTS = "Exámenes realizados",
