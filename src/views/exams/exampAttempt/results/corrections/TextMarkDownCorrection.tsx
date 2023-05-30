@@ -62,7 +62,6 @@ export const TextMarkDownCorrection = ({
       value,
       markDownText
     );
-    console.log({ updatedValues });
     updateFn(questionPoolIndex, updatedValues);
   };
 
@@ -88,7 +87,6 @@ export const TextMarkDownCorrection = ({
       questionIndex,
       answer
     );
-    console.log({ updatedQuestionPool });
     updateFn(questionPoolIndex, updatedQuestionPool);
   };
 

@@ -1,9 +1,11 @@
 import { Badge } from "@chakra-ui/react";
-import { Question } from "../../../interfaces/Exams";
+import { AnswerType, Question } from "../../../interfaces/Exams";
 import { translate } from "../../../utils/LanguageUtils";
+import { useMemo } from "react";
 
 interface Props {
   question: Question;
+  answers: string | { [key: string]: string } | undefined;
 }
 
 export enum BadgeColors {
@@ -12,10 +14,25 @@ export enum BadgeColors {
   RED = "red",
 }
 
-export const CorrectionBadge = ({ question }: Props) => {
-  const withSelfCorrection = question.options?.some(
-    (option) => option.isCorrectOption
-  );
+export const CorrectionBadge = ({ question, answers }: Props) => {
+  const withSelfCorrection = useMemo(() => {
+    switch (question.answerType) {
+      case AnswerType.MultipleChoice:
+        return question.options?.some((option) => option.isCorrectOption);
+      case AnswerType.Blocks:
+        const totalAnswers = question.blocks?.correctAnswers?.filter(
+          (answer) => answer
+        ).length;
+
+        const totalAnsweredQuestions = Object.values(
+          answers as { [key: string]: string }
+        ).length;
+
+        return totalAnswers === totalAnsweredQuestions;
+      default:
+        return false;
+    }
+  }, [question.answerType, question.options, question.blocks, answers]);
 
   const badgeColor = () => {
     if (question.correction?.manualCorrection) {

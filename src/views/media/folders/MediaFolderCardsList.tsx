@@ -41,21 +41,7 @@ export const MediaFolderCardsList = ({
   const toast = useToast();
   const [nextToken, setNextToken] = useState<string | undefined>(undefined);
 
-  useEffect(() => {
-    console.log("Cambio", groups);
-  }, [groups]);
-
   const fetchFolders = useCallback(async () => {
-    console.log("fetchFolders");
-    console.log({
-      fetchType,
-      courseId,
-      groups,
-      userType,
-      level: user?.englishLevel,
-      nextToken,
-      folderId,
-    });
     const folders = await MediaFolderService.fetchMediaFolders(
       fetchType,
       courseId,
@@ -64,7 +50,6 @@ export const MediaFolderCardsList = ({
     );
 
     if (folders?.listMediaFolders?.nextToken) {
-      console.log("set token");
       setNextToken(folders.listMediaFolders.nextToken);
     }
 
