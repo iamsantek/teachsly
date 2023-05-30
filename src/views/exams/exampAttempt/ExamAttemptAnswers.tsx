@@ -30,15 +30,20 @@ export const ExamAttemptAnswers = ({ attempt, updateFn }: Props) => {
   const { watch } = useFormContext();
   const questionPools: QuestionPool[] = watch("questionPools");
 
+  const allAnswers =
+    (JSON.parse(attempt.results as string) as ExamAnswers | undefined)
+      ?.answers ?? {};
+
   return (
     <Accordion allowMultiple>
       {questionPools.map((questionPool, questionPoolIndex) => {
+        const questionPoolAnswers = allAnswers[questionPoolIndex];
         const id = generateRandomId();
-        const questionPoolAnswers = (
-          JSON.parse(attempt.results as string) as ExamAnswers | undefined
-        )?.answers;
         const { color: badgeColor, text: badgeText } =
-          isPendingCorrectionInQuestionPool(questionPool);
+          isPendingCorrectionInQuestionPool(
+            questionPool,
+            questionPoolAnswers as unknown as { [key: string]: string }
+          );
         return (
           <AccordionItem key={id} boxShadow="md" marginY={5}>
             <h2>
@@ -66,9 +71,7 @@ export const ExamAttemptAnswers = ({ attempt, updateFn }: Props) => {
               <ExamAttemptQuestionPoolAnswers
                 questionPoolIndex={questionPoolIndex}
                 questionPool={questionPool}
-                answers={
-                  questionPoolAnswers && questionPoolAnswers[questionPoolIndex]
-                }
+                answers={allAnswers && allAnswers[questionPoolIndex]}
                 updateFn={updateFn}
               />
             </AccordionPanel>

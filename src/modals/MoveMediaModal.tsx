@@ -66,7 +66,6 @@ export const MoveMediaModal = ({
     }
 
     if (folders?.listMediaFolders?.nextToken) {
-      console.log("AAAAAA");
       setNextPageToken(folders.listMediaFolders.nextToken);
     } else {
       setIsLoading(false);

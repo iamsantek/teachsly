@@ -1,30 +1,19 @@
 import {
   Button,
   Stack,
-  Input as ChakraInput,
-  HStack,
-  Text,
-  Box,
-  Flex,
-  Checkbox,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useFormContext, UseFieldArrayUpdate } from "react-hook-form";
-import { AiFillDelete } from "react-icons/ai";
 import { BsListCheck } from "react-icons/bs";
 import {
   QuestionPool,
-  Question,
-  Options,
   ExamForm,
   QuestionType,
   AnswerType,
-  ExamAttachments,
 } from "../../interfaces/Exams";
 import { translate } from "../../utils/LanguageUtils";
 import { QuestionConfigurationDrawer } from "./QuestionConfigurationDrawer";
-import { alphabet } from "../../utils/ExamUtils";
-import { driveRegExp } from "../../utils/StringUtils";
+import { PoolQuestion } from "./PoolQuestion";
 
 interface Props {
   questionPool: QuestionPool;
@@ -37,7 +26,7 @@ export const QuestionPoolQuestions = ({
   questionPoolIndex,
   updateFn: update,
 }: Props) => {
-  const { register, watch } = useFormContext();
+  const { watch } = useFormContext();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const addQuestion = (
@@ -66,89 +55,13 @@ export const QuestionPoolQuestions = ({
                   },
                 ]
               : undefined,
-          correctBlockSequence:
-            answerType === AnswerType.Blocks ? "" : undefined,
+          blocks: {
+            blockText: "",
+            correctAnswers: [],
+          },
         },
       ],
     });
-  };
-
-  const addOption = (questionIndex: number, questionPoolIndex: number) => {
-    const { options } =
-      watch("questionPools")[questionPoolIndex].questions[questionIndex];
-
-    const newOption = {
-      id: alphabet[options.length],
-      label: "",
-      isCorrectOption: undefined,
-    };
-
-    update(questionPoolIndex, {
-      ...watch("questionPools")[questionPoolIndex],
-      questions: watch("questionPools")[questionPoolIndex].questions.map(
-        (question: Question, index: number) => {
-          if (index === questionIndex) {
-            return {
-              ...question,
-              options: [...(question.options as Options[]), newOption],
-            };
-          }
-
-          return question;
-        }
-      ),
-    });
-  };
-
-  const onChangeOption = (newValue: string, questionPoolIndex: number) => {
-    const [question, option] = newValue.split("-");
-
-    const questionPool: QuestionPool =
-      watch("questionPools")[questionPoolIndex];
-    const questionToUpdate: Question = questionPool.questions[Number(question)];
-    const index = questionToUpdate.options?.findIndex(
-      (_option: Options, index: number) => alphabet[index] === option
-    );
-
-    if (
-      index !== undefined &&
-      !!questionToUpdate?.options &&
-      questionToUpdate?.options[index]
-    ) {
-      questionToUpdate.options[index].isCorrectOption =
-        !questionToUpdate.options[index].isCorrectOption;
-    }
-
-    questionPool.questions[Number(question)] = questionToUpdate;
-
-    update(questionPoolIndex, questionPool);
-  };
-
-  const onDeleteOption = (
-    questionIndex: number,
-    optionIndex: number,
-    questionPoolIndex: number
-  ) => {
-    const question = questionPool.questions[questionIndex];
-    const filteredOptions = question.options?.filter(
-      (option: Options, index: number) => index !== optionIndex
-    );
-
-    question.options = filteredOptions;
-    questionPool.questions[questionIndex] = question;
-
-    update(questionPoolIndex, questionPool);
-  };
-
-  const onDeleteQuestion = (questionIndex: number) => {
-    const questionPool: QuestionPool =
-      watch("questionPools")[questionPoolIndex];
-    const filteredQuestions = questionPool.questions.filter(
-      (question: Question, index: number) => index !== questionIndex
-    );
-
-    questionPool.questions = filteredQuestions;
-    update(questionPoolIndex, questionPool);
   };
 
   return (
@@ -162,127 +75,19 @@ export const QuestionPoolQuestions = ({
           {translate("ADD_FIRST_QUESTION")}
         </Button>
       )}
-      {questionPool.questions.map((question, questionIndex) => (
-        <Stack marginY={10} spacing={5} key={question.id} width="100%">
-          <Text fontWeight={600} fontSize="sm" textStyle="title">
-            {translate("QUESTION")} #{questionIndex + 1}
-          </Text>
-          <Flex gap={2}>
-            <ChakraInput
-              placeholder={`${translate("QUESTION")} #${questionIndex + 1}`}
-              {...register(
-                `questionPools.${questionPoolIndex}.questions.${questionIndex}.question`,
-                { required: false, pattern: new RegExp(driveRegExp) }
-              )}
-            />
-
-            <Button
-              onClick={() => onDeleteQuestion(questionIndex)}
-              colorScheme="brand"
-              variant="solid"
-            >
-              <AiFillDelete />
-            </Button>
-          </Flex>
-
-          <Text fontWeight={600} fontSize="sm" textStyle="title">
-            {translate("DESCRIPTION")} #{questionIndex + 1}
-          </Text>
-
-          <ChakraInput
-            placeholder={`${translate("DESCRIPTION")} #${questionIndex + 1}`}
-            {...register(
-              `questionPools.${questionPoolIndex}.questions.${questionIndex}.description`,
-              { required: false, pattern: new RegExp(driveRegExp) }
-            )}
+      {questionPool.questions.map((question, questionIndex) => {
+        return (
+          <PoolQuestion
+            key={question.id}
+            question={question}
+            questionIndex={questionIndex}
+            questionPoolIndex={questionPoolIndex}
+            updateFn={update}
+            openDrawer={() => setIsDrawerOpen(true)}
+            questionPool={questionPool}
           />
-
-          {question.answerType === AnswerType.Blocks && (
-            <>
-              <Text fontWeight={600} fontSize="sm" textStyle="title">
-                WIP
-              </Text>
-            </>
-          )}
-
-          {question.answerType === AnswerType.MultipleChoice &&
-            question.options?.map((option, optionIndex) => (
-              <>
-                <Stack key={option.id} paddingLeft={10} marginY={6} spacing={5}>
-                  <Text fontWeight={600} fontSize="sm" textStyle="title">
-                    {translate("OPTION")} #{optionIndex + 1}
-                  </Text>
-                  <HStack alignContent="center" alignItems="center">
-                    <Checkbox
-                      colorScheme="brand"
-                      onChange={(e) =>
-                        onChangeOption(e.target.value, questionPoolIndex)
-                      }
-                      isChecked={
-                        !!watch("questionPools")[questionPoolIndex].questions[
-                          questionIndex
-                        ].options[optionIndex].isCorrectOption
-                      }
-                      value={`${questionIndex}-${alphabet[optionIndex]}`}
-                    />
-                    <ChakraInput
-                      placeholder={`${translate("OPTION")} #${optionIndex + 1}`}
-                      {...register(
-                        `questionPools.${questionPoolIndex}.questions.${questionIndex}.options.${optionIndex}.label`,
-                        { required: false, maxLength: 80 }
-                      )}
-                    />
-
-                    <Button
-                      onClick={() =>
-                        onDeleteOption(
-                          questionIndex,
-                          optionIndex,
-                          questionPoolIndex
-                        )
-                      }
-                      colorScheme="brand"
-                      variant="solid"
-                    >
-                      <AiFillDelete />
-                    </Button>
-                  </HStack>
-                </Stack>
-                {optionIndex === (question.options?.length as number) - 1 && (
-                  <Box
-                    paddingLeft={10}
-                    display="flex"
-                    flexDir="column"
-                    justifyContent="flex-end"
-                    maxWidth="100%"
-                  >
-                    <Button
-                      size="sm"
-                      leftIcon={<BsListCheck />}
-                      colorScheme="brand"
-                      onClick={() =>
-                        addOption(questionIndex, questionPoolIndex)
-                      }
-                    >
-                      {`${translate("ADD_OPTION_BUTTON")}${questionIndex + 1}`}
-                    </Button>
-                  </Box>
-                )}
-              </>
-            ))}
-          <Flex justifyContent="flex-end">
-            {questionIndex === questionPool.questions.length - 1 && (
-              <Button
-                colorScheme="brand"
-                leftIcon={<BsListCheck />}
-                onClick={() => setIsDrawerOpen(true)}
-              >
-                {translate("ADD_QUESTION_BUTTON")}
-              </Button>
-            )}
-          </Flex>
-        </Stack>
-      ))}
+        );
+      })}
       <QuestionConfigurationDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}

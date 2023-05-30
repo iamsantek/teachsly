@@ -16,6 +16,7 @@ import { generateRandomId } from "../../../utils/StringUtils";
 import { CorrectionBadge } from "./CorrectionBadge";
 import { SelectCorrectAnswer } from "./results/corrections/SelectCorrectAnswer";
 import { TextMarkDownCorrection } from "./results/corrections/TextMarkDownCorrection";
+import { BlocksCorrection } from "./results/corrections/BlocksCorrection";
 
 interface Props {
   questionPool: QuestionPool;
@@ -50,7 +51,12 @@ export const ExamAttemptQuestionPoolAnswers = ({
     <Stack spacing={5}>
       {questionPool.questions.map((question, questionIndex) => {
         const { answerType } = question;
-        const answer = answers && answers[questionIndex];
+        const answer =
+          answers &&
+          (answers[questionIndex] as
+            | string
+            | { [key: string]: string }
+            | undefined);
         const isSomeCorrectAnswer = question.options?.some(
           (option) => option.isCorrectOption
         );
@@ -62,7 +68,10 @@ export const ExamAttemptQuestionPoolAnswers = ({
               <Text>
                 {questionIndex + 1}. {question.question}
               </Text>
-              <CorrectionBadge question={question} />
+              <CorrectionBadge
+                question={question}
+                answers={answers && answers[questionIndex]}
+              />
             </HStack>
             {answerType === AnswerType.MultipleChoice && (
               <>
@@ -109,9 +118,18 @@ export const ExamAttemptQuestionPoolAnswers = ({
                   updateFn={updateFn}
                   questionPoolIndex={questionPoolIndex}
                   questionIndex={questionIndex}
-                  answer={answer ?? ""}
+                  answer={(answer as string) ?? ""}
                 />
               </Stack>
+            )}
+            {answerType === AnswerType.Blocks && (
+              <BlocksCorrection
+                question={question}
+                questionPoolIndex={questionPoolIndex}
+                questionIndex={questionIndex}
+                answer={(answer as { [key: string]: string }) ?? {}}
+                updateFn={updateFn}
+              />
             )}
           </Stack>
         );

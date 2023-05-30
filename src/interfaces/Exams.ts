@@ -34,6 +34,7 @@ export interface Question {
   attachedFile?: string;
   source?: string;
   correction?: QuestionCorrection;
+  blocks?: FillTheBlankBlocks;
 }
 
 export enum ExamAttachmentType {
@@ -48,6 +49,11 @@ export interface ExamAttachments {
 
 export interface BlocksQuestions extends Question {
   correctBlockSequence: string;
+}
+
+export interface FillTheBlankBlocks {
+  blockText: string;
+  correctAnswers: string[];
 }
 
 export interface AudioQuestion extends Question {

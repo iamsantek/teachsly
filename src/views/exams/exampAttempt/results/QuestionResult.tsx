@@ -5,6 +5,8 @@ import { translate } from "../../../../utils/LanguageUtils";
 import { generateRandomId } from "../../../../utils/StringUtils";
 import { MarkDownColorHelper } from "./corrections/MarkDownColorHelper";
 import { TextMarkdownViewer } from "./corrections/TextMarkdownViewer";
+import { generateBlockReplacements } from "./corrections/BlocksCorrection";
+import { useCallback, useEffect, useState } from "react";
 
 interface Props {
   question: Question;
@@ -17,10 +19,30 @@ export const QuestionResult = ({
   studentAnswers,
   questionIndex,
 }: Props) => {
+  const [blockAnswers, setBlocksAnswers] = useState<string>("");
+
   const isSomeCorrectAnswer = question.options?.some(
     (option) => option.isCorrectOption
   );
   const answer = studentAnswers;
+
+  const generateBlocks = useCallback(() => {
+    const text = generateBlockReplacements({
+      text: question.blocks?.blockText ?? "",
+      answers: answer as { [key: string]: string },
+      correctAnswers: (question.blocks?.correctAnswers as string[]) ?? [],
+      isReadOnly: true,
+    });
+
+    setBlocksAnswers(text);
+  }, [answer, question.blocks?.blockText, question.blocks?.correctAnswers]);
+
+  useEffect(() => {
+    if (question.answerType === AnswerType.Blocks) {
+      generateBlocks();
+    }
+  }, [question, generateBlocks]);
+
   return (
     <Stack>
       <Text>
@@ -66,6 +88,9 @@ export const QuestionResult = ({
             )}
           </>
         </Text>
+      )}
+      {question.answerType === AnswerType.Blocks && (
+        <pre dangerouslySetInnerHTML={{ __html: blockAnswers }} />
       )}
     </Stack>
   );

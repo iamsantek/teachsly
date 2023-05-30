@@ -202,9 +202,9 @@ export const calculateNumberOfCorrectAnswers = (
         .answers as ExamKeys;
       const answer =
         answers[questionPoolIndex] && answers[questionPoolIndex][questionIndex];
-      totalQuestions++;
 
       if (question.answerType === AnswerType.MultipleChoice) {
+        totalQuestions++;
         const correctAnswer = question.options?.some(
           (option, optionIndex) =>
             option.isCorrectOption && alphabet[optionIndex] === answer
@@ -213,11 +213,25 @@ export const calculateNumberOfCorrectAnswers = (
           correctAnswers++;
         }
       } else if (question.answerType === AnswerType.TextArea) {
+        totalQuestions++;
         if (question.correction?.isCorrectAnswer) {
           correctAnswers++;
         } else if (!question.correction?.manualCorrection) {
           totalPendingQuestions++;
         }
+      } else if (question.answerType === AnswerType.Blocks) {
+        const correctAnswersValues = Object.values(
+          question.blocks?.correctAnswers ?? []
+        );
+
+        totalQuestions = totalQuestions + correctAnswersValues.length;
+        const currentAnswers = Object.values(answer);
+
+        correctAnswersValues.forEach((correctAnswer, index) => {
+          if (correctAnswer === currentAnswers[index]) {
+            correctAnswers++;
+          }
+        });
       }
     });
   });
@@ -260,20 +274,12 @@ export const manualTextCorrection = (
   const updatedQuestionPool: QuestionPool = JSON.parse(
     JSON.stringify(questionPool)
   );
-  console.log(
-    "Before update",
-    updatedQuestionPool.questions[questionIndex].correction
-  );
+
   updatedQuestionPool.questions[questionIndex].correction = {
     markDownCorrection: markDownCorrection,
     isCorrectAnswer,
     manualCorrection: true,
   };
-
-  console.log(
-    "After update",
-    updatedQuestionPool.questions[questionIndex].correction
-  );
 
   return updatedQuestionPool;
 };
@@ -413,19 +419,39 @@ export const applyStudentFilter = (
 };
 
 export const isPendingCorrectionInQuestionPool = (
-  questionPool: QuestionPool
+  questionPool: QuestionPool,
+  questionPoolAnswers: { [key: string]: string }
 ) => {
   let color: BadgeColors | undefined;
   let text: TranslationsDictionary;
 
-  const isAllAutomaticCorrection = questionPool.questions.every((question) => {
-    return question.options?.some((option) => option.isCorrectOption);
-  });
+  const isAllAutomaticCorrection = questionPool.questions.every(
+    (question, questionIndex) => {
+      switch (question.answerType) {
+        case AnswerType.MultipleChoice:
+          return question.options?.some((option) => option.isCorrectOption);
+        case AnswerType.Blocks:
+          const totalAnswers = question.blocks?.correctAnswers?.length || 0;
+          const totalAnsweredQuestions =
+            Object.values(questionPoolAnswers[questionIndex]).length || 0;
+
+          return totalAnswers === totalAnsweredQuestions;
+        default:
+          return false;
+      }
+    }
+  );
 
   const isPendingCorrectionInQuestionPool = questionPool.questions.some(
-    (question) => {
+    (question, questionIndex) => {
       if (question.answerType === AnswerType.MultipleChoice) {
         return !question.options?.some((option) => option.isCorrectOption);
+      } else if (question.answerType === AnswerType.Blocks) {
+        const totalAnswers = question.blocks?.correctAnswers?.length || 0;
+        const totalAnsweredQuestions =
+          Object.values(questionPoolAnswers[questionIndex]).length || 0;
+
+        return totalAnswers !== totalAnsweredQuestions;
       } else {
         return !question.correction?.manualCorrection;
       }
@@ -589,3 +615,5 @@ export const generateCorrectionMatches = (markDownText?: string) => {
     slashWords,
   };
 };
+
+export const blocksRegExp = /\[(.*?)\]/g;

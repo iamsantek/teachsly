@@ -230,7 +230,7 @@ export enum LanguageES {
   MULTIPLE_CHOICE = "Multiple choice",
   TEXT_AREA = "A desarrollar",
   SAVE = "Guardar",
-  BLOCKS = "Bloques",
+  BLOCKS = "Completar espacios en blancos",
   GRAMMAR_CORRECTION = "Corrección gramatical",
   SPELLING_CORRECTION = "Corrección ortográfica",
   PUNCTUATION_CORRECTION = "Corrección de puntuación",
@@ -296,6 +296,8 @@ export enum LanguageES {
   EMPTY_OPTION="Hay preguntas con opciones vacías.",
   EMPTY_QUESTION="Hay preguntas vacías.",
   EMPTY_EXERCISE_EXPLANATION="Hay ejercicios con explicaciones vacías.",
+  EXERCISE_PREVIEW="Previsualizacion del ejercicio",
+  BLOCKS_HELPER = "Escribir la respuesta de cada espacio en blanco entre corchetes. Ejemplo: My name [is] John. La plataforma detectará y reemplazará las palabras entre corchetes por un espacio en blanco para el alumno.",
 }
 
 export enum LanguageEN {
@@ -525,7 +527,7 @@ export enum LanguageEN {
   MULTIPLE_CHOICE = "Multiple choice",
   TEXT_AREA = "Text area",
   SAVE = "Save",
-  BLOCKS = "Blocks",
+  BLOCKS = "Fill the blanks",
   GRAMMAR_CORRECTION = "Grammar correction",
   SPELLING_CORRECTION = "Spelling correction",
   PUNCTUATION_CORRECTION = "Punctuation correction",
@@ -591,4 +593,6 @@ export enum LanguageEN {
   EMPTY_OPTION="There are options without text.",
   EMPTY_QUESTION="There are questions without text.",
   EMPTY_EXERCISE_EXPLANATION="There are exercises without explanation.",
+  EXERCISE_PREVIEW="Exercise preview",
+  BLOCKS_HELPER="Write the correct answer between brackes. For example:  My name [is] John. The platform will replace the brackets with a blank space.",
 }
