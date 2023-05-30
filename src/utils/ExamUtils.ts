@@ -89,7 +89,7 @@ export const formatExamForm = (exam: ExamForm) => ({
   questionPools: JSON.stringify(exam.questionPools),
   timer: {
     ...exam.timer,
-    type: (exam.timer.type as unknown as MultiSelectOption).value,
+    type: (exam.timer.type as unknown as MultiSelectOption).value || 'global',
   },
 });
 

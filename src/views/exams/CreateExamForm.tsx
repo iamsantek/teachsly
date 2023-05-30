@@ -319,16 +319,18 @@ export const CreateExamForm = () => {
               ** {translate("NO_DEADLINE_EXPLANATION")}
             </Text>
 
-            <Select
+            {/* <Select
               name="timer.type"
               label="EXAM_TIME_TYPE"
-              placeholder={translate("EXAM_TIME_TYPE")}
               isRequired={true}
               options={defaultExamTimerOptions}
               isMultiSelect={false}
               closeMenuOnSelect={true}
-            />
-
+              defaultValue={defaultExamTimerOptions[0]}
+            
+              
+            /> */}
+            <Text fontWeight="bold">{translate("EXAM_DURATION")}</Text>
             <HStack spacing={1}>
               <ChakraSelect
                 maxW={"20%"}
@@ -367,6 +369,12 @@ export const CreateExamForm = () => {
 
             <Accordion allowMultiple>
               {questionPools?.map((questionPool, questionPoolIndex) => {
+                const exerciseExplanation = watch(
+                  `questionPools.${questionPoolIndex}.exerciseExplanation`
+                );
+                const exerciseDescription = watch(
+                  `questionPools.${questionPoolIndex}.exerciseDescription`
+                );
                 return (
                   <AccordionItem
                     boxShadow="md"
@@ -379,9 +387,23 @@ export const CreateExamForm = () => {
                         justifyContent="space-between"
                         flexDir="row"
                       >
-                        <Text fontWeight="bold">
-                          {translate("EXERCISE")} #{questionPoolIndex + 1}
-                        </Text>
+                        <Flex
+                          flexDirection="column"
+                          justifyContent="flex-start"
+                          gap={3}
+                        >
+                          <Text fontWeight="bold" textAlign="left">
+                            {translate("EXERCISE")} #{questionPoolIndex + 1}
+                            {exerciseExplanation && ` - ${exerciseExplanation}`}
+                          </Text>
+                          <Text
+                            textAlign={"left"}
+                            fontWeight={"italic"}
+                            fontSize="sm"
+                          >
+                            {exerciseDescription}
+                          </Text>
+                        </Flex>
                         <Box display="flex" alignItems="center" gap={3}>
                           <Button
                             onClick={() =>
