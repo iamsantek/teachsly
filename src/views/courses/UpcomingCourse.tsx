@@ -1,4 +1,4 @@
-import { Alert, Flex, Text, Button } from "@chakra-ui/react";
+import { Alert, Flex, Text, Button, Box } from "@chakra-ui/react";
 import { Course } from "../../API";
 import DateTimeUtils, { TimeFormats } from "../../utils/DateTimeUtils";
 import { GrNext } from "react-icons/gr";
@@ -29,15 +29,18 @@ export const UpcomingCourse = ({ course }: Props) => {
     <Alert
       w="100%"
       bgColor="gray.100"
-      _hover={{
-        cursor: "pointer",
-      }}
       border="1px solid"
     >
       <Flex alignItems="center" gap={3} width="100%">
         <GrNext />
-        <Flex justifyContent="space-between" width="100%" alignItems="center">
-          <Text textAlign="start" textStyle={"title"} color={"black"}>
+        <Flex
+          flexDirection={["column", "row"]}
+          justifyContent={["flex-start", "space-between"]}
+          width="100%"
+          alignItems="center"
+          gap={3}
+        >
+          <Text textAlign="start" textStyle={"title"} minW={'50%'}>
             {translate("YOUR_CLASS")} {course.name} {translate("BEGINS")}{" "}
             {translate(
               course.scheduleDates?.includes(correctedToday)
@@ -47,14 +50,17 @@ export const UpcomingCourse = ({ course }: Props) => {
             {translate("AT")} {startTime}hs
           </Text>
           {course.isVirtual && course.zoomMeetingId && (
-            <Button
-              colorScheme="brand"
-              leftIcon={<BiVideoRecording />}
-              onClick={() => window.open(liveClassesUrl, "_blank")}
-              color="whiteAlpha.900"
-            >
-              {translate("GO_TO_CLASS")}
-            </Button>
+            <Flex width="100%" justifyContent={"flex-end"}>
+              <Button
+                colorScheme="brand"
+                leftIcon={<BiVideoRecording />}
+                onClick={() => window.open(liveClassesUrl, "_blank")}
+                color="whiteAlpha.900"
+                width={["100%", "auto"]}
+              >
+                {translate("GO_TO_CLASS")}
+              </Button>
+            </Flex>
           )}
         </Flex>
       </Flex>
