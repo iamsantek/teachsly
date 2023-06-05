@@ -16,6 +16,8 @@ export const TextMarkdownViewer = ({ markdownText }: Props) => {
     query: matches,
   });
 
+  const deleteSpecialCharactersRegExp = /[*#\-/+]/g;
+
   return (
     <>
       {generalChunks.map(
@@ -32,8 +34,8 @@ export const TextMarkdownViewer = ({ markdownText }: Props) => {
 
           const { color } = getMarkColor(text);
           return (
-            <Text as="span" bgColor={color} color="whiteAlpha.900">
-              {text}
+            <Text as="span" bgColor={color} marginX={1} color="whiteAlpha.900">
+              {text.replace(deleteSpecialCharactersRegExp, "")}
             </Text>
           );
         }
