@@ -22,6 +22,7 @@ import LocalStorageService, {
 } from "./services/LocalStorageService";
 import { sortCoursesByName } from "./utils/CourseUtils";
 import ReactGA from "react-ga4";
+import { useToast } from "@chakra-ui/react";
 
 ReactGA.initialize(
   process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID as string
@@ -39,6 +40,15 @@ const App = () => {
   const [courseNextPageToken, setCourseNextPageToken] = useState<
     string | undefined
   >(undefined);
+  const location = useLocation();
+  const toast = useToast();
+
+  useEffect(() => {
+    toast.closeAll();
+    if (process.env.NODE_ENV === "production") {
+      ReactGA.send({ hitType: "pageview", page: location.pathname });
+    }
+  }, [location, toast]);
 
   const { user, route: authRoute } = useAuthenticator((context) => [
     context.user,
