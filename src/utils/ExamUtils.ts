@@ -89,7 +89,7 @@ export const formatExamForm = (exam: ExamForm) => ({
   questionPools: JSON.stringify(exam.questionPools),
   timer: {
     ...exam.timer,
-    type: (exam.timer.type as unknown as MultiSelectOption).value || 'global',
+    type: (exam.timer.type as unknown as MultiSelectOption).value || "global",
   },
 });
 
@@ -180,6 +180,71 @@ export const formatExamFormForAPI = (exam: ExamForm): ExamForm => {
   };
 };
 
+export const calculateMultipleChoiceQuestionScore = (
+  question: Question,
+  answers: ExamKeys,
+  questionPoolIndex: number,
+  questionIndex: number
+) => {
+  let totalQuestions = 0;
+  let correctAnswers = 0;
+  const answer = answers[questionPoolIndex][questionIndex];
+  const correctAnswer = question.options?.some(
+    (option, optionIndex) =>
+      option.isCorrectOption && alphabet[optionIndex] === answer
+  );
+
+  totalQuestions++;
+
+  if (correctAnswer) {
+    correctAnswers++;
+  }
+
+  return { correctAnswers, totalQuestions };
+};
+
+export const calculateQuestionPoolCorrectAnswers = (
+  question: Question,
+  answer: string | { [key: string]: string } | undefined
+) => {
+  let totalQuestions = 0;
+  let correctAnswers = 0;
+  let totalPendingQuestions = 0;
+
+  if (question.answerType === AnswerType.MultipleChoice) {
+    totalQuestions++;
+    const correctAnswer = question.options?.some(
+      (option, optionIndex) =>
+        option.isCorrectOption && alphabet[optionIndex] === (answer as string)
+    );
+    if (correctAnswer) {
+      correctAnswers++;
+    }
+  } else if (question.answerType === AnswerType.TextArea) {
+    totalQuestions++;
+    if (question.correction?.isCorrectAnswer) {
+      correctAnswers++;
+    } else if (!question.correction?.manualCorrection) {
+      totalPendingQuestions++;
+    }
+  } else if (question.answerType === AnswerType.Blocks) {
+    const correctAnswersValues = Object.values(
+      question.blocks?.correctAnswers ?? []
+    );
+
+    totalQuestions = totalQuestions + correctAnswersValues.length;
+    const currentAnswers = Object.values(answer as { [key: string]: string });
+
+    correctAnswersValues.forEach((correctAnswer, index) => {
+      if (correctAnswer === currentAnswers[index]) {
+        correctAnswers++;
+      }
+    });
+  }
+
+  return { correctAnswers, totalQuestions, totalPendingQuestions };
+};
+
 // Calculate number of correct answers in the exam, counting Multiple Choice and TextArea questions
 export const calculateNumberOfCorrectAnswers = (
   questionPools: QuestionPool[],
@@ -261,6 +326,33 @@ export const onResetCorrection = (
       ...questionPool.questions.slice(questionIndex + 1),
     ],
   };
+  return newQuestionPool;
+};
+
+export const onUpdateTeacherScore = (
+  questionPool: QuestionPool,
+  questionIndex: number,
+  teacherScore: number
+) => {
+  const question = questionPool.questions[questionIndex];
+  const updatedQuestion: Question = {
+    ...question,
+    correction: {
+      ...question.correction,
+      teacherScore,
+    },
+  };
+
+  const newQuestionPool = {
+    ...questionPool,
+    questions: [
+      ...questionPool.questions.slice(0, questionIndex),
+      updatedQuestion,
+
+      ...questionPool.questions.slice(questionIndex + 1),
+    ],
+  };
+
   return newQuestionPool;
 };
 

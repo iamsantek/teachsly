@@ -16,6 +16,8 @@ import {
   Checkbox,
   Text,
   Box,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { AiFillDelete } from "react-icons/ai";
 import { BsListCheck } from "react-icons/bs";
@@ -198,6 +200,27 @@ export const PoolQuestion = ({
           { required: false, pattern: new RegExp(driveRegExp) }
         )}
       />
+
+      <Text fontWeight={600} fontSize="sm" textStyle="title">
+        {translate("SCORE")}
+      </Text>
+      <InputGroup marginX={3} width={"10em"}>
+        <ChakraInput
+          type="number"
+          placeholder="Puntaje"
+          {...register(
+            `questionPools.${questionPoolIndex}.questions.${questionIndex}.score`,
+            { required: false, pattern: new RegExp(driveRegExp) }
+          )}
+        />
+        <InputRightElement
+          pointerEvents="none"
+          color="gray.400"
+          fontSize="0.8em"
+          children="/ 100"
+          marginX={3}
+        />
+      </InputGroup>
 
       {question.answerType === AnswerType.Blocks && (
         <>

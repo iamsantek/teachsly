@@ -59,6 +59,9 @@ export const QuestionPoolQuestions = ({
             blockText: "",
             correctAnswers: [],
           },
+          correction: {
+            teacherScore: 0,
+          }
         },
       ],
     });

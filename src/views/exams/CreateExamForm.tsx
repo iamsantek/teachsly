@@ -18,6 +18,8 @@ import {
   ListIcon,
   Checkbox,
   useToast,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import {
   ChangeEvent,
@@ -375,6 +377,13 @@ export const CreateExamForm = () => {
                 const exerciseDescription = watch(
                   `questionPools.${questionPoolIndex}.exerciseDescription`
                 );
+
+                const questionPoolTotalScore = (): number =>
+                  questionPool.questions.reduce(
+                    (totalScore, question) => Number(totalScore) + Number(question.score ?? 0),
+                    0
+                  );
+
                 return (
                   <AccordionItem
                     boxShadow="md"
@@ -405,6 +414,12 @@ export const CreateExamForm = () => {
                           </Text>
                         </Flex>
                         <Box display="flex" alignItems="center" gap={3}>
+                          <Text fontWeight="bold" textAlign="left">
+                            {questionPoolTotalScore()}{" "}
+                             
+                            {"/ 100 "}
+                            {translate("POINTS")}
+                          </Text>
                           <Button
                             onClick={() =>
                               onDeleteQuestionPool(questionPoolIndex)

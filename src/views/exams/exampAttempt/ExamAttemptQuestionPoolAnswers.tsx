@@ -1,16 +1,27 @@
-import { Box, HStack, Stack, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import {
+  Box,
+  HStack,
+  Stack,
+  Text,
+  InputGroup,
+  Input,
+  InputRightElement,
+} from "@chakra-ui/react";
+import { useCallback, useEffect, useState } from "react";
 import { UseFieldArrayUpdate, useFormContext } from "react-hook-form";
 import {
   AnswerType,
   ExamCorrection,
   ExamForm,
   ExamKeys,
+  Question,
   QuestionPool,
 } from "../../../interfaces/Exams";
 import {
   alphabet,
+  calculateQuestionPoolCorrectAnswers,
   manualMultipleChoiceCorrection,
+  onUpdateTeacherScore,
 } from "../../../utils/ExamUtils";
 import { generateRandomId } from "../../../utils/StringUtils";
 import { CorrectionBadge } from "./CorrectionBadge";
@@ -30,7 +41,7 @@ export const ExamAttemptQuestionPoolAnswers = ({
   answers,
   updateFn,
 }: Props) => {
-  const { watch } = useFormContext<ExamForm>();
+  const { watch, register, setValue: setFormValue } = useFormContext<ExamForm>();
   const questionPool = watch("questionPools")[questionPoolIndex];
   const [value, setValue] = useState<number | undefined>(undefined);
 
@@ -47,9 +58,41 @@ export const ExamAttemptQuestionPoolAnswers = ({
     updateFn(questionPoolIndex, updatedValues);
   };
 
+  const calculateRecommendedScore = useCallback(() => {
+    questionPool.questions.forEach((question, questionIndex) => {
+      const score = Number(question.score) ?? 0;
+      const answer =
+        answers &&
+        (answers[questionIndex] as
+          | string
+          | { [key: string]: string }
+          | undefined);
+
+      const { correctAnswers, totalQuestions } =
+        calculateQuestionPoolCorrectAnswers(question, answer);
+
+      const recommendedScore = Math.round(
+        (score / totalQuestions) * correctAnswers
+      );
+
+      console.log("update");
+      setFormValue(
+        `questionPools.${questionPoolIndex}.questions.${questionIndex}.correction.teacherScore`,
+        recommendedScore
+      );
+    });
+
+    //updateFn(questionPoolIndex, updatedQuestionPool);
+  }, [answers, questionPoolIndex, questionPool, setFormValue]);
+
+  useEffect(() => {
+    calculateRecommendedScore();
+  }, [calculateRecommendedScore]);
+
   return (
     <Stack spacing={5}>
       {questionPool.questions.map((question, questionIndex) => {
+        const score = question.score ?? 0;
         const { answerType } = question;
         const answer =
           answers &&
@@ -130,6 +173,29 @@ export const ExamAttemptQuestionPoolAnswers = ({
                 answer={(answer as { [key: string]: string }) ?? {}}
                 updateFn={updateFn}
               />
+            )}
+            {question.score && (
+              <>
+                <Text fontWeight="bold">Puntaje asignado </Text>
+                <InputGroup marginX={3} width={"10em"}>
+                  <Input
+                    type="number"
+                    {...register(
+                      `questionPools.${questionPoolIndex}.questions.${questionIndex}.correction.teacherScore`
+                    )}
+                  />
+                  <InputRightElement
+                    pointerEvents="none"
+                    color="gray.400"
+                    fontSize="0.8em"
+                    children={`/ ${score}`}
+                    marginX={3}
+                  />
+                </InputGroup>
+                <Text color="gray.500" fontSize="sm">
+                  {/* Puntaje recomendado: {recommendedScore} */}
+                </Text>
+              </>
             )}
           </Stack>
         );
