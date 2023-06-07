@@ -18,7 +18,7 @@ export const CourseDays = ({ days }: Props) => {
             w={6}
             h={6}
             borderRadius="50%"
-            bg={days.includes(index) ? "brand.500" : "gray.300"}
+            bg={days.includes(index + 1) ? "brand.500" : "gray.300"}
             color="white"
             display="flex"
             justifyContent="center"
