@@ -23,7 +23,12 @@ import {
   Controller,
 } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { Exam, ExamAttempt, UpdateExamAttemptInput } from "../../../API";
+import {
+  Exam,
+  ExamAttempt,
+  ExamType,
+  UpdateExamAttemptInput,
+} from "../../../API";
 import { SectionHeader } from "../../../components/Headers/SectionHeader";
 import { ContentLinePlaceholder } from "../../../components/Placeholders/ContentLinePlaceholder";
 import { Placeholder } from "../../../components/Placeholders/Placeholder";
@@ -129,7 +134,10 @@ export const ExamAttemptDetail = () => {
     setIsSendingResults(false);
 
     if (examAttemptResponse) {
-      navigate("/exams/attempts");
+      const type = examAttemptResponse.updateExamAttempt?.type ?? ExamType.EXAM;
+      const route =
+        type === ExamType.EXAM ? "/exams/attempts" : "/homework/attempts";
+      navigate(route);
     }
   };
 

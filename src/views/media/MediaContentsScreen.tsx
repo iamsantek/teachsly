@@ -1,4 +1,4 @@
-import { Button, Stack, Wrap, WrapItem } from "@chakra-ui/react";
+import { Button, Stack, Wrap, WrapItem, useToast } from "@chakra-ui/react";
 import {
   FC,
   useCallback,
@@ -11,7 +11,7 @@ import {
 } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { MdModeEditOutline } from "react-icons/md";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Media, MediaFolder } from "../../API";
 import { SectionHeader } from "../../components/Headers/SectionHeader";
 import { UserDashboardContext } from "../../contexts/UserDashboardContext";
@@ -23,6 +23,7 @@ import { translate } from "../../utils/LanguageUtils";
 import { sortMediasByCreatedAt, sortMediaByName } from "../../utils/MediaUtils";
 import { useGroupRoutes } from "../../utils/RouteUtils";
 import { MediaContentsList } from "./MediaContentsList";
+import { toastConfig } from "../../utils/ToastUtils";
 
 interface Props {
   fetchType: FetchType;
@@ -45,7 +46,9 @@ const nextPageTokenReducer = (
 };
 
 export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
+  const toast = useToast();
   const [medias, setMedias] = useState<Media[]>([]);
+  const [folderMedias, setFolderMedias] = useState<Media[]>([]);
   const [sectionName, setSectionName] = useState<string | undefined>("");
   const [crudModalVisibility, setCrudModalVisibility] =
     useState<boolean>(false);
@@ -55,6 +58,13 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
     nextPageTokenReducer,
     initialNextPageTokens
   );
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setMedias([]);
+    setFolderMedias([]);
+  }, [location.pathname]);
 
   const { isAllowedRoute } = useGroupRoutes();
   const navigate = useNavigate();
@@ -101,7 +111,7 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
     }
 
     setMediaFolder((mediaFolder?.getMediaFolder as MediaFolder) ?? []);
-    setMedias((medias) =>
+    setFolderMedias((medias) =>
       sortMediasByCreatedAt(
         medias.concat(folderMedias?.listMedia?.items as Media[]) ?? []
       )
@@ -112,6 +122,7 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
         type: FetchType.FOLDER,
         payload: folderMedias?.listMedia?.nextToken,
       });
+      return;
     }
 
     setIsLoadingNewPage(false);
@@ -138,6 +149,7 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
         type: FetchType.COURSE,
         payload: courseMedias.listMedia.nextToken,
       });
+      return;
     }
 
     setIsLoadingNewPage(false);
@@ -161,6 +173,7 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
         type: FetchType.ALL,
         payload: allMedias?.listMedia?.nextToken,
       });
+      return;
     }
 
     setIsLoadingNewPage(false);
@@ -215,6 +228,22 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
     return null;
   }
 
+  if (!isLoadingNewPage) {
+    toast.closeAll();
+  }
+
+  if (isLoadingNewPage && !toast.isActive("loading")) {
+    toast(
+      toastConfig({
+        description: "LOADING_CONTENT_DESCRIPTION",
+        title: "LOADING_CONTENTS",
+        status: "info",
+        id: "loading",
+        duration: null,
+      })
+    );
+  }
+
   return (
     <Stack spacing={4}>
       <SectionHeader sectionName={sectionName}>
@@ -255,7 +284,7 @@ export const MediaContentsScreen: FC<Props> = ({ fetchType }: Props) => {
         )}
       </SectionHeader>
       <MediaContentsList
-        medias={medias}
+        medias={folderId ? folderMedias : medias}
         isLoading={isLoadingNewPage}
         showCRUDModal={crudModalVisibility}
         onCRUDModalVisibilityChange={setCrudModalVisibility}

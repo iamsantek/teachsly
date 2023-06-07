@@ -5,9 +5,20 @@ import { translate } from "./LanguageUtils";
 interface ToastConfig {
   description: TranslationsDictionary;
   status: "info" | "success" | "error";
+  id?: string;
+  render?: () => JSX.Element;
+  duration?: number | null;
+  title?: TranslationsDictionary;
 }
 
-export const toastConfig = ({ description, status }: ToastConfig) => {
+export const toastConfig = ({
+  description,
+  status,
+  id,
+  render,
+  duration,
+  title,
+}: ToastConfig) => {
   const titleMessage = {
     info: translate("INFO"),
     success: translate("SUCCESS"),
@@ -15,9 +26,12 @@ export const toastConfig = ({ description, status }: ToastConfig) => {
   };
 
   return {
-    title: titleMessage[status],
+    title: title ? translate(title) : titleMessage[status],
     position: "top" as ToastPosition,
     description: translate(description),
     status,
+    id,
+    render,
+    duration,
   };
 };

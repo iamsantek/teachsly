@@ -298,6 +298,10 @@ export enum LanguageES {
   EMPTY_EXERCISE_EXPLANATION="Hay ejercicios con explicaciones vacías.",
   EXERCISE_PREVIEW="Previsualizacion del ejercicio",
   BLOCKS_HELPER = "Escribir la respuesta de cada espacio en blanco entre corchetes. Ejemplo: My name [is] John. La plataforma detectará y reemplazará las palabras entre corchetes por un espacio en blanco para el alumno.",
+  SCORE="Puntaje",
+  POINTS="puntos",
+  LOADING_CONTENTS="Cargando contenidos...",
+  LOADING_CONTENT_DESCRIPTION="Mientras tanto, podes ver los contenidos que ya se cargaron.",
 }
 
 export enum LanguageEN {
@@ -595,4 +599,8 @@ export enum LanguageEN {
   EMPTY_EXERCISE_EXPLANATION="There are exercises without explanation.",
   EXERCISE_PREVIEW="Exercise preview",
   BLOCKS_HELPER="Write the correct answer between brackes. For example:  My name [is] John. The platform will replace the brackets with a blank space.",
+  SCORE="Score",
+  POINTS="points",
+  LOADING_CONTENTS="Loading more contents for you",
+  LOADING_CONTENT_DESCRIPTION="In the meantime, you can see the already loaded contents.",
 }
