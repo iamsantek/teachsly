@@ -35,6 +35,13 @@ export const runFieldsValidations = (
 ): TranslationsDictionary[] => {
   const errors: TranslationsDictionary[] = [];
   const { questionPools } = examForm;
+
+  const isTotalScoreEqualTo100 = isScoreComplete(questionPools);
+
+  if (!isTotalScoreEqualTo100) {
+    errors.push("SCORE_NOT_EQUAL_TO_100");
+  }
+
   questionPools.forEach((pool) => {
     const isEmptyExplanation = pool.exerciseExplanation.length === 0;
     if (isEmptyExplanation) {
@@ -289,6 +296,12 @@ export const calculateNumberOfCorrectAnswers = (
           question.blocks?.correctAnswers ?? []
         );
 
+        const pendingBlocks = correctAnswersValues.filter(
+          (answer) => answer === ""
+        ).length;
+
+        totalPendingQuestions = totalPendingQuestions + pendingBlocks;
+
         totalQuestions = totalQuestions + correctAnswersValues.length;
         const currentAnswers = Object.values(answer);
 
@@ -302,6 +315,38 @@ export const calculateNumberOfCorrectAnswers = (
   });
 
   return { totalQuestions, correctAnswers, totalPendingQuestions };
+};
+
+export const calculateRecommendedScore = (questionPools: QuestionPool[]) => {
+  return questionPools.reduce((acc, pool) => {
+    return (
+      acc +
+      pool.questions.reduce((acc, question) => {
+        const teacherScore = Number(question?.correction?.teacherScore) ?? 0;
+        return (
+          acc +
+          (isNaN(teacherScore)
+            ? 0
+            : Number(question?.correction?.teacherScore) ?? 0)
+        );
+      }, 0)
+    );
+  }, 0);
+};
+
+export const scoreGreaterThanPermittedChecker = (
+  questionPools: QuestionPool[]
+) => {
+  return questionPools.some((pool) => {
+    return pool.questions.some((question) => {
+      if (!question.score) {
+        return false;
+      }
+
+      const teacherScore = Number(question?.correction?.teacherScore) ?? 0;
+      return teacherScore > Number(question.score ?? 0);
+    });
+  });
 };
 
 export const onResetCorrection = (
@@ -371,6 +416,9 @@ export const manualTextCorrection = (
     markDownCorrection: markDownCorrection,
     isCorrectAnswer,
     manualCorrection: true,
+    teacherScore: isCorrectAnswer
+      ? updatedQuestionPool.questions[questionIndex].score
+      : 0,
   };
 
   return updatedQuestionPool;
@@ -379,34 +427,50 @@ export const manualTextCorrection = (
 export const manualMultipleChoiceCorrection = (
   questionPool: QuestionPool,
   questionIndex: number,
-  optionIndex: number
-) => ({
-  ...questionPool,
-  questions: questionPool.questions.map(
-    (question: Question, _questionIndex: number) => {
-      if (_questionIndex === questionIndex) {
-        return {
-          ...question,
-          options: question?.options?.map(
-            (option: Options, _optionIndex: number) => {
-              return {
-                ...option,
-                isCorrectOption: _optionIndex === optionIndex,
-              };
-            }
-          ),
+  teacherCorrectAnswer: number,
+  studentAnswer: string
+) => {
+  const alphabet = "abcdefghijklmnopqrstuvwxyz";
+  let thereIsCorrectionAnswer = false;
+  return {
+    ...questionPool,
+    questions: questionPool.questions.map(
+      (question: Question, _questionIndex: number) => {
+        if (_questionIndex === questionIndex) {
+          return {
+            ...question,
+            options: question?.options?.map(
+              (option: Options, _optionIndex: number) => {
+                const isCorrectOption = _optionIndex === teacherCorrectAnswer;
 
-          correction: {
-            ...question.correction,
-            manualCorrection: true,
-          },
-        };
+                if (isCorrectOption) {
+                  thereIsCorrectionAnswer = true;
+                }
+
+                return {
+                  ...option,
+                  isCorrectOption,
+                };
+              }
+            ),
+
+            correction: {
+              ...question.correction,
+              manualCorrection: true,
+              teacherScore:
+                thereIsCorrectionAnswer &&
+                alphabet[teacherCorrectAnswer] === studentAnswer
+                  ? question.score
+                  : 0,
+            },
+          };
+        }
+
+        return question;
       }
-
-      return question;
-    }
-  ),
-});
+    ),
+  };
+};
 
 export const groupExamAttemptsByName = (examAttempts: ExamAttempt[]) => {
   const sortedByName = examAttempts.sort((a, b) =>
@@ -709,3 +773,19 @@ export const generateCorrectionMatches = (markDownText?: string) => {
 };
 
 export const blocksRegExp = /\[(.*?)\]/g;
+
+export const questionPoolTotalScore = (questionPool: QuestionPool): number =>
+  questionPool.questions.reduce(
+    (totalScore, question) => Number(totalScore) + Number(question.score ?? 0),
+    0
+  );
+
+export const isScoreComplete = (questionPools: QuestionPool[]): boolean => {
+  const allScores = questionPools.reduce(
+    (totalScore, questionPool) =>
+      totalScore + questionPoolTotalScore(questionPool),
+    0
+  );
+
+  return allScores === 100;
+};
