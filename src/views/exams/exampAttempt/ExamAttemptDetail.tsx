@@ -35,6 +35,11 @@ import { toastConfig } from "../../../utils/ToastUtils";
 import { ExamAttemptAnswers } from "./ExamAttemptAnswers";
 import { ExamAttemptCounters } from "./ExamAttemptCounters";
 import { ExamCompleteResult } from "./results/ExamCompleteResult";
+import {
+  calculateQuestionPoolCorrectAnswers,
+  isScoreComplete,
+  scoreGreaterThanPermittedChecker,
+} from "../../../utils/ExamUtils";
 
 export const ExamAttemptDetail = () => {
   const [examAttempt, setExamAttempt] = useState<ExamAttempt>();
@@ -55,6 +60,42 @@ export const ExamAttemptDetail = () => {
     name: "questionPools", // unique name for your Field Array
   });
 
+  const calculateRecommendedScore = useCallback(
+    (questionPools: QuestionPool[], allAnswers: any) => {
+      return questionPools.map((questionPool, questionPoolIndex) => {
+        return {
+          ...questionPool,
+          questions: questionPool.questions.map((question, questionIndex) => {
+            const score = Number(question.score) ?? 0;
+
+            const answer =
+              allAnswers &&
+              (allAnswers[questionPoolIndex][questionIndex] as
+                | string
+                | { [key: string]: string }
+                | undefined);
+
+            const { correctAnswers, totalQuestions } =
+              calculateQuestionPoolCorrectAnswers(question, answer);
+
+            const recommendedScore = Math.round(
+              (score / totalQuestions) * correctAnswers
+            );
+
+            return {
+              ...question,
+              correction: {
+                ...question.correction,
+                teacherScore: recommendedScore,
+              },
+            };
+          }),
+        };
+      });
+    },
+    []
+  );
+
   const fetchExamInformation = useCallback(async () => {
     const examAttemptResponse = await ExamService.fetchExamAttemptsByAId(
       attemptId as string
@@ -66,8 +107,17 @@ export const ExamAttemptDetail = () => {
       examResponse?.getExam?.questionPools as string
     );
 
+    const allAnswers = JSON.parse(
+      examAttemptResponse?.getExamAttempt?.results ?? ""
+    ).answers;
+
+    const updatedQuestionPools = calculateRecommendedScore(
+      questionPools,
+      allAnswers
+    );
+
     reset({
-      questionPools: questionPools,
+      questionPools: updatedQuestionPools,
       correctAnswers: examAttemptResponse?.getExamAttempt?.correctAnswers || 0,
       totalQuestions: examAttemptResponse?.getExamAttempt?.totalQuestions || 0,
       score:
@@ -79,7 +129,7 @@ export const ExamAttemptDetail = () => {
     setExam(examResponse?.getExam as Exam);
     setExamAttempt(examAttemptResponse?.getExamAttempt as ExamAttempt);
     setIsLoading(false);
-  }, [attemptId, reset]);
+  }, [attemptId, reset, calculateRecommendedScore]);
 
   useEffect(() => {
     fetchExamInformation();
@@ -138,6 +188,7 @@ export const ExamAttemptDetail = () => {
   };
 
   const questionPools = watch("questionPools");
+
   const answers = examAttempt?.results
     ? JSON.parse(examAttempt?.results as string)
     : [];
@@ -150,9 +201,17 @@ export const ExamAttemptDetail = () => {
 
   const isPendingAnswers = watch("pendingAnswers") > 0;
   const noFinalMark = Number(watch("score")) === 0;
+  const isScoreGreaterThanMaxScore =
+    scoreGreaterThanPermittedChecker(questionPools);
+
+  const isTotalScoreEqualTo100 = isScoreComplete(questionPools);
 
   const disableSendButton =
-    isPendingAnswers || !!examAttempt?.correctedBy || noFinalMark;
+    isPendingAnswers ||
+    !!examAttempt?.correctedBy ||
+    noFinalMark ||
+    isScoreGreaterThanMaxScore ||
+    !isTotalScoreEqualTo100;
 
   return (
     <Stack marginBottom={10}>
@@ -261,6 +320,16 @@ export const ExamAttemptDetail = () => {
               {noFinalMark && (
                 <Text fontWeight="bold" color="brand.500">
                   {translate("NO_FINAL_MARK_WARNING")}
+                </Text>
+              )}
+              {isScoreGreaterThanMaxScore && (
+                <Text fontWeight="bold" color="brand.500">
+                  Hay correciones con puntaje mas alto que el permitido
+                </Text>
+              )}
+              {!isTotalScoreEqualTo100 && (
+                <Text fontWeight="bold" color="brand.500">
+                  {translate("SCORE_NOT_EQUAL_TO_100")}
                 </Text>
               )}
             </Flex>

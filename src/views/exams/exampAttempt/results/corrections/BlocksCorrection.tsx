@@ -6,7 +6,10 @@ import {
 } from "../../../../../interfaces/Exams";
 import { renderToString } from "react-dom/server";
 import { UseFieldArrayUpdate, useFormContext } from "react-hook-form";
-import { blocksRegExp } from "../../../../../utils/ExamUtils";
+import {
+  blocksRegExp,
+  calculateQuestionPoolCorrectAnswers,
+} from "../../../../../utils/ExamUtils";
 
 interface Props {
   questionPoolIndex: number;
@@ -37,12 +40,15 @@ export const generateBlockReplacements = ({
   emptyCorrectAnswersIndexes?: number[];
 }) => {
   let index = -1;
-  const output =
+  let totalBlanks = 0;
+  let correctBlanks = 0;
+  const rawHTML =
     text.replace(blocksRegExp, (match) => {
       const noSelfCorrection = match === "[]";
 
       const isAnswer = !!answers[index];
       index++;
+      totalBlanks++;
 
       if (noSelfCorrection) {
       }
@@ -56,6 +62,10 @@ export const generateBlockReplacements = ({
 
       const isCorrectAnswer =
         removeSpaces(answer) === removeSpaces(correctAnswer);
+
+      if (isCorrectAnswer) {
+        correctBlanks++;
+      }
 
       return renderToString(
         <>
@@ -107,7 +117,11 @@ export const generateBlockReplacements = ({
       );
     }) ?? "";
 
-  return output;
+  return {
+    rawHTML,
+    totalBlanks,
+    correctBlanks,
+  };
 };
 
 export const BlocksCorrection = ({
@@ -125,28 +139,14 @@ export const BlocksCorrection = ({
   const { watch } = useFormContext<ExamForm>();
   const questionPool = watch("questionPools")[questionPoolIndex];
 
-  const handleChange = useCallback(
-    (index: number, value: string) => {
-      const updatedQuestionPool = JSON.parse(JSON.stringify(questionPool));
-      updatedQuestionPool.questions[questionIndex].blocks.correctAnswers[
-        index
-      ] = value;
-      updatedQuestionPool.questions[questionIndex] = {
-        ...updatedQuestionPool.questions[questionIndex],
-        correction: {
-          manualCorrection: true,
-        },
-      };
-      updateFn && updateFn(questionPoolIndex, updatedQuestionPool);
-    },
-    [questionIndex, questionPoolIndex, updateFn, questionPool]
-  );
-
   const onResetCorrection = useCallback(
     (index: number) => {
       const updatedQuestionPool = JSON.parse(JSON.stringify(questionPool));
 
-      updatedQuestionPool.questions[questionIndex].correction = undefined;
+      updatedQuestionPool.questions[questionIndex].correction = {
+        manualCorrection: false,
+        teacherScore: undefined,
+      };
       updatedQuestionPool.questions[questionIndex].blocks.correctAnswers[
         index
       ] = "";
@@ -154,6 +154,91 @@ export const BlocksCorrection = ({
       updateFn && updateFn(questionPoolIndex, updatedQuestionPool);
     },
     [questionIndex, questionPoolIndex, updateFn, questionPool]
+  );
+
+  useEffect(() => {
+    const matches = Array.from(
+      question.blocks?.blockText.match(blocksRegExp) ?? []
+    );
+
+    const emptyCorrectAnswersIndexes = matches.reduce(
+      (acc, match, index) => (match === "[]" ? [...acc, index] : acc),
+      [] as number[]
+    );
+
+    setEmptyCorrectAnswersIndexes(emptyCorrectAnswersIndexes);
+  }, [question]);
+
+  const { rawHTML: answers } = generateBlockReplacements({
+    text: question.blocks?.blockText ?? "",
+    answers: answer,
+    correctAnswers: question.blocks?.correctAnswers ?? [],
+    isReadOnly,
+    wasManualCorrected: question.correction?.manualCorrection,
+    emptyCorrectAnswersIndexes,
+  });
+
+  const calculateFinaleScoreForBlocks = (
+    question: Question,
+    correctBlanks: number,
+    totalBlanks: number
+  ) => {
+    const isAllCorrect = correctBlanks === totalBlanks;
+    if (isAllCorrect) {
+      return Number(question.score);
+    }
+
+    // question.score is the max score for the question
+    // if the question is not all correct, we calculate the score based on the percentage of correct answers
+    return Math.round((correctBlanks / totalBlanks) * Number(question.score));
+  };
+
+  const handleChange = useCallback(
+    (index: number, teacherAnswer: string, studentAnswer: string) => {
+      let finalScore = 0;
+
+      const inputsRegExp = /<input[^>]*>/g;
+
+      const isPendingCorrections =
+        (answers.match(inputsRegExp)?.length ?? 0) > 1;
+
+      const updatedQuestionPool = JSON.parse(JSON.stringify(questionPool));
+      updatedQuestionPool.questions[questionIndex].blocks.correctAnswers[
+        index
+      ] = teacherAnswer;
+
+      if (!isPendingCorrections) {
+        const { correctAnswers, totalQuestions } =
+          calculateQuestionPoolCorrectAnswers(
+            updatedQuestionPool.questions[questionIndex],
+            answer
+          );
+
+        finalScore = calculateFinaleScoreForBlocks(
+          question,
+          correctAnswers,
+          totalQuestions
+        );
+      }
+
+      updatedQuestionPool.questions[questionIndex] = {
+        ...updatedQuestionPool.questions[questionIndex],
+        correction: {
+          manualCorrection: true,
+          teacherScore: isPendingCorrections ? undefined : finalScore,
+        },
+      };
+      updateFn && updateFn(questionPoolIndex, updatedQuestionPool);
+    },
+    [
+      questionIndex,
+      questionPoolIndex,
+      updateFn,
+      questionPool,
+      answers,
+      question,
+      answer,
+    ]
   );
 
   useEffect(() => {
@@ -169,38 +254,16 @@ export const BlocksCorrection = ({
       input.addEventListener("input", (event: any) => {
         clearTimeout(typingTimer);
         typingTimer = setTimeout(() => {
-          handleChange(index, event.target?.value);
+          handleChange(index, event.target?.value, answer[index]);
         }, 700);
       });
     });
-  }, [handleChange, isReadOnly, onResetCorrection]);
+  }, [handleChange, isReadOnly, onResetCorrection, answer]);
 
   useEffect(() => {
-    const matches = Array.from(
-      question.blocks?.blockText.match(blocksRegExp) ?? []
-    );
+    const resetButtons = document.getElementsByClassName("reset-btn");
 
-    const emptyCorrectAnswersIndexes = matches.reduce(
-      (acc, match, index) => (match === "[]" ? [...acc, index] : acc),
-      [] as number[]
-    );
-
-    setEmptyCorrectAnswersIndexes(emptyCorrectAnswersIndexes);
-  }, [question.blocks?.blockText]);
-
-  const answers = generateBlockReplacements({
-    text: question.blocks?.blockText ?? "",
-    answers: answer,
-    correctAnswers: question.blocks?.correctAnswers ?? [],
-    isReadOnly,
-    wasManualCorrected: question.correction?.manualCorrection,
-    emptyCorrectAnswersIndexes,
-  });
-
-  useEffect(() => {
-    const resetButtons2 = document.getElementsByClassName("reset-btn");
-
-    Array.from(resetButtons2).forEach((button) => {
+    Array.from(resetButtons).forEach((button) => {
       button.addEventListener("click", (event: any) => {
         const index =
           Number(event.target?.getAttribute("data-reset-index")) ?? 0;

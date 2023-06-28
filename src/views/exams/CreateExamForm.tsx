@@ -48,7 +48,7 @@ import { ExamForm } from "../../interfaces/Exams";
 import ExamService from "../../services/ExamService";
 import { generalGroups } from "../../utils/CognitoGroupsUtils";
 import { renderCourseList } from "../../utils/CourseUtils";
-import { runFieldsValidations, formatAPIResponse } from "../../utils/ExamUtils";
+import { runFieldsValidations, formatAPIResponse, questionPoolTotalScore } from "../../utils/ExamUtils";
 import { translate } from "../../utils/LanguageUtils";
 import { QuestionPoolQuestions } from "./QuestionPoolQuestions";
 import { TranslationsDictionary } from "../../dictionaries/dictionary";
@@ -378,12 +378,6 @@ export const CreateExamForm = () => {
                   `questionPools.${questionPoolIndex}.exerciseDescription`
                 );
 
-                const questionPoolTotalScore = (): number =>
-                  questionPool.questions.reduce(
-                    (totalScore, question) => Number(totalScore) + Number(question.score ?? 0),
-                    0
-                  );
-
                 return (
                   <AccordionItem
                     boxShadow="md"
@@ -415,7 +409,7 @@ export const CreateExamForm = () => {
                         </Flex>
                         <Box display="flex" alignItems="center" gap={3}>
                           <Text fontWeight="bold" textAlign="left">
-                            {questionPoolTotalScore()}{" "}
+                            {questionPoolTotalScore(questionPool)}{" "}
                              
                             {"/ 100 "}
                             {translate("POINTS")}

@@ -27,7 +27,7 @@ export const QuestionResult = ({
   const answer = studentAnswers;
 
   const generateBlocks = useCallback(() => {
-    const text = generateBlockReplacements({
+    const { rawHTML: text } = generateBlockReplacements({
       text: question.blocks?.blockText ?? "",
       answers: answer as { [key: string]: string },
       correctAnswers: (question.blocks?.correctAnswers as string[]) ?? [],
