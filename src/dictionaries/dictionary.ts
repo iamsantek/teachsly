@@ -603,4 +603,6 @@ export enum LanguageEN {
   POINTS = "Points",
   SCORE = "Score",
   SCORE_NOT_EQUAL_TO_100 = "The sum of the scores must be equal to 100 and not greater or less than 100.",
+  LOADING_CONTENTS = "Loading contents...",
+  LOADING_CONTENT_DESCRIPTION = "Please wait while the contents are loaded.",
 }
