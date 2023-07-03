@@ -69,7 +69,7 @@ class DateTimeUtils {
   ): MultiSelectOption[] => {
     const daysOfTheWeek = this.daysOfTheWeek();
 
-    return this.transformDayIndexesToStringDays(weekDays).map((day) => {
+    return this.transformDayIndexesToStringDays(weekDays).map((day: number) => {
       return {
         label: day,
         value: String(daysOfTheWeek.indexOf(day) + 1),
