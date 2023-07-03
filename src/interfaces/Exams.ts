@@ -22,6 +22,7 @@ export interface QuestionCorrection {
   manualCorrection?: boolean | undefined;
   isCorrectAnswer?: boolean | undefined;
   markDownCorrection?: string;
+  teacherScore?: number;
 }
 
 export interface Question {
@@ -35,6 +36,7 @@ export interface Question {
   source?: string;
   correction?: QuestionCorrection;
   blocks?: FillTheBlankBlocks;
+  score?: number;
 }
 
 export enum ExamAttachmentType {

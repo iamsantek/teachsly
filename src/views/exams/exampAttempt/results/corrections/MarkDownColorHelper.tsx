@@ -51,8 +51,8 @@ export const MarkDownColorHelper = ({
   return (
     <Flex marginY={5}>
       <Flex gap={3} justifyContent="center" alignItems="center">
-        {correctionTypes.map(({ color, symbol, description }) => (
-          <>
+        {correctionTypes.map(({ color, symbol, description }, index) => (
+          <div key={symbol}>
             <Flex
               key={symbol}
               fontWeight="bold"
@@ -66,7 +66,7 @@ export const MarkDownColorHelper = ({
               {symbol}
             </Flex>
             <Text>{translate(description)}</Text>
-          </>
+          </div>
         ))}
         {hasEditPermission && showResetButton && (
           <Button

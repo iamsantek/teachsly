@@ -17,6 +17,7 @@ import { CorrectionBadge } from "./CorrectionBadge";
 import { SelectCorrectAnswer } from "./results/corrections/SelectCorrectAnswer";
 import { TextMarkDownCorrection } from "./results/corrections/TextMarkDownCorrection";
 import { BlocksCorrection } from "./results/corrections/BlocksCorrection";
+import { TeacherScoreInput } from "./results/TeacherScoreInput";
 
 interface Props {
   questionPool: QuestionPool;
@@ -37,12 +38,14 @@ export const ExamAttemptQuestionPoolAnswers = ({
   const onMultipleChoiceManualCorrection = (
     questionPoolIndex: number,
     questionIndex: number,
-    optionIndex: number
+    teacherAnswer: number,
+    studentAnswer: string
   ) => {
     const updatedValues = manualMultipleChoiceCorrection(
       questionPool,
       questionIndex,
-      optionIndex
+      teacherAnswer,
+      studentAnswer
     );
     updateFn(questionPoolIndex, updatedValues);
   };
@@ -50,8 +53,10 @@ export const ExamAttemptQuestionPoolAnswers = ({
   return (
     <Stack spacing={5}>
       {questionPool.questions.map((question, questionIndex) => {
+        const teacherScore = question.correction?.teacherScore;
+        const score = question.score ?? 0;
         const { answerType } = question;
-        const answer =
+        const studentAnswer =
           answers &&
           (answers[questionIndex] as
             | string
@@ -82,29 +87,36 @@ export const ExamAttemptQuestionPoolAnswers = ({
                     >
                       {alphabet[optionIndex]}.{option.label}
                       {option.isCorrectOption &&
-                      alphabet[optionIndex] === answer
+                      alphabet[optionIndex] === studentAnswer
                         ? " ✅"
                         : ""}
                       {isSomeCorrectAnswer &&
                         !option.isCorrectOption &&
-                        alphabet[optionIndex].toLocaleLowerCase() === answer &&
+                        alphabet[optionIndex].toLocaleLowerCase() ===
+                          studentAnswer &&
                         " ❌"}
                     </Text>
                   </Box>
                 ))}
-                {(!isSomeCorrectAnswer || question.correction) && (
+                {(!isSomeCorrectAnswer ||
+                  question.correction?.manualCorrection) && (
                   <>
                     <SelectCorrectAnswer
                       question={question}
                       questionIndex={questionIndex}
                       questionPoolIndex={questionPoolIndex}
                       value={value as number}
-                      onChange={(newValue) => {
-                        setValue(newValue);
+                      onChange={(teacherCorrectAnswer) => {
+                        console.log(
+                          "teacherCorrectAnswer",
+                          teacherCorrectAnswer
+                        );
+                        setValue(teacherCorrectAnswer);
                         onMultipleChoiceManualCorrection(
                           questionPoolIndex,
                           questionIndex,
-                          newValue
+                          teacherCorrectAnswer,
+                          studentAnswer as string
                         );
                       }}
                     />
@@ -118,7 +130,7 @@ export const ExamAttemptQuestionPoolAnswers = ({
                   updateFn={updateFn}
                   questionPoolIndex={questionPoolIndex}
                   questionIndex={questionIndex}
-                  answer={(answer as string) ?? ""}
+                  answer={(studentAnswer as string) ?? ""}
                 />
               </Stack>
             )}
@@ -127,8 +139,18 @@ export const ExamAttemptQuestionPoolAnswers = ({
                 question={question}
                 questionPoolIndex={questionPoolIndex}
                 questionIndex={questionIndex}
-                answer={(answer as { [key: string]: string }) ?? {}}
+                answer={(studentAnswer as { [key: string]: string }) ?? {}}
                 updateFn={updateFn}
+              />
+            )}
+            {question.score && (
+              <TeacherScoreInput
+                questionPoolIndex={questionPoolIndex}
+                questionIndex={questionIndex}
+                questionPool={questionPool}
+                updateFn={updateFn}
+                score={score}
+                teacherScore={teacherScore}
               />
             )}
           </Stack>
