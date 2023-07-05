@@ -18,8 +18,6 @@ import {
   ListIcon,
   Checkbox,
   useToast,
-  InputGroup,
-  InputRightElement,
 } from "@chakra-ui/react";
 import {
   ChangeEvent,
@@ -37,7 +35,6 @@ import { Input } from "../../components/Inputs/Input";
 import { Select } from "../../components/Inputs/Select";
 import {
   defaultExamForm,
-  defaultExamTimerOptions,
   defaultHomeWorkForm,
   defaultQuestionPool,
 } from "../../constants/Exams";
@@ -48,7 +45,12 @@ import { ExamForm } from "../../interfaces/Exams";
 import ExamService from "../../services/ExamService";
 import { generalGroups } from "../../utils/CognitoGroupsUtils";
 import { renderCourseList } from "../../utils/CourseUtils";
-import { runFieldsValidations, formatAPIResponse, questionPoolTotalScore } from "../../utils/ExamUtils";
+import {
+  runFieldsValidations,
+  formatAPIResponse,
+  questionPoolTotalScore,
+  totalExamScoreAssigned,
+} from "../../utils/ExamUtils";
 import { translate } from "../../utils/LanguageUtils";
 import { QuestionPoolQuestions } from "./QuestionPoolQuestions";
 import { TranslationsDictionary } from "../../dictionaries/dictionary";
@@ -117,7 +119,8 @@ export const CreateExamForm = () => {
     fetchExamById();
   }, [examId, fetchExamById]);
 
-  const saveExam = async (exam: ExamForm) => {
+  const saveExam = async () => {
+    const exam = formControls.getValues();
     const errors = runFieldsValidations(exam);
 
     if (errors.length > 0) {
@@ -276,6 +279,8 @@ export const CreateExamForm = () => {
     [questionPools]
   );
 
+  const totalScoreAssigned = totalExamScoreAssigned(questionPools);
+
   return (
     <>
       <FormProvider {...formControls}>
@@ -410,8 +415,6 @@ export const CreateExamForm = () => {
                         <Box display="flex" alignItems="center" gap={3}>
                           <Text fontWeight="bold" textAlign="left">
                             {questionPoolTotalScore(questionPool)}{" "}
-                             
-                            {"/ 100 "}
                             {translate("POINTS")}
                           </Text>
                           <Button
@@ -511,6 +514,21 @@ export const CreateExamForm = () => {
                 );
               })}
             </Accordion>
+
+            <Flex
+              border="3px solid"
+              borderColor="gray.500"
+              borderRadius="md"
+              padding={2}
+              justifyContent="center"
+              alignItems="center"
+              flexDirection="column"
+            >
+              <Text>
+                {translate("ASSIGNED_MARK")} {totalScoreAssigned}{" "}
+                {translate("OF")} 100
+              </Text>
+            </Flex>
             <Container
               centerContent
               maxW="100%"
@@ -535,7 +553,8 @@ export const CreateExamForm = () => {
                 disabled={!isSomeQuestionPoolWithQuestions}
                 colorScheme="brand"
                 variant="solid"
-                type="submit"
+                // type="submit"
+                onClick={() => saveExam()}
               >
                 {translate(getTranslationButton(isExam, !!examId))}
               </Button>

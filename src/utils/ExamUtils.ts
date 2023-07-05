@@ -780,6 +780,13 @@ export const questionPoolTotalScore = (questionPool: QuestionPool): number =>
     0
   );
 
+export const totalExamScoreAssigned = (questionPools: QuestionPool[]): number =>
+  questionPools.reduce(
+    (totalScore, questionPool) =>
+      totalScore + questionPoolTotalScore(questionPool),
+    0
+  );
+
 export const isScoreComplete = (questionPools: QuestionPool[]): boolean => {
   const allScores = questionPools.reduce(
     (totalScore, questionPool) =>

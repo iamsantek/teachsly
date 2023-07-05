@@ -303,6 +303,8 @@ export enum LanguageES {
   LOADING_CONTENTS = "Cargando contenidos...",
   LOADING_CONTENT_DESCRIPTION = "Mientras tanto, podes ver los contenidos que ya se cargaron.",
   SCORE_NOT_EQUAL_TO_100 = "El puntaje total no es igual a 100. Revisar las notas de cada pregunta.",
+  OF = "de",
+  ASSIGNED_MARK = "Puntos asignados",
 }
 
 export enum LanguageEN {
@@ -605,4 +607,6 @@ export enum LanguageEN {
   SCORE_NOT_EQUAL_TO_100 = "The sum of the scores must be equal to 100 and not greater or less than 100.",
   LOADING_CONTENTS = "Loading contents...",
   LOADING_CONTENT_DESCRIPTION = "Please wait while the contents are loaded.",
+  OF = "of",
+  ASSIGNED_MARK = "Assigned mark",
 }
