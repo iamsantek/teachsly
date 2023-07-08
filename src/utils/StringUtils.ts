@@ -35,7 +35,7 @@ export const capitalize = (text: string) => {
   });
 };
 
-export const driveRegExp = /^(?!.*drive\.com).*$/
+export const driveRegExp = /^(?!.*drive\.com).*$/;
 
 export const notAllowedWebsites = [
   "drive.com",
@@ -48,5 +48,6 @@ export const notAllowedWebsites = [
 
 export const isNotAllowedWebsite = (string?: string | null) => {
   if (!string) return false;
+  if (typeof string !== "string") return false;
   return notAllowedWebsites.some((subcadena) => string.includes(subcadena));
 };
