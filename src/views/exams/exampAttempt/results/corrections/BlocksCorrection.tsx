@@ -277,5 +277,13 @@ export const BlocksCorrection = ({
     return <></>;
   }
 
-  return <pre dangerouslySetInnerHTML={{ __html: answers }} />;
+  return (
+    <pre
+      style={{
+        textAlign: "justify",
+        whiteSpace: "pre-wrap",
+      }}
+      dangerouslySetInnerHTML={{ __html: answers }}
+    />
+  );
 };
