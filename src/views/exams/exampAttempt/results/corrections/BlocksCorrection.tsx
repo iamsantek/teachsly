@@ -21,7 +21,7 @@ interface Props {
 }
 
 const removeSpaces = (text?: string) =>
-  text?.toLocaleLowerCase().replace(/\s/g, "");
+  text?.toLocaleLowerCase().replace(/[^a-zA-Z0-9]/g, "");
 const addSpaces = (text: string) => ` ${text} `;
 
 export const generateBlockReplacements = ({
@@ -60,8 +60,11 @@ export const generateBlockReplacements = ({
           ? correctAnswers[index]
           : undefined;
 
-      const isCorrectAnswer =
-        removeSpaces(answer) === removeSpaces(correctAnswer);
+      const possibleCorrectAnswers = correctAnswer?.split("/");
+      const isCorrectAnswer = possibleCorrectAnswers?.some(
+        (possibleAnswer) =>
+          removeSpaces(possibleAnswer) === removeSpaces(answer)
+      );
 
       if (isCorrectAnswer) {
         correctBlanks++;

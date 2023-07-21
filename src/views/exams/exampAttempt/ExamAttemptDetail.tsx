@@ -75,6 +75,7 @@ export const ExamAttemptDetail = () => {
 
             const answer =
               allAnswers &&
+              allAnswers[questionPoolIndex] &&
               (allAnswers[questionPoolIndex][questionIndex] as
                 | string
                 | { [key: string]: string }
@@ -115,6 +116,8 @@ export const ExamAttemptDetail = () => {
     const allAnswers = JSON.parse(
       examAttemptResponse?.getExamAttempt?.results ?? ""
     ).answers;
+
+    console.log(allAnswers);
 
     const updatedQuestionPools = calculateRecommendedScore(
       questionPools,
