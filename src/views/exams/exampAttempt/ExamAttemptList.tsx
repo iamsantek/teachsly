@@ -28,6 +28,9 @@ export const ExamAttemptList = () => {
   >([]);
   const [nextPageToken, setNextPageToken] = useState<string | undefined>();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showResetConfirmation, setShowResetConfirmation] = useState(false);
+  const [examAttemptToResetCorrection, setExamAttemptToResetCorrection] =
+    useState<ExamAttempt | undefined>();
   const [deleteExamAttemptId, setDeleteExamAttemptId] = useState<
     string | undefined
   >();
@@ -144,9 +147,58 @@ export const ExamAttemptList = () => {
     }
   }, [examAttempts, examAttemptsDisplayed, deleteExamAttemptId]);
 
+  const onResetCorrection = useCallback(async (examAttempt: ExamAttempt) => {
+    setExamAttemptToResetCorrection(examAttempt);
+    setShowResetConfirmation(true);
+  }, []);
+
   const onDeleteClick = (examAttemptId: string) => {
     setDeleteExamAttemptId(examAttemptId);
     setShowDeleteConfirmation(true);
+  };
+
+  const resetCorrection = useCallback(
+    async (examAttempt: ExamAttempt) => {
+      const resetCorrection = await ExamService.resetCorrection(examAttempt);
+
+      if (resetCorrection) {
+        const updatedExamAttempts = [...examAttempts];
+        const examAttemptIndex = updatedExamAttempts.findIndex(
+          (examAttemptItem) => examAttemptItem.id === examAttempt.id
+        );
+
+        updatedExamAttempts[examAttemptIndex] = {
+          ...updatedExamAttempts[examAttemptIndex],
+          correctedBy: undefined,
+        };
+
+        console.log(updatedExamAttempts[examAttemptIndex]);
+
+        setExamAttemptsDisplayed(updatedExamAttempts);
+        setExamAttemptToResetCorrection(undefined);
+      }
+
+      toast(
+        toastConfig({
+          description: resetCorrection
+            ? "EXAM_RESET_CORRECTION_OK"
+            : "EXAM_RESET_CORRECTION_ERROR",
+          status: resetCorrection ? "success" : "error",
+        })
+      );
+
+      setShowResetConfirmation(false);
+    },
+    [examAttempts]
+  );
+
+  const onResetCorrectionClick = () => {
+    if (!examAttemptToResetCorrection) {
+      return;
+    }
+
+    resetCorrection(examAttemptToResetCorrection);
+    setExamAttemptToResetCorrection(undefined);
   };
 
   if (isLoading) {
@@ -168,6 +220,15 @@ export const ExamAttemptList = () => {
         title="DELETE_EXAM_ATTEMPT_CONFIRMATION_TITLE"
         description="DELETE_EXAM_ATTEMPT_CONFIRMATION_DESCRIPTION"
         confirmButtonText="DELETE"
+      />
+
+      <ConfirmationDialog
+        isOpen={showResetConfirmation}
+        onClose={() => setShowResetConfirmation(false)}
+        onAction={() => onResetCorrectionClick()}
+        title="RESET_CORRECTION"
+        description="RESET_CORRECTION_DESCRIPTION"
+        confirmButtonText="RESET_CORRECTION"
       />
 
       <Stack spacing={5}>
@@ -197,6 +258,11 @@ export const ExamAttemptList = () => {
                 onDelete={
                   !examAttempt.isCompleted
                     ? () => onDeleteClick(examAttempt.id)
+                    : undefined
+                }
+                onReset={
+                  examAttempt.isCompleted && examAttempt.correctedBy
+                    ? () => onResetCorrection(examAttempt)
                     : undefined
                 }
               >

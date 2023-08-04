@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
 import { Box, Circle, Flex, Wrap, WrapItem, Checkbox } from "@chakra-ui/react";
 import { AiFillDelete } from "react-icons/ai";
+import { GrPowerReset } from "react-icons/gr";
 import { MdCloudDownload, MdModeEditOutline } from "react-icons/md";
 import { translate } from "../../utils/LanguageUtils";
 import { TooltipHelper } from "../Tooltips/Tooltip";
@@ -14,6 +15,7 @@ interface Props {
   onDownload?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
+  onReset?: () => void;
   // eslint-disable-next-line no-undef
   customButtons?: JSX.Element[];
   transformOnHover?: boolean;
@@ -40,6 +42,7 @@ export const ContentLine = ({
   id,
   onCheck,
   isChecked,
+  onReset,
 }: PropsWithChildren<Props>) => {
   const customButtonWrapper = customButtons?.map((customButton) => (
     <WrapItem key={generateRandomId()}>{customButton}</WrapItem>
@@ -102,6 +105,13 @@ export const ContentLine = ({
             <WrapItem>
               <TooltipHelper label={translate("DELETE")}>
                 <ButtonSquare onClick={onDelete} icon={<AiFillDelete />} />
+              </TooltipHelper>
+            </WrapItem>
+          )}
+          {onReset && (
+            <WrapItem>
+              <TooltipHelper label={translate("RESET_CORRECTION")}>
+                <ButtonSquare onClick={onReset} icon={<GrPowerReset />} />
               </TooltipHelper>
             </WrapItem>
           )}

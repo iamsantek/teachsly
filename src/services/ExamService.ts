@@ -11,6 +11,7 @@ import {
   ListExamsQuery,
   UpdateExamAttemptInput,
   UpdateExamAttemptMutation,
+  UpdateExamInput,
   UpdateExamMutation,
 } from "../API";
 import {
@@ -174,6 +175,26 @@ class ExamService {
       nextToken,
       filter: {
         and: [{ or: filter }, { userId: { eq: userId } }],
+      },
+    });
+  };
+
+  public resetCorrection = (exam: UpdateExamInput) => {
+    return GraphQLService.fetchQuery<UpdateExamAttemptMutation>({
+      query: updateExamAttempt,
+      input: {
+        ...exam,
+        correctedBy: null,
+      },
+    });
+  };
+
+  public updateScore = (exam: UpdateExamInput, newScore: number) => {
+    return GraphQLService.fetchQuery<UpdateExamAttemptMutation>({
+      query: updateExamAttempt,
+      input: {
+        ...exam,
+        score: newScore,
       },
     });
   };

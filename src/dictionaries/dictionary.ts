@@ -305,6 +305,9 @@ export enum LanguageES {
   SCORE_NOT_EQUAL_TO_100 = "El puntaje total no es igual a 100. Revisar las notas de cada pregunta.",
   OF = "de",
   ASSIGNED_MARK = "Puntos asignados",
+  RESET_CORRECTION_DESCRIPTION = "¿Estás seguro que deseas reiniciar la corrección? Se perderán todas las correcciones realizadas y deberás corregir nuevamente el examen.",
+  EXAM_RESET_CORRECTION_OK = "La corrección se reinició correctamente.",
+  EXAM_RESET_CORRECTION_ERROR = "Hubo un error al reiniciar la corrección. Por favor, intentar nuevamente.",
 }
 
 export enum LanguageEN {
@@ -609,4 +612,7 @@ export enum LanguageEN {
   LOADING_CONTENT_DESCRIPTION = "Please wait while the contents are loaded.",
   OF = "of",
   ASSIGNED_MARK = "Assigned mark",
+  RESET_CORRECTION_DESCRIPTION = "Are you sure you want to reset the correction?",
+  EXAM_RESET_CORRECTION_OK= "The correction has been successfully reset.",
+  EXAM_RESET_CORRECTION_ERROR = "An error has occurred when resetting the correction. Please try again.",
 }
