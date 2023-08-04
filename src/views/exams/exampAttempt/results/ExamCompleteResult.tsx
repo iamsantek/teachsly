@@ -86,7 +86,6 @@ export const ExamCompleteResult = ({ studentAnswers, examAttempt }: Props) => {
                     size={20}
                     onClick={() => {
                       setShowScoreEditor(false);
-                      setUpdatedScore(undefined);
                     }}
                   />
                 </Flex>
