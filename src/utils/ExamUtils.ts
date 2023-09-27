@@ -227,7 +227,9 @@ export const calculateQuestionPoolCorrectAnswers = (
     if (correctAnswer) {
       correctAnswers++;
     }
-  } else if (question.answerType === AnswerType.TextArea) {
+  } else if (
+    [AnswerType.TextArea, AnswerType.Audio].includes(question.answerType)
+  ) {
     totalQuestions++;
     if (question.correction?.isCorrectAnswer) {
       correctAnswers++;
@@ -284,7 +286,9 @@ export const calculateNumberOfCorrectAnswers = (
         if (correctAnswer) {
           correctAnswers++;
         }
-      } else if (question.answerType === AnswerType.TextArea) {
+      } else if (
+        [AnswerType.TextArea, AnswerType.Audio].includes(question.answerType)
+      ) {
         totalQuestions++;
         if (question.correction?.isCorrectAnswer) {
           correctAnswers++;

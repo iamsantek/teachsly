@@ -18,13 +18,14 @@ import {
   Box,
   InputGroup,
   InputRightElement,
+  Badge,
 } from "@chakra-ui/react";
 import { AiFillDelete } from "react-icons/ai";
 import { BsListCheck } from "react-icons/bs";
 import { alphabet, blocksRegExp } from "../../utils/ExamUtils";
 import { translate } from "../../utils/LanguageUtils";
 import { driveRegExp } from "../../utils/StringUtils";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface Props {
   question: Question;
@@ -166,10 +167,27 @@ export const PoolQuestion = ({
     update(questionPoolIndex, questionPool);
   };
 
+  const questionBadge = useMemo(
+    () => ({
+      [AnswerType.Audio]: { text: translate("AUDIO"), color: "purple" },
+      [AnswerType.Blocks]: { text: translate("BLOCKS"), color: "orange" },
+      [AnswerType.MultipleChoice]: {
+        text: translate("MULTIPLE_CHOICE"),
+        color: "yellow",
+      },
+      [AnswerType.TextArea]: { text: translate("TEXT_AREA"), color: "pink" },
+    }),
+    []
+  );
+
+  const { text: questionBadgeText, color: questionBadgeColor } =
+    questionBadge[question.answerType];
+
   return (
     <Stack marginY={10} spacing={5} key={question.id} width="100%">
       <Text fontWeight={600} fontSize="sm" textStyle="title">
-        {translate("QUESTION")} #{questionIndex + 1}
+        {translate("QUESTION")} #{questionIndex + 1}{" "}
+        <Badge colorScheme={questionBadgeColor}>{questionBadgeText}</Badge>
       </Text>
       <Flex gap={2}>
         <ChakraInput

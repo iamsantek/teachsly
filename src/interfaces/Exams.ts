@@ -11,6 +11,7 @@ export enum AnswerType {
   MultipleChoice,
   TextArea,
   Blocks,
+  Audio
 }
 
 export enum QuestionType {

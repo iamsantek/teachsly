@@ -18,6 +18,7 @@ import { SelectCorrectAnswer } from "./results/corrections/SelectCorrectAnswer";
 import { TextMarkDownCorrection } from "./results/corrections/TextMarkDownCorrection";
 import { BlocksCorrection } from "./results/corrections/BlocksCorrection";
 import { TeacherScoreInput } from "./results/TeacherScoreInput";
+import { AudioCorrection } from "./results/corrections/AudioCorrection";
 
 interface Props {
   questionPool: QuestionPool;
@@ -68,7 +69,7 @@ export const ExamAttemptQuestionPoolAnswers = ({
         const id = generateRandomId();
 
         return (
-          <Stack key={id}>
+          <Stack key={id} spacing={10}>
             <HStack>
               <Text>
                 {questionIndex + 1}. {question.question}
@@ -140,6 +141,15 @@ export const ExamAttemptQuestionPoolAnswers = ({
                 questionPoolIndex={questionPoolIndex}
                 questionIndex={questionIndex}
                 answer={(studentAnswer as { [key: string]: string }) ?? {}}
+                updateFn={updateFn}
+              />
+            )}
+            {answerType === AnswerType.Audio && (
+              <AudioCorrection
+                audioKey={studentAnswer as string}
+                questionPoolIndex={questionPoolIndex}
+                questionIndex={questionIndex}
+                questionPool={questionPool}
                 updateFn={updateFn}
               />
             )}

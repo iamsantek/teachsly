@@ -117,8 +117,6 @@ export const ExamAttemptDetail = () => {
       examAttemptResponse?.getExamAttempt?.results ?? ""
     ).answers;
 
-    console.log(allAnswers);
-
     const updatedQuestionPools = calculateRecommendedScore(
       questionPools,
       allAnswers

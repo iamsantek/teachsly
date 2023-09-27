@@ -77,6 +77,7 @@ export const QuestionConfigurationDrawer = ({
                     {translate("TEXT_AREA")}
                   </Radio>
                   <Radio value={AnswerType.Blocks}>{translate('BLOCKS')}</Radio>
+                  <Radio value={AnswerType.Audio}>{translate('AUDIO')}</Radio>
                 </Stack>
               </RadioGroup>
             </Stack>

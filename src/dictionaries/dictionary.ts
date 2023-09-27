@@ -308,6 +308,8 @@ export enum LanguageES {
   RESET_CORRECTION_DESCRIPTION = "¿Estás seguro que deseas reiniciar la corrección? Se perderán todas las correcciones realizadas y deberás corregir nuevamente el examen.",
   EXAM_RESET_CORRECTION_OK = "La corrección se reinició correctamente.",
   EXAM_RESET_CORRECTION_ERROR = "Hubo un error al reiniciar la corrección. Por favor, intentar nuevamente.",
+  AUDIO = "Audio",
+  AUDIO_CORRECTION = "Devolución del docente",
 }
 
 export enum LanguageEN {
@@ -613,6 +615,8 @@ export enum LanguageEN {
   OF = "of",
   ASSIGNED_MARK = "Assigned mark",
   RESET_CORRECTION_DESCRIPTION = "Are you sure you want to reset the correction?",
-  EXAM_RESET_CORRECTION_OK= "The correction has been successfully reset.",
+  EXAM_RESET_CORRECTION_OK = "The correction has been successfully reset.",
   EXAM_RESET_CORRECTION_ERROR = "An error has occurred when resetting the correction. Please try again.",
+  AUDIO = "Audio",
+  AUDIO_CORRECTION = "Teacher feedback",
 }

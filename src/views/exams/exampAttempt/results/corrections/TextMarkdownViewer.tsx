@@ -18,6 +18,10 @@ export const TextMarkdownViewer = ({ markdownText }: Props) => {
 
   const deleteSpecialCharactersRegExp = /[*#\-/+]/g;
 
+  if (!generalChunks.length) {
+    return <Text>{markdownText}</Text>;
+  }
+
   return (
     <>
       {generalChunks.map(
