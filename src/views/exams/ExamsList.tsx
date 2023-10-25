@@ -21,6 +21,8 @@ import { Placeholder } from "../../components/Placeholders/Placeholder";
 import { ExamFilter } from "./ExamsFilter";
 import { ExamFilter as IExamFilter } from "../../interfaces/Exams";
 import { NoContentPlaceholder } from "../../components/Placeholders/NoContentPlaceholder";
+import { GoogleAnalyticsCategory } from "../../constants/Analytics";
+import AnalyticsService from "../../services/AnalyticsService";
 
 export const ExamsList = () => {
   const [exams, setExams] = useState<Exam[]>([]);
@@ -178,7 +180,13 @@ export const ExamsList = () => {
           <ContentLine
             key={exam.id}
             leftIcon={<IoNewspaper />}
-            onView={() => navigate(link)}
+            onView={() => {
+              AnalyticsService.sendEventToAnalytics({
+                category: GoogleAnalyticsCategory.EXAM,
+                action: "VIEW_EXAM",
+              });
+              navigate(link);
+            }}
           >
             <CommonContentLineTitle id={exam.id} title={exam.title}>
               {!isCompleted && (

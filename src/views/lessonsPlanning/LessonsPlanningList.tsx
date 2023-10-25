@@ -9,6 +9,9 @@ import StorageService from "../../services/aws/StorageService";
 import { translate } from "../../utils/LanguageUtils";
 import { CommonContentLineTitle } from "../media/CommonContentLineTitle";
 import { LessonPlanningModal } from "./LessonPlanningModal";
+import { GoogleAnalyticsCategory } from "../../constants/Analytics";
+import AnalyticsService from "../../services/AnalyticsService";
+import { useEffect } from "react";
 
 interface Props {
   lessons: LessonPlanningItem[];
@@ -31,7 +34,16 @@ export const LessonsPlanningList = ({
   lessonToUpdate,
   onUpdateSuccess,
 }: Props) => {
-  const { hasEditPermission } = useUserGroups();
+  const { hasEditPermission, hasStudentRole } = useUserGroups();
+
+  useEffect(() => {
+    if (hasStudentRole) {
+      AnalyticsService.sendEventToAnalytics({
+        category: GoogleAnalyticsCategory.CLASS,
+        action: "VIEW_LESSON_PLANNING",
+      });
+    }
+  }, [hasStudentRole]);
 
   const LessonDate = ({ date }: { date: string }) => {
     const formattedDate = dayjs(date).format("DD MMM");
@@ -74,9 +86,17 @@ export const LessonsPlanningList = ({
         window.open(mediaLink?.url, "_blank");
         break;
       case LessonPlanningType.HOMEWORK:
+        AnalyticsService.sendEventToAnalytics({
+          category: GoogleAnalyticsCategory.EXAM,
+          action: "VIEW_HOMEWORK",
+        });
         onViewExamHandler(lesson, ExamType.HOMEWORK);
         break;
       case LessonPlanningType.EXAM:
+        AnalyticsService.sendEventToAnalytics({
+          category: GoogleAnalyticsCategory.EXAM,
+          action: "VIEW_EXAM",
+        });
         onViewExamHandler(lesson, ExamType.EXAM);
         break;
       case LessonPlanningType.LESSON:
@@ -88,9 +108,17 @@ export const LessonsPlanningList = ({
         }
         break;
       case LessonPlanningType.RECORDING:
+        AnalyticsService.sendEventToAnalytics({
+          category: GoogleAnalyticsCategory.MEDIA,
+          action: "VIEW_RECORDING",
+        });
         window.open(`/recording/${lesson.externalId}`, "_blank");
         break;
       case LessonPlanningType.LINK:
+        AnalyticsService.sendEventToAnalytics({
+          category: GoogleAnalyticsCategory.MEDIA,
+          action: "VIEW_LINK",
+        });
         window.open(lesson.link as string, "_blank");
         break;
       default:
