@@ -1,6 +1,11 @@
 import { Badge, Box, Flex, Stack, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { ExamType, LessonPlan, LessonPlanningType } from "../../API";
+import {
+  CreateClassAttendanceInput,
+  ExamType,
+  LessonPlan,
+  LessonPlanningType,
+} from "../../API";
 import { ContentLine } from "../../components/ContentLine/ContentLine";
 import { contentLineColor } from "../../constants/LessonPlanning";
 import { useUserGroups } from "../../hooks/useUserGroups";
@@ -11,7 +16,10 @@ import { CommonContentLineTitle } from "../media/CommonContentLineTitle";
 import { LessonPlanningModal } from "./LessonPlanningModal";
 import { GoogleAnalyticsCategory } from "../../constants/Analytics";
 import AnalyticsService from "../../services/AnalyticsService";
-import { useEffect } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { getClassAttendance } from "../../services/ClassAttendanceService";
+import { UserDashboardContext } from "../../contexts/UserDashboardContext";
+import { useParams } from "react-router-dom";
 
 interface Props {
   lessons: LessonPlanningItem[];
@@ -35,6 +43,30 @@ export const LessonsPlanningList = ({
   onUpdateSuccess,
 }: Props) => {
   const { hasEditPermission, hasStudentRole } = useUserGroups();
+  const { courseId } = useParams();
+  const [attendance, setAttendance] = useState<CreateClassAttendanceInput[]>(
+    []
+  );
+
+  const {
+    context: { user },
+  } = useContext(UserDashboardContext);
+
+  const fetchAttendance = useCallback(async () => {
+    const attendance = await getClassAttendance(
+      user?.id as string,
+      courseId as string
+    );
+
+    if (
+      attendance?.listClassAttendances?.items &&
+      attendance?.listClassAttendances?.items?.length > 0
+    ) {
+      setAttendance(
+        attendance?.listClassAttendances?.items as CreateClassAttendanceInput[]
+      );
+    }
+  }, [user, courseId]);
 
   useEffect(() => {
     if (hasStudentRole) {
@@ -43,7 +75,9 @@ export const LessonsPlanningList = ({
         action: "VIEW_LESSON_PLANNING",
       });
     }
-  }, [hasStudentRole]);
+
+    fetchAttendance();
+  }, [hasStudentRole, fetchAttendance]);
 
   const LessonDate = ({ date }: { date: string }) => {
     const formattedDate = dayjs(date).format("DD MMM");
@@ -168,7 +202,15 @@ export const LessonsPlanningList = ({
           />
           <Stack spacing={5}>
             {lessons.map((lesson) => {
+              const fullLessonDate = dayjs(lesson.date).format("YYYY-MM-DD");
+              const shortLessonDate = dayjs(lesson.date).format("DD/MM");
+
               const isRecording = lesson.type === LessonPlanningType.RECORDING;
+              const attended = !!attendance.find(
+                (attendance) =>
+                  attendance.date === fullLessonDate && isRecording
+              );
+
               return (
                 <Box paddingLeft={isRecording ? 50 : 0}>
                   <ContentLine
@@ -196,7 +238,11 @@ export const LessonsPlanningList = ({
                   >
                     <CommonContentLineTitle
                       id={lesson.id}
-                      title={lesson.title}
+                      title={
+                        isRecording && lesson.title === "Class recording"
+                          ? `${translate("CLASS_RECORDING")} ${shortLessonDate}`
+                          : lesson.title
+                      }
                       header={
                         <Badge
                           variant="subtle"
@@ -212,7 +258,11 @@ export const LessonsPlanningList = ({
                       }
                     >
                       <Text color="gray.600" noOfLines={3}>
-                        {lesson.content}
+                        {attended && (
+                          <Badge colorScheme="green">
+                            {translate("ASSISTANCE_CONFIRMED")}
+                          </Badge>
+                        )}
                       </Text>
                       <Flex gap={3}>{lesson.renderElement}</Flex>
                     </CommonContentLineTitle>

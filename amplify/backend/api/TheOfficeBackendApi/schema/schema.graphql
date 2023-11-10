@@ -1,0 +1,276 @@
+enum ExamType {
+  EXAM,
+  HOMEWORK
+}
+
+enum EnglishLevel {
+  STARTER,
+  ELEMENTARY,
+  PRE_INTERMEDIATE,
+  INTERMEDIATE,
+  UPPER_INTERMEDIATE,
+  ADVANCED
+}
+
+enum CourseType {
+  GROUP,
+  PRIVATE
+}
+
+type Course @model
+@auth(rules: [
+  {allow: private, operations: [read]},
+  {allow: groups, groups: ["Admin"]},
+  ])
+  {
+  id: ID!
+  name: String!
+  scheduleDates: [Int]
+  scheduleStartTime: AWSTime
+  scheduleEndTime: AWSTime
+  virtualClassLink: String
+  isActive: Boolean @default(value: "true")
+  externalId: String! @index(name: "byExternalId", queryField: "courseByExternalId")
+  scheduleYear: Int!
+  englishLevel: EnglishLevel
+  type: CourseType
+  isVirtual: Boolean
+  zoomMeetingId: String
+}
+
+enum MediaType {
+  LINK,
+  FILE,
+}
+
+type MediaFolder @model
+@auth(rules: [
+  {allow: owner},
+  {allow: groups, groups: ["Admin"]},
+  {allow: groups, groupsField: "groups", operations: [read] }
+  ])
+  {
+  id: ID!
+  name: String!
+  groups: [String!]!
+  parentId: ID
+}
+
+type Media @model
+@auth(rules: [
+  {allow: owner},
+  {allow: groups, groups: ["Admin"]},
+  {allow: groups, groupsField: "groups", operations: [read] }
+  ])
+  {
+  id: ID!
+  title: String!
+  type: MediaType! 
+  description: String
+  link: String!
+  content: String
+  groups: [String!]!
+  uploadedBy: String!
+  mimeType: String
+  folderId: String
+}
+
+enum DisabledAccountReasons {
+  DISABLED_BY_ADMIN,
+  PAYMENT_NOT_COMPLETED
+}
+
+type User @model
+@auth(rules: [
+  {allow: groups, groups: ["Admin"]},
+  {allow: groups, groups: ["Students","Teachers", "BookletStudents"], operations: [read] },
+  ])
+  {
+  id: ID!
+  name: String!
+  email: String!
+  phone: String!
+  cognitoId: ID!
+  groups: [String!]!
+  isDisabledUser: Boolean @default(value: "false")
+  disabledReason: DisabledAccountReasons
+  englishLevel: EnglishLevel
+} 
+
+type Options {
+    id: String!
+    label: String!
+    isCorrectOption: Boolean
+  }
+
+ enum TimeGranularity {
+    SECONDS,
+    MINUTES,
+    HOURS
+ } 
+
+type Timer {
+    type: String!
+    timeInSeconds: Int!
+    timeGranularity: TimeGranularity
+}
+
+type ExamSettings {
+    allowRetake: Boolean
+}
+
+type Exam @model
+@auth(rules: [
+  {allow: owner},
+  {allow: groups, groups: ["Admin", "Teachers"]},
+  {allow: groups, groupsField: "groups", operations: [read] }
+  ])
+{
+  id: ID!
+  groups: [String!]!
+  title: String!
+  questionPools: AWSJSON!
+  timer: Timer!
+  deadline: AWSDateTime
+  startDate: AWSDateTime!
+  type: ExamType
+  settings: ExamSettings
+}
+
+type ExamAttempt @model
+@auth(rules: [
+  {allow: owner},
+  {allow: groups, groups: ["Admin","Teachers"]},
+  {allow: groups, groups: ["Students"], operations: [read] },
+  ])
+{
+  id: ID!
+  examId: ID!
+  examName: String!
+  userId: ID!
+  userName: String @default(value: "")
+  score: String
+  isCompleted: Boolean @default(value: "false")
+  correctAnswers: Int
+  totalQuestions: Int
+  correctedBy: String
+  externalId: ID! @index(name: "byExternalId", queryField: "examAttemptByExternalId")
+  results: AWSJSON
+  keys: AWSJSON
+  teacherComments: String
+  type: ExamType
+}
+
+enum LessonPlanningType {
+  EXAM,
+  HOMEWORK,
+  OTHER,
+  LESSON,
+  MEDIA,
+  RECORDING,
+  LINK,
+}
+
+type LessonPlan @model
+@auth(rules: [
+  {allow: owner},
+  {allow: groups, groups: ["Admin","Teachers"]},
+  {allow: groups, groupsField: "groups", operations: [read] }
+  ])
+{
+  id: ID!
+  groups: [String!]!
+  title: String!
+  date: AWSDate!
+  uploadedBy: String!
+  content: String
+  media: String
+  type: LessonPlanningType
+  externalId: ID! @index(name: "byExternalId", queryField: "lessonPlanByExternalId")
+  extraInformation: AWSJSON
+  link: String
+}   
+
+enum PaymentStatus {
+  PENDING,
+  APPROVED,
+  IN_PROCESS,
+  REJECTED,
+  REFUNDED,
+  CANCELLED,
+  IN_MEDIATION,
+  CHARGED_BACK
+}
+
+enum PaymentType {
+  BOOKLET
+}
+
+enum PaymentCurrency {
+  ARS,
+  USD
+}
+
+type Payments @model
+@auth(rules: [
+  {allow: groups, groups: ["Admin"]},
+  {allow: groups, groups: ["Students","Teachers"], operations: [read] }
+  ])
+{
+  id: ID!
+  userId: ID!
+  date: AWSDateTime!
+  status: PaymentStatus!
+  type: PaymentType!
+  typeId: ID!
+  amount: Float!
+  mpPaymentId: String!
+  itemName: String!
+  currency: PaymentCurrency!
+}
+
+type Booklets @model
+@auth(rules: [
+  {allow: groups, groups: ["Admin"]},
+  {allow: groups, groups: ["Students","Teachers"], operations: [read] },
+  ])
+{
+  id: ID!
+  name: String!
+  nameEng: String!
+  description: String
+  descriptionEng: String
+  level: EnglishLevel!
+  priceArs: Float!
+  priceUsd: Float!
+  isActive: Boolean @default(value: "true")
+  cognitoGroups: [String!]
+  stripePriceId: String!
+  stripeSandBoxPriceId: String!
+}
+
+type PlacementResults @model
+@auth(rules: [
+  {allow: groups, groups: ["Admin"]},
+  ])
+{
+  id: ID!
+  fullName: String!
+  email: String!
+  level: String!
+  phone: String!
+  country: String!
+}
+
+
+type ClassAttendance @model
+@auth(rules: [
+  {allow: groups, groups: ["Admin"]},
+    {allow: groups, groups: ["Students","Teachers"], operations: [read] },
+  ])
+{
+  id: ID!
+  date: AWSDate!
+  externalCourseId: ID! @index
+  userId: ID! @index
+}

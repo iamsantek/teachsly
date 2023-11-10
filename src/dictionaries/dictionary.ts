@@ -310,6 +310,7 @@ export enum LanguageES {
   EXAM_RESET_CORRECTION_ERROR = "Hubo un error al reiniciar la corrección. Por favor, intentar nuevamente.",
   AUDIO = "Audio",
   AUDIO_CORRECTION = "Devolución del docente",
+  ASSISTANCE_CONFIRMED = "Asistencia comfirmada",
 }
 
 export enum LanguageEN {
@@ -619,4 +620,5 @@ export enum LanguageEN {
   EXAM_RESET_CORRECTION_ERROR = "An error has occurred when resetting the correction. Please try again.",
   AUDIO = "Audio",
   AUDIO_CORRECTION = "Teacher feedback",
+  ASSISTANCE_CONFIRMED = "Confimed assitance",
 }

@@ -736,9 +736,9 @@ export type CreateBookletsInput = {
   priceArs: number,
   priceUsd: number,
   isActive?: boolean | null,
-  paypalCheckoutUrl: string,
-  paypalSandBoxCheckoutUrl: string,
   cognitoGroups?: Array< string > | null,
+  stripePriceId: string,
+  stripeSandBoxPriceId: string,
 };
 
 export type ModelBookletsConditionInput = {
@@ -750,9 +750,9 @@ export type ModelBookletsConditionInput = {
   priceArs?: ModelFloatInput | null,
   priceUsd?: ModelFloatInput | null,
   isActive?: ModelBooleanInput | null,
-  paypalCheckoutUrl?: ModelStringInput | null,
-  paypalSandBoxCheckoutUrl?: ModelStringInput | null,
   cognitoGroups?: ModelStringInput | null,
+  stripePriceId?: ModelStringInput | null,
+  stripeSandBoxPriceId?: ModelStringInput | null,
   and?: Array< ModelBookletsConditionInput | null > | null,
   or?: Array< ModelBookletsConditionInput | null > | null,
   not?: ModelBookletsConditionInput | null,
@@ -769,9 +769,9 @@ export type Booklets = {
   priceArs: number,
   priceUsd: number,
   isActive?: boolean | null,
-  paypalCheckoutUrl: string,
-  paypalSandBoxCheckoutUrl: string,
   cognitoGroups?: Array< string > | null,
+  stripePriceId: string,
+  stripeSandBoxPriceId: string,
   createdAt: string,
   updatedAt: string,
 };
@@ -786,9 +786,9 @@ export type UpdateBookletsInput = {
   priceArs?: number | null,
   priceUsd?: number | null,
   isActive?: boolean | null,
-  paypalCheckoutUrl?: string | null,
-  paypalSandBoxCheckoutUrl?: string | null,
   cognitoGroups?: Array< string > | null,
+  stripePriceId?: string | null,
+  stripeSandBoxPriceId?: string | null,
 };
 
 export type DeleteBookletsInput = {
@@ -837,6 +837,43 @@ export type UpdatePlacementResultsInput = {
 };
 
 export type DeletePlacementResultsInput = {
+  id: string,
+};
+
+export type CreateClassAttendanceInput = {
+  id?: string | null,
+  date: string,
+  externalCourseId: string,
+  userId: string,
+};
+
+export type ModelClassAttendanceConditionInput = {
+  date?: ModelStringInput | null,
+  externalCourseId?: ModelIDInput | null,
+  userId?: ModelIDInput | null,
+  and?: Array< ModelClassAttendanceConditionInput | null > | null,
+  or?: Array< ModelClassAttendanceConditionInput | null > | null,
+  not?: ModelClassAttendanceConditionInput | null,
+};
+
+export type ClassAttendance = {
+  __typename: "ClassAttendance",
+  id: string,
+  date: string,
+  externalCourseId: string,
+  userId: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateClassAttendanceInput = {
+  id: string,
+  date?: string | null,
+  externalCourseId?: string | null,
+  userId?: string | null,
+};
+
+export type DeleteClassAttendanceInput = {
   id: string,
 };
 
@@ -1025,9 +1062,9 @@ export type ModelBookletsFilterInput = {
   priceArs?: ModelFloatInput | null,
   priceUsd?: ModelFloatInput | null,
   isActive?: ModelBooleanInput | null,
-  paypalCheckoutUrl?: ModelStringInput | null,
-  paypalSandBoxCheckoutUrl?: ModelStringInput | null,
   cognitoGroups?: ModelStringInput | null,
+  stripePriceId?: ModelStringInput | null,
+  stripeSandBoxPriceId?: ModelStringInput | null,
   and?: Array< ModelBookletsFilterInput | null > | null,
   or?: Array< ModelBookletsFilterInput | null > | null,
   not?: ModelBookletsFilterInput | null,
@@ -1054,6 +1091,22 @@ export type ModelPlacementResultsFilterInput = {
 export type ModelPlacementResultsConnection = {
   __typename: "ModelPlacementResultsConnection",
   items:  Array<PlacementResults | null >,
+  nextToken?: string | null,
+};
+
+export type ModelClassAttendanceFilterInput = {
+  id?: ModelIDInput | null,
+  date?: ModelStringInput | null,
+  externalCourseId?: ModelIDInput | null,
+  userId?: ModelIDInput | null,
+  and?: Array< ModelClassAttendanceFilterInput | null > | null,
+  or?: Array< ModelClassAttendanceFilterInput | null > | null,
+  not?: ModelClassAttendanceFilterInput | null,
+};
+
+export type ModelClassAttendanceConnection = {
+  __typename: "ModelClassAttendanceConnection",
+  items:  Array<ClassAttendance | null >,
   nextToken?: string | null,
 };
 
@@ -1247,9 +1300,9 @@ export type ModelSubscriptionBookletsFilterInput = {
   priceArs?: ModelSubscriptionFloatInput | null,
   priceUsd?: ModelSubscriptionFloatInput | null,
   isActive?: ModelSubscriptionBooleanInput | null,
-  paypalCheckoutUrl?: ModelSubscriptionStringInput | null,
-  paypalSandBoxCheckoutUrl?: ModelSubscriptionStringInput | null,
   cognitoGroups?: ModelSubscriptionStringInput | null,
+  stripePriceId?: ModelSubscriptionStringInput | null,
+  stripeSandBoxPriceId?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionBookletsFilterInput | null > | null,
   or?: Array< ModelSubscriptionBookletsFilterInput | null > | null,
 };
@@ -1263,6 +1316,15 @@ export type ModelSubscriptionPlacementResultsFilterInput = {
   country?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionPlacementResultsFilterInput | null > | null,
   or?: Array< ModelSubscriptionPlacementResultsFilterInput | null > | null,
+};
+
+export type ModelSubscriptionClassAttendanceFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  date?: ModelSubscriptionStringInput | null,
+  externalCourseId?: ModelSubscriptionIDInput | null,
+  userId?: ModelSubscriptionIDInput | null,
+  and?: Array< ModelSubscriptionClassAttendanceFilterInput | null > | null,
+  or?: Array< ModelSubscriptionClassAttendanceFilterInput | null > | null,
 };
 
 export type CreateCourseMutationVariables = {
@@ -1876,9 +1938,9 @@ export type CreateBookletsMutation = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    paypalCheckoutUrl: string,
-    paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
+    stripePriceId: string,
+    stripeSandBoxPriceId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1901,9 +1963,9 @@ export type UpdateBookletsMutation = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    paypalCheckoutUrl: string,
-    paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
+    stripePriceId: string,
+    stripeSandBoxPriceId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1926,9 +1988,9 @@ export type DeleteBookletsMutation = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    paypalCheckoutUrl: string,
-    paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
+    stripePriceId: string,
+    stripeSandBoxPriceId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1986,6 +2048,57 @@ export type DeletePlacementResultsMutation = {
     level: string,
     phone: string,
     country: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateClassAttendanceMutationVariables = {
+  input: CreateClassAttendanceInput,
+  condition?: ModelClassAttendanceConditionInput | null,
+};
+
+export type CreateClassAttendanceMutation = {
+  createClassAttendance?:  {
+    __typename: "ClassAttendance",
+    id: string,
+    date: string,
+    externalCourseId: string,
+    userId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateClassAttendanceMutationVariables = {
+  input: UpdateClassAttendanceInput,
+  condition?: ModelClassAttendanceConditionInput | null,
+};
+
+export type UpdateClassAttendanceMutation = {
+  updateClassAttendance?:  {
+    __typename: "ClassAttendance",
+    id: string,
+    date: string,
+    externalCourseId: string,
+    userId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteClassAttendanceMutationVariables = {
+  input: DeleteClassAttendanceInput,
+  condition?: ModelClassAttendanceConditionInput | null,
+};
+
+export type DeleteClassAttendanceMutation = {
+  deleteClassAttendance?:  {
+    __typename: "ClassAttendance",
+    id: string,
+    date: string,
+    externalCourseId: string,
+    userId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2425,9 +2538,9 @@ export type GetBookletsQuery = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    paypalCheckoutUrl: string,
-    paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
+    stripePriceId: string,
+    stripeSandBoxPriceId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2453,9 +2566,9 @@ export type ListBookletsQuery = {
       priceArs: number,
       priceUsd: number,
       isActive?: boolean | null,
-      paypalCheckoutUrl: string,
-      paypalSandBoxCheckoutUrl: string,
       cognitoGroups?: Array< string > | null,
+      stripePriceId: string,
+      stripeSandBoxPriceId: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -2498,6 +2611,44 @@ export type ListPlacementResultsQuery = {
       level: string,
       phone: string,
       country: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetClassAttendanceQueryVariables = {
+  id: string,
+};
+
+export type GetClassAttendanceQuery = {
+  getClassAttendance?:  {
+    __typename: "ClassAttendance",
+    id: string,
+    date: string,
+    externalCourseId: string,
+    userId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListClassAttendancesQueryVariables = {
+  filter?: ModelClassAttendanceFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListClassAttendancesQuery = {
+  listClassAttendances?:  {
+    __typename: "ModelClassAttendanceConnection",
+    items:  Array< {
+      __typename: "ClassAttendance",
+      id: string,
+      date: string,
+      externalCourseId: string,
+      userId: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -3207,9 +3358,9 @@ export type OnCreateBookletsSubscription = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    paypalCheckoutUrl: string,
-    paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
+    stripePriceId: string,
+    stripeSandBoxPriceId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3231,9 +3382,9 @@ export type OnUpdateBookletsSubscription = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    paypalCheckoutUrl: string,
-    paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
+    stripePriceId: string,
+    stripeSandBoxPriceId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3255,9 +3406,9 @@ export type OnDeleteBookletsSubscription = {
     priceArs: number,
     priceUsd: number,
     isActive?: boolean | null,
-    paypalCheckoutUrl: string,
-    paypalSandBoxCheckoutUrl: string,
     cognitoGroups?: Array< string > | null,
+    stripePriceId: string,
+    stripeSandBoxPriceId: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3312,6 +3463,54 @@ export type OnDeletePlacementResultsSubscription = {
     level: string,
     phone: string,
     country: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateClassAttendanceSubscriptionVariables = {
+  filter?: ModelSubscriptionClassAttendanceFilterInput | null,
+};
+
+export type OnCreateClassAttendanceSubscription = {
+  onCreateClassAttendance?:  {
+    __typename: "ClassAttendance",
+    id: string,
+    date: string,
+    externalCourseId: string,
+    userId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateClassAttendanceSubscriptionVariables = {
+  filter?: ModelSubscriptionClassAttendanceFilterInput | null,
+};
+
+export type OnUpdateClassAttendanceSubscription = {
+  onUpdateClassAttendance?:  {
+    __typename: "ClassAttendance",
+    id: string,
+    date: string,
+    externalCourseId: string,
+    userId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteClassAttendanceSubscriptionVariables = {
+  filter?: ModelSubscriptionClassAttendanceFilterInput | null,
+};
+
+export type OnDeleteClassAttendanceSubscription = {
+  onDeleteClassAttendance?:  {
+    __typename: "ClassAttendance",
+    id: string,
+    date: string,
+    externalCourseId: string,
+    userId: string,
     createdAt: string,
     updatedAt: string,
   } | null,

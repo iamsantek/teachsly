@@ -151,6 +151,9 @@ export const LessonPlanningModal = ({
       groups: [currentCourse?.externalId as string],
     };
 
+    // Delete __typename property
+    delete lessonPlan.__typename;
+
     let result: CreateLessonPlanMutation | UpdateLessonPlanMutation | undefined;
     let toastMessage: TranslationsDictionary;
     if (lessonToUpdate) {
