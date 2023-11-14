@@ -244,25 +244,28 @@ export const LessonsPlanningList = ({
                           : lesson.title
                       }
                       header={
-                        <Badge
-                          variant="subtle"
-                          color="gray.900"
-                          colorScheme={
-                            contentLineColor[
-                              lesson.type ?? LessonPlanningType.OTHER
-                            ]
-                          }
-                        >
-                          {lesson.type}
-                        </Badge>
+                        <Flex gap={2}>
+                          <Badge
+                            variant="subtle"
+                            color="gray.900"
+                            colorScheme={
+                              contentLineColor[
+                                lesson.type ?? LessonPlanningType.OTHER
+                              ]
+                            }
+                          >
+                            {lesson.type}
+                          </Badge>
+                          {attended && (
+                            <Badge colorScheme="green">
+                              {translate("ASSISTANCE_CONFIRMED")}
+                            </Badge>
+                          )}
+                        </Flex>
                       }
                     >
                       <Text color="gray.600" noOfLines={3}>
-                        {attended && (
-                          <Badge colorScheme="green">
-                            {translate("ASSISTANCE_CONFIRMED")}
-                          </Badge>
-                        )}
+                        {lesson.content}
                       </Text>
                       <Flex gap={3}>{lesson.renderElement}</Flex>
                     </CommonContentLineTitle>
