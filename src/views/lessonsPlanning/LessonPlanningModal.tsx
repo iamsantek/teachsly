@@ -33,9 +33,8 @@ import {
 import { translate } from "../../utils/LanguageUtils";
 import { renderMultiSelectOptions } from "../../utils/SelectUtils";
 import { toastConfig } from "../../utils/ToastUtils";
-import {
-  isNotAllowedWebsite,
-} from "../../utils/StringUtils";
+import { isNotAllowedWebsite } from "../../utils/StringUtils";
+import { removeNotAllowedPropertiesFromModel } from "../../utils/GraphQLUtils";
 
 export interface LessonPlanningWithMultiSelect
   extends Omit<CreateLessonPlanInput, "type"> {
@@ -151,15 +150,12 @@ export const LessonPlanningModal = ({
       groups: [currentCourse?.externalId as string],
     };
 
-    // Delete __typename property
-    delete lessonPlan.__typename;
-
     let result: CreateLessonPlanMutation | UpdateLessonPlanMutation | undefined;
     let toastMessage: TranslationsDictionary;
     if (lessonToUpdate) {
-      result = (await updateLessonPlan(lessonPlan)) as
-        | UpdateLessonPlanMutation
-        | undefined;
+      result = (await updateLessonPlan(
+        removeNotAllowedPropertiesFromModel(lessonPlan)
+      )) as UpdateLessonPlanMutation | undefined;
       if (result?.updateLessonPlan) {
         onUpdate(result.updateLessonPlan as LessonPlan);
         toastMessage = "LESSON_UPDATE_SUCCESS";

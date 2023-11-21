@@ -19,6 +19,7 @@ export const removeNotAllowedPropertiesFromModel = (model: any) => {
     _deleted,
     _lastChangedAt,
     owner,
+    __typename,
     ...updatedModel
   } = model;
 

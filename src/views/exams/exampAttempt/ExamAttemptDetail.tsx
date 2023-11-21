@@ -45,6 +45,7 @@ import {
   isScoreComplete,
   scoreGreaterThanPermittedChecker,
 } from "../../../utils/ExamUtils";
+import { removeNotAllowedPropertiesFromModel } from "../../../utils/GraphQLUtils";
 
 export const ExamAttemptDetail = () => {
   const [examAttempt, setExamAttempt] = useState<ExamAttempt>();
@@ -171,7 +172,10 @@ export const ExamAttemptDetail = () => {
       teacherComments,
       keys: JSON.stringify(questionPools),
     };
-    const examAttemptResponse = await ExamService.updateExamAttempt(results);
+
+    const examAttemptResponse = await ExamService.updateExamAttempt(
+      removeNotAllowedPropertiesFromModel(results)
+    );
 
     toast(
       toastConfig({
