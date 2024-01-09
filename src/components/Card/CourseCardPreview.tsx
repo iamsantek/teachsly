@@ -60,7 +60,7 @@ export const CourseCardPreview = ({ course }: Props) => {
               {translate(isVirtual ? "VIRTUAL_COURSE" : "ON_SITE_CLASS")}
             </Badge>
             <Text fontSize="xs" fontWeight="bold">
-              {course.scheduleYear}
+              {course.scheduleYear ?? ""}
             </Text>
           </Flex>
           <Box display="flex" flexDirection={"column"}>

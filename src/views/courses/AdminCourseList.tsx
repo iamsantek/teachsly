@@ -210,8 +210,8 @@ export const AdminCourseList = () => {
                 <CommonContentLineTitle id={course.id} title={course.name}>
                   <Text textStyle={"title"} color={color}>
                     {days}{" "}
-                    {!!startTime && !!endTime && `${startTime} - ${endTime}`} (
-                    {course.scheduleYear})
+                    {!!startTime && !!endTime && `${startTime} - ${endTime}`}
+                    {course.scheduleYear ? `(${course.scheduleYear})` : ""}
                   </Text>
                   {course.isVirtual && (
                     <Badge marginLeft={3} colorScheme={"brand"}>

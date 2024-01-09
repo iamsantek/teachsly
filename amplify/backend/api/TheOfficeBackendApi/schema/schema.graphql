@@ -31,7 +31,7 @@ type Course @model
   virtualClassLink: String
   isActive: Boolean @default(value: "true")
   externalId: String! @index(name: "byExternalId", queryField: "courseByExternalId")
-  scheduleYear: Int!
+  scheduleYear: Int
   englishLevel: EnglishLevel
   type: CourseType
   isVirtual: Boolean

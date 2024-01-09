@@ -68,9 +68,11 @@ const CourseCRUDModal = ({
         scheduleDates: DateTimeUtils.dayIndexesToMultiSelectOption(
           courseToUpdate.scheduleDates as number[]
         ),
-        scheduleYear: mapSingleValueToMultiSelectOption(
-          String(courseToUpdate.scheduleYear)
-        ),
+        scheduleYear: courseToUpdate.scheduleYear
+          ? mapSingleValueToMultiSelectOption(
+              String(courseToUpdate.scheduleYear)
+            )
+          : { label: "No year", value: "" },
         type: mapSingleValueToMultiSelectOption(
           courseToUpdate.type || CourseType.GROUP
         ),
@@ -94,9 +96,11 @@ const CourseCRUDModal = ({
       scheduleDates: course.scheduleDates.map((date) =>
         Number(date.value)
       ) as number[],
-      scheduleYear: Number(course.scheduleYear.value),
+      scheduleYear:
+        course.scheduleYear.value !== ""
+          ? Number(course.scheduleYear.value)
+          : null,
       type: (course.type as MultiSelectOption).value as CourseType,
-      isVirtual: true,
     };
 
     const createdCourse = await CourseService.createCourse(updatedCourse);
@@ -122,7 +126,9 @@ const CourseCRUDModal = ({
     scheduleDates: course.scheduleDates.map((day) =>
       Number(day.value)
     ) as number[],
-    scheduleYear: Number(course.scheduleYear.value),
+    scheduleYear: course.scheduleYear.value
+      ? Number(course.scheduleYear.value)
+      : null,
     type: (course.type as MultiSelectOption).value as CourseType,
   });
 
@@ -219,9 +225,16 @@ const CourseCRUDModal = ({
                   name="scheduleYear"
                   label="COURSE_YEAR"
                   isRequired={true}
-                  options={renderMultiSelectOptions(
-                    years.map((year) => year.toString())
-                  )}
+                  options={[
+                    ...renderMultiSelectOptions(
+                      years.map((year) => year.toString())
+                    ),
+                    {
+                      label: "No year",
+                      value: "",
+                      colorScheme: "brand",
+                    },
+                  ]}
                   isMultiSelect={false}
                   closeMenuOnSelect={true}
                 />

@@ -122,7 +122,9 @@ class CourseService {
       scheduleEndTime: !!scheduleEndTime ? scheduleEndTime : null,
       virtualClassLink: courseCreation.virtualClassLink as string,
       externalId: groupExternalId,
-      scheduleYear: Number(courseCreation.scheduleYear),
+      scheduleYear: courseCreation.scheduleYear
+        ? Number(courseCreation.scheduleYear)
+        : undefined,
       zoomMeetingId: zoomMeetingId ? zoomMeetingId : null,
       isVirtual: !!zoomMeetingId,
     };
@@ -168,7 +170,7 @@ class CourseService {
           input: removeNotAllowedPropertiesFromModel({
             ...course,
             zoomMeetingId,
-            isVirtual: true
+            isVirtual: true,
           }),
         });
 
@@ -180,7 +182,7 @@ class CourseService {
         input: removeNotAllowedPropertiesFromModel({
           ...course,
           isVirtual: false,
-          zoomMeetingId: null
+          zoomMeetingId: null,
         }),
       });
 
