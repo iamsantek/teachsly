@@ -90,15 +90,19 @@ class UserService {
   };
 
   public fetchUsersByCourseOrType = async (
-    courseOrType: string | UserTypes | undefined = undefined,
+    courseOrTypes: string[] | UserTypes[] | undefined = undefined,
     nextToken: string | null = null
   ) => {
-    if (!courseOrType) {
+    if (!courseOrTypes) {
       return;
     }
 
-    const usersByCourseFilter: ModelUserFilterInput = {
-      and: [{ groups: { contains: courseOrType } }],
+    const orCondition = courseOrTypes.map((filter) => ({
+      groups: { contains: filter },
+    }));
+
+    const usersByCourseFilter = {
+      or: orCondition,
     };
 
     return this.fetchUsers(usersByCourseFilter, nextToken);

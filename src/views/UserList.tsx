@@ -57,8 +57,11 @@ const UserList = ({ listType }: Props) => {
   const fetchUsers = useCallback(async () => {
     setIsLoadingNewPage(true);
     const filter = courseId || listType;
+
+    const allFilters = filter === UserTypes.STUDENT ? [UserTypes.STUDENT, UserTypes.BOOKLET_STUDENT]: [filter]
+
     const usersResult = await UserService.fetchUsersByCourseOrType(
-      filter,
+      allFilters,
       nextPageResultToken
     );
     const users = (usersResult?.listUsers?.items as User[]) || [];
