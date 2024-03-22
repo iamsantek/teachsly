@@ -67,17 +67,27 @@ const App = () => {
       return [];
     }
 
-    const courses = await CourseService.fetchCourses({
-      filterDisabledCourses: false,
-      nextToken: courseNextPageToken,
-    });
+    let allCourses: Course[] = [];
+    let nextToken = courseNextPageToken;
 
-    if (courses?.listCourses?.nextToken) {
-      setCourseNextPageToken(courses?.listCourses?.nextToken);
+    while (true) {
+      const courses = await CourseService.fetchCourses({
+        filterDisabledCourses: false,
+        nextToken: nextToken,
+      });
+
+      if (!courses?.listCourses) break;
+
+      const courseList = courses.listCourses?.items as Course[];
+      allCourses = [...allCourses, ...courseList];
+
+      if (!courses.listCourses.nextToken) break;
+
+      nextToken = courses.listCourses?.nextToken;
     }
 
-    return courses?.listCourses?.items;
-  }, [user, courseNextPageToken, setCourseNextPageToken]);
+    return allCourses;
+  }, [user, courseNextPageToken]);
 
   const fetchRoutes = useCallback(
     async (cognitoUser: any) => {
