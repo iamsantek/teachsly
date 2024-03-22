@@ -124,7 +124,6 @@ export const getActiveAndArchivedCourses = (courses: Course[]) => {
   const archivedCourses: Course[] = [];
 
   courses.forEach((course) => {
-    console.log(course.name, course.scheduleYear);
     if (
       course?.scheduleYear === currentYear ||
       course?.scheduleYear === null ||
