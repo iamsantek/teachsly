@@ -1,12 +1,15 @@
 import {
   InputGroup,
-  Input,
+  NumberInput,
   InputRightElement,
   Text,
   Flex,
   Button,
   Stack,
-  NumberInputProps,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ExamCorrection, QuestionPool } from "../../../../interfaces/Exams";
@@ -65,26 +68,32 @@ export const TeacherScoreInput = ({
       <Text fontWeight="bold">Puntaje asignado</Text>
       <Flex flexDirection="row" alignItems="center">
         <InputGroup marginX={3} width={"10em"}>
-          <Input
+          <NumberInput
+            step={0.25}
             min={0}
-            type="number"
             value={teacherScore ?? 0}
-            onChange={(e) => {
-              const teacherScore = parseInt(e.target.value);
+            onChange={(value) => {
+              const teacherScore = !!value ? parseFloat(value) : 0;
 
               setTeacherScore(teacherScore);
               setTeacherScoreUpdated(true);
             }}
             isInvalid={isScoreGreaterThanMax || isNaN(teacherScore)}
-          />
-          <InputRightElement
-            pointerEvents="none"
-            color="gray.400"
-            fontSize="0.8em"
-            children={`/ ${score}`}
-            marginX={3}
-            marginRight={3}
-          />
+          >
+            <NumberInputField />
+            <InputRightElement
+              pointerEvents="none"
+              color="gray.400"
+              fontSize="0.8em"
+              children={`/ ${score}`}
+              marginX={3}
+              marginRight={3}
+            />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
         </InputGroup>
         {teacherScoreUpdated && !isScoreGreaterThanMax && !isNaN(teacherScore) && (
           <Stack direction="row" spacing={4}>
