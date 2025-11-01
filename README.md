@@ -89,13 +89,6 @@ Visit their website: [https://theofficeenglishlearning.com/](https://theofficeen
 - **AWS Lambda**
 - **AWS CloudFront**
 
-### Additional Libraries
-
-- **Chart.js** - Data visualization
-- **Day.js** - Date manipulation
-- **React GA4** - Google Analytics
-- **React Icons** - Icon library
-
 ## 📦 Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -177,16 +170,6 @@ yarn start
 ```
 
 The application will start on `http://localhost:3000` (or the next available port).
-
-### Clean Install
-
-If you encounter dependency issues:
-
-```bash
-npm run install:clean
-```
-
-This command removes `node_modules` and `package-lock.json`, then reinstalls dependencies.
 
 ## ☁️ AWS Services
 
